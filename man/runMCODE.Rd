@@ -41,6 +41,12 @@ An updated igraph object containing MCODE clustering result.
 \description{
 Molecular Complex Detection (MCODE) method for identifying PPI clusters.
 }
+\examples{
+data(demo_ppi)
+ppi <- runMCODE(demo_ppi, max_depth = 100)
+str(ppi)
+
+}
 \references{
 Bader, G.D., Hogue, C.W. An automated method for finding molecular complexes in large protein interaction networks.
 BMC Bioinformatics 4, 2 (2003). https://doi.org/10.1186/1471-2105-4-2
