@@ -164,6 +164,7 @@ make_colors <- function(items, colors, insert = NULL) {
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom scales pretty_breaks
 #' @return a ggplot object containing dot plot and sankey plot.
+#' @export
 
 ggdot_sankey <- function(
     enrich_obj,
