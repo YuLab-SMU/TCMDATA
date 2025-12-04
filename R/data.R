@@ -81,3 +81,27 @@
 #'
 #' @usage data(gutMGene)
 "gutMGene"
+
+
+#' Demo PPI igraph object
+#'
+#' A demo subset of a protein–protein interaction (PPI) network
+#' derived from a diabetic kidney disease (DKD) dataset.
+#'
+#' @details
+#' This object is an \code{igraph} graph containing a small
+#' protein–protein interaction network, useful for demonstrating
+#' downstream network analysis workflows.
+#'
+#' @format An \code{igraph} object with:
+#' \describe{
+#'   \item{58 vertices}{Each vertex corresponds to a gene symbol.}
+#'   \item{Edges}{Represent protein–protein interactions.}
+#'   \item{Vertex attributes}{Gene symbol and optional annotations.}
+#'   \item{Edge attributes}{Interaction score or weight, if available.}
+#' }
+#'
+#' @usage data(demo_ppi)
+#'
+#' @source Internal demo dataset.
+"demo_ppi"
