@@ -1,112 +1,75 @@
 #' Subset PPI network by edge score and top-n node degree
 #'
-#' @param ppi_obj An igraph object with edge attribute 'score'
-#' @param n Number of top-degree nodes to keep. Default is NULL.
-#' @param score_cutoff Minimum edge score to keep. Default is 0.7.
+#' This function filters a PPI network in two steps:
+#' 1. Removes edges with a score below \code{score_cutoff}.
+#' 2. (Optional) Keeps only the top \code{n} nodes with the highest degree.
 #'
-#' @return A subgraph of the original PPI network
-#' @importFrom igraph degree E subgraph_from_edges vcount induced_subgraph
+#' @param ppi_obj An igraph object of PPI network.
+#' @param n Integer. Number of top-degree nodes to keep. If NULL (default), no degree filtering is performed.
+#' @param score_cutoff Numeric. Minimum edge score to keep. Default is 0.7.
+#' @param edge_attr Character. The name of the edge attribute representing confidence score. Default is "score" (keep the same as STRING).
+#' @param rm_isolates Logical. Whether to remove isolated nodes (degree = 0) after edge filtering. Default is TRUE.
+#'
+#' @return A subgraph of the original PPI network.
+#' @importFrom igraph degree E V subgraph.edges induced_subgraph vcount edge_attr_names
+#' @importFrom utils head
+#' @examples
+#' data(demo_ppi)
+#' library(igraph)
+#' ppi.subset <- ppi_subset(demo_ppi, score_cutoff = 0.7)
+#' str(ppi.subset)
+#'
 #' @export
-
-ppi_subset <- function(ppi_obj, n = NULL, score_cutoff = 0.7) {
+ppi_subset <- function(ppi_obj,
+                       n = NULL,
+                       score_cutoff = 0.7,
+                       edge_attr = "score",
+                       rm_isolates = TRUE) {
 
   stopifnot(inherits(ppi_obj, "igraph"))
-  score <- E(ppi_obj)$score
 
-  # edge score filter
-  if (is.null(score)) {
-    stop("Edges must have a 'score' attribute.")
+  # 1. Check edge attribute
+  if (!edge_attr %in% igraph::edge_attr_names(ppi_obj)) {
+    stop(sprintf("Edge attribute '%s' not found in the graph.", edge_attr))
   }
 
-  ppi_filtered <- igraph::subgraph_from_edges(ppi_obj, eids = E(ppi_obj)[score >= score_cutoff], delete.vertices = TRUE)
+  # 2. Filter by Edge Score
+  # Get the score vector
+  scores <- igraph::edge_attr(ppi_obj, edge_attr)
 
-  if (vcount(ppi_filtered) == 0) {
-    warning("No nodes left after edge score filtering.")
+  # Identify edges to keep
+  eids_to_keep <- igraph::E(ppi_obj)[scores >= score_cutoff]
+
+  if (length(eids_to_keep) == 0) {
+    warning("No edges passed the score cutoff. Returning an empty graph.")
+    # Return empty graph with same attributes
+    return(igraph::delete_vertices(ppi_obj, igraph::V(ppi_obj)))
+  }
+
+  # Create subgraph based on edges
+  # delete.vertices = FALSE here to handle isolates manually/explicitly later
+  ppi_filtered <- igraph::subgraph.edges(ppi_obj, eids = eids_to_keep, delete.vertices = FALSE)
+
+  # 3. Remove Isolates (Optional but Recommended)
+  if (rm_isolates) {
+    deg_all <- igraph::degree(ppi_filtered, mode = "all")
+    ppi_filtered <- igraph::induced_subgraph(ppi_filtered, vids = which(deg_all > 0))
+  }
+
+  if (igraph::vcount(ppi_filtered) == 0) {
     return(ppi_filtered)
   }
 
-  # degree filter
-  if (!is.null(n)){
+  # 4. Filter by Top-N Degree
+  if (!is.null(n)) {
     deg <- igraph::degree(ppi_filtered, mode = "all")
-    deg <- deg[!is.na(deg)]
-    top_nodes <- names(sort(deg, decreasing = TRUE))[1:min(n, length(deg))]
+    deg_sorted <- sort(deg, decreasing = TRUE)
+    top_nodes <- names(deg_sorted)[1:min(n, length(deg_sorted))]
+
     ppi_filtered <- igraph::induced_subgraph(ppi_filtered, vids = top_nodes)
   }
 
   return(ppi_filtered)
-}
-
-
-#' Generate Pie Chart Data for Network Visualization from Enrichment Results
-#'
-#' This function extracts gene-term relationships from a clusterProfiler enrichment result
-#' and formats them into a matrix suitable for scatterpie-based node pie chart visualization.
-#'
-#' @param enrich_obj An object of class `enrichResult`, typically from `enrichGO()`, `enrichKEGG()`, or `enricher()`.
-#' @param ppi_genes A character vector of gene symbols or IDs present in the PPI network (i.e., `V(ppi)$name`).
-#' @param top_n Integer. The number of top enrichment terms (e.g., GO terms) to include. Default is 5.
-#' @param use_weight Logical. If `TRUE`, uses enrichment significance as weights (e.g., -log10(p.adjust)); otherwise binary (0/1). Default is `FALSE`.
-#' @param weight_scale Character. One of `"logp"` (default) or `"invp"`. Defines the weighting method if `use_weight = TRUE`:
-#'  - `"logp"`: use `-log10(p.adjust)`
-#'  - `"invp"`: use `1 / p.adjust`
-#'
-#' @return A data frame with genes in rows and selected enrichment terms in columns. Values represent either binary membership or weighted scores.
-#' @importFrom dplyr arrange slice_head filter
-#' @export
-
-getPieData <- function(
-    enrich_obj,
-    ppi_genes,
-    top_n = 5,
-    use_weight = FALSE,
-    weight_scale = c("logp", "invp")) {
-
-  stopifnot(inherits(enrich_obj, "enrichResult"))
-  weight_scale <- match.arg(weight_scale)
-
-  # 1. extract top n pathways
-  enrich_df <- enrich_obj@result %>%
-    dplyr::arrange(.data$p.adjust) %>%
-    dplyr::slice_head(n = top_n)
-
-  # 2. extract the name of term and gene id
-  enrich_terms <- enrich_df$Description
-  gene_lists <- strsplit(enrich_df$geneID, "/")
-  names(gene_lists) <- enrich_terms
-
-  all_genes <- unique(unlist(gene_lists))
-
-  # 3. set gene-term df
-  score_df <- data.frame(name = all_genes, stringsAsFactors = FALSE)
-
-  for (i in seq_along(enrich_terms)) {
-    term <- enrich_terms[i]
-    genes_in_term <- gene_lists[[i]]
-
-    if (use_weight) {
-      if (weight_scale[1] == "logp") {
-        score_df[[term]] <- ifelse(score_df$name %in% genes_in_term,
-                                   -log10(enrich_df$p.adjust[i] + 1e-10), 0)
-      } else if (weight_scale[1] == "invp") {
-        score_df[[term]] <- ifelse(score_df$name %in% genes_in_term,
-                                   1 / (enrich_df$p.adjust[i] + 1e-10), 0)
-      } else {
-        stop("Unknown weight_scale. Choose 'logp' or 'invp'")
-      }
-    } else {
-      score_df[[term]] <- as.integer(score_df$name %in% genes_in_term)
-    }
-  }
-
-  # 4. filter the nodes in ppi
-  pie_data <- score_df %>%
-    dplyr::filter(.data$name %in% ppi_genes)
-
-  if (nrow(pie_data) == 0) {
-    warning("No overlapping genes found between enrichment results and PPI network.")
-  }
-
-  return(pie_data)
 }
 
 
@@ -119,8 +82,13 @@ getPieData <- function(
 #' @importFrom igraph eigen_centrality page_rank coreness
 #' @importFrom igraph transitivity eccentricity articulation_points
 #' @return The input \code{igraph} object with additional vertex
+#' @examples
+#' data(demo_ppi)
+#' library(igraph)
+#' ppi <- compute_nodeinfo(demo_ppi, weight_attr = "score")
+#' str(ppi)
+#'
 #' @export
-
 compute_nodeinfo <- function(g, weight_attr = "score", seed = 42) {
   stopifnot(inherits(g, "igraph"))
 
@@ -227,6 +195,18 @@ compute_nodeinfo <- function(g, weight_attr = "score", seed = 42) {
 #' @return A list with:
 #'   \item{graph}{igraph object with added vertex attributes \code{Score_network} and \code{Rank_network}.}
 #'   \item{table}{data.frame with node-level metrics and scores, sorted by \code{Rank_network}.}
+#'
+#' @examples
+#' data(demo_ppi)
+#' library(igraph)
+#' ppi <- compute_nodeinfo(demo_ppi)
+#' rank_res <- rank_ppi_nodes(ppi)
+#'
+#' # update igraph object and extract rank info
+#' ppi <- rank_res[[1]]
+#' rank_df <- rank_res[[2]]
+#' print(rank_df)
+#'
 #' @export
 rank_ppi_nodes <- function(g,
                            metrics = c(
@@ -344,8 +324,7 @@ norm01 <- function(x, na_rm = TRUE) {
 #' @importFrom stats setNames
 #'
 #' @return An igraph object containing MCC
-#' @export
-
+#' @keywords internal
 compute_MCC <- function(graph) {
 
   max_cliques_list <- igraph::max_cliques(graph)
@@ -372,7 +351,7 @@ compute_MCC <- function(graph) {
 #' cytoHubba: identifying hub objects and sub-networks from complex interactome.
 #' \emph{BMC Systems Biology}, 8(Suppl 4), S11.
 #' https://doi.org/10.1186/1752-0509-8-S4-S11
-#' @export
+#' @keywords internal
 compute_MNC <- function(g) {
   stopifnot(inherits(g, "igraph"))
   igraph::V(g)$MNC <- 0
@@ -405,7 +384,7 @@ compute_MNC <- function(g) {
 #' cytoHubba: identifying hub objects and sub-networks from complex interactome.
 #' \emph{BMC Systems Biology}, 8(Suppl 4), S11.
 #' https://doi.org/10.1186/1752-0509-8-S4-S11
-#' @export
+#' @keywords internal
 compute_DMNC <- function(g, alpha = 1.7) {
   igraph::V(g)$DMNC <- 0
 
@@ -449,7 +428,7 @@ compute_DMNC <- function(g, alpha = 1.7) {
 #' \emph{BMC Systems Biology}, 8(Suppl 4), S11.
 #'
 #' @importFrom igraph vcount bfs V
-#' @export
+#' @keywords internal
 compute_BN <- function(g) {
   stopifnot(inherits(g, "igraph"))
 
@@ -511,7 +490,7 @@ compute_BN <- function(g) {
 #' cytoHubba: identifying hub objects and sub-networks from complex interactome.
 #' \emph{BMC Systems Biology}, 8(Suppl 4), S11.
 #' @importFrom igraph vcount distances V
-#' @export
+#' @keywords internal
 compute_radiality <- function(g) {
   stopifnot(inherits(g, "igraph"))
 
@@ -569,7 +548,7 @@ compute_radiality <- function(g) {
 #' cytoHubba: identifying hub objects and sub-networks from complex interactome.
 #' \emph{BMC Systems Biology}, 8(Suppl 4), S11.
 #' @return The input \code{igraph} object with a new vertex attribute \code{Stress}.
-#' @export
+#' @keywords internal
 compute_Stress <- function(g) {
   stopifnot(inherits(g, "igraph"))
 
@@ -652,7 +631,7 @@ compute_Stress <- function(g) {
 #' Chin, C.H., Chen, S.H., Wu, H.H., Ho, C.W., Ko, M.T., & Lin, C.Y. (2014).
 #' cytoHubba: identifying hub objects and sub-networks from complex interactome.
 #' \emph{BMC Systems Biology}, 8(Suppl 4), S11.
-#' @export
+#' @keywords internal
 compute_EPC <- function(g, threshold = 0.5, n_iter = 1000, seed = 42) {
   stopifnot(inherits(g, "igraph"))
 
@@ -685,8 +664,7 @@ compute_EPC <- function(g, threshold = 0.5, n_iter = 1000, seed = 42) {
   }
   close(pb)
 
-  # EPC(v) = (1 / |V|) * sum_k size_k(v)
-  epc_scores <- sum_comp_sizes / n_vertices
+  epc_scores <- sum_comp_sizes / n_iter
 
   igraph::V(g)$EPC <- epc_scores
   return(g)

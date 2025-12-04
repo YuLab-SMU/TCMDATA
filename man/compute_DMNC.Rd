@@ -23,3 +23,4 @@ cytoHubba: identifying hub objects and sub-networks from complex interactome.
 \emph{BMC Systems Biology}, 8(Suppl 4), S11.
 https://doi.org/10.1186/1752-0509-8-S4-S11
 }
+\keyword{internal}

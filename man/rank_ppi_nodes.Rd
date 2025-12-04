@@ -32,3 +32,15 @@ A list with:
 \description{
 Rank PPI nodes by integrated network centrality
 }
+\examples{
+data(demo_ppi)
+library(igraph)
+ppi <- compute_nodeinfo(demo_ppi)
+rank_res <- rank_ppi_nodes(ppi)
+
+# update igraph object and extract rank info
+ppi <- rank_res[[1]]
+rank_df <- rank_res[[2]]
+print(rank_df)
+
+}

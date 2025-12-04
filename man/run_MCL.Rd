@@ -26,3 +26,10 @@ The input \code{igraph} object with a new vertex attribute \code{mcl_cluster}.
 This function performs Markov Cluster Algorithm (MCL) on an igraph object
 and assigns the cluster labels to the nodes.
 }
+\examples{
+data(demo_ppi)
+library(igraph)
+ppi <- run_MCL(demo_ppi, inflation = 2.5)
+head(V(ppi)$mcl_cluster)
+
+}

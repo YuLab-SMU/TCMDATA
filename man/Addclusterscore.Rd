@@ -21,3 +21,10 @@ This function evaluates the clusters/modules identified in the graph.
 It calculates a score for each cluster based on density and size (MCODE style),
 and returns a ranked data frame.
 }
+\examples{
+data(demo_ppi)
+ppi <- run_louvain(demo_ppi, resolution = 1)
+louvain_score <- Addclusterscore(ppi, cluster_attr = "louvain_cluster", min_size = 3)
+head(louvain_score)
+
+}

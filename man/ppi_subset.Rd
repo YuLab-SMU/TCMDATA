@@ -4,18 +4,39 @@
 \alias{ppi_subset}
 \title{Subset PPI network by edge score and top-n node degree}
 \usage{
-ppi_subset(ppi_obj, n = NULL, score_cutoff = 0.7)
+ppi_subset(
+  ppi_obj,
+  n = NULL,
+  score_cutoff = 0.7,
+  edge_attr = "score",
+  rm_isolates = TRUE
+)
 }
 \arguments{
-\item{ppi_obj}{An igraph object with edge attribute 'score'}
+\item{ppi_obj}{An igraph object of PPI network.}
 
-\item{n}{Number of top-degree nodes to keep. Default is NULL.}
+\item{n}{Integer. Number of top-degree nodes to keep. If NULL (default), no degree filtering is performed.}
 
-\item{score_cutoff}{Minimum edge score to keep. Default is 0.7.}
+\item{score_cutoff}{Numeric. Minimum edge score to keep. Default is 0.7.}
+
+\item{edge_attr}{Character. The name of the edge attribute representing confidence score. Default is "score" (keep the same as STRING).}
+
+\item{rm_isolates}{Logical. Whether to remove isolated nodes (degree = 0) after edge filtering. Default is TRUE.}
 }
 \value{
-A subgraph of the original PPI network
+A subgraph of the original PPI network.
 }
 \description{
-Subset PPI network by edge score and top-n node degree
+This function filters a PPI network in two steps:
+\enumerate{
+\item Removes edges with a score below \code{score_cutoff}.
+\item (Optional) Keeps only the top \code{n} nodes with the highest degree.
+}
+}
+\examples{
+data(demo_ppi)
+library(igraph)
+ppi.subset <- ppi_subset(demo_ppi, score_cutoff = 0.7)
+str(ppi.subset)
+
 }

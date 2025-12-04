@@ -23,3 +23,10 @@ This function performs Louvain clustering (multi-level modularity optimization)
 on an igraph object. It is suitable for detecting larger, macro-scale functional
 modules in PPI networks.
 }
+\examples{
+data(demo_ppi)
+library(igraph)
+ppi <- run_louvain(demo_ppi, resolution = 1)
+head(V(ppi)$louvain_cluster)
+
+}

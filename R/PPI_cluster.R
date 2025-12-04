@@ -15,6 +15,12 @@
 #' @importFrom MCL mcl
 #'
 #' @return The input \code{igraph} object with a new vertex attribute \code{mcl_cluster}.
+#' @examples
+#' data(demo_ppi)
+#' library(igraph)
+#' ppi <- run_MCL(demo_ppi, inflation = 2.5)
+#' head(V(ppi)$mcl_cluster)
+#'
 #' @export
 run_MCL <- function(g, inflation = 2.5, addLoops = TRUE, ...) {
 
@@ -48,6 +54,13 @@ run_MCL <- function(g, inflation = 2.5, addLoops = TRUE, ...) {
 #'
 #' @return The input \code{igraph} object with a new vertex attribute \code{louvain_cluster}.
 #' @importFrom igraph cluster_louvain V edge_attr_names E membership
+#'
+#' @examples
+#' data(demo_ppi)
+#' library(igraph)
+#' ppi <- run_louvain(demo_ppi, resolution = 1)
+#' head(V(ppi)$louvain_cluster)
+#'
 #' @export
 run_louvain <- function(g, resolution = 1.0, weights = NULL) {
 
@@ -100,6 +113,12 @@ run_louvain <- function(g, resolution = 1.0, weights = NULL) {
 #' @return A data frame containing cluster statistics, ranked by Score.
 #' @importFrom igraph vertex_attr vertex_attr_names induced_subgraph vcount edge_density V ecount
 #' @importFrom utils head
+#' @examples
+#' data(demo_ppi)
+#' ppi <- run_louvain(demo_ppi, resolution = 1)
+#' louvain_score <- Addclusterscore(ppi, cluster_attr = "louvain_cluster", min_size = 3)
+#' head(louvain_score)
+#'
 #' @export
 Addclusterscore <- function(g, cluster_attr = "louvain_cluster", min_size = 3) {
 

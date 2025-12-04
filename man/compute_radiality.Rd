@@ -22,3 +22,4 @@ Chin, C.H., Chen, S.H., Wu, H.H., Ho, C.W., Ko, M.T., & Lin, C.Y. (2014).
 cytoHubba: identifying hub objects and sub-networks from complex interactome.
 \emph{BMC Systems Biology}, 8(Suppl 4), S11.
 }
+\keyword{internal}

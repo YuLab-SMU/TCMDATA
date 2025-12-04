@@ -19,3 +19,10 @@ The input \code{igraph} object with additional vertex
 \description{
 Compute some useful metrics for PPI nodes
 }
+\examples{
+data(demo_ppi)
+library(igraph)
+ppi <- compute_nodeinfo(demo_ppi, weight_attr = "score")
+str(ppi)
+
+}
