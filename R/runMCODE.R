@@ -14,6 +14,11 @@
 #' @return An updated igraph object containing MCODE clustering result.
 #' @references Bader, G.D., Hogue, C.W. An automated method for finding molecular complexes in large protein interaction networks.
 #' BMC Bioinformatics 4, 2 (2003). https://doi.org/10.1186/1471-2105-4-2
+#' @examples
+#' data(demo_ppi)
+#' ppi <- runMCODE(demo_ppi, max_depth = 100)
+#' str(ppi)
+#'
 #' @export
 runMCODE <- function(g,
                   vwp = 0.2,
@@ -280,6 +285,11 @@ runMCODE <- function(g,
 #' \item{cluster}{Cluster label (Module_X)}
 #' \item{module_score}{Score of the module (Density * Size)}
 #' \item{is_seed}{Logical. Whether the node is the seed of the module}
+#' @examples
+#' data(demo_ppi)
+#' ppi <- runMCODE(demo_ppi, max_depth = 100)
+#' MCODE_res <- getMCODE_res(ppi)
+#' print(head(MCODE_res))
 #' @export
 getMCODE_res <- function(g, only_clusters = FALSE) {
 
