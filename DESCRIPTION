@@ -7,13 +7,28 @@ Description: What the package does (one paragraph).
 Depends:
     R (>= 3.5.0)
 Imports:
+    clusterProfiler,
     dplyr,
     igraph,
     MCL,
     rlang,
     stats,
     tidyr,
-    utils
+    utils,
+    httr,
+    jsonlite,
+    purrr,
+    rcdk,
+    tibble,
+    webchem
+Suggests: 
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    ggplot2,     
+    ggrepel,     
+    ggtangle,
+    enrichplot   
 License: Artistic-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
