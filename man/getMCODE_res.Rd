@@ -22,3 +22,9 @@ A data frame with columns:
 \description{
 Extract MCODE analysis results as a data frame
 }
+\examples{
+data(demo_ppi)
+ppi <- runMCODE(demo_ppi, max_depth = 100)
+MCODE_res <- getMCODE_res(ppi)
+print(head(MCODE_res))
+}

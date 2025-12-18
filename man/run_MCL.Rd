@@ -2,34 +2,43 @@
 % Please edit documentation in R/PPI_cluster.R
 \name{run_MCL}
 \alias{run_MCL}
-\title{Compute MCL Clustering for PPI Network}
+\title{Perform Markov Clustering (MCL) on a Graph}
 \usage{
-run_MCL(g, inflation = 2.5, addLoops = TRUE, ...)
+run_MCL(g, inflation = 2.5, max_iter = 100, pruning = 1e-05, allow1 = FALSE)
 }
 \arguments{
-\item{g}{An \code{igraph} object.}
+\item{g}{An \code{igraph} object. The graph to be clustered. It can be directed or undirected.}
 
-\item{inflation}{Numeric. The inflation parameter controls the granularity of clusters.
-Common values for PPI: 2.0 - 3.0.
-Larger values (e.g., 3.0) produce smaller, tighter clusters.
-Smaller values (e.g., 1.5) produce larger, coarser clusters.
-Default is 2.5.}
+\item{inflation}{Numeric. Controls cluster granularity. Higher values (e.g., > 2) yield smaller, tighter clusters; lower values yield larger clusters. Default is 2.5.}
 
-\item{addLoops}{Logical; Self-loops with weight 1 are added to each vertex of g when TRUE; Default is TRUE (necessary).}
+\item{max_iter}{Integer. The maximum number of iterations to perform if convergence is not reached. Default is 100.}
 
-\item{...}{Additional parameters in function \code{mcl()}.}
+\item{pruning}{Numeric. A threshold for pruning small values in the matrix to zero.
+This preserves the sparsity of the matrix and significantly speeds up computation
+while saving memory. Default is 1e-5.}
+
+\item{allow1}{Logical. If TRUE, clusters with only 1 node are kept as unique clusters. If FALSE,
+cluster of size 1 are interpreted as background noise and grouped in one cluster. Default is FALSE.}
 }
 \value{
-The input \code{igraph} object with a new vertex attribute \code{mcl_cluster}.
+An igraph object containing MCL clustering labels.
 }
 \description{
-This function performs Markov Cluster Algorithm (MCL) on an igraph object
-and assigns the cluster labels to the nodes.
+This function implements the Markov Clustering (MCL) algorithm for detecting
+communities (clusters) in a graph. MCL simulates random walks within the graph
+by alternating between two operations: expansion and inflation. It is particularly
+efficient for biological networks.
 }
 \examples{
-data(demo_ppi)
 library(igraph)
-ppi <- run_MCL(demo_ppi, inflation = 2.5)
-head(V(ppi)$mcl_cluster)
+g <- make_graph("Zachary")
+g <- run_MCL(g, inflation = 2.5)
+print(head(V(g)$MCL_cluster))
+
+# Visualize
+plot(g,
+vertex.color = V(g)$MCL_cluster,
+vertex.size = 15,
+vertex.label = V(g)$name)
 
 }

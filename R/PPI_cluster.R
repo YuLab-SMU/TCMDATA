@@ -1,43 +1,115 @@
-#' Compute MCL Clustering for PPI Network
+#' Perform Markov Clustering (MCL) on a Graph
 #'
-#' This function performs Markov Cluster Algorithm (MCL) on an igraph object
-#' and assigns the cluster labels to the nodes.
+#' @description
+#' This function implements the Markov Clustering (MCL) algorithm for detecting
+#' communities (clusters) in a graph. MCL simulates random walks within the graph
+#' by alternating between two operations: expansion and inflation. It is particularly
+#' efficient for biological networks.
+#' @param g An \code{igraph} object. The graph to be clustered. It can be directed or undirected.
+#' @param inflation Numeric. Controls cluster granularity. Higher values (e.g., > 2) yield smaller, tighter clusters; lower values yield larger clusters. Default is 2.5.
+#' @param max_iter Integer. The maximum number of iterations to perform if convergence is not reached. Default is 100.
+#' @param pruning Numeric. A threshold for pruning small values in the matrix to zero.
+#'   This preserves the sparsity of the matrix and significantly speeds up computation
+#'   while saving memory. Default is 1e-5.
+#' @param allow1 Logical. If TRUE, clusters with only 1 node are kept as unique clusters. If FALSE,
+#' cluster of size 1 are interpreted as background noise and grouped in one cluster. Default is FALSE.
+#' @importFrom igraph as_adjacency_matrix is_igraph V
+#' @importFrom Matrix Diagonal colSums drop0
+#' @importFrom stats setNames
+#' @return An igraph object containing MCL clustering labels.
 #'
-#' @param g An \code{igraph} object.
-#' @param inflation Numeric. The inflation parameter controls the granularity of clusters.
-#'   Common values for PPI: 2.0 - 3.0.
-#'   Larger values (e.g., 3.0) produce smaller, tighter clusters.
-#'   Smaller values (e.g., 1.5) produce larger, coarser clusters.
-#'   Default is 2.5.
-#' @param addLoops Logical; Self-loops with weight 1 are added to each vertex of g when TRUE; Default is TRUE (necessary).
-#' @param ... Additional parameters in function `mcl()`.
-#' @importFrom igraph as_adjacency_matrix V
-#' @importFrom MCL mcl
-#'
-#' @return The input \code{igraph} object with a new vertex attribute \code{mcl_cluster}.
 #' @examples
-#' data(demo_ppi)
 #' library(igraph)
-#' ppi <- run_MCL(demo_ppi, inflation = 2.5)
-#' head(V(ppi)$mcl_cluster)
+#' g <- make_graph("Zachary")
+#' g <- run_MCL(g, inflation = 2.5)
+#' print(head(V(g)$MCL_cluster))
+#'
+#' # Visualize
+#' plot(g,
+#' vertex.color = V(g)$MCL_cluster,
+#' vertex.size = 15,
+#' vertex.label = V(g)$name)
 #'
 #' @export
-run_MCL <- function(g, inflation = 2.5, addLoops = TRUE, ...) {
+run_MCL <- function(g,
+                    inflation = 2.5,
+                    max_iter = 100,
+                    pruning = 1e-5,
+                    allow1 = FALSE){
 
-  stopifnot(inherits(g, "igraph"))
-  message(sprintf("Running MCL with inflation = %.1f ...", inflation))
+  stopifnot(igraph::is_igraph(g))
 
-  adj_mat <- igraph::as_adjacency_matrix(g, sparse = TRUE)
+  ## create adjacency matrix
+  adj <- igraph::as_adjacency_matrix(g, sparse = TRUE)
 
-  ## MCL running
-  mcl_res <- MCL::mcl(x = adj_mat, addLoops = addLoops, inflation = inflation, ...)
+  ## add self-loops
+  M <- adj + Matrix::Diagonal(nrow(adj))
 
-  igraph::V(g)$mcl_cluster <- as.factor(mcl_res$Cluster)
-  message(sprintf("Done! Identified %d modules (Iterations: %d).",
-                  mcl_res$K, mcl_res$n.iterations))
+  ## scale initially (Column Normalization)
+  col_sum <- Matrix::colSums(M)
+  col_sum[col_sum == 0] <- 1 # Avoid division by zero for isolated nodes
+  M <- Matrix::t(Matrix::t(M) / col_sum)
+
+  ## MCL iteration
+  for (i in 1:max_iter){
+    M_prev <- M
+
+    # 1. expansion (Matrix Multiplication)
+    M <- M %*% M
+
+    # 2. inflation (Element-wise power)
+    M <- M ^ inflation
+
+    # 3. pruning (Keep matrix sparse)
+    M[M < pruning] <- 0
+    M <- Matrix::drop0(M) # Physically remove zeros from storage
+
+    # 4. re-scale (Re-normalize columns)
+    col_sum <- Matrix::colSums(M)
+    col_sum[col_sum == 0] <- 1
+    M <- Matrix::t(Matrix::t(M) / col_sum)
+
+    # 5. check convergence
+    diff <- sum((M - M_prev)^2)
+
+    if (diff < 1e-5) {
+      cat(sprintf("Converged at iteration %d (Diff: %.2e)\n", i, diff))
+      break
+    }
+  }
+
+  ## get results
+  raw_clusters <- apply(M, 2, which.max)
+
+  if (!allow1) {
+    cluster_counts <- table(raw_clusters)
+    singleton_ids <- as.integer(names(cluster_counts)[cluster_counts == 1])
+
+    if (length(singleton_ids) > 0) {
+      raw_clusters[raw_clusters %in% singleton_ids] <- 0
+      message(sprintf("Note: Merged %d singleton nodes into background cluster (0).", length(singleton_ids)))
+    }
+  }
+
+  ## Renumber clusters (Formatting)
+  final_clusters <- raw_clusters
+  valid_ids <- sort(unique(raw_clusters[raw_clusters != 0]))
+
+  if (length(valid_ids) > 0) {
+    mapping <- setNames(seq_along(valid_ids), valid_ids)
+    mask_non_zero <- raw_clusters != 0
+    final_clusters[mask_non_zero] <- mapping[as.character(raw_clusters[mask_non_zero])]
+  }
+
+  n_clusters <- length(valid_ids)
+  message(paste("Result: Identified", n_clusters, "valid clusters (excluding noise)."))
+
+  # Assign to graph
+  igraph::V(g)$MCL_cluster <- as.integer(final_clusters)
 
   return(g)
 }
+
 
 
 #' Compute Louvain Clustering for PPI Network

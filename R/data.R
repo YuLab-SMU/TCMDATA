@@ -105,3 +105,25 @@
 #'
 #' @source Internal demo dataset.
 "demo_ppi"
+
+
+#' Diabetic Nephropathy (DN) Associated Genes
+#'
+#' A dataset containing gene symbols associated with Diabetic Nephropathy (DN),
+#' retrieved from the GeneCards database. All targets in this list have an
+#' inference score greater than 0.
+#'
+#' @format A character vector with `r length(dn_targets)` elements:
+#' \describe{
+#'   \item{dn_targets}{A list of HGNC gene symbols representing potential targets for DN.}
+#' }
+#' @source \url{https://www.genecards.org/}
+#' @usage data(dn_targets)
+#' @examples
+#' # Load the data
+#' data(dn_targets)
+#'
+#' # Check the first few genes
+#' head(dn_targets)
+#'
+"dn_targets"
