@@ -12,5 +12,3 @@ result['Herb_pinyin_name'] = result['Herb_cn_name'].apply(lambda x: ''.join(lazy
 
 # output
 pyreadr.write_rdata('./herb_data.rda', result)
-
-

@@ -56,8 +56,9 @@ pip install -r requirements.txt
 Edit the compound information in `main.py`:
 
 ```python
-compound_name = "Your Compound Name"
-test_smiles = "Your SMILES String"
+## use quercetin as example
+compound_name = "quercetin"
+test_smiles = "O=c1c(O)c(c2ccc(O)c(O)c2)oc2cc(O)cc(O)c12"
 ```
 
 Run the prediction:
