@@ -8,7 +8,6 @@
 #' @param cluster_cols Logical. Whether to perform hierarchical clustering on columns. Default is FALSE.
 #' @param ... Additional arguments passed to `ComplexHeatmap::Heatmap`.
 #' @importFrom circlize colorRamp2
-#' @importFrom ComplexHeatmap Heatmap
 #' @importFrom grid gpar unit
 #' @return A Heatmap object.
 #' @examples
@@ -26,6 +25,11 @@ PlotNodeHeatmap <- function(data,
                             cluster_rows = TRUE, 
                             cluster_cols = FALSE,
                             ...) {
+  
+  # Check for ComplexHeatmap availability
+  if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
+    stop("Package 'ComplexHeatmap' is required but not installed. Please install it from Bioconductor using: BiocManager::install(\"ComplexHeatmap\")")
+  }
   
   if (!id_col %in% colnames(data)) {
     stop(paste("Error: The column", id_col, "does not exist in the input data."))

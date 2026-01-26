@@ -107,7 +107,7 @@ getGores <- function(x,
 #' @importFrom circlize circos.clear circos.par circos.genomicInitialize circos.track
 #' @importFrom circlize circos.genomicTrack circos.genomicTrackPlotRegion circos.genomicRect
 #' @importFrom circlize get.cell.meta.data circos.axis circos.text colorRamp2
-#' @importFrom ComplexHeatmap Legend packLegend draw
+#' 
 #' @importFrom grid gpar unit
 #' @importFrom graphics par
 #' @importFrom grDevices colorRampPalette
@@ -132,6 +132,11 @@ gocircle_plot <- function(
     fontfamily = "sans",
     ...){
 
+  # Check for ComplexHeatmap availability
+  if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
+    stop("Package 'ComplexHeatmap' is required but not installed. Please install it from Bioconductor using: BiocManager::install(\"ComplexHeatmap\")")
+  }
+  
   x1 <- getGores(x, up_genes = up_genes, down_genes = down_genes, top = top)
 
   circlize::circos.clear()

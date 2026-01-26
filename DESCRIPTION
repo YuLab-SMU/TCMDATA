@@ -9,7 +9,6 @@ Depends:
 Imports:
     aplot,
     circlize,
-    ComplexHeatmap,
     dplyr,
     enrichplot,
     forcats,
@@ -33,8 +32,11 @@ Imports:
     tidyr,
     utils,
     yulab.utils
+Suggests:
+    ComplexHeatmap,
+    testthat
 License: Artistic-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 LazyData: true
