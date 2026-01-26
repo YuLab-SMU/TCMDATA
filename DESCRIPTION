@@ -7,15 +7,36 @@ Description: What the package does (one paragraph).
 Depends:
     R (>= 3.5.0)
 Imports:
+    aplot,
+    circlize,
     dplyr,
+    enrichplot,
+    forcats,
+    ggalluvial,
+    ggfun,
+    ggplot2,
+    ggrepel,
+    ggvenn,
+    grDevices,
     igraph,
+    magrittr,
     MCL,
+    methods,
+    paletteer,
+    purrr,
+    RColorBrewer,
     rlang,
+    scales,
     stats,
+    tibble,
     tidyr,
-    utils
+    utils,
+    yulab.utils
+Suggests:
+    ComplexHeatmap,
+    testthat
 License: Artistic-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 LazyData: true
