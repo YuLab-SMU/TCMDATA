@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Load TCM Data | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</title>
+  <meta name="description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Load TCM Data | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="github-repo" content="YuLab-SMU/TCMDATA" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Load TCM Data | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  
+  <meta name="twitter:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  
+
+<meta name="author" content="Yulab-SMU" />
+
+
+<meta name="date" content="2026-02-13" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="pre-analysis.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">TCMDATA User Guide</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="load-data.html"><a href="load-data.html"><i class="fa fa-check"></i><b>1</b> Load TCM Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="load-data.html"><a href="load-data.html#search-by-herb-name"><i class="fa fa-check"></i><b>1.1</b> Search by herb name</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="load-data.html"><a href="load-data.html#using-pinyin-format"><i class="fa fa-check"></i><b>1.1.1</b> Using Pinyin format</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="load-data.html"><a href="load-data.html#search-by-target-gene"><i class="fa fa-check"></i><b>1.2</b> Search by target gene</a></li>
+<li class="chapter" data-level="1.3" data-path="load-data.html"><a href="load-data.html#session-information"><i class="fa fa-check"></i><b>1.3</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="pre-analysis.html"><a href="pre-analysis.html"><i class="fa fa-check"></i><b>2</b> Pre-analysis</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#pubmed-literature-mining"><i class="fa fa-check"></i><b>2.1</b> PubMed literature mining</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="pre-analysis.html"><a href="pre-analysis.html#visualization"><i class="fa fa-check"></i><b>2.1.1</b> Visualization</a></li>
+<li class="chapter" data-level="2.1.2" data-path="pre-analysis.html"><a href="pre-analysis.html#exporting-results"><i class="fa fa-check"></i><b>2.1.2</b> Exporting results</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="pre-analysis.html"><a href="pre-analysis.html#herb-ora"><i class="fa fa-check"></i><b>2.2</b> Herb enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#example-diabetic-nephropathy"><i class="fa fa-check"></i><b>2.2.1</b> Example: Diabetic Nephropathy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="pre-analysis.html"><a href="pre-analysis.html#session-information-1"><i class="fa fa-check"></i><b>2.3</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="molecule-detection.html"><a href="molecule-detection.html"><i class="fa fa-check"></i><b>3</b> Molecule annotation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="molecule-detection.html"><a href="molecule-detection.html#resolving-compound-identifiers"><i class="fa fa-check"></i><b>3.1</b> Resolving compound identifiers</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="molecule-detection.html"><a href="molecule-detection.html#using-resolve_cid"><i class="fa fa-check"></i><b>3.1.1</b> Using <code>resolve_cid()</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="molecule-detection.html"><a href="molecule-detection.html#using-getcid"><i class="fa fa-check"></i><b>3.1.2</b> Using <code>getcid()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="molecule-detection.html"><a href="molecule-detection.html#retrieving-chemical-properties"><i class="fa fa-check"></i><b>3.2</b> Retrieving chemical properties</a></li>
+<li class="chapter" data-level="3.3" data-path="molecule-detection.html"><a href="molecule-detection.html#similarity-searching"><i class="fa fa-check"></i><b>3.3</b> Similarity searching</a></li>
+<li class="chapter" data-level="3.4" data-path="molecule-detection.html"><a href="molecule-detection.html#session-information-2"><i class="fa fa-check"></i><b>3.4</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="enrichment.html"><a href="enrichment.html"><i class="fa fa-check"></i><b>4</b> Enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="enrichment.html"><a href="enrichment.html#topics"><i class="fa fa-check"></i><b>4.1</b> Topics</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ppi-analysis.html"><a href="ppi-analysis.html"><i class="fa fa-check"></i><b>5</b> PPI analysis</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#topics-1"><i class="fa fa-check"></i><b>5.1</b> Topics</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>6</b> Other resources</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="other-resources.html"><a href="other-resources.html#topics-2"><i class="fa fa-check"></i><b>6.1</b> Topics</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="load-data" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Load TCM Data<a href="load-data.html#load-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><code>TCMDATA</code> provides two primary functions for retrieving Traditional Chinese Medicine data: <code>search_herb()</code> and <code>search_target()</code>.</p>
+<p>Both functions return a <code>data.frame</code> containing three key columns:</p>
+<ul>
+<li><strong>herb</strong>: Herb name</li>
+<li><strong>molecule</strong>: Molecule/compound name<br />
+</li>
+<li><strong>target</strong>: Target gene symbol</li>
+</ul>
+<p>These columns represent the core components of TCM network pharmacology analysis.</p>
+<hr />
+<div id="search-by-herb-name" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Search by herb name<a href="load-data.html#search-by-herb-name" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Users can query TCM data by providing an herb name and specifying the name format:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="load-data.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(TCMDATA)</span>
+<span id="cb1-2"><a href="load-data.html#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="load-data.html#cb1-3" tabindex="-1"></a><span class="co"># Query using Chinese name</span></span>
+<span id="cb1-4"><a href="load-data.html#cb1-4" tabindex="-1"></a>herbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;灵芝&quot;</span>)</span>
+<span id="cb1-5"><a href="load-data.html#cb1-5" tabindex="-1"></a>lz <span class="ot">&lt;-</span> <span class="fu">search_herb</span>(<span class="at">herb =</span> herbs, <span class="at">type =</span> <span class="st">&quot;Herb_cn_name&quot;</span>)</span>
+<span id="cb1-6"><a href="load-data.html#cb1-6" tabindex="-1"></a><span class="fu">head</span>(lz)</span></code></pre></div>
+<pre><code>#&gt;      herb                  molecule target
+#&gt; 1 lingzhi 3,4-Dihydroxybenzoic acid    GAA
+#&gt; 2 lingzhi 3,4-Dihydroxybenzoic acid   POLB
+#&gt; 3 lingzhi 3,4-Dihydroxybenzoic acid    APP
+#&gt; 4 lingzhi 3,4-Dihydroxybenzoic acid    CA1
+#&gt; 5 lingzhi 3,4-Dihydroxybenzoic acid   CA12
+#&gt; 6 lingzhi 3,4-Dihydroxybenzoic acid   CA14</code></pre>
+<p>The <code>herb</code> parameter accepts three name formats:</p>
+<table>
+<colgroup>
+<col width="21%" />
+<col width="46%" />
+<col width="32%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Herb_cn_name</code></td>
+<td>Chinese characters (recommended)</td>
+<td><code>"灵芝"</code></td>
+</tr>
+<tr class="even">
+<td><code>Herb_pinyin_name</code></td>
+<td>Pinyin romanization (recommended)</td>
+<td><code>"lingzhi"</code></td>
+</tr>
+<tr class="odd">
+<td><code>Herb_en_name</code></td>
+<td>English translation</td>
+<td><code>"Ganoderma"</code> or <code>"GANODERMA"</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>Tip</strong>: Chinese and Pinyin formats are preferred for best search accuracy.</p>
+</blockquote>
+<div id="using-pinyin-format" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Using Pinyin format<a href="load-data.html#using-pinyin-format" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For Pinyin queries, concatenate all syllables without spaces or hyphens:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="load-data.html#cb3-1" tabindex="-1"></a><span class="co"># Correct: continuous pinyin</span></span>
+<span id="cb3-2"><a href="load-data.html#cb3-2" tabindex="-1"></a>lz_py <span class="ot">&lt;-</span> <span class="fu">search_herb</span>(<span class="at">herb =</span> <span class="st">&quot;lingzhi&quot;</span>, <span class="at">type =</span> <span class="st">&quot;Herb_pinyin_name&quot;</span>)</span>
+<span id="cb3-3"><a href="load-data.html#cb3-3" tabindex="-1"></a><span class="fu">head</span>(lz_py)</span></code></pre></div>
+<pre><code>#&gt;      herb                  molecule target
+#&gt; 1 lingzhi 3,4-Dihydroxybenzoic acid    GAA
+#&gt; 2 lingzhi 3,4-Dihydroxybenzoic acid   POLB
+#&gt; 3 lingzhi 3,4-Dihydroxybenzoic acid    APP
+#&gt; 4 lingzhi 3,4-Dihydroxybenzoic acid    CA1
+#&gt; 5 lingzhi 3,4-Dihydroxybenzoic acid   CA12
+#&gt; 6 lingzhi 3,4-Dihydroxybenzoic acid   CA14</code></pre>
+<p><strong>Common mistakes to avoid:</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="load-data.html#cb5-1" tabindex="-1"></a><span class="co"># ✗ contains space</span></span>
+<span id="cb5-2"><a href="load-data.html#cb5-2" tabindex="-1"></a><span class="fu">search_herb</span>(<span class="at">herb =</span> <span class="st">&quot;ling zhi&quot;</span>, <span class="at">type =</span> <span class="st">&quot;Herb_pinyin_name&quot;</span>)</span>
+<span id="cb5-3"><a href="load-data.html#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="load-data.html#cb5-4" tabindex="-1"></a><span class="co"># ✗ contains hyphen</span></span>
+<span id="cb5-5"><a href="load-data.html#cb5-5" tabindex="-1"></a><span class="fu">search_herb</span>(<span class="at">herb =</span> <span class="st">&quot;ling-zhi&quot;</span>, <span class="at">type =</span> <span class="st">&quot;Herb_pinyin_name&quot;</span>)</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="search-by-target-gene" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Search by target gene<a href="load-data.html#search-by-target-gene" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>All targets in <code>TCMDATA</code> are stored as gene symbols (e.g., HGNC nomenclature). You can retrieve associated herbs and molecules by querying target genes:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="load-data.html#cb6-1" tabindex="-1"></a><span class="co"># Query multiple target genes</span></span>
+<span id="cb6-2"><a href="load-data.html#cb6-2" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;TP53&quot;</span>, <span class="st">&quot;EGFR&quot;</span>, <span class="st">&quot;BRCA1&quot;</span>)</span>
+<span id="cb6-3"><a href="load-data.html#cb6-3" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">search_target</span>(genes)</span>
+<span id="cb6-4"><a href="load-data.html#cb6-4" tabindex="-1"></a><span class="fu">head</span>(results)</span></code></pre></div>
+<pre><code>#&gt;              herb molecule target
+#&gt; 1          dilong  Adenine   EGFR
+#&gt; 2 dongchongxiacao  Adenine   EGFR
+#&gt; 3          fuling  Adenine   EGFR
+#&gt; 4        fulingpi  Adenine   EGFR
+#&gt; 5   jiuxiangchong  Adenine   EGFR
+#&gt; 6         lingzhi  Adenine   EGFR</code></pre>
+<p>The output shows which herbs and molecules interact with the specified targets, enabling reverse pharmacology analysis.</p>
+<hr />
+</div>
+<div id="session-information" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Session information<a href="load-data.html#session-information" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="load-data.html#cb8-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<pre><code>#&gt; R version 4.5.0 (2025-04-11)
+#&gt; Platform: aarch64-apple-darwin20
+#&gt; Running under: macOS 26.2
+#&gt; 
+#&gt; Matrix products: default
+#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+#&gt; 
+#&gt; locale:
+#&gt; [1] zh_CN.UTF-8/zh_CN.UTF-8/zh_CN.UTF-8/C/zh_CN.UTF-8/zh_CN.UTF-8
+#&gt; 
+#&gt; time zone: Asia/Shanghai
+#&gt; tzcode source: internal
+#&gt; 
+#&gt; attached base packages:
+#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     
+#&gt; 
+#&gt; other attached packages:
+#&gt; [1] TCMDATA_0.0.0.9000
+#&gt; 
+#&gt; loaded via a namespace (and not attached):
+#&gt;   [1] DBI_1.2.3               gson_0.1.0              rematch2_2.1.2         
+#&gt;   [4] rlang_1.1.6             magrittr_2.0.3          DOSE_4.2.0             
+#&gt;   [7] compiler_4.5.0          RSQLite_2.4.2           png_0.1-8              
+#&gt;  [10] vctrs_0.6.5             reshape2_1.4.4          stringr_1.5.1          
+#&gt;  [13] pkgconfig_2.0.3         crayon_1.5.3            fastmap_1.2.0          
+#&gt;  [16] XVector_0.48.0          rmarkdown_2.29          enrichplot_1.28.4      
+#&gt;  [19] UCSC.utils_1.4.0        purrr_1.1.0             bit_4.6.0              
+#&gt;  [22] xfun_0.54               cachem_1.1.0            aplot_0.2.8            
+#&gt;  [25] GenomeInfoDb_1.44.1     jsonlite_2.0.0          blob_1.2.4             
+#&gt;  [28] BiocParallel_1.42.1     parallel_4.5.0          R6_2.6.1               
+#&gt;  [31] bslib_0.9.0             stringi_1.8.7           RColorBrewer_1.1-3     
+#&gt;  [34] jquerylib_0.1.4         GOSemSim_2.34.0         Rcpp_1.1.0             
+#&gt;  [37] bookdown_0.46           knitr_1.50              ggtangle_0.0.7         
+#&gt;  [40] R.utils_2.13.0          IRanges_2.42.0          Matrix_1.7-3           
+#&gt;  [43] splines_4.5.0           igraph_2.2.1            tidyselect_1.2.1       
+#&gt;  [46] qvalue_2.40.0           rstudioapi_0.17.1       yaml_2.3.10            
+#&gt;  [49] codetools_0.2-20        lattice_0.22-7          tibble_3.3.0           
+#&gt;  [52] plyr_1.8.9              withr_3.0.2             Biobase_2.68.0         
+#&gt;  [55] treeio_1.32.0           KEGGREST_1.48.1         S7_0.2.0               
+#&gt;  [58] evaluate_1.0.4          gridGraphics_0.5-1      Biostrings_2.76.0      
+#&gt;  [61] pillar_1.11.0           ggtree_3.16.3           stats4_4.5.0           
+#&gt;  [64] clusterProfiler_4.16.0  ggfun_0.2.0             generics_0.1.4         
+#&gt;  [67] paletteer_1.6.0         S4Vectors_0.46.0        ggplot2_4.0.1          
+#&gt;  [70] scales_1.4.0            tidytree_0.4.6          glue_1.8.0             
+#&gt;  [73] lazyeval_0.2.2          tools_4.5.0             data.table_1.18.0      
+#&gt;  [76] fgsea_1.34.2            forcats_1.0.0           fs_1.6.6               
+#&gt;  [79] fastmatch_1.1-6         cowplot_1.2.0           grid_4.5.0             
+#&gt;  [82] tidyr_1.3.1             ape_5.8-1               AnnotationDbi_1.70.0   
+#&gt;  [85] colorspace_2.1-1        nlme_3.1-168            GenomeInfoDbData_1.2.14
+#&gt;  [88] patchwork_1.3.1         cli_3.6.5               dplyr_1.1.4            
+#&gt;  [91] gtable_0.3.6            R.methodsS3_1.8.2       yulab.utils_0.2.0      
+#&gt;  [94] sass_0.4.10             digest_0.6.37           BiocGenerics_0.54.0    
+#&gt;  [97] ggrepel_0.9.6           ggplotify_0.1.2         farver_2.1.2           
+#&gt; [100] memoise_2.0.1           htmltools_0.5.8.1       R.oo_1.27.1            
+#&gt; [103] lifecycle_1.0.4         httr_1.4.7              GO.db_3.21.0           
+#&gt; [106] bit64_4.6.0-1</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="pre-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": true,
+    "facebook": false,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+</body>
+
+</html>
