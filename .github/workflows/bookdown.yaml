@@ -34,12 +34,42 @@ jobs:
           r-version: "release"
           use-public-rspm: true
 
-      # 4. Install bookdown and rendering dependencies
-      - name: Install R dependencies
+      # 4. Install system dependencies for TCMDATA
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libxml2-dev libssl-dev
+
+      # 5. Install bookdown and rendering dependencies
+      - name: Install bookdown dependencies
         run: |
           Rscript -e 'install.packages(c("bookdown", "rmarkdown", "knitr"))'
 
-      # 5. Build the book
+      # 6. Install TCMDATA package dependencies
+      - name: Install TCMDATA dependencies
+        run: |
+          Rscript -e '
+            # Install BiocManager
+            if (!requireNamespace("BiocManager", quietly = TRUE))
+              install.packages("BiocManager")
+            
+            # Install Bioconductor packages
+            BiocManager::install(c("clusterProfiler", "enrichplot"), update = FALSE, ask = FALSE)
+            
+            # Install CRAN packages needed by TCMDATA
+            install.packages(c(
+              "aplot", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
+              "igraph", "magrittr", "Matrix", "paletteer", "purrr",
+              "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils"
+            ))
+          '
+
+      # 7. Install TCMDATA package from source
+      - name: Install TCMDATA package
+        run: |
+          Rscript -e 'install.packages(".", repos = NULL, type = "source")'
+
+      # 8. Build the book
       - name: Build book
         run: |
           cd docs
@@ -47,10 +77,11 @@ jobs:
             output_dir <- file.path(normalizePath(".."), "site")
             message("Building book to: ", output_dir)
             bookdown::render_book("index.Rmd", output_format = "bookdown::gitbook", output_dir = output_dir)
+            message("Generated files:")
             list.files(output_dir, recursive = TRUE)
           '
 
-      # 6. Deploy to gh-pages branch
+      # 9. Deploy to gh-pages branch
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
