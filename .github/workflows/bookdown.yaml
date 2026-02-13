@@ -68,10 +68,20 @@ jobs:
         run: |
           Rscript -e 'install.packages(".", repos = NULL, type = "source")'
 
-      - name: Build book
+      - name: Debug - check docs directory
         run: |
-          cd docs
-          Rscript _build.R
+          echo "PWD: $(pwd)"
+          echo "--- docs/ contents ---"
+          ls -la docs/
+          echo "--- Check _build.R ---"
+          head -5 docs/_build.R
+          echo "--- Check R ---"
+          which Rscript
+          Rscript --version
+
+      - name: Build book
+        working-directory: docs
+        run: Rscript _build.R
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
