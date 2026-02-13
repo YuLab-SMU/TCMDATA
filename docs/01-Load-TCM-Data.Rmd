@@ -16,7 +16,7 @@ These columns represent the core components of TCM network pharmacology analysis
 
 Users can query TCM data by providing an herb name and specifying the name format:
 
-```{r}
+```{r, collapse=FALSE}
 library(TCMDATA)
 
 # Query using Chinese name
@@ -39,7 +39,7 @@ The `herb` parameter accepts three name formats:
 
 For Pinyin queries, concatenate all syllables without spaces or hyphens:
 
-```{r}
+```{r, collapse=FALSE}
 # Correct: continuous pinyin
 lz_py <- search_herb(herb = "lingzhi", type = "Herb_pinyin_name")
 head(lz_py)
@@ -60,7 +60,7 @@ search_herb(herb = "ling-zhi", type = "Herb_pinyin_name")
 
 All targets in `TCMDATA` are stored as gene symbols (e.g., HGNC nomenclature). You can retrieve associated herbs and molecules by querying target genes:
 
-```{r}
+```{r, collapse=FALSE}
 # Query multiple target genes
 genes <- c("TP53", "EGFR", "BRCA1")
 results <- search_target(genes)
@@ -73,6 +73,6 @@ The output shows which herbs and molecules interact with the specified targets, 
 
 ## Session information
 
-```{r}
+```{r, collapse=FALSE}
 sessionInfo()
 ```

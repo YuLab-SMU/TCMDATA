@@ -8,6 +8,7 @@ rmd_files:
   - 01-Load-TCM-Data.Rmd
   - 02-Pre-analysis.Rmd
   - 03-Molecule-detection.Rmd
-  - 04-Enrichment-analysis.Rmd
-  - 05-PPI-analysis.Rmd
+  - 04-TCM-network-construction.Rmd
+  - 05-Enrichment-analysis.Rmd
   - 06-Other-resources.Rmd
+  - 07-PPI-analysis.Rmd

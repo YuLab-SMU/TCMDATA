@@ -56,11 +56,12 @@ jobs:
             # Install Bioconductor packages
             BiocManager::install(c("clusterProfiler", "enrichplot"), update = FALSE, ask = FALSE)
             
-            # Install CRAN packages needed by TCMDATA
+            # Install CRAN packages needed by TCMDATA and docs
             install.packages(c(
               "aplot", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
               "igraph", "magrittr", "Matrix", "paletteer", "purrr",
-              "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils"
+              "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils",
+              "ggtangle", "ggalluvial"
             ))
           '
 

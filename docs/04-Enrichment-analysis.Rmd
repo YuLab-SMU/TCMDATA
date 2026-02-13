@@ -1,9 +1,0 @@
-# Enrichment analysis {#enrichment}
-
-This chapter outlines enrichment analysis workflows.
-
-## Topics
-
-- ORA
-- GSEA
-- Visualization

@@ -1,9 +1,142 @@
-# Molecule detection {#molecule-detection}
+# Molecule annotation {#molecule-detection}
 
-This chapter describes molecule detection and annotation workflows.
+After identifying candidate herbs and their associated molecules through the approaches described in `chapter 2`, it is often necessary to annotate these compounds with chemical descriptors and identifiers from public databases. `TCMDATA` provides a suite of PubChem utilities to facilitate compound annotation and similarity searching.
 
-## Topics
+---
 
-- SMILES parsing
-- PubChem queries
-- Similarity filtering
+## Resolving compound identifiers
+
+The PubChem Compound Database assigns each chemical structure a unique identifier (CID). `TCMDATA` offers two functions to resolve molecule names or structural representations to CIDs.
+
+### Using `resolve_cid()`
+
+`resolve_cid()` supports multiple identifier types and uses the PubChem PUG-REST API directly. It accepts CIDs, SMILES strings, InChI, InChIKey, or compound names.
+
+```{r, eval=FALSE, collapse=FALSE}
+library(TCMDATA)
+
+# Get CIDs for Lingzhi (Ganoderma) molecules
+herbs <- c("灵芝")
+lz <- search_herb(herb = herbs, type = "Herb_cn_name")
+
+# Sample a few molecules
+lz_mol <- head(unique(lz$molecule), 5)
+
+# Resolve molecule names to CIDs
+lz_mol_cid <- resolve_cid(lz_mol, from = "name")
+print(lz_mol_cid)
+```
+
+```{r, eval=FALSE, collapse=FALSE}
+# [1] "3,4-Dihydroxybenzoic acid" "4-Hydroxybenzoic Acid"     "Adenine"                  
+# [4] "Uracil"                    "Thymidine" 
+```
+
+> 💡 **Note**: Check your network connection if you encounter errors during CID resolution.
+
+The `from` argument specifies the input identifier type. Supported values include `"cid"`, `"smiles"`, `"inchi"`, `"inchikey"`, and `"name"`. For SMILES and InChI inputs, the function automatically handles URL encoding and uses POST requests to avoid length limitations.
+
+### Using `getcid()`
+
+`getcid()` wraps the `webchem::get_cid()` function and adds built-in rate limiting (≤5 requests per second) to comply with PubChem's usage policy. It is particularly useful when querying large batches of compound names.
+
+```{r, eval=FALSE, collapse=FALSE}
+# Alternative method using webchem backend
+cid_results <- getcid(lz_mol, from = "name", match = "first")
+head(cid_results)
+```
+
+---
+
+## Retrieving chemical properties
+
+Once CIDs are obtained, `getprops()` retrieves a range of chemical descriptors from PubChem, including molecular formula, molecular weight, IUPAC name, canonical SMILES, InChIKey, and LogP values.
+
+```{r, eval=FALSE, collapse=FALSE}
+# Get properties for resolved CIDs
+props <- getprops(lz_mol_cid, 
+                  properties = c("MolecularFormula", 
+                                "MolecularWeight", 
+                                "CanonicalSMILES", 
+                                "InChIKey"))
+head(props)
+```
+
+```{r, eval=FALSE, collapse=FALSE}
+# A tibble: 5 × 6
+#  cid   CID   MolecularFormula MolecularWeight ConnectivitySMILES               InChIKey     
+#  <chr> <chr> <chr>            <chr>           <chr>                            <chr>        
+# 1 72    72    C7H6O4           154.12          C1=CC(=C(C=C1C(=O)O)O)O          YQUVCSBJEUQK…
+# 2 135   135   C7H6O3           138.12          C1=CC(=CC=C1C(=O)O)O             FJKROLUGYXJW…
+# 3 190   190   C5H5N5           135.13          C1=NC2=NC=NC(=C2N1)N             GFFGJBXGBJIS…
+# 4 1174  1174  C4H4N2O2         112.09          C1=CNC(=O)NC1=O                  ISAKRJDGNUQO…
+# 5 5789  5789  C10H14N2O5       242.23          CC1=CN(C(=O)NC1=O)C2CC(C(O2)CO)O IQFYYKKMVGJF…
+```
+
+The function internally uses rate limiting and retry logic to handle transient API errors. By default, it retrieves six common properties: `MolecularFormula`, `MolecularWeight`, `IUPACName`, `CanonicalSMILES`, `InChIKey`, and `XLogP`. Additional properties supported by PubChem can be specified via the `properties` argument.
+
+---
+
+## Similarity searching
+
+Structural similarity searches are useful for identifying compounds with similar chemical scaffolds. `compound_similarity()` performs Tanimoto-based 2D similarity searches on PubChem using the Fast Similarity API.
+
+```{r, eval=FALSE, collapse=FALSE}
+# Search for compounds similar to Quercetin (CID 5280343)
+sim_hits <- compound_similarity(
+  query = "5280343",
+  from = "cid",
+  threshold = 90,
+  topn = 10,
+  compute_score = TRUE
+)
+
+head(sim_hits)
+```
+
+```{r, eval=FALSE, collapse=FALSE}
+# A tibble: 5 × 6
+#  cid   CID   MolecularFormula MolecularWeight ConnectivitySMILES               InChIKey     
+#  <chr> <chr> <chr>            <chr>           <chr>                            <chr>        
+# 1 72    72    C7H6O4           154.12          C1=CC(=C(C=C1C(=O)O)O)O          YQUVCSBJEUQK…
+# 2 135   135   C7H6O3           138.12          C1=CC(=CC=C1C(=O)O)O             FJKROLUGYXJW…
+# 3 190   190   C5H5N5           135.13          C1=NC2=NC=NC(=C2N1)N             GFFGJBXGBJIS…
+# 4 1174  1174  C4H4N2O2         112.09          C1=CNC(=O)NC1=O                  ISAKRJDGNUQO…
+# 5 5789  5789  C10H14N2O5       242.23          CC1=CN(C(=O)NC1=O)C2CC(C(O2)CO)O IQFYYKKMVGJF…
+```
+
+The `threshold` parameter controls the minimum similarity percentage (0–100), and `topn` limits the number of returned hits. Setting `compute_score = TRUE` enables local Tanimoto score calculation using the `rcdk` package. This requires a working Java installation.
+
+**Alternative query types:**
+
+```{r, eval=FALSE, collapse=FALSE}
+# Query by SMILES string
+sim_by_smiles <- compound_similarity(
+  query = "C1=CC(=C(C=C1O)O)C2=C(C(=O)C3=C(C=C(C=C3O2)O)O)O",
+  from = "smiles",
+  threshold = 85,
+  topn = 5,
+  compute_score = FALSE
+)
+```
+
+```{r, eval=FALSE, collapse=FALSE}
+# Query by compound name
+sim_by_name <- compound_similarity(
+  query = "Quercetin",
+  from = "name",
+  threshold = 90,
+  topn = 10,
+  compute_score = FALSE
+)
+```
+
+The function returns a tibble with columns `query_cid`, `query`, `hit_cid`, `hit_smiles`, and `score` (if computed). This enables efficient filtering and prioritization of structurally related molecules for downstream pharmacological analysis.
+
+---
+
+## Session information
+
+```{r, collapse=FALSE}
+sessionInfo()
+```

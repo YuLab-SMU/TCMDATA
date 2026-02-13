@@ -1,0 +1,9 @@
+# Enrichment analysis {#enrichment}
+
+`TCMDATA` provides functions for performing enrichment analysis on gene sets derived from specific herb–target interactions. It supports both Over-Representation Analysis (ORA) and Gene Set Enrichment Analysis (GSEA) methodologies from `clusterProfiler`.
+
+## Topics
+
+- ORA
+- GSEA
+- Visualization
