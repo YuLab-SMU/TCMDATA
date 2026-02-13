@@ -85,7 +85,9 @@ jobs:
 
       - name: Build book
         working-directory: docs
-        run: Rscript _build.R
+        run: |
+          set -o pipefail
+          Rscript _build.R 2>&1 | tee build.log
 
       - name: Upload build log on failure
         if: failure()
@@ -93,7 +95,7 @@ jobs:
         with:
           name: build-log
           path: |
-            docs/*.log
+            docs/build.log
             docs/*.md
 
       - name: Deploy to gh-pages
