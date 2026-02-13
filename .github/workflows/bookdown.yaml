@@ -66,22 +66,35 @@ jobs:
 
       - name: Install TCMDATA from source
         run: |
-          Rscript -e 'install.packages(".", repos = NULL, type = "source")'
+          Rscript -e 'pak::local_install(".", dependencies = FALSE)'
+          Rscript -e 'if (!requireNamespace("TCMDATA", quietly = TRUE)) stop("TCMDATA not installed!"); message("TCMDATA ", packageVersion("TCMDATA"), " installed OK")'
 
-      - name: Debug - check docs directory
+      - name: Verify all packages
         run: |
-          echo "PWD: $(pwd)"
-          echo "--- docs/ contents ---"
-          ls -la docs/
-          echo "--- Check _build.R ---"
-          head -5 docs/_build.R
-          echo "--- Check R ---"
-          which Rscript
-          Rscript --version
+          Rscript -e '
+            pkgs <- c("TCMDATA", "bookdown", "rmarkdown", "knitr", "ggtangle", "ggalluvial",
+                       "clusterProfiler", "enrichplot", "aplot", "ggrepel", "igraph", "ggfun")
+            for (p in pkgs) {
+              if (requireNamespace(p, quietly = TRUE)) {
+                message("OK: ", p, " (", packageVersion(p), ")")
+              } else {
+                stop("MISSING: ", p)
+              }
+            }
+          '
 
       - name: Build book
         working-directory: docs
         run: Rscript _build.R
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: |
+            docs/*.log
+            docs/*.md
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
