@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      LANG: en_US.UTF-8
+      LC_ALL: en_US.UTF-8
 
     steps:
       - name: Checkout docs branch
@@ -34,7 +36,10 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev libxml2-dev libssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
+          sudo apt-get install -y libcurl4-openssl-dev libxml2-dev libssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev fonts-noto-cjk locales
+          sudo locale-gen en_US.UTF-8
+          sudo update-locale LANG=en_US.UTF-8
+          fc-cache -fv
 
       - name: Install pak
         run: |
@@ -67,6 +72,7 @@ jobs:
         run: |
           cd docs
           Rscript -e '
+            Sys.setlocale("LC_ALL", "en_US.UTF-8")
             output_dir <- file.path(normalizePath(".."), "site")
             bookdown::render_book("index.Rmd", output_format = "bookdown::gitbook", output_dir = output_dir)
           '

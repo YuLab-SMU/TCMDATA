@@ -10,7 +10,7 @@ Prior to constructing pharmacological networks, a preliminary literature survey 
 
 A valid email address is required by NCBI for API access.
 
-```{r}
+```{r, eval=FALSE}
 library(TCMDATA)
 
 result <- get_pubmed_data(
@@ -28,12 +28,16 @@ If `year_range` is not specified, the function defaults to the most recent 10 ye
 
 The `plot()` method provides two chart types. `type = "trend"` produces an annual publication count line chart, while `type = "journal"` shows a bar chart of the top *N* journals ranked by article count.
 
-```{r pubmed-plots, fig.width=10, fig.height=8, fig.align='center', out.width='95%'}
+```{r pubmed-plots, eval=FALSE, fig.width=10, fig.height=8, fig.align='center', out.width='95%'}
 library(aplot)
 p_trend   <- plot(result, type = "trend")
 p_journal <- plot(result, type = "journal", N = 10)
 
 plot_list(p_trend, p_journal, ncol = 1)
+```
+
+```{r, echo=FALSE, out.width='95%', fig.align='center'}
+knitr::include_graphics("images/pubmed-plots-1.png")
 ```
 
 ### Exporting results
