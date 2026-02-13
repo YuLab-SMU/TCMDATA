@@ -36,7 +36,7 @@ The Sankey diagram displays herb → molecule → target flows, with band width 
 
 ### Basic usage
 
-```{r sankey-basic, fig.width=12, fig.height=9, fig.align='center', out.width='100%', collapse=FALSE}
+```{r sankey-basic, fig.width=12, fig.height=10, fig.align='center', out.width='100%', collapse=FALSE}
 library(ggplot2)
 
 # Subset to top molecules (by frequency) for readability
@@ -58,7 +58,7 @@ Each vertical band represents a stratum (herb, molecule, or target), and the col
 
 `tcm_sankey()` offers fine-grained control over color palettes, font style, flow transparency, and curvature:
 
-```{r sankey-custom, fig.width=12, fig.height=9, fig.align='center', out.width='100%', collapse=FALSE}
+```{r sankey-custom, fig.width=12, fig.height=10, fig.align='center', out.width='100%', collapse=FALSE}
 p_sankey2 <- tcm_sankey(
   df_sub,
   herb_cols   = c("#E41A1C", "#377EB8"),

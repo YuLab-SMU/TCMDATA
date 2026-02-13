@@ -56,13 +56,20 @@ jobs:
             # Install Bioconductor packages
             BiocManager::install(c("clusterProfiler", "enrichplot"), update = FALSE, ask = FALSE)
             
-            # Install CRAN packages needed by TCMDATA and docs
+            # Install CRAN packages needed by TCMDATA
             install.packages(c(
               "aplot", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
               "igraph", "magrittr", "Matrix", "paletteer", "purrr",
-              "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils",
-              "ggtangle", "ggalluvial"
+              "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils"
             ))
+            
+            # Install documentation-specific packages
+            install.packages(c("ggalluvial", "ggtangle"))
+            
+            # Verify critical packages
+            stopifnot(requireNamespace("ggalluvial", quietly = TRUE))
+            stopifnot(requireNamespace("ggtangle", quietly = TRUE))
+            message("✅ All dependencies installed successfully")
           '
 
       # 7. Install TCMDATA package from source
