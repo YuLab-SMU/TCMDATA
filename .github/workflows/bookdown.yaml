@@ -19,77 +19,69 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      # 1. Checkout docs branch
       - name: Checkout docs branch
         uses: actions/checkout@v4
         with:
           ref: docs/rpkg-usage
 
-      # 2. Setup pandoc
       - uses: r-lib/actions/setup-pandoc@v2
 
-      # 3. Setup R
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: "release"
           use-public-rspm: true
 
-      # 4. Install system dependencies for TCMDATA
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev libxml2-dev libssl-dev
+          sudo apt-get install -y libcurl4-openssl-dev libxml2-dev libssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
 
-      # 5. Install bookdown and rendering dependencies
-      - name: Install bookdown dependencies
+      - name: Install pak
         run: |
-          Rscript -e 'install.packages(c("bookdown", "rmarkdown", "knitr"))'
+          Rscript -e 'install.packages("pak", repos = sprintf("https://r-lib.github.io/p/pak/stable/%s/%s/%s", .Platform$pkgType, R.Version()$os, R.Version()$arch))'
 
-      # 6. Install TCMDATA package dependencies
-      - name: Install TCMDATA dependencies
+      - name: Install Bioconductor packages
         run: |
           Rscript -e '
-            # Install BiocManager
-            if (!requireNamespace("BiocManager", quietly = TRUE))
-              install.packages("BiocManager")
-            
-            # Install Bioconductor packages
+            pak::pkg_install("BiocManager")
             BiocManager::install(c("clusterProfiler", "enrichplot"), update = FALSE, ask = FALSE)
-            
-            # Install CRAN packages needed by TCMDATA
-            install.packages(c(
-              "aplot", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
-              "igraph", "magrittr", "Matrix", "paletteer", "purrr",
-              "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils"
-            ))
-            
-            # Install documentation-specific packages
-            install.packages(c("ggalluvial", "ggtangle"))
-            
-            # Verify critical packages
-            stopifnot(requireNamespace("ggalluvial", quietly = TRUE))
-            stopifnot(requireNamespace("ggtangle", quietly = TRUE))
-            message("✅ All dependencies installed successfully")
           '
 
-      # 7. Install TCMDATA package from source
-      - name: Install TCMDATA package
+      - name: Install CRAN packages
+        run: |
+          Rscript -e '
+            pak::pkg_install(c(
+              "bookdown", "rmarkdown", "knitr",
+              "aplot", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
+              "igraph", "magrittr", "Matrix", "paletteer", "purrr",
+              "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils",
+              "ggalluvial", "ggtangle"
+            ))
+          '
+
+      - name: Install TCMDATA from source
         run: |
           Rscript -e 'install.packages(".", repos = NULL, type = "source")'
 
-      # 8. Build the book
+      - name: Verify packages
+        run: |
+          Rscript -e '
+            pkgs <- c("TCMDATA", "bookdown", "ggtangle", "ggalluvial", "clusterProfiler", "enrichplot")
+            for (p in pkgs) {
+              ok <- requireNamespace(p, quietly = TRUE)
+              message(sprintf("%s %s: %s", ifelse(ok, "OK", "FAIL"), p, ifelse(ok, packageVersion(p), "NOT INSTALLED")))
+              if (!ok) stop(paste("Package not available:", p))
+            }
+          '
+
       - name: Build book
         run: |
           cd docs
           Rscript -e '
             output_dir <- file.path(normalizePath(".."), "site")
-            message("Building book to: ", output_dir)
             bookdown::render_book("index.Rmd", output_format = "bookdown::gitbook", output_dir = output_dir)
-            message("Generated files:")
-            list.files(output_dir, recursive = TRUE)
           '
 
-      # 9. Deploy to gh-pages branch
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
