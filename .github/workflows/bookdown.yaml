@@ -71,11 +71,7 @@ jobs:
       - name: Build book
         run: |
           cd docs
-          Rscript -e '
-            Sys.setlocale("LC_ALL", "en_US.UTF-8")
-            output_dir <- file.path(normalizePath(".."), "site")
-            bookdown::render_book("index.Rmd", output_format = "bookdown::gitbook", output_dir = output_dir)
-          '
+          Rscript _build.R
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
