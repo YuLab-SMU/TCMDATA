@@ -1,9 +1,6 @@
 # TCM network construction {#network-construction}
 
-A core objective of network pharmacology is to reveal the multi-component, multi-target therapeutic mechanism of Traditional Chinese Medicine through network visualization. `TCMDATA` provides two complementary approaches for constructing and visualizing herb–molecule–target relationship networks:
-
-1. **Sankey diagram** via `tcm_sankey()` — ideal for displaying flow-like, bipartite/tripartite relationships.
-2. **Network graph** via `prepare_herb_graph()` + `ggtangle` — suited for topological analysis and node-level metric visualization.
+A core objective of network pharmacology is to reveal the multi-component, multi-target therapeutic mechanism of Traditional Chinese Medicine through network visualization. `TCMDATA` provides miscellaneous approaches based on `ggtangle` (network) and `ggalluvial` (Sankey diagram) for constructing and visualizing herb–molecule–target relationship networks:
 
 ---
 
@@ -19,18 +16,14 @@ library(dplyr)
 herbs <- c("灵芝", "黄芪")
 df <- search_herb(herb = herbs, type = "Herb_cn_name")
 
-# Preview data dimensions
-cat("Total rows:", nrow(df), "\n")
-cat("Unique herbs:", n_distinct(df$herb), "\n")
-cat("Unique molecules:", n_distinct(df$molecule), "\n")
-cat("Unique targets:", n_distinct(df$target), "\n")
+df |> head(10)
 ```
 
 The returned data frame contains three core columns: `herb`, `molecule`, and `target`, representing the tripartite relationship.
 
 ---
 
-## Sankey diagram
+## Sankey diagram visualization
 
 The Sankey diagram displays herb → molecule → target flows, with band width proportional to shared frequency. `tcm_sankey()` is powered by `ggalluvial` and supports rich color customization.
 

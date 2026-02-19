@@ -10,5 +10,5 @@ rmd_files:
   - 03-Molecule-detection.Rmd
   - 04-TCM-network-construction.Rmd
   - 05-Enrichment-analysis.Rmd
-  - 06-Other-resources.Rmd
-  - 07-PPI-analysis.Rmd
+  - 06-PPI-analysis.Rmd
+  - 07-Other-resources.Rmd

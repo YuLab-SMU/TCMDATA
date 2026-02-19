@@ -1,9 +1,0 @@
-# PPI analysis {#ppi-analysis}
-
-This chapter documents PPI network construction and analysis.
-
-## Topics
-
-- Network building
-- Topology metrics
-- Community detection

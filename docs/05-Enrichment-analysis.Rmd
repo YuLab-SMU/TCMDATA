@@ -2,8 +2,13 @@
 
 `TCMDATA` provides functions for performing enrichment analysis on gene sets derived from specific herb–target interactions. It supports both Over-Representation Analysis (ORA) and Gene Set Enrichment Analysis (GSEA) methodologies from `clusterProfiler`.
 
-## Topics
+Besides, it offers different visualization methods for interpreting enrichment results from `enrichplot` and other compatible packages.
 
-- ORA
-- GSEA
-- Visualization
+## Over Representation Analysis (ORA)
+Users are welcomed to offer a vector of gene symbols, such as the intersection of differentially expressed genes and disease targets, to identify the pathways or functions that are significantly enriched in the database (e.g., KEGG pathways, GO terms, Reactome pathways, and so on). The details can be found in https://yulab-smu.top/biomedical-knowledge-mining-book/02-Enrichment.html.
+
+### KEGG pathway enrichment
+```{r, collapse=FALSE}
+
+
+```
