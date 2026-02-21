@@ -57,8 +57,8 @@ jobs:
           Rscript -e '
             pak::pkg_install(c(
               "bookdown", "rmarkdown", "knitr",
-              "aplot", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
-              "igraph", "magrittr", "Matrix", "paletteer", "purrr",
+              "aplot", "aplotExtra", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
+              "igraph", "ivolcano", "magrittr", "Matrix", "paletteer", "purrr",
               "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils",
               "ggalluvial", "ggtangle"
             ))
@@ -94,7 +94,8 @@ jobs:
         run: |
           Rscript -e '
             pkgs <- c("TCMDATA", "bookdown", "rmarkdown", "knitr", "ggtangle", "ggalluvial",
-                       "clusterProfiler", "enrichplot", "aplot", "ggrepel", "igraph", "ggfun")
+                       "clusterProfiler", "enrichplot", "aplot", "aplotExtra", "ivolcano",
+                       "ggrepel", "igraph", "ggfun", "ggvenn")
             for (p in pkgs) {
               if (requireNamespace(p, quietly = TRUE)) {
                 message("OK: ", p, " (", packageVersion(p), ")")
