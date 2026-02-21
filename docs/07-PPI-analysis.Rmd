@@ -13,10 +13,10 @@ library(TCMDATA)
 library(clusterProfiler)
 
 # load demo data
-data("dn_targets")
+data("dn_gcds")
 
 # Retrieve human PPI network for top 50 DN-associated genes
-ppi <- getPPI(dn_targets[1:50], taxID = 9606)
+ppi <- getPPI(dn_gcds[1:50], taxID = 9606)
 ppi
 ```
 

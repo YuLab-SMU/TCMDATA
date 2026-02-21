@@ -59,19 +59,19 @@ The logic is analogous to conventional GO or KEGG enrichment: each herb defines 
 
 ### Example: Diabetic Nephropathy
 
-`TCMDATA` includes `dn_targets`, a character vector of Diabetic Nephropathy (DN)-associated genes sourced from GeneCards. We use these as the query gene set to identify enriched herbs.
+`TCMDATA` includes `dn_gcds`, a character vector of Diabetic Nephropathy (DN)-associated genes sourced from GeneCards. We use these as the query gene set to identify enriched herbs.
 
 ```{r, collapse=FALSE}
 library(TCMDATA)
 library(enrichplot)
 
-data("dn_targets")
-head(dn_targets)
+data("dn_gcds")
+head(dn_gcds)
 ```
 
 Then, we can perform ORA analysis using `herb_enricher()`:
 ```{r, collapse=FALSE}
-enrich_res <- herb_enricher(genes = dn_targets, type = "Herb_pinyin_name")
+enrich_res <- herb_enricher(genes = dn_gcds, type = "Herb_pinyin_name")
 head(enrich_res)
 ```
 

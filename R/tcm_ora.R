@@ -14,8 +14,8 @@
 #'
 #' @examples
 #' library(enrichplot)
-#' data("dn_targets")
-#' enrich_res <- herb_enricher(genes = dn_targets, type = "Herb_pinyin_name")
+#' data("dn_gcds")
+#' enrich_res <- herb_enricher(genes = dn_gcds, type = "Herb_pinyin_name")
 #' head(enrich_res)
 #'
 #' p <- dotplot(enrich_res)

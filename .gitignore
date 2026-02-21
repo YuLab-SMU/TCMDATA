@@ -8,6 +8,8 @@
 # bookdown build artifacts
 docs/_book/
 docs/_bookdown_files/
+docs/TCMDATA_files/
+_bookdown_files/
 docs/*.md
 !docs/*.Rmd
 
