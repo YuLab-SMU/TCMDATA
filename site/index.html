@@ -23,7 +23,7 @@
 <meta name="author" content="Yulab-SMU" />
 
 
-<meta name="date" content="2026-02-13" />
+<meta name="date" content="2026-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,11 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/ggiraphjs-0.9.2/girafe.css" rel="stylesheet" />
+<script src="libs/ggiraphjs-0.9.2/girafe.js"></script>
+<script src="libs/girafe-binding-0.9.2/girafe.js"></script>
 
 
 <style type="text/css">
@@ -175,17 +180,97 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="molecule-detection.html"><a href="molecule-detection.html#similarity-searching"><i class="fa fa-check"></i><b>3.3</b> Similarity searching</a></li>
 <li class="chapter" data-level="3.4" data-path="molecule-detection.html"><a href="molecule-detection.html#session-information-2"><i class="fa fa-check"></i><b>3.4</b> Session information</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="enrichment.html"><a href="enrichment.html"><i class="fa fa-check"></i><b>4</b> Enrichment analysis</a>
+<li class="chapter" data-level="4" data-path="target-retrieval.html"><a href="target-retrieval.html"><i class="fa fa-check"></i><b>4</b> Target retrieval and DEG analysis</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="enrichment.html"><a href="enrichment.html#topics"><i class="fa fa-check"></i><b>4.1</b> Topics</a></li>
+<li class="chapter" data-level="4.1" data-path="target-retrieval.html"><a href="target-retrieval.html#disease-db"><i class="fa fa-check"></i><b>4.1</b> Disease target databases</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="target-retrieval.html"><a href="target-retrieval.html#genecards"><i class="fa fa-check"></i><b>4.1.1</b> GeneCards</a></li>
+<li class="chapter" data-level="4.1.2" data-path="target-retrieval.html"><a href="target-retrieval.html#open-targets-platform"><i class="fa fa-check"></i><b>4.1.2</b> Open Targets Platform</a></li>
+<li class="chapter" data-level="4.1.3" data-path="target-retrieval.html"><a href="target-retrieval.html#ctd-comparative-toxicogenomics-database"><i class="fa fa-check"></i><b>4.1.3</b> CTD (Comparative Toxicogenomics Database)</a></li>
+<li class="chapter" data-level="4.1.4" data-path="target-retrieval.html"><a href="target-retrieval.html#other-databases"><i class="fa fa-check"></i><b>4.1.4</b> Other databases</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="ppi-analysis.html"><a href="ppi-analysis.html"><i class="fa fa-check"></i><b>5</b> PPI analysis</a>
+<li class="chapter" data-level="4.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano"><i class="fa fa-check"></i><b>4.2</b> DEG visualization</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#topics-1"><i class="fa fa-check"></i><b>5.1</b> Topics</a></li>
+<li class="chapter" data-level="4.2.1" data-path="target-retrieval.html"><a href="target-retrieval.html#load-and-inspect-data"><i class="fa fa-check"></i><b>4.2.1</b> Load and inspect data</a></li>
+<li class="chapter" data-level="4.2.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano-plot-with-ivolcano"><i class="fa fa-check"></i><b>4.2.2</b> Volcano plot with <code>ivolcano</code></a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>6</b> Other resources</a>
+<li class="chapter" data-level="4.3" data-path="target-retrieval.html"><a href="target-retrieval.html#intersection"><i class="fa fa-check"></i><b>4.3</b> Intersection analysis</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="other-resources.html"><a href="other-resources.html#topics-2"><i class="fa fa-check"></i><b>6.1</b> Topics</a></li>
+<li class="chapter" data-level="4.3.1" data-path="target-retrieval.html"><a href="target-retrieval.html#prepare-gene-sets"><i class="fa fa-check"></i><b>4.3.1</b> Prepare gene sets</a></li>
+<li class="chapter" data-level="4.3.2" data-path="target-retrieval.html"><a href="target-retrieval.html#venn-diagram"><i class="fa fa-check"></i><b>4.3.2</b> Venn diagram</a></li>
+<li class="chapter" data-level="4.3.3" data-path="target-retrieval.html"><a href="target-retrieval.html#upset-plot"><i class="fa fa-check"></i><b>4.3.3</b> UpSet plot</a></li>
+<li class="chapter" data-level="4.3.4" data-path="target-retrieval.html"><a href="target-retrieval.html#extract-intersection-results"><i class="fa fa-check"></i><b>4.3.4</b> Extract intersection results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="target-retrieval.html"><a href="target-retrieval.html#references"><i class="fa fa-check"></i><b>4.4</b> References</a></li>
+<li class="chapter" data-level="4.5" data-path="target-retrieval.html"><a href="target-retrieval.html#session-information-3"><i class="fa fa-check"></i><b>4.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="network-construction.html"><a href="network-construction.html"><i class="fa fa-check"></i><b>5</b> TCM network construction</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="network-construction.html"><a href="network-construction.html#preparing-the-data"><i class="fa fa-check"></i><b>5.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="5.2" data-path="network-construction.html"><a href="network-construction.html#sankey-diagram-visualization"><i class="fa fa-check"></i><b>5.2</b> Sankey diagram visualization</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="network-construction.html"><a href="network-construction.html#basic-usage"><i class="fa fa-check"></i><b>5.2.1</b> Basic usage</a></li>
+<li class="chapter" data-level="5.2.2" data-path="network-construction.html"><a href="network-construction.html#customizing-colors-and-appearance"><i class="fa fa-check"></i><b>5.2.2</b> Customizing colors and appearance</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="network-construction.html"><a href="network-construction.html#network-graph-with-ggtangle"><i class="fa fa-check"></i><b>5.3</b> Network graph with <code>ggtangle</code></a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="network-construction.html"><a href="network-construction.html#building-the-graph"><i class="fa fa-check"></i><b>5.3.1</b> Building the graph</a></li>
+<li class="chapter" data-level="5.3.2" data-path="network-construction.html"><a href="network-construction.html#basic-network-visualization"><i class="fa fa-check"></i><b>5.3.2</b> Basic network visualization</a></li>
+<li class="chapter" data-level="5.3.3" data-path="network-construction.html"><a href="network-construction.html#adding-node-labels"><i class="fa fa-check"></i><b>5.3.3</b> Adding node labels</a></li>
+<li class="chapter" data-level="5.3.4" data-path="network-construction.html"><a href="network-construction.html#alternative-layouts"><i class="fa fa-check"></i><b>5.3.4</b> Alternative layouts</a></li>
+<li class="chapter" data-level="5.3.5" data-path="network-construction.html"><a href="network-construction.html#enriching-the-network-with-external-data"><i class="fa fa-check"></i><b>5.3.5</b> Enriching the network with external data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="network-construction.html"><a href="network-construction.html#comparing-the-two-approaches"><i class="fa fa-check"></i><b>5.4</b> Comparing the two approaches</a></li>
+<li class="chapter" data-level="5.5" data-path="network-construction.html"><a href="network-construction.html#session-information-4"><i class="fa fa-check"></i><b>5.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="enrichment.html"><a href="enrichment.html"><i class="fa fa-check"></i><b>6</b> Enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="enrichment.html"><a href="enrichment.html#over-representation-analysis-ora"><i class="fa fa-check"></i><b>6.1</b> Over Representation Analysis (ORA)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="enrichment.html"><a href="enrichment.html#kegg-enrichment-analysis"><i class="fa fa-check"></i><b>6.1.1</b> KEGG enrichment analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="enrichment.html"><a href="enrichment.html#go-enrichment-analysis"><i class="fa fa-check"></i><b>6.2</b> GO enrichment analysis</a></li>
+<li class="chapter" data-level="6.3" data-path="enrichment.html"><a href="enrichment.html#advanced-visualization"><i class="fa fa-check"></i><b>6.3</b> Advanced visualization</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="enrichment.html"><a href="enrichment.html#lollipop-plot"><i class="fa fa-check"></i><b>6.3.1</b> Lollipop plot</a></li>
+<li class="chapter" data-level="6.3.2" data-path="enrichment.html"><a href="enrichment.html#dot-sankey-plot"><i class="fa fa-check"></i><b>6.3.2</b> Dot-sankey plot</a></li>
+<li class="chapter" data-level="6.3.3" data-path="enrichment.html"><a href="enrichment.html#go-bar-plot"><i class="fa fa-check"></i><b>6.3.3</b> GO bar plot</a></li>
+<li class="chapter" data-level="6.3.4" data-path="enrichment.html"><a href="enrichment.html#go-circle-plot"><i class="fa fa-check"></i><b>6.3.4</b> GO circle plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="enrichment.html"><a href="enrichment.html#gene-set-enrichment-analysis-gsea"><i class="fa fa-check"></i><b>6.4</b> Gene Set Enrichment Analysis (GSEA)</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="enrichment.html"><a href="enrichment.html#prepare-ranked-gene-list"><i class="fa fa-check"></i><b>6.4.1</b> Prepare ranked gene list</a></li>
+<li class="chapter" data-level="6.4.2" data-path="enrichment.html"><a href="enrichment.html#kegg-gsea"><i class="fa fa-check"></i><b>6.4.2</b> KEGG GSEA</a></li>
+<li class="chapter" data-level="6.4.3" data-path="enrichment.html"><a href="enrichment.html#go-gsea"><i class="fa fa-check"></i><b>6.4.3</b> GO GSEA</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ppi-analysis.html"><a href="ppi-analysis.html"><i class="fa fa-check"></i><b>7</b> PPI network analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#retrieving-ppi-data-from-string"><i class="fa fa-check"></i><b>7.1</b> Retrieving PPI data from STRING</a></li>
+<li class="chapter" data-level="7.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#network-filtering"><i class="fa fa-check"></i><b>7.2</b> Network filtering</a></li>
+<li class="chapter" data-level="7.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#topology"><i class="fa fa-check"></i><b>7.3</b> Topological metrics</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#integrated-ranking"><i class="fa fa-check"></i><b>7.3.1</b> Integrated ranking</a></li>
+<li class="chapter" data-level="7.3.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#radar-chart-visualization"><i class="fa fa-check"></i><b>7.3.2</b> Radar chart visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#clustering"><i class="fa fa-check"></i><b>7.4</b> Community detection</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#louvain-modularity-optimization"><i class="fa fa-check"></i><b>7.4.1</b> Louvain modularity optimization</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcode-molecular-complex-detection"><i class="fa fa-check"></i><b>7.4.2</b> MCODE (Molecular Complex Detection)</a></li>
+<li class="chapter" data-level="7.4.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcl-markov-clustering"><i class="fa fa-check"></i><b>7.4.3</b> MCL (Markov Clustering)</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="ppi-analysis.html"><a href="ppi-analysis.html#ppi-vis"><i class="fa fa-check"></i><b>7.5</b> PPI network visualization</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#basic-ppi-network"><i class="fa fa-check"></i><b>7.5.1</b> Basic PPI network</a></li>
+<li class="chapter" data-level="7.5.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#network-colored-by-community"><i class="fa fa-check"></i><b>7.5.2</b> Network colored by community</a></li>
+<li class="chapter" data-level="7.5.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#hub-centric-star-layout"><i class="fa fa-check"></i><b>7.5.3</b> Hub-centric star layout</a></li>
+<li class="chapter" data-level="7.5.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#multi-layout-comparison"><i class="fa fa-check"></i><b>7.5.4</b> Multi-layout comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="ppi-analysis.html"><a href="ppi-analysis.html#session-information-5"><i class="fa fa-check"></i><b>7.6</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>8</b> Other resources</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="other-resources.html"><a href="other-resources.html#topics"><i class="fa fa-check"></i><b>8.1</b> Topics</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
@@ -210,7 +295,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</h1>
 <p class="author"><em>Yulab-SMU</em></p>
-<p class="date"><em>2026-02-13</em></p>
+<p class="date"><em>2026-03-03</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered hasAnchor">
 <h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -279,6 +364,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

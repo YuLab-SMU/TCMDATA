@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 PPI analysis | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</title>
+  <title>Chapter 7 PPI network analysis | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</title>
   <meta name="description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
   <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 PPI analysis | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  <meta property="og:title" content="Chapter 7 PPI network analysis | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
   <meta name="github-repo" content="YuLab-SMU/TCMDATA" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 PPI analysis | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  <meta name="twitter:title" content="Chapter 7 PPI network analysis | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
   
   <meta name="twitter:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Yulab-SMU" />
 
 
-<meta name="date" content="2026-02-13" />
+<meta name="date" content="2026-03-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,11 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/ggiraphjs-0.9.2/girafe.css" rel="stylesheet" />
+<script src="libs/ggiraphjs-0.9.2/girafe.js"></script>
+<script src="libs/girafe-binding-0.9.2/girafe.js"></script>
 
 
 <style type="text/css">
@@ -175,17 +180,97 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="molecule-detection.html"><a href="molecule-detection.html#similarity-searching"><i class="fa fa-check"></i><b>3.3</b> Similarity searching</a></li>
 <li class="chapter" data-level="3.4" data-path="molecule-detection.html"><a href="molecule-detection.html#session-information-2"><i class="fa fa-check"></i><b>3.4</b> Session information</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="enrichment.html"><a href="enrichment.html"><i class="fa fa-check"></i><b>4</b> Enrichment analysis</a>
+<li class="chapter" data-level="4" data-path="target-retrieval.html"><a href="target-retrieval.html"><i class="fa fa-check"></i><b>4</b> Target retrieval and DEG analysis</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="enrichment.html"><a href="enrichment.html#topics"><i class="fa fa-check"></i><b>4.1</b> Topics</a></li>
+<li class="chapter" data-level="4.1" data-path="target-retrieval.html"><a href="target-retrieval.html#disease-db"><i class="fa fa-check"></i><b>4.1</b> Disease target databases</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="target-retrieval.html"><a href="target-retrieval.html#genecards"><i class="fa fa-check"></i><b>4.1.1</b> GeneCards</a></li>
+<li class="chapter" data-level="4.1.2" data-path="target-retrieval.html"><a href="target-retrieval.html#open-targets-platform"><i class="fa fa-check"></i><b>4.1.2</b> Open Targets Platform</a></li>
+<li class="chapter" data-level="4.1.3" data-path="target-retrieval.html"><a href="target-retrieval.html#ctd-comparative-toxicogenomics-database"><i class="fa fa-check"></i><b>4.1.3</b> CTD (Comparative Toxicogenomics Database)</a></li>
+<li class="chapter" data-level="4.1.4" data-path="target-retrieval.html"><a href="target-retrieval.html#other-databases"><i class="fa fa-check"></i><b>4.1.4</b> Other databases</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="ppi-analysis.html"><a href="ppi-analysis.html"><i class="fa fa-check"></i><b>5</b> PPI analysis</a>
+<li class="chapter" data-level="4.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano"><i class="fa fa-check"></i><b>4.2</b> DEG visualization</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#topics-1"><i class="fa fa-check"></i><b>5.1</b> Topics</a></li>
+<li class="chapter" data-level="4.2.1" data-path="target-retrieval.html"><a href="target-retrieval.html#load-and-inspect-data"><i class="fa fa-check"></i><b>4.2.1</b> Load and inspect data</a></li>
+<li class="chapter" data-level="4.2.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano-plot-with-ivolcano"><i class="fa fa-check"></i><b>4.2.2</b> Volcano plot with <code>ivolcano</code></a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>6</b> Other resources</a>
+<li class="chapter" data-level="4.3" data-path="target-retrieval.html"><a href="target-retrieval.html#intersection"><i class="fa fa-check"></i><b>4.3</b> Intersection analysis</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="other-resources.html"><a href="other-resources.html#topics-2"><i class="fa fa-check"></i><b>6.1</b> Topics</a></li>
+<li class="chapter" data-level="4.3.1" data-path="target-retrieval.html"><a href="target-retrieval.html#prepare-gene-sets"><i class="fa fa-check"></i><b>4.3.1</b> Prepare gene sets</a></li>
+<li class="chapter" data-level="4.3.2" data-path="target-retrieval.html"><a href="target-retrieval.html#venn-diagram"><i class="fa fa-check"></i><b>4.3.2</b> Venn diagram</a></li>
+<li class="chapter" data-level="4.3.3" data-path="target-retrieval.html"><a href="target-retrieval.html#upset-plot"><i class="fa fa-check"></i><b>4.3.3</b> UpSet plot</a></li>
+<li class="chapter" data-level="4.3.4" data-path="target-retrieval.html"><a href="target-retrieval.html#extract-intersection-results"><i class="fa fa-check"></i><b>4.3.4</b> Extract intersection results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="target-retrieval.html"><a href="target-retrieval.html#references"><i class="fa fa-check"></i><b>4.4</b> References</a></li>
+<li class="chapter" data-level="4.5" data-path="target-retrieval.html"><a href="target-retrieval.html#session-information-3"><i class="fa fa-check"></i><b>4.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="network-construction.html"><a href="network-construction.html"><i class="fa fa-check"></i><b>5</b> TCM network construction</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="network-construction.html"><a href="network-construction.html#preparing-the-data"><i class="fa fa-check"></i><b>5.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="5.2" data-path="network-construction.html"><a href="network-construction.html#sankey-diagram-visualization"><i class="fa fa-check"></i><b>5.2</b> Sankey diagram visualization</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="network-construction.html"><a href="network-construction.html#basic-usage"><i class="fa fa-check"></i><b>5.2.1</b> Basic usage</a></li>
+<li class="chapter" data-level="5.2.2" data-path="network-construction.html"><a href="network-construction.html#customizing-colors-and-appearance"><i class="fa fa-check"></i><b>5.2.2</b> Customizing colors and appearance</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="network-construction.html"><a href="network-construction.html#network-graph-with-ggtangle"><i class="fa fa-check"></i><b>5.3</b> Network graph with <code>ggtangle</code></a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="network-construction.html"><a href="network-construction.html#building-the-graph"><i class="fa fa-check"></i><b>5.3.1</b> Building the graph</a></li>
+<li class="chapter" data-level="5.3.2" data-path="network-construction.html"><a href="network-construction.html#basic-network-visualization"><i class="fa fa-check"></i><b>5.3.2</b> Basic network visualization</a></li>
+<li class="chapter" data-level="5.3.3" data-path="network-construction.html"><a href="network-construction.html#adding-node-labels"><i class="fa fa-check"></i><b>5.3.3</b> Adding node labels</a></li>
+<li class="chapter" data-level="5.3.4" data-path="network-construction.html"><a href="network-construction.html#alternative-layouts"><i class="fa fa-check"></i><b>5.3.4</b> Alternative layouts</a></li>
+<li class="chapter" data-level="5.3.5" data-path="network-construction.html"><a href="network-construction.html#enriching-the-network-with-external-data"><i class="fa fa-check"></i><b>5.3.5</b> Enriching the network with external data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="network-construction.html"><a href="network-construction.html#comparing-the-two-approaches"><i class="fa fa-check"></i><b>5.4</b> Comparing the two approaches</a></li>
+<li class="chapter" data-level="5.5" data-path="network-construction.html"><a href="network-construction.html#session-information-4"><i class="fa fa-check"></i><b>5.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="enrichment.html"><a href="enrichment.html"><i class="fa fa-check"></i><b>6</b> Enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="enrichment.html"><a href="enrichment.html#over-representation-analysis-ora"><i class="fa fa-check"></i><b>6.1</b> Over Representation Analysis (ORA)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="enrichment.html"><a href="enrichment.html#kegg-enrichment-analysis"><i class="fa fa-check"></i><b>6.1.1</b> KEGG enrichment analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="enrichment.html"><a href="enrichment.html#go-enrichment-analysis"><i class="fa fa-check"></i><b>6.2</b> GO enrichment analysis</a></li>
+<li class="chapter" data-level="6.3" data-path="enrichment.html"><a href="enrichment.html#advanced-visualization"><i class="fa fa-check"></i><b>6.3</b> Advanced visualization</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="enrichment.html"><a href="enrichment.html#lollipop-plot"><i class="fa fa-check"></i><b>6.3.1</b> Lollipop plot</a></li>
+<li class="chapter" data-level="6.3.2" data-path="enrichment.html"><a href="enrichment.html#dot-sankey-plot"><i class="fa fa-check"></i><b>6.3.2</b> Dot-sankey plot</a></li>
+<li class="chapter" data-level="6.3.3" data-path="enrichment.html"><a href="enrichment.html#go-bar-plot"><i class="fa fa-check"></i><b>6.3.3</b> GO bar plot</a></li>
+<li class="chapter" data-level="6.3.4" data-path="enrichment.html"><a href="enrichment.html#go-circle-plot"><i class="fa fa-check"></i><b>6.3.4</b> GO circle plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="enrichment.html"><a href="enrichment.html#gene-set-enrichment-analysis-gsea"><i class="fa fa-check"></i><b>6.4</b> Gene Set Enrichment Analysis (GSEA)</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="enrichment.html"><a href="enrichment.html#prepare-ranked-gene-list"><i class="fa fa-check"></i><b>6.4.1</b> Prepare ranked gene list</a></li>
+<li class="chapter" data-level="6.4.2" data-path="enrichment.html"><a href="enrichment.html#kegg-gsea"><i class="fa fa-check"></i><b>6.4.2</b> KEGG GSEA</a></li>
+<li class="chapter" data-level="6.4.3" data-path="enrichment.html"><a href="enrichment.html#go-gsea"><i class="fa fa-check"></i><b>6.4.3</b> GO GSEA</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ppi-analysis.html"><a href="ppi-analysis.html"><i class="fa fa-check"></i><b>7</b> PPI network analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#retrieving-ppi-data-from-string"><i class="fa fa-check"></i><b>7.1</b> Retrieving PPI data from STRING</a></li>
+<li class="chapter" data-level="7.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#network-filtering"><i class="fa fa-check"></i><b>7.2</b> Network filtering</a></li>
+<li class="chapter" data-level="7.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#topology"><i class="fa fa-check"></i><b>7.3</b> Topological metrics</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#integrated-ranking"><i class="fa fa-check"></i><b>7.3.1</b> Integrated ranking</a></li>
+<li class="chapter" data-level="7.3.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#radar-chart-visualization"><i class="fa fa-check"></i><b>7.3.2</b> Radar chart visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#clustering"><i class="fa fa-check"></i><b>7.4</b> Community detection</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#louvain-modularity-optimization"><i class="fa fa-check"></i><b>7.4.1</b> Louvain modularity optimization</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcode-molecular-complex-detection"><i class="fa fa-check"></i><b>7.4.2</b> MCODE (Molecular Complex Detection)</a></li>
+<li class="chapter" data-level="7.4.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcl-markov-clustering"><i class="fa fa-check"></i><b>7.4.3</b> MCL (Markov Clustering)</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="ppi-analysis.html"><a href="ppi-analysis.html#ppi-vis"><i class="fa fa-check"></i><b>7.5</b> PPI network visualization</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#basic-ppi-network"><i class="fa fa-check"></i><b>7.5.1</b> Basic PPI network</a></li>
+<li class="chapter" data-level="7.5.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#network-colored-by-community"><i class="fa fa-check"></i><b>7.5.2</b> Network colored by community</a></li>
+<li class="chapter" data-level="7.5.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#hub-centric-star-layout"><i class="fa fa-check"></i><b>7.5.3</b> Hub-centric star layout</a></li>
+<li class="chapter" data-level="7.5.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#multi-layout-comparison"><i class="fa fa-check"></i><b>7.5.4</b> Multi-layout comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="ppi-analysis.html"><a href="ppi-analysis.html#session-information-5"><i class="fa fa-check"></i><b>7.6</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>8</b> Other resources</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="other-resources.html"><a href="other-resources.html#topics"><i class="fa fa-check"></i><b>8.1</b> Topics</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
@@ -207,16 +292,557 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="ppi-analysis" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> PPI analysis<a href="ppi-analysis.html#ppi-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This chapter documents PPI network construction and analysis.</p>
-<div id="topics-1" class="section level2 hasAnchor" number="5.1">
-<h2><span class="header-section-number">5.1</span> Topics<a href="ppi-analysis.html#topics-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ul>
-<li>Network building</li>
-<li>Topology metrics</li>
-<li>Community detection</li>
-</ul>
+<div id="ppi-analysis" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> PPI network analysis<a href="ppi-analysis.html#ppi-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Protein–protein interaction (PPI) networks are essential for deciphering the functional relationships among disease-related targets. <code>TCMDATA</code> provides a comprehensive PPI analysis pipeline that integrates data retrieval from STRING, network filtering, topological metric computation, community detection, and publication-ready visualization.</p>
+<hr />
+<div id="retrieving-ppi-data-from-string" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Retrieving PPI data from STRING<a href="ppi-analysis.html#retrieving-ppi-data-from-string" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>clusterProfiler::getPPI()</code> queries the STRING database and returns an <code>igraph</code> object containing known and predicted protein–protein interactions, with edge weights representing combined confidence scores (range 0–1).</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="ppi-analysis.html#cb107-1" tabindex="-1"></a><span class="fu">library</span>(TCMDATA)</span>
+<span id="cb107-2"><a href="ppi-analysis.html#cb107-2" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
+<span id="cb107-3"><a href="ppi-analysis.html#cb107-3" tabindex="-1"></a></span>
+<span id="cb107-4"><a href="ppi-analysis.html#cb107-4" tabindex="-1"></a><span class="co"># load demo data</span></span>
+<span id="cb107-5"><a href="ppi-analysis.html#cb107-5" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;dn_gcds&quot;</span>)</span>
+<span id="cb107-6"><a href="ppi-analysis.html#cb107-6" tabindex="-1"></a></span>
+<span id="cb107-7"><a href="ppi-analysis.html#cb107-7" tabindex="-1"></a><span class="co"># Retrieve human PPI network for top 50 DN-associated genes</span></span>
+<span id="cb107-8"><a href="ppi-analysis.html#cb107-8" tabindex="-1"></a>ppi <span class="ot">&lt;-</span> <span class="fu">getPPI</span>(dn_gcds[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>], <span class="at">taxID =</span> <span class="dv">9606</span>)</span>
+<span id="cb107-9"><a href="ppi-analysis.html#cb107-9" tabindex="-1"></a>ppi</span></code></pre></div>
+<pre><code>#&gt; IGRAPH e42533c UN-- 45 345 -- 
+#&gt; + attr: name (v/c), score (e/n)
+#&gt; + edges from e42533c (vertex names):
+#&gt;  [1] AQP2 --ACE     AQP2 --ALB     AQP2 --NPHS1   AQP2 --AGT     AQP2 --REN    
+#&gt;  [6] AQP2 --AVP     AQP2 --UMOD    AQP2 --AVPR2   RETN --ACE     RETN --APOA1  
+#&gt; [11] RETN --ENPP1   RETN --APOE    RETN --ALB     RETN --REN     RETN --LIPC   
+#&gt; [16] RETN --SLC2A2  RETN --AGT     RETN --INSR    RETN --IRS1    RETN --IL6    
+#&gt; [21] RETN --TNF     RETN --PPARG   RETN --INS     RETN --ADIPOQ  TGFB1--PON1   
+#&gt; [26] TGFB1--COL18A1 TGFB1--NLRP3   TGFB1--HNF4A   TGFB1--COL4A1  TGFB1--ADIPOQ 
+#&gt; [31] TGFB1--APOA1   TGFB1--INSR    TGFB1--NPHS1   TGFB1--CTLA4   TGFB1--ACE    
+#&gt; [36] TGFB1--APOE    TGFB1--INS     TGFB1--ALB     TGFB1--REN     TGFB1--AGT    
+#&gt; + ... omitted several edges</code></pre>
+<p>The returned <code>igraph</code> object contains a <code>score</code> edge attribute representing STRING combined confidence scores, where higher values indicate stronger evidence for the interaction.</p>
+<hr />
+</div>
+<div id="network-filtering" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Network filtering<a href="ppi-analysis.html#network-filtering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Raw PPI networks often contain low-confidence edges that introduce noise. <code>ppi_subset()</code> provides a two-stage filter:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Edge score cutoff</strong> — removes edges below a confidence threshold.</li>
+<li><strong>Top-<em>n</em> degree filter</strong> — retains only the <em>n</em> most connected nodes.</li>
+</ol>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="ppi-analysis.html#cb109-1" tabindex="-1"></a><span class="co"># Filter: keep edges with score &gt;= 0.7, then top 100 nodes by degree</span></span>
+<span id="cb109-2"><a href="ppi-analysis.html#cb109-2" tabindex="-1"></a>ppi_filtered <span class="ot">&lt;-</span> <span class="fu">ppi_subset</span>(ppi, <span class="at">score_cutoff =</span> <span class="fl">0.7</span>, <span class="at">n =</span> <span class="dv">100</span>)</span>
+<span id="cb109-3"><a href="ppi-analysis.html#cb109-3" tabindex="-1"></a></span>
+<span id="cb109-4"><a href="ppi-analysis.html#cb109-4" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Before filtering:&quot;</span>, <span class="fu">vcount</span>(ppi), <span class="st">&quot;nodes,&quot;</span>, <span class="fu">ecount</span>(ppi), <span class="st">&quot;edges</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Before filtering: 45 nodes, 345 edges</code></pre>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="ppi-analysis.html#cb111-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;After  filtering:&quot;</span>, <span class="fu">vcount</span>(ppi_filtered), <span class="st">&quot;nodes,&quot;</span>, <span class="fu">ecount</span>(ppi_filtered), <span class="st">&quot;edges</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; After  filtering: 44 nodes, 154 edges</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>score_cutoff</code></td>
+<td>Minimum edge confidence to retain</td>
+<td>0.7</td>
+</tr>
+<tr class="even">
+<td><code>n</code></td>
+<td>Top-<em>n</em> nodes by degree (NULL = all)</td>
+<td>NULL</td>
+</tr>
+<tr class="odd">
+<td><code>rm_isolates</code></td>
+<td>Remove nodes with degree 0 after filtering</td>
+<td>TRUE</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="topology" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Topological metrics<a href="ppi-analysis.html#topology" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Understanding which nodes serve as hubs, bottlenecks, or bridges is critical for prioritizing drug targets. <code>compute_nodeinfo()</code> calculates a comprehensive set of centrality measures — reproducing the full CytoHubba metric panel — in a single call.</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="ppi-analysis.html#cb113-1" tabindex="-1"></a>ppi_scored <span class="ot">&lt;-</span> <span class="fu">compute_nodeinfo</span>(ppi_filtered, <span class="at">weight_attr =</span> <span class="st">&quot;score&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |                                                                      |   1%  |                                                                              |=                                                                     |   1%  |                                                                              |=                                                                     |   2%  |                                                                              |==                                                                    |   2%  |                                                                              |==                                                                    |   3%  |                                                                              |==                                                                    |   4%  |                                                                              |===                                                                   |   4%  |                                                                              |===                                                                   |   5%  |                                                                              |====                                                                  |   5%  |                                                                              |====                                                                  |   6%  |                                                                              |=====                                                                 |   6%  |                                                                              |=====                                                                 |   7%  |                                                                              |=====                                                                 |   8%  |                                                                              |======                                                                |   8%  |                                                                              |======                                                                |   9%  |                                                                              |=======                                                               |   9%  |                                                                              |=======                                                               |  10%  |                                                                              |=======                                                               |  11%  |                                                                              |========                                                              |  11%  |                                                                              |========                                                              |  12%  |                                                                              |=========                                                             |  12%  |                                                                              |=========                                                             |  13%  |                                                                              |=========                                                             |  14%  |                                                                              |==========                                                            |  14%  |                                                                              |==========                                                            |  15%  |                                                                              |===========                                                           |  15%  |                                                                              |===========                                                           |  16%  |                                                                              |============                                                          |  16%  |                                                                              |============                                                          |  17%  |                                                                              |============                                                          |  18%  |                                                                              |=============                                                         |  18%  |                                                                              |=============                                                         |  19%  |                                                                              |==============                                                        |  19%  |                                                                              |==============                                                        |  20%  |                                                                              |==============                                                        |  21%  |                                                                              |===============                                                       |  21%  |                                                                              |===============                                                       |  22%  |                                                                              |================                                                      |  22%  |                                                                              |================                                                      |  23%  |                                                                              |================                                                      |  24%  |                                                                              |=================                                                     |  24%  |                                                                              |=================                                                     |  25%  |                                                                              |==================                                                    |  25%  |                                                                              |==================                                                    |  26%  |                                                                              |===================                                                   |  26%  |                                                                              |===================                                                   |  27%  |                                                                              |===================                                                   |  28%  |                                                                              |====================                                                  |  28%  |                                                                              |====================                                                  |  29%  |                                                                              |=====================                                                 |  29%  |                                                                              |=====================                                                 |  30%  |                                                                              |=====================                                                 |  31%  |                                                                              |======================                                                |  31%  |                                                                              |======================                                                |  32%  |                                                                              |=======================                                               |  32%  |                                                                              |=======================                                               |  33%  |                                                                              |=======================                                               |  34%  |                                                                              |========================                                              |  34%  |                                                                              |========================                                              |  35%  |                                                                              |=========================                                             |  35%  |                                                                              |=========================                                             |  36%  |                                                                              |==========================                                            |  36%  |                                                                              |==========================                                            |  37%  |                                                                              |==========================                                            |  38%  |                                                                              |===========================                                           |  38%  |                                                                              |===========================                                           |  39%  |                                                                              |============================                                          |  39%  |                                                                              |============================                                          |  40%  |                                                                              |============================                                          |  41%  |                                                                              |=============================                                         |  41%  |                                                                              |=============================                                         |  42%  |                                                                              |==============================                                        |  42%  |                                                                              |==============================                                        |  43%  |                                                                              |==============================                                        |  44%  |                                                                              |===============================                                       |  44%  |                                                                              |===============================                                       |  45%  |                                                                              |================================                                      |  45%  |                                                                              |================================                                      |  46%  |                                                                              |=================================                                     |  46%  |                                                                              |=================================                                     |  47%  |                                                                              |=================================                                     |  48%  |                                                                              |==================================                                    |  48%  |                                                                              |==================================                                    |  49%  |                                                                              |===================================                                   |  49%  |                                                                              |===================================                                   |  50%  |                                                                              |===================================                                   |  51%  |                                                                              |====================================                                  |  51%  |                                                                              |====================================                                  |  52%  |                                                                              |=====================================                                 |  52%  |                                                                              |=====================================                                 |  53%  |                                                                              |=====================================                                 |  54%  |                                                                              |======================================                                |  54%  |                                                                              |======================================                                |  55%  |                                                                              |=======================================                               |  55%  |                                                                              |=======================================                               |  56%  |                                                                              |========================================                              |  56%  |                                                                              |========================================                              |  57%  |                                                                              |========================================                              |  58%  |                                                                              |=========================================                             |  58%  |                                                                              |=========================================                             |  59%  |                                                                              |==========================================                            |  59%  |                                                                              |==========================================                            |  60%  |                                                                              |==========================================                            |  61%  |                                                                              |===========================================                           |  61%  |                                                                              |===========================================                           |  62%  |                                                                              |============================================                          |  62%  |                                                                              |============================================                          |  63%  |                                                                              |============================================                          |  64%  |                                                                              |=============================================                         |  64%  |                                                                              |=============================================                         |  65%  |                                                                              |==============================================                        |  65%  |                                                                              |==============================================                        |  66%  |                                                                              |===============================================                       |  66%  |                                                                              |===============================================                       |  67%  |                                                                              |===============================================                       |  68%  |                                                                              |================================================                      |  68%  |                                                                              |================================================                      |  69%  |                                                                              |=================================================                     |  69%  |                                                                              |=================================================                     |  70%  |                                                                              |=================================================                     |  71%  |                                                                              |==================================================                    |  71%  |                                                                              |==================================================                    |  72%  |                                                                              |===================================================                   |  72%  |                                                                              |===================================================                   |  73%  |                                                                              |===================================================                   |  74%  |                                                                              |====================================================                  |  74%  |                                                                              |====================================================                  |  75%  |                                                                              |=====================================================                 |  75%  |                                                                              |=====================================================                 |  76%  |                                                                              |======================================================                |  76%  |                                                                              |======================================================                |  77%  |                                                                              |======================================================                |  78%  |                                                                              |=======================================================               |  78%  |                                                                              |=======================================================               |  79%  |                                                                              |========================================================              |  79%  |                                                                              |========================================================              |  80%  |                                                                              |========================================================              |  81%  |                                                                              |=========================================================             |  81%  |                                                                              |=========================================================             |  82%  |                                                                              |==========================================================            |  82%  |                                                                              |==========================================================            |  83%  |                                                                              |==========================================================            |  84%  |                                                                              |===========================================================           |  84%  |                                                                              |===========================================================           |  85%  |                                                                              |============================================================          |  85%  |                                                                              |============================================================          |  86%  |                                                                              |=============================================================         |  86%  |                                                                              |=============================================================         |  87%  |                                                                              |=============================================================         |  88%  |                                                                              |==============================================================        |  88%  |                                                                              |==============================================================        |  89%  |                                                                              |===============================================================       |  89%  |                                                                              |===============================================================       |  90%  |                                                                              |===============================================================       |  91%  |                                                                              |================================================================      |  91%  |                                                                              |================================================================      |  92%  |                                                                              |=================================================================     |  92%  |                                                                              |=================================================================     |  93%  |                                                                              |=================================================================     |  94%  |                                                                              |==================================================================    |  94%  |                                                                              |==================================================================    |  95%  |                                                                              |===================================================================   |  95%  |                                                                              |===================================================================   |  96%  |                                                                              |====================================================================  |  96%  |                                                                              |====================================================================  |  97%  |                                                                              |====================================================================  |  98%  |                                                                              |===================================================================== |  98%  |                                                                              |===================================================================== |  99%  |                                                                              |======================================================================|  99%  |                                                                              |======================================================================| 100%</code></pre>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="ppi-analysis.html#cb115-1" tabindex="-1"></a>ppi_scored <span class="sc">|&gt;</span> <span class="fu">str</span>()</span></code></pre></div>
+<pre><code>#&gt; Class &#39;igraph&#39;  hidden list of 10
+#&gt;  $ : num 44
+#&gt;  $ : logi FALSE
+#&gt;  $ : num [1:154] 28 30 40 32 34 11 31 33 31 14 ...
+#&gt;  $ : num [1:154] 0 0 0 1 1 1 1 1 2 2 ...
+#&gt;  $ : NULL
+#&gt;  $ : NULL
+#&gt;  $ : NULL
+#&gt;  $ : NULL
+#&gt;  $ :List of 4
+#&gt;   ..$ : num [1:3] 1 0 1
+#&gt;   ..$ : Named list()
+#&gt;   ..$ :List of 20
+#&gt;   .. ..$ name            : chr [1:44] &quot;AQP2&quot; &quot;RETN&quot; &quot;TGFB1&quot; &quot;PON1&quot; ...
+#&gt;   .. ..$ degree          : num [1:44] 3 5 8 4 12 3 6 12 12 6 ...
+#&gt;   .. ..$ strength        : num [1:44] 2.82 4.38 6.97 3.63 10.4 ...
+#&gt;   .. ..$ betweenness     : num [1:44] 0.00274 0 0.01678 0.0011 0.06705 ...
+#&gt;   .. ..$ betweenness_w   : num [1:44] 0.00554 0 0.01218 0 0.05094 ...
+#&gt;   .. ..$ closeness       : num [1:44] 0.331 0.451 0.488 0.38 0.526 ...
+#&gt;   .. ..$ closeness_w     : num [1:44] 0.285 0.398 0.415 0.342 0.465 ...
+#&gt;   .. ..$ eigen_centrality: num [1:44] 0.0416 0.3215 0.4358 0.1661 0.4128 ...
+#&gt;   .. ..$ pagerank        : num [1:44] 0.014 0.0159 0.0249 0.015 0.0373 ...
+#&gt;   .. ..$ coreness        : num [1:44] 3 5 6 3 6 3 4 7 7 4 ...
+#&gt;   .. ..$ clustering_coef : num [1:44] 0.333 1 0.679 0.833 0.439 ...
+#&gt;   .. ..$ eccentricity    : num [1:44] 4 3 3 4 3 4 3 3 3 4 ...
+#&gt;   .. ..$ is_articulation : logi [1:44] FALSE FALSE FALSE FALSE TRUE FALSE ...
+#&gt;   .. ..$ MCC             : num [1:44] 3 120 746 12 541 ...
+#&gt;   .. ..$ MNC             : num [1:44] 2 5 8 4 11 3 5 12 12 5 ...
+#&gt;   .. ..$ DMNC            : num [1:44] 0.308 0.648 0.554 0.474 0.492 ...
+#&gt;   .. ..$ BN              : num [1:44] 1 1 2 1 6 1 3 4 6 1 ...
+#&gt;   .. ..$ radiality       : num [1:44] 2 2.77 2.93 2.37 3.07 ...
+#&gt;   .. ..$ Stress          : num [1:44] 16 0 118 10 326 2 262 334 500 50 ...
+#&gt;   .. ..$ EPC             : num [1:44] 32.6 38.3 39.3 36.4 39.4 ...
+#&gt;   ..$ :List of 1
+#&gt;   .. ..$ score: num [1:154] 0.915 0.923 0.982 0.809 0.857 0.858 0.886 0.967 0.758 0.784 ...
+#&gt;  $ :&lt;environment: 0x486793c40&gt;</code></pre>
+<p>The following metrics are computed and stored as vertex attributes:</p>
+<table>
+<colgroup>
+<col width="32%" />
+<col width="25%" />
+<col width="41%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Local</strong></td>
+<td><code>degree</code></td>
+<td>Number of direct neighbors</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>strength</code></td>
+<td>Sum of edge weights</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>clustering_coef</code></td>
+<td>Local clustering coefficient</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>coreness</code></td>
+<td>k-core decomposition level</td>
+</tr>
+<tr class="odd">
+<td><strong>Global</strong></td>
+<td><code>betweenness</code></td>
+<td>Fraction of shortest paths passing through the node</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>closeness</code></td>
+<td>Inverse average shortest-path distance</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>eccentricity</code></td>
+<td>Maximum shortest-path distance to any other node</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>eigen_centrality</code></td>
+<td>Influence based on neighbor importance</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>pagerank</code></td>
+<td>Random-walk based ranking</td>
+</tr>
+<tr class="even">
+<td><strong>CytoHubba</strong></td>
+<td><code>MCC</code></td>
+<td>Maximum Clique Centrality</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>MNC</code></td>
+<td>Maximum Neighborhood Component</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>DMNC</code></td>
+<td>Density of MNC</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>BN</code></td>
+<td>BottleNeck score</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>EPC</code></td>
+<td>Edge Percolated Component</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>radiality</code></td>
+<td>Radiality centrality</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>Stress</code></td>
+<td>Number of shortest paths passing through a node</td>
+</tr>
+</tbody>
+</table>
+<div id="integrated-ranking" class="section level3 hasAnchor" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> Integrated ranking<a href="ppi-analysis.html#integrated-ranking" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>rank_ppi_nodes()</code> normalizes all selected metrics to [0, 1], applies user-defined weights (equal by default), and produces a composite score for target prioritization:</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="ppi-analysis.html#cb117-1" tabindex="-1"></a>rank_res <span class="ot">&lt;-</span> <span class="fu">rank_ppi_nodes</span>(ppi_scored, <span class="at">use_weight =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb117-2"><a href="ppi-analysis.html#cb117-2" tabindex="-1"></a></span>
+<span id="cb117-3"><a href="ppi-analysis.html#cb117-3" tabindex="-1"></a><span class="co"># Extract ranked table</span></span>
+<span id="cb117-4"><a href="ppi-analysis.html#cb117-4" tabindex="-1"></a>ppi_ranked <span class="ot">&lt;-</span> rank_res<span class="sc">$</span>graph</span>
+<span id="cb117-5"><a href="ppi-analysis.html#cb117-5" tabindex="-1"></a>rank_df    <span class="ot">&lt;-</span> rank_res<span class="sc">$</span>table</span>
+<span id="cb117-6"><a href="ppi-analysis.html#cb117-6" tabindex="-1"></a></span>
+<span id="cb117-7"><a href="ppi-analysis.html#cb117-7" tabindex="-1"></a>rank_df[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="fu">c</span>(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;degree&quot;</span>, <span class="st">&quot;betweenness_w&quot;</span>, <span class="st">&quot;closeness_w&quot;</span>,</span>
+<span id="cb117-8"><a href="ppi-analysis.html#cb117-8" tabindex="-1"></a>                <span class="st">&quot;MCC&quot;</span>, <span class="st">&quot;MNC&quot;</span>, <span class="st">&quot;EPC&quot;</span>, <span class="st">&quot;Score_network&quot;</span>, <span class="st">&quot;Rank_network&quot;</span>)]</span></code></pre></div>
+<pre><code>#&gt;      name degree betweenness_w closeness_w  MCC MNC    EPC Score_network
+#&gt; 32    INS     24   0.467331118   0.6198430 6818  24 39.395     0.8911802
+#&gt; 35    TNF     15   0.083056478   0.4867585 6160  15 39.395     0.5583073
+#&gt; 15    ALB     13   0.079734219   0.4975975 5900  13 39.395     0.5390364
+#&gt; 33    IL6     14   0.016611296   0.4737969 6176  14 39.395     0.5347428
+#&gt; 9     REN     12   0.008859358   0.4514098 5774  12 39.319     0.5259551
+#&gt; 8    APOE     12   0.045404208   0.4656133 5298  12 39.395     0.5197270
+#&gt; 26    AGT     10   0.077519380   0.4528289 5766  10 39.360     0.5099468
+#&gt; 23 KCNJ11     12   0.025470653   0.4463694  294  12 39.366     0.4707266
+#&gt; 13    ACE      7   0.000000000   0.4282791 5040   7 39.059     0.4609530
+#&gt; 5     GCK     12   0.050941307   0.4646869  541  11 39.395     0.4567370
+#&gt;    Rank_network
+#&gt; 32            1
+#&gt; 35            2
+#&gt; 15            3
+#&gt; 33            4
+#&gt; 9             5
+#&gt; 8             6
+#&gt; 26            7
+#&gt; 23            8
+#&gt; 13            9
+#&gt; 5            10</code></pre>
+</div>
+<div id="radar-chart-visualization" class="section level3 hasAnchor" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> Radar chart visualization<a href="ppi-analysis.html#radar-chart-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For a target of interest, <code>get_node_profile()</code> + <code>radar_plot()</code> produces a radar chart showing its normalized centrality fingerprint across multiple dimensions:</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="ppi-analysis.html#cb119-1" tabindex="-1"></a><span class="fu">library</span>(aplot)</span>
+<span id="cb119-2"><a href="ppi-analysis.html#cb119-2" tabindex="-1"></a></span>
+<span id="cb119-3"><a href="ppi-analysis.html#cb119-3" tabindex="-1"></a><span class="co"># Pick the top 2 ranked nodes</span></span>
+<span id="cb119-4"><a href="ppi-analysis.html#cb119-4" tabindex="-1"></a>top_nodes <span class="ot">&lt;-</span> rank_df<span class="sc">$</span>name[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb119-5"><a href="ppi-analysis.html#cb119-5" tabindex="-1"></a></span>
+<span id="cb119-6"><a href="ppi-analysis.html#cb119-6" tabindex="-1"></a>p_radar1 <span class="ot">&lt;-</span> <span class="fu">radar_plot</span>(</span>
+<span id="cb119-7"><a href="ppi-analysis.html#cb119-7" tabindex="-1"></a>  <span class="fu">get_node_profile</span>(rank_df, top_nodes[<span class="dv">1</span>]),</span>
+<span id="cb119-8"><a href="ppi-analysis.html#cb119-8" tabindex="-1"></a>  <span class="at">fill_color =</span> <span class="st">&quot;#A3BEDD&quot;</span>, <span class="at">line_color =</span> <span class="st">&quot;#4A7FB5&quot;</span>,</span>
+<span id="cb119-9"><a href="ppi-analysis.html#cb119-9" tabindex="-1"></a>  <span class="at">title =</span> top_nodes[<span class="dv">1</span>]</span>
+<span id="cb119-10"><a href="ppi-analysis.html#cb119-10" tabindex="-1"></a>)</span>
+<span id="cb119-11"><a href="ppi-analysis.html#cb119-11" tabindex="-1"></a></span>
+<span id="cb119-12"><a href="ppi-analysis.html#cb119-12" tabindex="-1"></a>p_radar2 <span class="ot">&lt;-</span> <span class="fu">radar_plot</span>(</span>
+<span id="cb119-13"><a href="ppi-analysis.html#cb119-13" tabindex="-1"></a>  <span class="fu">get_node_profile</span>(rank_df, top_nodes[<span class="dv">2</span>]),</span>
+<span id="cb119-14"><a href="ppi-analysis.html#cb119-14" tabindex="-1"></a>  <span class="at">fill_color =</span> <span class="st">&quot;#D59390&quot;</span>, <span class="at">line_color =</span> <span class="st">&quot;#B5524A&quot;</span>,</span>
+<span id="cb119-15"><a href="ppi-analysis.html#cb119-15" tabindex="-1"></a>  <span class="at">title =</span> top_nodes[<span class="dv">2</span>]</span>
+<span id="cb119-16"><a href="ppi-analysis.html#cb119-16" tabindex="-1"></a>)</span>
+<span id="cb119-17"><a href="ppi-analysis.html#cb119-17" tabindex="-1"></a></span>
+<span id="cb119-18"><a href="ppi-analysis.html#cb119-18" tabindex="-1"></a><span class="fu">plot_list</span>(p_radar1, p_radar2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="images/ppi-radar-1.png" width="95%" style="display: block; margin: auto;" /></p>
+<p>The radar chart provides an intuitive summary: a vertex with a large, well-rounded polygon is a strong hub across multiple centrality dimensions, whereas a highly elongated shape suggests dominance in only one metric.</p>
+<hr />
+</div>
+</div>
+<div id="clustering" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Community detection<a href="ppi-analysis.html#clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Identifying densely connected subnetworks (modules) helps reveal functional protein complexes and signaling cascades. <code>TCMDATA</code> supports three complementary algorithms.</p>
+<div id="louvain-modularity-optimization" class="section level3 hasAnchor" number="7.4.1">
+<h3><span class="header-section-number">7.4.1</span> Louvain modularity optimization<a href="ppi-analysis.html#louvain-modularity-optimization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The Louvain algorithm maximizes modularity through iterative node reassignment. It is fast and well-suited for detecting large-scale functional modules.</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="ppi-analysis.html#cb120-1" tabindex="-1"></a>ppi_louvain <span class="ot">&lt;-</span> <span class="fu">run_louvain</span>(ppi_scored, <span class="at">resolution =</span> <span class="fl">1.0</span>)</span>
+<span id="cb120-2"><a href="ppi-analysis.html#cb120-2" tabindex="-1"></a>louvain_scores <span class="ot">&lt;-</span> <span class="fu">add_cluster_score</span>(ppi_louvain, <span class="at">cluster_attr =</span> <span class="st">&quot;louvain_cluster&quot;</span>, <span class="at">min_size =</span> <span class="dv">3</span>)</span>
+<span id="cb120-3"><a href="ppi-analysis.html#cb120-3" tabindex="-1"></a></span>
+<span id="cb120-4"><a href="ppi-analysis.html#cb120-4" tabindex="-1"></a><span class="fu">head</span>(louvain_scores)</span></code></pre></div>
+<pre><code>#&gt;   Cluster_ID Score Nodes Edges Density                              Gene_List
+#&gt; 1          3 6.200    11    31   0.564     GCK, AKR1B1, NEUROD1, KLF11, HNF4A
+#&gt; 2          2 5.818    12    32   0.485         RETN, TGFB1, PPARG, INSR, IRS1
+#&gt; 3          1 5.000    13    30   0.385           AQP2, PON1, APOA1, APOE, REN
+#&gt; 4          4 4.800     6    12   0.800 WFS1, CDKAL1, KCNJ11, IGF2BP2, SLC30A8
+#&gt;                                                          Full_Genes
+#&gt; 1 GCK,AKR1B1,NEUROD1,KLF11,HNF4A,SLC2A2,PAX4,PDX1,HNF1A,HNF1B,ABCC8
+#&gt; 2  RETN,TGFB1,PPARG,INSR,IRS1,NLRP3,TGFBR2,INS,IL6,ADIPOQ,TNF,CTLA4
+#&gt; 3    AQP2,PON1,APOA1,APOE,REN,ACE,ALB,LIPC,AGT,NPHS1,AVP,UMOD,AVPR2
+#&gt; 4                         WFS1,CDKAL1,KCNJ11,IGF2BP2,SLC30A8,TCF7L2</code></pre>
+<p>The <code>resolution</code> parameter controls granularity: values &gt; 1 produce more, smaller clusters; values &lt; 1 yield fewer, larger clusters.</p>
+</div>
+<div id="mcode-molecular-complex-detection" class="section level3 hasAnchor" number="7.4.2">
+<h3><span class="header-section-number">7.4.2</span> MCODE (Molecular Complex Detection)<a href="ppi-analysis.html#mcode-molecular-complex-detection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>MCODE is a classic algorithm specifically designed for PPI networks. It identifies dense regions by vertex weighting (k-core × density), seeded growth, and post-processing (haircut / fluff):</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="ppi-analysis.html#cb122-1" tabindex="-1"></a>ppi_mcode <span class="ot">&lt;-</span> <span class="fu">run_mcode</span>(ppi_scored, <span class="at">vwp =</span> <span class="fl">0.2</span>, <span class="at">haircut =</span> <span class="cn">TRUE</span>, <span class="at">fluff =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb122-2"><a href="ppi-analysis.html#cb122-2" tabindex="-1"></a>mcode_res <span class="ot">&lt;-</span> <span class="fu">get_mcode_res</span>(ppi_mcode, <span class="at">only_clusters =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb122-3"><a href="ppi-analysis.html#cb122-3" tabindex="-1"></a></span>
+<span id="cb122-4"><a href="ppi-analysis.html#cb122-4" tabindex="-1"></a><span class="fu">head</span>(mcode_res)</span></code></pre></div>
+<pre><code>#&gt;    name mcode_score  cluster module_score is_seed
+#&gt; 1 TGFB1           6 Module_1          8.5   FALSE
+#&gt; 2   REN           7 Module_1          8.5   FALSE
+#&gt; 3   ACE           7 Module_1          8.5   FALSE
+#&gt; 4   ALB           7 Module_1          8.5   FALSE
+#&gt; 5   AGT           7 Module_1          8.5   FALSE
+#&gt; 6   INS           7 Module_1          8.5   FALSE</code></pre>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="39%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>vwp</code></td>
+<td>Vertex Weight Percentage — node score cutoff during growth</td>
+<td>0.2</td>
+</tr>
+<tr class="even">
+<td><code>haircut</code></td>
+<td>Remove singly-connected peripheral nodes</td>
+<td>TRUE</td>
+</tr>
+<tr class="odd">
+<td><code>fluff</code></td>
+<td>Expand clusters with dense neighbors</td>
+<td>FALSE</td>
+</tr>
+<tr class="even">
+<td><code>k_core_threshold</code></td>
+<td>Minimum k-core level to retain a cluster</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="mcl-markov-clustering" class="section level3 hasAnchor" number="7.4.3">
+<h3><span class="header-section-number">7.4.3</span> MCL (Markov Clustering)<a href="ppi-analysis.html#mcl-markov-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>MCL simulates stochastic flow on the graph via alternating expansion (matrix squaring) and inflation (element-wise power) steps. It is particularly effective for detecting well-separated clusters in biological networks.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="ppi-analysis.html#cb124-1" tabindex="-1"></a>ppi_mcl <span class="ot">&lt;-</span> <span class="fu">run_MCL</span>(ppi_scored, <span class="at">inflation =</span> <span class="fl">2.5</span>)</span>
+<span id="cb124-2"><a href="ppi-analysis.html#cb124-2" tabindex="-1"></a>mcl_scores <span class="ot">&lt;-</span> <span class="fu">add_cluster_score</span>(ppi_mcl, <span class="at">cluster_attr =</span> <span class="st">&quot;MCL_cluster&quot;</span>, <span class="at">min_size =</span> <span class="dv">3</span>)</span>
+<span id="cb124-3"><a href="ppi-analysis.html#cb124-3" tabindex="-1"></a></span>
+<span id="cb124-4"><a href="ppi-analysis.html#cb124-4" tabindex="-1"></a><span class="fu">head</span>(mcl_scores)</span></code></pre></div>
+<pre><code>#&gt;   Cluster_ID Score Nodes Edges Density                              Gene_List
+#&gt; 1          3 7.314    36   128   0.203           AQP2, RETN, TGFB1, PON1, GCK
+#&gt; 2          1 4.800     6    12   0.800 WFS1, CDKAL1, KCNJ11, IGF2BP2, SLC30A8
+#&gt;                                                                                                                                                                                          Full_Genes
+#&gt; 1 AQP2,RETN,TGFB1,PON1,GCK,APOA1,APOE,REN,AKR1B1,PPARG,ACE,NEUROD1,ALB,LIPC,INSR,IRS1,KLF11,HNF4A,SLC2A2,NLRP3,TGFBR2,AGT,PAX4,NPHS1,AVP,PDX1,UMOD,INS,IL6,ADIPOQ,TNF,HNF1A,HNF1B,AVPR2,CTLA4,ABCC8
+#&gt; 2                                                                                                                                                         WFS1,CDKAL1,KCNJ11,IGF2BP2,SLC30A8,TCF7L2</code></pre>
+<p>Higher <code>inflation</code> values (e.g., 3–5) yield tighter, more granular clusters; lower values (e.g., 1.5–2) produce larger modules.</p>
+</div>
+</div>
+<div id="ppi-vis" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> PPI network visualization<a href="ppi-analysis.html#ppi-vis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>ggtangle</code> provides <code>ggplot2</code>-native network rendering with full aesthetic control over node color, size, labels, and edge styling.</p>
+<div id="basic-ppi-network" class="section level3 hasAnchor" number="7.5.1">
+<h3><span class="header-section-number">7.5.1</span> Basic PPI network<a href="ppi-analysis.html#basic-ppi-network" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="ppi-analysis.html#cb126-1" tabindex="-1"></a><span class="fu">library</span>(ggtangle)</span>
+<span id="cb126-2"><a href="ppi-analysis.html#cb126-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb126-3"><a href="ppi-analysis.html#cb126-3" tabindex="-1"></a></span>
+<span id="cb126-4"><a href="ppi-analysis.html#cb126-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb126-5"><a href="ppi-analysis.html#cb126-5" tabindex="-1"></a>p_ppi <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
+<span id="cb126-6"><a href="ppi-analysis.html#cb126-6" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>) <span class="sc">+</span></span>
+<span id="cb126-7"><a href="ppi-analysis.html#cb126-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> degree, <span class="at">size =</span> Score_network), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb126-8"><a href="ppi-analysis.html#cb126-8" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#D55E00&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
+<span id="cb126-9"><a href="ppi-analysis.html#cb126-9" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">8</span>), <span class="at">name =</span> <span class="st">&quot;Score&quot;</span>) <span class="sc">+</span></span>
+<span id="cb126-10"><a href="ppi-analysis.html#cb126-10" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb126-11"><a href="ppi-analysis.html#cb126-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PPI Network — Node color: Degree, Size: Composite score&quot;</span>)</span>
+<span id="cb126-12"><a href="ppi-analysis.html#cb126-12" tabindex="-1"></a></span>
+<span id="cb126-13"><a href="ppi-analysis.html#cb126-13" tabindex="-1"></a><span class="fu">print</span>(p_ppi)</span></code></pre></div>
+<p><img src="images/ppi-net-basic-1.png" width="95%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="network-colored-by-community" class="section level3 hasAnchor" number="7.5.2">
+<h3><span class="header-section-number">7.5.2</span> Network colored by community<a href="ppi-analysis.html#network-colored-by-community" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Overlaying cluster assignments on the network layout reveals modular organization:</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="ppi-analysis.html#cb127-1" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb127-2"><a href="ppi-analysis.html#cb127-2" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb127-3"><a href="ppi-analysis.html#cb127-3" tabindex="-1"></a></span>
+<span id="cb127-4"><a href="ppi-analysis.html#cb127-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb127-5"><a href="ppi-analysis.html#cb127-5" tabindex="-1"></a>p_community <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_louvain, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
+<span id="cb127-6"><a href="ppi-analysis.html#cb127-6" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.12</span>, <span class="at">color =</span> <span class="st">&quot;grey70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb127-7"><a href="ppi-analysis.html#cb127-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb127-8"><a href="ppi-analysis.html#cb127-8" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">color =</span> louvain_cluster, <span class="at">size =</span> degree),</span>
+<span id="cb127-9"><a href="ppi-analysis.html#cb127-9" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.85</span></span>
+<span id="cb127-10"><a href="ppi-analysis.html#cb127-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb127-11"><a href="ppi-analysis.html#cb127-11" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Module&quot;</span>) <span class="sc">+</span></span>
+<span id="cb127-12"><a href="ppi-analysis.html#cb127-12" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">9</span>), <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
+<span id="cb127-13"><a href="ppi-analysis.html#cb127-13" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb127-14"><a href="ppi-analysis.html#cb127-14" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(degree <span class="sc">&gt;=</span> <span class="fu">quantile</span>(degree, <span class="fl">0.85</span>), name, <span class="st">&quot;&quot;</span>)),</span>
+<span id="cb127-15"><a href="ppi-analysis.html#cb127-15" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, <span class="at">max.overlaps =</span> <span class="dv">20</span>, <span class="at">segment.alpha =</span> <span class="fl">0.3</span></span>
+<span id="cb127-16"><a href="ppi-analysis.html#cb127-16" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb127-17"><a href="ppi-analysis.html#cb127-17" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb127-18"><a href="ppi-analysis.html#cb127-18" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PPI Network — Louvain Community Detection&quot;</span>,</span>
+<span id="cb127-19"><a href="ppi-analysis.html#cb127-19" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Labels: top 15% degree nodes&quot;</span>)</span>
+<span id="cb127-20"><a href="ppi-analysis.html#cb127-20" tabindex="-1"></a></span>
+<span id="cb127-21"><a href="ppi-analysis.html#cb127-21" tabindex="-1"></a><span class="fu">print</span>(p_community)</span></code></pre></div>
+<p><img src="images/ppi-net-louvain-1.png" width="95%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="hub-centric-star-layout" class="section level3 hasAnchor" number="7.5.3">
+<h3><span class="header-section-number">7.5.3</span> Hub-centric star layout<a href="ppi-analysis.html#hub-centric-star-layout" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The star layout places the highest-degree node at the center, making hub–spoke relationships immediately visible:</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="ppi-analysis.html#cb128-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb128-2"><a href="ppi-analysis.html#cb128-2" tabindex="-1"></a>p_star <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;star&quot;</span>) <span class="sc">+</span></span>
+<span id="cb128-3"><a href="ppi-analysis.html#cb128-3" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>) <span class="sc">+</span></span>
+<span id="cb128-4"><a href="ppi-analysis.html#cb128-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> Score_network, <span class="at">size =</span> degree), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb128-5"><a href="ppi-analysis.html#cb128-5" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">&quot;C&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Score&quot;</span>) <span class="sc">+</span></span>
+<span id="cb128-6"><a href="ppi-analysis.html#cb128-6" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">10</span>), <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
+<span id="cb128-7"><a href="ppi-analysis.html#cb128-7" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb128-8"><a href="ppi-analysis.html#cb128-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PPI Star Layout — Hub at Center&quot;</span>)</span>
+<span id="cb128-9"><a href="ppi-analysis.html#cb128-9" tabindex="-1"></a></span>
+<span id="cb128-10"><a href="ppi-analysis.html#cb128-10" tabindex="-1"></a><span class="fu">print</span>(p_star)</span></code></pre></div>
+<p><img src="images/ppi-net-star-1.png" width="95%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="multi-layout-comparison" class="section level3 hasAnchor" number="7.5.4">
+<h3><span class="header-section-number">7.5.4</span> Multi-layout comparison<a href="ppi-analysis.html#multi-layout-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="ppi-analysis.html#cb129-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb129-2"><a href="ppi-analysis.html#cb129-2" tabindex="-1"></a>base_layers <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb129-3"><a href="ppi-analysis.html#cb129-3" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.12</span>, <span class="at">color =</span> <span class="st">&quot;grey70&quot;</span>),</span>
+<span id="cb129-4"><a href="ppi-analysis.html#cb129-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> degree, <span class="at">size =</span> Score_network), <span class="at">alpha =</span> <span class="fl">0.85</span>),</span>
+<span id="cb129-5"><a href="ppi-analysis.html#cb129-5" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#D55E00&quot;</span>),</span>
+<span id="cb129-6"><a href="ppi-analysis.html#cb129-6" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">7</span>)),</span>
+<span id="cb129-7"><a href="ppi-analysis.html#cb129-7" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span>
+<span id="cb129-8"><a href="ppi-analysis.html#cb129-8" tabindex="-1"></a>)</span>
+<span id="cb129-9"><a href="ppi-analysis.html#cb129-9" tabindex="-1"></a></span>
+<span id="cb129-10"><a href="ppi-analysis.html#cb129-10" tabindex="-1"></a>p_fr     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>)     <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Fruchterman-Reingold&quot;</span>)</span>
+<span id="cb129-11"><a href="ppi-analysis.html#cb129-11" tabindex="-1"></a>p_kk     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;kk&quot;</span>)     <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Kamada-Kawai&quot;</span>)</span>
+<span id="cb129-12"><a href="ppi-analysis.html#cb129-12" tabindex="-1"></a>p_nicely <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)  <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Nicely (auto)&quot;</span>)</span>
+<span id="cb129-13"><a href="ppi-analysis.html#cb129-13" tabindex="-1"></a>p_star2  <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;star&quot;</span>)    <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Star&quot;</span>)</span>
+<span id="cb129-14"><a href="ppi-analysis.html#cb129-14" tabindex="-1"></a></span>
+<span id="cb129-15"><a href="ppi-analysis.html#cb129-15" tabindex="-1"></a><span class="fu">plot_list</span>(p_fr, p_kk, p_nicely, p_star2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="images/ppi-net-layouts-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<table>
+<colgroup>
+<col width="44%" />
+<col width="55%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layout</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>"fr"</code> (Fruchterman-Reingold)</td>
+<td>Dense networks; force-directed separation</td>
+</tr>
+<tr class="even">
+<td><code>"kk"</code> (Kamada-Kawai)</td>
+<td>Medium-sized networks with clear clusters</td>
+</tr>
+<tr class="odd">
+<td><code>"star"</code></td>
+<td>Hub-centric analysis</td>
+</tr>
+<tr class="even">
+<td><code>"nicely"</code></td>
+<td>Automatic layout selection by igraph</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+</div>
+<div id="session-information-5" class="section level2 hasAnchor" number="7.6">
+<h2><span class="header-section-number">7.6</span> Session information<a href="ppi-analysis.html#session-information-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="ppi-analysis.html#cb130-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<pre><code>#&gt; R version 4.5.0 (2025-04-11)
+#&gt; Platform: aarch64-apple-darwin20
+#&gt; Running under: macOS 26.2
+#&gt; 
+#&gt; Matrix products: default
+#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+#&gt; 
+#&gt; locale:
+#&gt; [1] zh_CN.UTF-8/zh_CN.UTF-8/zh_CN.UTF-8/C/zh_CN.UTF-8/zh_CN.UTF-8
+#&gt; 
+#&gt; time zone: Asia/Shanghai
+#&gt; tzcode source: internal
+#&gt; 
+#&gt; attached base packages:
+#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+#&gt; [8] base     
+#&gt; 
+#&gt; other attached packages:
+#&gt;  [1] org.Hs.eg.db_3.21.0    AnnotationDbi_1.70.0   IRanges_2.42.0        
+#&gt;  [4] S4Vectors_0.46.0       Biobase_2.68.0         BiocGenerics_0.54.0   
+#&gt;  [7] generics_0.1.4         clusterProfiler_4.16.0 aplot_0.2.8           
+#&gt; [10] ggrepel_0.9.6          ggtangle_0.0.7         igraph_2.2.1          
+#&gt; [13] ggplot2_4.0.1          dplyr_1.1.4            aplotExtra_0.0.4      
+#&gt; [16] ivolcano_0.0.5         enrichplot_1.28.4      TCMDATA_0.0.0.9000    
+#&gt; [19] testthat_3.2.3        
+#&gt; 
+#&gt; loaded via a namespace (and not attached):
+#&gt;   [1] splines_4.5.0           later_1.4.2             ggplotify_0.1.2        
+#&gt;   [4] tibble_3.3.0            R.oo_1.27.1             lifecycle_1.0.4        
+#&gt;   [7] doParallel_1.0.17       rprojroot_2.1.0         lattice_0.22-7         
+#&gt;  [10] magrittr_2.0.3          sass_0.4.10             rmarkdown_2.29         
+#&gt;  [13] jquerylib_0.1.4         yaml_2.3.10             remotes_2.5.0          
+#&gt;  [16] httpuv_1.6.16           sessioninfo_1.2.3       pkgbuild_1.4.8         
+#&gt;  [19] ggvenn_0.1.10           cowplot_1.2.0           DBI_1.2.3              
+#&gt;  [22] RColorBrewer_1.1-3      pkgload_1.4.0           purrr_1.1.0            
+#&gt;  [25] R.utils_2.13.0          yulab.utils_0.2.0       gdtools_0.4.4          
+#&gt;  [28] circlize_0.4.16         GenomeInfoDbData_1.2.14 tidytree_0.4.6         
+#&gt;  [31] codetools_0.2-20        DOSE_4.2.0              DNAcopy_1.82.0         
+#&gt;  [34] tidyselect_1.2.1        shape_1.4.6.1           UCSC.utils_1.4.0       
+#&gt;  [37] farver_2.1.2            matrixStats_1.5.0       jsonlite_2.0.0         
+#&gt;  [40] GetoptLong_1.0.5        ellipsis_0.3.2          ggridges_0.5.6         
+#&gt;  [43] ggalluvial_0.12.5       survival_3.8-3          iterators_1.0.14       
+#&gt;  [46] systemfonts_1.3.1       foreach_1.5.2           tools_4.5.0            
+#&gt;  [49] treeio_1.32.0           ggstar_1.0.4            Rcpp_1.1.0             
+#&gt;  [52] glue_1.8.0              gridExtra_2.3           xfun_0.54              
+#&gt;  [55] qvalue_2.40.0           usethis_3.1.0           GenomeInfoDb_1.44.1    
+#&gt;  [58] withr_3.0.2             fastmap_1.2.0           digest_0.6.37          
+#&gt;  [61] R6_2.6.1                mime_0.13               gridGraphics_0.5-1     
+#&gt;  [64] colorspace_2.1-1        GO.db_3.21.0            RSQLite_2.4.2          
+#&gt;  [67] R.methodsS3_1.8.2       tidyr_1.3.1             fontLiberation_0.1.0   
+#&gt;  [70] data.table_1.18.0       httr_1.4.7              htmlwidgets_1.6.4      
+#&gt;  [73] pkgconfig_2.0.3         gtable_0.3.6            blob_1.2.4             
+#&gt;  [76] ComplexHeatmap_2.24.1   S7_0.2.0                XVector_0.48.0         
+#&gt;  [79] brio_1.1.5              htmltools_0.5.8.1       fontBitstreamVera_0.1.1
+#&gt;  [82] profvis_0.4.0           bookdown_0.46           fgsea_1.34.2           
+#&gt;  [85] clue_0.3-66             scales_1.4.0            png_0.1-8              
+#&gt;  [88] ggfun_0.2.0             knitr_1.50              rstudioapi_0.17.1      
+#&gt;  [91] reshape2_1.4.4          rjson_0.2.23            curl_6.4.0             
+#&gt;  [94] nlme_3.1-168            cachem_1.1.0            GlobalOptions_0.1.2    
+#&gt;  [97] stringr_1.5.1           parallel_4.5.0          miniUI_0.1.2           
+#&gt; [100] desc_1.4.3              pillar_1.11.0           grid_4.5.0             
+#&gt; [103] vctrs_0.6.5             urlchecker_1.0.1        promises_1.3.3         
+#&gt; [106] xtable_1.8-4            cluster_2.1.8.1         paletteer_1.6.0        
+#&gt; [109] evaluate_1.0.4          cli_3.6.5               compiler_4.5.0         
+#&gt; [112] rlang_1.1.6             crayon_1.5.3            labeling_0.4.3         
+#&gt; [115] rematch2_2.1.2          maftools_2.24.0         plyr_1.8.9             
+#&gt; [118] forcats_1.0.0           fs_1.6.6                ggiraph_0.9.2          
+#&gt; [121] stringi_1.8.7           BiocParallel_1.42.1     Biostrings_2.76.0      
+#&gt; [124] lazyeval_0.2.2          devtools_2.4.5          GOSemSim_2.34.0        
+#&gt; [127] fontquiver_0.2.1        Matrix_1.7-3            patchwork_1.3.1        
+#&gt; [130] bit64_4.6.0-1           KEGGREST_1.48.1         shiny_1.11.1           
+#&gt; [133] memoise_2.0.1           bslib_0.9.0             ggtree_3.16.3          
+#&gt; [136] fastmatch_1.1-6         bit_4.6.0               ape_5.8-1              
+#&gt; [139] gson_0.1.0</code></pre>
 
 </div>
 </div>
@@ -280,6 +906,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

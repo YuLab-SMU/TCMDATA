@@ -49,7 +49,7 @@ jobs:
         run: |
           Rscript -e '
             pak::pkg_install("BiocManager")
-            BiocManager::install(c("clusterProfiler", "enrichplot"), update = FALSE, ask = FALSE)
+            BiocManager::install(c("clusterProfiler", "enrichplot", "org.Hs.eg.db"), update = FALSE, ask = FALSE)
           '
 
       - name: Install CRAN packages
