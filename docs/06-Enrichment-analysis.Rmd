@@ -2,6 +2,29 @@
 
 `TCMDATA` provides functions for performing enrichment analysis on gene sets derived from herb–target interactions. It supports both Over-Representation Analysis (ORA) and Gene Set Enrichment Analysis (GSEA) methodologies via `clusterProfiler`, and offers a suite of visualization methods for interpreting enrichment results through `enrichplot` and other compatible packages.
 
+```{r enrich-setup, include=FALSE}
+## pre-load cached enrichment objects so that downstream visualisation chunks
+## work without calling external APIs (KEGG REST, etc.).
+library(TCMDATA)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(enrichplot)
+library(aplot)
+
+cache_dir <- "cache"
+query_genes <- readRDS(file.path(cache_dir, "query_genes.rds"))
+gene_id     <- readRDS(file.path(cache_dir, "gene_id.rds"))
+kegg_enrich <- readRDS(file.path(cache_dir, "kegg_enrich.rds"))
+go_bp       <- readRDS(file.path(cache_dir, "go_bp.rds"))
+go_cc       <- readRDS(file.path(cache_dir, "go_cc.rds"))
+go_mf       <- readRDS(file.path(cache_dir, "go_mf.rds"))
+go_all      <- readRDS(file.path(cache_dir, "go_all.rds"))
+deg_merged  <- readRDS(file.path(cache_dir, "deg_merged.rds"))
+gene_rank   <- readRDS(file.path(cache_dir, "gene_rank.rds"))
+gsea_kegg   <- readRDS(file.path(cache_dir, "gsea_kegg.rds"))
+gsea_go     <- readRDS(file.path(cache_dir, "gsea_go.rds"))
+```
+
 ## Over Representation Analysis (ORA)
 
 ORA evaluates whether a pre-defined gene set (e.g., KEGG pathways, GO terms, Reactome pathways) is statistically over-represented among a list of input genes, such as the intersection of DEGs and disease targets. For a comprehensive treatment of enrichment methods, refer to the [*Biomedical Knowledge Mining* book](https://yulab-smu.top/biomedical-knowledge-mining-book/02-Enrichment.html).
@@ -12,7 +35,7 @@ ORA evaluates whether a pre-defined gene set (e.g., KEGG pathways, GO terms, Rea
 
 In this example, we randomly sampled 200 targets of Lingzhi (*Ganoderma lucidum*) as input for KEGG pathway enrichment. Since `enrichKEGG()` requires **Entrez IDs** by default, we first converted gene symbols using `bitr()`:
 
-```{r kegg-input, collapse=FALSE, message=FALSE, warning=FALSE}
+```{r kegg-input, eval=FALSE}
 library(TCMDATA)
 set.seed(2026)
 
@@ -22,7 +45,11 @@ query_genes <- sample(lz_targets, 200)
 head(query_genes)
 ```
 
-```{r kegg-convert, collapse=FALSE, message=FALSE, warning=FALSE}
+```{r kegg-input-show, echo=FALSE, collapse=FALSE}
+head(query_genes)
+```
+
+```{r kegg-convert, eval=FALSE}
 library(clusterProfiler)
 library(org.Hs.eg.db)
 
@@ -35,9 +62,12 @@ gene_id <- bitr(query_genes,
 head(gene_id)
 ```
 
+```{r kegg-convert-show, echo=FALSE, collapse=FALSE}
+head(gene_id)
+```
+
 Then, we performed KEGG pathway enrichment using `enrichKEGG()`, and applied `setReadable()` to convert enriched gene IDs back to symbols for better interpretability:
-```{r kegg-enrich, collapse=FALSE, message=FALSE, warning=FALSE}
-options(timeout = 300)
+```{r kegg-enrich, eval=FALSE}
 kegg_enrich <- enrichKEGG(gene     = gene_id$ENTREZID,
                           organism = "hsa",
                           keyType  = "kegg")
@@ -47,11 +77,12 @@ kegg_enrich <- setReadable(kegg_enrich, OrgDb = org.Hs.eg.db, keyType = "ENTREZI
 head(kegg_enrich)
 ```
 
+```{r kegg-enrich-show, echo=FALSE, collapse=FALSE}
+head(kegg_enrich)
+```
+
 The `enrichplot` package is fully compatible with `clusterProfiler` and provides a rich set of visualization methods. Below we demonstrated several common plot types (dot plot, bar plot, and concept network plot):
 ```{r kegg-visualize, collapse=FALSE, fig.width=10, fig.height=18, fig.align='center', out.width='95%'}
-library(enrichplot)
-library(aplot)
-
 p1 <- dotplot(kegg_enrich)
 p2 <- barplot(kegg_enrich)
 p3 <- cnetplot(kegg_enrich)
@@ -71,7 +102,7 @@ GO enrichment analysis tests whether GO terms are over-represented in a gene set
 
 Here, we reused the gene set and Entrez IDs prepared in the KEGG section above. Unlike `enrichKEGG()`, `enrichGO()` also supports `keyType = "SYMBOL"` directly via the `OrgDb` annotation, but for consistency we continued to use Entrez IDs.
 
-```{r go-enrich, collapse=FALSE, message=FALSE, warning=FALSE}
+```{r go-enrich, eval=FALSE}
 go_bp <- enrichGO(gene     = gene_id$ENTREZID,
                   OrgDb    = org.Hs.eg.db,
                   ont      = "BP",
@@ -80,9 +111,13 @@ go_bp <- enrichGO(gene     = gene_id$ENTREZID,
 head(go_bp)
 ```
 
+```{r go-enrich-show, echo=FALSE, collapse=FALSE}
+head(go_bp)
+```
+
 To perform enrichment for **Cellular Component (CC)**, **Molecular Function (MF)**, or **all three categories simultaneously**, simply change the `ont` parameter:
 
-```{r go-cc-mf, collapse=FALSE, message=FALSE, warning=FALSE}
+```{r go-cc-mf, eval=FALSE}
 ## Cellular Component (CC)
 go_cc <- enrichGO(gene = gene_id$ENTREZID, OrgDb = org.Hs.eg.db,
                   ont = "CC", keyType = "ENTREZID", readable = TRUE)
@@ -173,7 +208,7 @@ The typical GSEA workflow requires a **named numeric vector** (e.g., log2 fold c
 
 ### Prepare ranked gene list
 
-```{r gsea-prepare, collapse=FALSE, message=FALSE, warning=FALSE}
+```{r gsea-prepare, eval=FALSE}
 data(deg_earlydn)
 
 ## convert gene symbols to Entrez IDs
@@ -190,16 +225,23 @@ gene_rank  <- sort(setNames(deg_merged$log2FoldChange, deg_merged$ENTREZID),
 head(gene_rank)
 ```
 
+```{r gsea-prepare-show, echo=FALSE, collapse=FALSE}
+head(gene_rank)
+```
+
 ### KEGG GSEA
 
-```{r gsea-kegg, collapse=FALSE, message=FALSE, warning=FALSE}
-options(timeout = 300)
+```{r gsea-kegg, eval=FALSE}
 gsea_kegg <- gseKEGG(geneList = gene_rank,
                      organism = "hsa",
                      eps      = 0,
                      pvalueCutoff = 0.05)
 
 gsea_kegg <- setReadable(gsea_kegg, OrgDb = org.Hs.eg.db, keyType = "ENTREZID")
+head(gsea_kegg)
+```
+
+```{r gsea-kegg-show, echo=FALSE, collapse=FALSE}
 head(gsea_kegg)
 ```
 
@@ -211,7 +253,7 @@ gseaplot2(gsea_kegg, geneSetID = 1:3, pvalue_table = TRUE)
 
 ### GO GSEA
 
-```{r gsea-go, collapse=FALSE, message=FALSE, warning=FALSE}
+```{r gsea-go, eval=FALSE}
 gsea_go <- gseGO(geneList = gene_rank,
                  OrgDb    = org.Hs.eg.db,
                  ont      = "BP",
@@ -219,6 +261,10 @@ gsea_go <- gseGO(geneList = gene_rank,
                  pvalueCutoff = 0.05)
 
 gsea_go <- setReadable(gsea_go, OrgDb = org.Hs.eg.db, keyType = "ENTREZID")
+head(gsea_go)
+```
+
+```{r gsea-go-show, echo=FALSE, collapse=FALSE}
 head(gsea_go)
 ```
 

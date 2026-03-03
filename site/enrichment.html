@@ -23,7 +23,7 @@
 <meta name="author" content="Yulab-SMU" />
 
 
-<meta name="date" content="2026-03-03" />
+<meta name="date" content="2026-03-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -328,14 +328,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt; 5   MMP3     4314
 #&gt; 6 PRKACA     5566</code></pre>
 <p>Then, we performed KEGG pathway enrichment using <code>enrichKEGG()</code>, and applied <code>setReadable()</code> to convert enriched gene IDs back to symbols for better interpretability:</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="enrichment.html#cb87-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">timeout =</span> <span class="dv">300</span>)</span>
-<span id="cb87-2"><a href="enrichment.html#cb87-2" tabindex="-1"></a>kegg_enrich <span class="ot">&lt;-</span> <span class="fu">enrichKEGG</span>(<span class="at">gene     =</span> gene_id<span class="sc">$</span>ENTREZID,</span>
-<span id="cb87-3"><a href="enrichment.html#cb87-3" tabindex="-1"></a>                          <span class="at">organism =</span> <span class="st">&quot;hsa&quot;</span>,</span>
-<span id="cb87-4"><a href="enrichment.html#cb87-4" tabindex="-1"></a>                          <span class="at">keyType  =</span> <span class="st">&quot;kegg&quot;</span>)</span>
-<span id="cb87-5"><a href="enrichment.html#cb87-5" tabindex="-1"></a></span>
-<span id="cb87-6"><a href="enrichment.html#cb87-6" tabindex="-1"></a>kegg_enrich <span class="ot">&lt;-</span> <span class="fu">setReadable</span>(kegg_enrich, <span class="at">OrgDb =</span> org.Hs.eg.db, <span class="at">keyType =</span> <span class="st">&quot;ENTREZID&quot;</span>)</span>
-<span id="cb87-7"><a href="enrichment.html#cb87-7" tabindex="-1"></a></span>
-<span id="cb87-8"><a href="enrichment.html#cb87-8" tabindex="-1"></a><span class="fu">head</span>(kegg_enrich)</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="enrichment.html#cb87-1" tabindex="-1"></a>kegg_enrich <span class="ot">&lt;-</span> <span class="fu">enrichKEGG</span>(<span class="at">gene     =</span> gene_id<span class="sc">$</span>ENTREZID,</span>
+<span id="cb87-2"><a href="enrichment.html#cb87-2" tabindex="-1"></a>                          <span class="at">organism =</span> <span class="st">&quot;hsa&quot;</span>,</span>
+<span id="cb87-3"><a href="enrichment.html#cb87-3" tabindex="-1"></a>                          <span class="at">keyType  =</span> <span class="st">&quot;kegg&quot;</span>)</span>
+<span id="cb87-4"><a href="enrichment.html#cb87-4" tabindex="-1"></a></span>
+<span id="cb87-5"><a href="enrichment.html#cb87-5" tabindex="-1"></a>kegg_enrich <span class="ot">&lt;-</span> <span class="fu">setReadable</span>(kegg_enrich, <span class="at">OrgDb =</span> org.Hs.eg.db, <span class="at">keyType =</span> <span class="st">&quot;ENTREZID&quot;</span>)</span>
+<span id="cb87-6"><a href="enrichment.html#cb87-6" tabindex="-1"></a></span>
+<span id="cb87-7"><a href="enrichment.html#cb87-7" tabindex="-1"></a><span class="fu">head</span>(kegg_enrich)</span></code></pre></div>
 <pre><code>#&gt;                    category                     subcategory       ID
 #&gt; hsa05160     Human Diseases       Infectious disease: viral hsa05160
 #&gt; hsa04657 Organismal Systems                   Immune system hsa04657
@@ -372,14 +371,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt; hsa01522    15
 #&gt; hsa00910     8</code></pre>
 <p>The <code>enrichplot</code> package is fully compatible with <code>clusterProfiler</code> and provides a rich set of visualization methods. Below we demonstrated several common plot types (dot plot, bar plot, and concept network plot):</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="enrichment.html#cb89-1" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span>
-<span id="cb89-2"><a href="enrichment.html#cb89-2" tabindex="-1"></a><span class="fu">library</span>(aplot)</span>
-<span id="cb89-3"><a href="enrichment.html#cb89-3" tabindex="-1"></a></span>
-<span id="cb89-4"><a href="enrichment.html#cb89-4" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">dotplot</span>(kegg_enrich)</span>
-<span id="cb89-5"><a href="enrichment.html#cb89-5" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">barplot</span>(kegg_enrich)</span>
-<span id="cb89-6"><a href="enrichment.html#cb89-6" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">cnetplot</span>(kegg_enrich)</span>
-<span id="cb89-7"><a href="enrichment.html#cb89-7" tabindex="-1"></a></span>
-<span id="cb89-8"><a href="enrichment.html#cb89-8" tabindex="-1"></a><span class="fu">plot_list</span>(p1, p2, p3, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="enrichment.html#cb89-1" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">dotplot</span>(kegg_enrich)</span>
+<span id="cb89-2"><a href="enrichment.html#cb89-2" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">barplot</span>(kegg_enrich)</span>
+<span id="cb89-3"><a href="enrichment.html#cb89-3" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">cnetplot</span>(kegg_enrich)</span>
+<span id="cb89-4"><a href="enrichment.html#cb89-4" tabindex="-1"></a></span>
+<span id="cb89-5"><a href="enrichment.html#cb89-5" tabindex="-1"></a><span class="fu">plot_list</span>(p1, p2, p3, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="TCMDATA_files/figure-html/kegg-visualize-1.png" width="95%" style="display: block; margin: auto;" /></p>
 </div>
 </div>
@@ -527,41 +523,40 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="kegg-gsea" class="section level3 hasAnchor" number="6.4.2">
 <h3><span class="header-section-number">6.4.2</span> KEGG GSEA<a href="enrichment.html#kegg-gsea" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="enrichment.html#cb101-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">timeout =</span> <span class="dv">300</span>)</span>
-<span id="cb101-2"><a href="enrichment.html#cb101-2" tabindex="-1"></a>gsea_kegg <span class="ot">&lt;-</span> <span class="fu">gseKEGG</span>(<span class="at">geneList =</span> gene_rank,</span>
-<span id="cb101-3"><a href="enrichment.html#cb101-3" tabindex="-1"></a>                     <span class="at">organism =</span> <span class="st">&quot;hsa&quot;</span>,</span>
-<span id="cb101-4"><a href="enrichment.html#cb101-4" tabindex="-1"></a>                     <span class="at">eps      =</span> <span class="dv">0</span>,</span>
-<span id="cb101-5"><a href="enrichment.html#cb101-5" tabindex="-1"></a>                     <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>)</span>
-<span id="cb101-6"><a href="enrichment.html#cb101-6" tabindex="-1"></a></span>
-<span id="cb101-7"><a href="enrichment.html#cb101-7" tabindex="-1"></a>gsea_kegg <span class="ot">&lt;-</span> <span class="fu">setReadable</span>(gsea_kegg, <span class="at">OrgDb =</span> org.Hs.eg.db, <span class="at">keyType =</span> <span class="st">&quot;ENTREZID&quot;</span>)</span>
-<span id="cb101-8"><a href="enrichment.html#cb101-8" tabindex="-1"></a><span class="fu">head</span>(gsea_kegg)</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="enrichment.html#cb101-1" tabindex="-1"></a>gsea_kegg <span class="ot">&lt;-</span> <span class="fu">gseKEGG</span>(<span class="at">geneList =</span> gene_rank,</span>
+<span id="cb101-2"><a href="enrichment.html#cb101-2" tabindex="-1"></a>                     <span class="at">organism =</span> <span class="st">&quot;hsa&quot;</span>,</span>
+<span id="cb101-3"><a href="enrichment.html#cb101-3" tabindex="-1"></a>                     <span class="at">eps      =</span> <span class="dv">0</span>,</span>
+<span id="cb101-4"><a href="enrichment.html#cb101-4" tabindex="-1"></a>                     <span class="at">pvalueCutoff =</span> <span class="fl">0.05</span>)</span>
+<span id="cb101-5"><a href="enrichment.html#cb101-5" tabindex="-1"></a></span>
+<span id="cb101-6"><a href="enrichment.html#cb101-6" tabindex="-1"></a>gsea_kegg <span class="ot">&lt;-</span> <span class="fu">setReadable</span>(gsea_kegg, <span class="at">OrgDb =</span> org.Hs.eg.db, <span class="at">keyType =</span> <span class="st">&quot;ENTREZID&quot;</span>)</span>
+<span id="cb101-7"><a href="enrichment.html#cb101-7" tabindex="-1"></a><span class="fu">head</span>(gsea_kegg)</span></code></pre></div>
 <pre><code>#&gt;                ID                            Description setSize
 #&gt; hsa00970 hsa00970            Aminoacyl-tRNA biosynthesis     136
-#&gt; hsa05323 hsa05323                   Rheumatoid arthritis      88
+#&gt; hsa04380 hsa04380             Osteoclast differentiation     132
 #&gt; hsa04668 hsa04668                  TNF signaling pathway     117
 #&gt; hsa04657 hsa04657                IL-17 signaling pathway      82
-#&gt; hsa04380 hsa04380             Osteoclast differentiation     132
+#&gt; hsa05323 hsa05323                   Rheumatoid arthritis      88
 #&gt; hsa04060 hsa04060 Cytokine-cytokine receptor interaction     244
 #&gt;          enrichmentScore       NES       pvalue     p.adjust       qvalue rank
-#&gt; hsa00970       0.7812747  3.067474 5.474924e-30 1.927173e-27 1.365849e-27  734
-#&gt; hsa05323      -0.7173842 -2.653249 2.608644e-14 4.591213e-12 3.253940e-12 2438
-#&gt; hsa04668      -0.6777418 -2.622647 4.540574e-14 5.327606e-12 3.775845e-12 1129
-#&gt; hsa04657      -0.7364961 -2.677098 6.251596e-14 5.501405e-12 3.899022e-12 1767
-#&gt; hsa04380      -0.6513337 -2.566926 1.428117e-13 1.005395e-11 7.125554e-12 2855
-#&gt; hsa04060      -0.5366194 -2.286638 4.812476e-13 2.823319e-11 2.000977e-11 2557
+#&gt; hsa00970       0.7812747  3.088860 2.452704e-30 8.633517e-28 6.093032e-28  734
+#&gt; hsa04380      -0.6513337 -2.546759 1.345775e-14 2.368564e-12 1.671594e-12 2855
+#&gt; hsa04668      -0.6777418 -2.604701 4.909992e-14 5.761058e-12 4.065818e-12 1129
+#&gt; hsa04657      -0.7364961 -2.699637 7.287049e-14 6.234807e-12 4.400163e-12 1767
+#&gt; hsa05323      -0.7173842 -2.648602 8.856260e-14 6.234807e-12 4.400163e-12 2438
+#&gt; hsa04060      -0.5366194 -2.299662 7.115359e-13 4.174344e-11 2.946008e-11 2557
 #&gt;                            leading_edge
 #&gt; hsa00970  tags=32%, list=3%, signal=32%
-#&gt; hsa05323  tags=34%, list=9%, signal=31%
+#&gt; hsa04380 tags=25%, list=11%, signal=22%
 #&gt; hsa04668  tags=21%, list=4%, signal=20%
 #&gt; hsa04657  tags=30%, list=6%, signal=29%
-#&gt; hsa04380 tags=25%, list=11%, signal=22%
+#&gt; hsa05323  tags=34%, list=9%, signal=31%
 #&gt; hsa04060  tags=25%, list=9%, signal=23%
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                core_enrichment
 #&gt; hsa00970 TRP-TGG1-1/TRR-CCG2-1/TRH-GTG1-8/TRK-TTT3-1/TRH-GTG1-9/TRE-TTC2-1/TRR-CCT3-1/TRS-GCT6-1/TRR-TCG1-1/TRP-AGG2-6/TRR-TCG3-1/TRF-GAA2-1/TRH-GTG1-7/TRL-TAG2-1/TRQ-CTG6-1/TRK-TTT5-1/TRY-GTA2-1/TRL-TAG3-1/TRY-GTA5-1/TRL-CAG2-1/TRC-GCA11-1/TRL-CAA1-1/TRI-AAT5-5/TRE-CTC1-3/TRE-CTC1-4/TRI-AAT2-1/TRC-GCA8-1/TRE-CTC1-5/TRG-GCC2-4/TRC-GCA2-4/TRG-GCC1-5/TRY-GTA5-5/TRD-GTC2-10/TRT-AGT1-1/TRR-ACG1-2/TRA-TGC4-1/TRG-TCC2-6/TRS-AGA2-2/TRV-CAC1-5/TRK-CTT2-2/TRK-CTT3-1/TRS-GCT3-1/TRC-GCA3-1/TRG-GCC3-1
-#&gt; hsa05323                                                                                                                                                                                                                                                                                                                        ITGB2/IL11/VEGFA/TGFB3/ATP6V1G3/ATP6V0D2/ATP6V1D/TLR2/TGFB2/IL1A/FLT1/IL18/CXCL6/TNFSF11/CD86/ICAM1/CCL2/CXCL1/CTLA4/CXCL3/IFNG/CCL3L3/CXCL8/IL1B/JUN/CCL20/CXCL2/IL6/CCL3/FOS
+#&gt; hsa04380                                                                                                                                                                                                                                                                                           PLCG2/CALCR/MAP3K14/IFNGR1/PPP3R1/FCGR2A/LILRB2/PIK3CA/FCGR3A/TGFB2/FOSL1/NFKBIA/NFATC1/IL1A/LILRA6/LILRB4/RELB/TNFSF11/LILRB3/TREM2/NFKB2/OSCAR/JUND/PPP3R2/FOSL2/FCGR3B/IFNG/IL1B/JUN/SOCS3/JUNB/FOS/FOSB
 #&gt; hsa04668                                                                                                                                                                                                                                                                                                                                                                  CXCL6/VCAM1/IL18R1/CEBPB/TRAF1/ICAM1/TNFAIP3/CCL2/BCL3/MMP9/BIRC3/LIF/PTGS2/CXCL1/CXCL3/IL1B/SELE/JUN/SOCS3/CCL20/JUNB/CXCL2/IL6/FOS
 #&gt; hsa04657                                                                                                                                                                                                                                                                                                                                                     MUC5AC/HSP90AA1/FOSL1/NFKBIA/CXCL6/CEBPB/CSF3/TNFAIP3/S100A9/JUND/CCL2/MMP9/PTGS2/CXCL1/S100A8/CXCL3/IFNG/CXCL8/IL1B/JUN/CCL20/CXCL2/IL6/FOS/FOSB
-#&gt; hsa04380                                                                                                                                                                                                                                                                                           PLCG2/CALCR/MAP3K14/IFNGR1/PPP3R1/FCGR2A/LILRB2/PIK3CA/FCGR3A/TGFB2/FOSL1/NFKBIA/NFATC1/IL1A/LILRA6/LILRB4/RELB/TNFSF11/LILRB3/TREM2/NFKB2/OSCAR/JUND/PPP3R2/FOSL2/FCGR3B/IFNG/IL1B/JUN/SOCS3/JUNB/FOS/FOSB
+#&gt; hsa05323                                                                                                                                                                                                                                                                                                                        ITGB2/IL11/VEGFA/TGFB3/ATP6V1G3/ATP6V0D2/ATP6V1D/TLR2/TGFB2/IL1A/FLT1/IL18/CXCL6/TNFSF11/CD86/ICAM1/CCL2/CXCL1/CTLA4/CXCL3/IFNG/CCL3L3/CXCL8/IL1B/JUN/CCL20/CXCL2/IL6/CCL3/FOS
 #&gt; hsa04060                                                                                                             OSMR/IFNGR1/GDF3/IL10/CX3CL1/TNFRSF10B/IL11/TGFB3/CCL16/IL2RG/RELT/CRLF2/TGFB2/TNFRSF12A/IL24/TNFRSF9/IL1A/CLCF1/IL18/CCL18/CD70/CCL23/CCR7/CXCL6/IL1RL1/TNFSF11/TNFSF10/PPBP/IL18R1/IL18RAP/CSF3R/CCR3/CCL22/IL7R/TNFRSF13C/CSF3/CCL2/CXCR1/CXCR4/CXCR2/PF4V1/LIF/TNFRSF13B/CXCL1/IL1RN/CCL8/CXCL13/CXCL3/IFNG/CCL3L3/INHBB/TNFSF9/CCL4/OSM/CXCL8/IL1B/GDF15/CCL20/CCL4L2/CXCL2/IL6/CCL3</code></pre>
 <p>The classic GSEA running-score plot visualizes the enrichment profile of selected pathways. <code>gseaplot2()</code> from <code>enrichplot</code> supports displaying multiple gene sets simultaneously:</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="enrichment.html#cb103-1" tabindex="-1"></a><span class="fu">gseaplot2</span>(gsea_kegg, <span class="at">geneSetID =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">pvalue_table =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
@@ -581,37 +576,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt; GO:0002460 GO:0002460
 #&gt; GO:0002443 GO:0002443
 #&gt; GO:0002449 GO:0002449
-#&gt; GO:0016064 GO:0016064
 #&gt; GO:0019724 GO:0019724
-#&gt; GO:0016441 GO:0016441
+#&gt; GO:0016064 GO:0016064
+#&gt; GO:0035195 GO:0035195
 #&gt;                                                                                                                          Description
 #&gt; GO:0002460 adaptive immune response based on somatic recombination of immune receptors built from immunoglobulin superfamily domains
 #&gt; GO:0002443                                                                                               leukocyte mediated immunity
 #&gt; GO:0002449                                                                                              lymphocyte mediated immunity
-#&gt; GO:0016064                                                                                   immunoglobulin mediated immune response
 #&gt; GO:0019724                                                                                                  B cell mediated immunity
-#&gt; GO:0016441                                                                                       post-transcriptional gene silencing
+#&gt; GO:0016064                                                                                   immunoglobulin mediated immune response
+#&gt; GO:0035195                                                                        miRNA-mediated post-transcriptional gene silencing
 #&gt;            setSize enrichmentScore       NES       pvalue     p.adjust
-#&gt; GO:0002460     367      -0.5962006 -2.639692 2.161354e-27 1.328801e-23
-#&gt; GO:0002443     446      -0.5540426 -2.499765 6.724300e-25 2.067050e-21
-#&gt; GO:0002449     352      -0.5705852 -2.506970 8.780726e-22 1.799463e-18
-#&gt; GO:0016064     184      -0.6704404 -2.747266 1.317549e-21 2.025073e-18
-#&gt; GO:0019724     187      -0.6650901 -2.718198 6.113630e-21 7.517319e-18
-#&gt; GO:0016441     317       0.5536153  2.458710 6.416875e-19 6.575158e-16
+#&gt; GO:0002460     367      -0.5962006 -2.649126 7.191799e-27 4.421518e-23
+#&gt; GO:0002443     446      -0.5540426 -2.507669 2.307337e-25 7.092755e-22
+#&gt; GO:0002449     352      -0.5705852 -2.526617 2.865721e-21 5.872818e-18
+#&gt; GO:0019724     187      -0.6650901 -2.711805 1.080066e-20 1.660061e-17
+#&gt; GO:0016064     184      -0.6704404 -2.728365 1.781633e-20 2.190697e-17
+#&gt; GO:0035195     296       0.5648152  2.477770 4.576711e-19 4.689603e-16
 #&gt;                  qvalue rank                   leading_edge
-#&gt; GO:0002460 1.081587e-23 3405 tags=34%, list=13%, signal=30%
-#&gt; GO:0002443 1.682491e-21 3899 tags=34%, list=14%, signal=30%
-#&gt; GO:0002449 1.464687e-18 3144 tags=35%, list=12%, signal=32%
-#&gt; GO:0016064 1.648323e-18 2665 tags=40%, list=10%, signal=37%
-#&gt; GO:0019724 6.118778e-18 2665 tags=40%, list=10%, signal=36%
-#&gt; GO:0016441 5.351899e-16 1814  tags=30%, list=7%, signal=28%
+#&gt; GO:0002460 3.618611e-23 3405 tags=34%, list=13%, signal=30%
+#&gt; GO:0002443 5.804775e-22 3899 tags=34%, list=14%, signal=30%
+#&gt; GO:0002449 4.806367e-18 3144 tags=35%, list=12%, signal=32%
+#&gt; GO:0019724 1.358609e-17 2665 tags=40%, list=10%, signal=36%
+#&gt; GO:0016064 1.792886e-17 2665 tags=40%, list=10%, signal=37%
+#&gt; GO:0035195 3.838014e-16 1814  tags=31%, list=7%, signal=30%
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      core_enrichment
 #&gt; GO:0002460                                                                                                                                                                                   IL23R/IL6R/ZBTB1/STAT4/EXO1/SLC11A1/C5/SERPING1/GATA3/ANXA1/CR1/CD1E/WAS/MYO1G/MEF2C/TLR8/SLAMF6/TNFRSF1B/FCER1G/KLRC1/CD19/LIG4/PRF1/CEACAM1/HSPD1/IL10/IGHV3-66/CD7/SLAMF1/SCART1/FCMR/FCGR2A/IGHV4-61/CLU/BCL6/TFRC/FCGR3A/IGLL5/IGLC1/HLX/PTPRC/C9/IGHV3-73/ARID5A/IGHV3-43/KMT5C/IGHV1-18/CLCF1/IL18/MIR21/CD70/LILRB4/BACH2/IGHV3-48/IGHV3-15/IGHG4/RELB/IL1RL1/IGKC/C3/LY9/KLHL6/TREM2/CFI/IGHV5-10-1/IGHV3-49/IGHV4-39/IL18R1/NFKB2/CD1A/IGHV1-69/IGHV3-74/IGHV7-4-1/IGLC6/IGHV6-1/IGHE/CD55/IGLC2/IGHV1-3/CLC/IGHV3-11/ICAM1/IL7R/ULBP1/IGHV3-64D/IGHG2/KLRD1/IGHG1/IGHV1-69D/IGHG3/IGHV3-23/TNFAIP3/IGHV1-58/CD1B/IGHA1/C2/IGHV3-16/IGLC3/BCL3/FCGR3B/IGHD/IGHV3-13/ZC3H12A/IGHA2/IGHV3-7/NFKBID/PSG9/CR2/IGHV3-53/NFKBIZ/IGHV3-33/IGHV5-51/IGHV3-20/IGHV3-30/IGLC7/IGHV3-72/CXCL13/CD69/IGHV4-28/IL1B/SOCS3/JUNB/IGHV4-4/IL6
 #&gt; GO:0002443 CD46/CD84/PTAFR/IL2RB/NKG7/NOS2/IL13RA2/NBN/CLEC7A/RNF19B/CYRIB/NLRP3/SCNN1B/IL23R/IL6R/ZBTB1/EXO1/RAC2/DHX36/C5/SERPING1/GATA3/CR1/KLRB1/CD1E/WAS/MYO1G/PLCG2/TLR8/SLAMF6/GZMB/VAMP7/TNFRSF1B/KLRC2/FCER1G/KLRC1/STXBP1/FGR/CD19/LIG4/PRF1/RAB44/PIK3R6/CEACAM1/HSPD1/ITGB2/IL10/IGHV3-66/CD7/TICAM1/SLAMF1/SCART1/SERPINB9/ADGRE2/ARL8B/STXBP3/FCMR/FCGR2A/ANXA3/IGHV4-61/CD96/KIT/CLU/BCL6/TFRC/FCGR3A/IGLL5/IGLC1/PTPRC/C9/IGHV3-73/ARID5A/IGHV3-43/DNASE1L3/KMT5C/SLAMF7/IGHV1-18/CLCF1/SLC18A2/IL18/CLNK/CD70/LILRB4/IGHV3-48/IGHV3-15/IGHG4/CXCL6/IGKC/C3/TREM2/CFI/IGHV5-10-1/STAP1/IGHV3-49/NCR1/IGHV4-39/IL18R1/CD1A/IGHV1-69/IL18RAP/SH2D1B/IGHV3-74/IGHV7-4-1/IGLC6/IGHV6-1/IGHE/CD55/IGLC2/CD177/IGHV1-3/CLC/IGHV3-11/ICAM1/KLRC3/IL7R/ULBP1/IGHV3-64D/IGHG2/KLRD1/IGHG1/IGHV1-69D/IGHG3/IGHV3-23/IGHV1-58/CD1B/FOXF1/IGHA1/C2/IGHV3-16/IGLC3/BCL3/FCGR3B/IGHD/IGHV3-13/IGHA2/IGHV3-7/CR2/IGHV3-53/NFKBIZ/IGHV3-33/IGHV5-51/IGHV3-20/IGHV3-30/IGLC7/IGHV3-72/FCAR/IGHV4-28/TREM1/IL1B/IGHV4-4/IL6/CCL3/NR4A3
 #&gt; GO:0002449                                                                                                                                                                               IL2RB/NKG7/IL13RA2/NBN/RNF19B/CYRIB/NLRP3/IL23R/ZBTB1/EXO1/C5/SERPING1/GATA3/CR1/KLRB1/CD1E/WAS/MYO1G/TLR8/SLAMF6/GZMB/VAMP7/TNFRSF1B/KLRC2/FCER1G/KLRC1/CD19/LIG4/PRF1/PIK3R6/CEACAM1/HSPD1/IL10/IGHV3-66/CD7/SLAMF1/SCART1/SERPINB9/ARL8B/FCMR/FCGR2A/IGHV4-61/CD96/CLU/BCL6/TFRC/FCGR3A/IGLL5/IGLC1/PTPRC/C9/IGHV3-73/ARID5A/IGHV3-43/KMT5C/SLAMF7/IGHV1-18/CLCF1/IL18/CLNK/CD70/LILRB4/IGHV3-48/IGHV3-15/IGHG4/IGKC/C3/TREM2/CFI/IGHV5-10-1/IGHV3-49/NCR1/IGHV4-39/IL18R1/CD1A/IGHV1-69/IL18RAP/SH2D1B/IGHV3-74/IGHV7-4-1/IGLC6/IGHV6-1/IGHE/CD55/IGLC2/IGHV1-3/CLC/IGHV3-11/ICAM1/KLRC3/IL7R/ULBP1/IGHV3-64D/IGHG2/KLRD1/IGHG1/IGHV1-69D/IGHG3/IGHV3-23/IGHV1-58/CD1B/IGHA1/C2/IGHV3-16/IGLC3/BCL3/FCGR3B/IGHD/IGHV3-13/IGHA2/IGHV3-7/CR2/IGHV3-53/NFKBIZ/IGHV3-33/IGHV5-51/IGHV3-20/IGHV3-30/IGLC7/IGHV3-72/IGHV4-28/IL1B/IGHV4-4/IL6
-#&gt; GO:0016064                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         C5/SERPING1/CR1/TLR8/FCER1G/CD19/LIG4/HSPD1/IL10/IGHV3-66/FCMR/FCGR2A/IGHV4-61/CLU/BCL6/TFRC/FCGR3A/IGLL5/IGLC1/PTPRC/C9/IGHV3-73/IGHV3-43/KMT5C/IGHV1-18/CLCF1/IGHV3-48/IGHV3-15/IGHG4/IGKC/C3/TREM2/CFI/IGHV5-10-1/IGHV3-49/IGHV4-39/IGHV1-69/IGHV3-74/IGHV7-4-1/IGLC6/IGHV6-1/IGHE/CD55/IGLC2/IGHV1-3/IGHV3-11/IGHV3-64D/IGHG2/IGHG1/IGHV1-69D/IGHG3/IGHV3-23/IGHV1-58/IGHA1/C2/IGHV3-16/IGLC3/BCL3/FCGR3B/IGHD/IGHV3-13/IGHA2/IGHV3-7/CR2/IGHV3-53/NFKBIZ/IGHV3-33/IGHV5-51/IGHV3-20/IGHV3-30/IGLC7/IGHV3-72/IGHV4-28/IGHV4-4
 #&gt; GO:0019724                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    C5/SERPING1/CR1/TLR8/FCER1G/CD19/LIG4/HSPD1/IL10/IGHV3-66/FCMR/FCGR2A/IGHV4-61/CLU/BCL6/TFRC/FCGR3A/IGLL5/IGLC1/PTPRC/C9/IGHV3-73/IGHV3-43/KMT5C/IGHV1-18/CLCF1/CD70/IGHV3-48/IGHV3-15/IGHG4/IGKC/C3/TREM2/CFI/IGHV5-10-1/IGHV3-49/IGHV4-39/IGHV1-69/IGHV3-74/IGHV7-4-1/IGLC6/IGHV6-1/IGHE/CD55/IGLC2/IGHV1-3/IGHV3-11/IGHV3-64D/IGHG2/IGHG1/IGHV1-69D/IGHG3/IGHV3-23/IGHV1-58/IGHA1/C2/IGHV3-16/IGLC3/BCL3/FCGR3B/IGHD/IGHV3-13/IGHA2/IGHV3-7/CR2/IGHV3-53/NFKBIZ/IGHV3-33/IGHV5-51/IGHV3-20/IGHV3-30/IGLC7/IGHV3-72/IGHV4-28/IGHV4-4
-#&gt; GO:0016441                                                                                                                                                                                                                                                                 MIR30D/MIR29A/MIRLET7G/MIR181B1/MIR362/MIR503/MIR425/MIR195/MIR103A2/MIRLET7A3/MIRLET7A1/MIRLET7B/MIRLET7D/MIR708/MIR148B/MIR99A/MIR345/MIRLET7C/MIR130A/MIR27B/MIR30B/MIR193A/MIR30C1/MIR107/MIR190A/MIR29B2/MIR501/MIR331/MIR23B/MIR326/MIR1251/MIR125B2/MIR98/MIR204/MIR532/MIR126/MIR3184/MIR24-1/MIR497/MIR188/MIRLET7F2/MIR29C/LIN28A/MIR455/MIRLET7F1/MIR101-1/MIRLET7I/MIR106B/MIR339/MIR191/MIR194-2/MIR93/MIR3074/MIR135A2/MIR30E/MIR500A/MIR196B/MIR152/MIR187/MOV10L1/MIR125B1/MIR575/MIR10A/MIR224/MIR143/MIR219A1/MIR135B/ENDOU/MIRLET7A2/MIR500B/MIR25/MIR657/MIR574/MIR200B/MIR185/MIR378A/MIR3619/MIR214/MIRLET7E/MIR423/MIR26A1/MIR197/MIR28/MIR9-2HG/MIR615/MIR3120/MIR940/MIR26B/MIR1306/MIR1207/MIR192/MIR1225/MIR10B/MIR589/MIR365A</code></pre>
+#&gt; GO:0016064                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         C5/SERPING1/CR1/TLR8/FCER1G/CD19/LIG4/HSPD1/IL10/IGHV3-66/FCMR/FCGR2A/IGHV4-61/CLU/BCL6/TFRC/FCGR3A/IGLL5/IGLC1/PTPRC/C9/IGHV3-73/IGHV3-43/KMT5C/IGHV1-18/CLCF1/IGHV3-48/IGHV3-15/IGHG4/IGKC/C3/TREM2/CFI/IGHV5-10-1/IGHV3-49/IGHV4-39/IGHV1-69/IGHV3-74/IGHV7-4-1/IGLC6/IGHV6-1/IGHE/CD55/IGLC2/IGHV1-3/IGHV3-11/IGHV3-64D/IGHG2/IGHG1/IGHV1-69D/IGHG3/IGHV3-23/IGHV1-58/IGHA1/C2/IGHV3-16/IGLC3/BCL3/FCGR3B/IGHD/IGHV3-13/IGHA2/IGHV3-7/CR2/IGHV3-53/NFKBIZ/IGHV3-33/IGHV5-51/IGHV3-20/IGHV3-30/IGLC7/IGHV3-72/IGHV4-28/IGHV4-4
+#&gt; GO:0035195                                                                                                                                                                                                                                                                               MIR30D/MIR29A/MIRLET7G/MIR181B1/MIR362/MIR503/MIR425/MIR195/MIR103A2/MIRLET7A3/MIRLET7A1/MIRLET7B/MIRLET7D/MIR708/MIR148B/MIR99A/MIR345/MIRLET7C/MIR130A/MIR27B/MIR30B/MIR193A/MIR30C1/MIR107/MIR190A/MIR29B2/MIR501/MIR331/MIR23B/MIR326/MIR1251/MIR125B2/MIR98/MIR204/MIR532/MIR126/MIR3184/MIR24-1/MIR497/MIR188/MIRLET7F2/MIR29C/LIN28A/MIR455/MIRLET7F1/MIR101-1/MIRLET7I/MIR106B/MIR339/MIR191/MIR194-2/MIR93/MIR3074/MIR135A2/MIR30E/MIR500A/MIR196B/MIR152/MIR187/MIR125B1/MIR575/MIR10A/MIR224/MIR143/MIR219A1/MIR135B/MIRLET7A2/MIR500B/MIR25/MIR657/MIR574/MIR200B/MIR185/MIR378A/MIR3619/MIR214/MIRLET7E/MIR423/MIR26A1/MIR197/MIR28/MIR9-2HG/MIR615/MIR3120/MIR940/MIR26B/MIR1306/MIR1207/MIR192/MIR1225/MIR10B/MIR589/MIR365A</code></pre>
 <p>A ridge plot provides a density overview of enrichment score distributions across top GO terms:</p>
 <div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="enrichment.html#cb106-1" tabindex="-1"></a><span class="fu">ridgeplot</span>(gsea_go, <span class="at">showCategory =</span> <span class="dv">15</span>)</span></code></pre></div>
 <p><img src="TCMDATA_files/figure-html/gsea-go-plot-1.png" width="95%" style="display: block; margin: auto;" /></p>
