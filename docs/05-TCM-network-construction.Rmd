@@ -1,6 +1,6 @@
 # TCM network construction {#network-construction}
 
-A core objective of network pharmacology is to reveal the multi-component, multi-target therapeutic mechanism of Traditional Chinese Medicine through network visualization. `TCMDATA` provides miscellaneous approaches based on `ggtangle` (network) and `ggalluvial` (Sankey diagram) for constructing and visualizing herb–molecule–target relationship networks:
+A core objective of network pharmacology is to reveal the multi-component, multi-target therapeutic mechanism of Traditional Chinese Medicine through network visualization. `TCMDATA` provides two complementary approaches for constructing and visualizing herb–molecule–target relationship networks: **Sankey diagrams** via `ggalluvial`<sup>[1]</sup> for depicting the directional flow of interactions, and **force-directed network graphs** via `ggtangle`<sup>[2]</sup> for revealing topological structure and hub nodes.
 
 ---
 
@@ -25,23 +25,30 @@ The returned data frame contains three core columns: `herb`, `molecule`, and `ta
 
 ## Sankey diagram visualization
 
-The Sankey diagram displays herb → molecule → target flows, with band width proportional to shared frequency. `tcm_sankey()` is powered by `ggalluvial` and supports rich color customization.
+The Sankey diagram displays herb → molecule → target flows, with band width proportional to shared frequency. `tcm_sankey()` is powered by `ggalluvial`<sup>[1]</sup> and supports rich color customization.
 
 ### Basic usage
 
-```{r sankey-basic, fig.width=12, fig.height=10, fig.align='center', out.width='100%', collapse=FALSE}
+```{r sankey-basic, fig.width=12, fig.height=18, fig.align='center', out.width='100%', collapse=FALSE}
 library(ggplot2)
 
-# Subset to top molecules (by frequency) for readability
+## prepare input data
 top_mol <- df %>%
   count(molecule, sort = TRUE) %>%
-  head(8) %>%
+  head(5) %>%
   pull(molecule)
 
 df_sub <- df %>% filter(molecule %in% top_mol)
 
-# Draw the Sankey diagram
-p_sankey <- tcm_sankey(df_sub)
+set.seed(2026)
+sampled_targets <- df_sub %>%
+  distinct(target) %>%
+  sample_n(min(30, n())) %>%
+  pull(target)
+
+df_sankey <- df_sub %>% filter(target %in% sampled_targets)
+
+p_sankey <- tcm_sankey(df_sankey)
 print(p_sankey)
 ```
 
@@ -49,38 +56,28 @@ Each vertical band represents a stratum (herb, molecule, or target), and the col
 
 ### Customizing colors and appearance
 
-`tcm_sankey()` offers fine-grained control over color palettes, font style, flow transparency, and curvature:
+`tcm_sankey()` offers fine-grained control over color palettes, font style, flow transparency, and curvature. Below is an example with a publication-ready color scheme:
 
-```{r sankey-custom, fig.width=12, fig.height=10, fig.align='center', out.width='100%', collapse=FALSE}
+```{r sankey-custom, fig.width=12, fig.height=18, fig.align='center', out.width='100%', collapse=FALSE}
 p_sankey2 <- tcm_sankey(
-  df_sub,
-  herb_cols   = c("#E41A1C", "#377EB8"),
-  mol_cols    = c("#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3",
-                  "#A6D854", "#FFD92F", "#E5C494", "#B3B3B3"),
-  target_cols = c("#1B9E77", "#D95F02", "#7570B3", "#E7298A",
-                  "#66A61E", "#E6AB02", "#A6761D", "#666666"),
-  font_size   = 3.2,
-  alpha       = 0.35,
+  df_sankey,
+  herb_cols   = c("#C44E52", "#4C72B0"),
+  mol_cols    = c("#55A868", "#DD8452", "#8172B3", "#C44E52",
+                  "#DA8BC3"),
+  target_cols = c("#1A7A6D", "#BF6D2A", "#6A5ACD", "#C04779",
+                  "#5B8C2A", "#D4A017", "#8B6914", "#607D8B"),
+  font_size   = 3.5,
+  alpha       = 0.4,
   knot.pos    = 0.25
 )
 print(p_sankey2)
 ```
 
-Key parameters:
-
-| Parameter | Description |
-|-----------|-------------|
-| `herb_cols`, `mol_cols`, `target_cols` | Color vectors for each layer |
-| `font_size` | Node label size |
-| `alpha` | Flow transparency (0–1) |
-| `knot.pos` | Curvature of flow bands (0–1) |
-| `width` | Node/flow band width |
-
 ---
 
 ## Network graph with `ggtangle`
 
-While the Sankey diagram excels at showing flows, a force-directed network layout better reveals topological structure, hub nodes, and community patterns. `prepare_herb_graph()` builds an `igraph` object with pre-computed node metrics, and [ggtangle](https://github.com/YuLab-SMU/ggtangle) renders it as a `ggplot`-based network.
+While the Sankey diagram excels at showing flows, a force-directed network layout can reveal topological structure, hub nodes, and community patterns. `prepare_herb_graph()` builds an `igraph` object with pre-computed node metrics, and `ggtangle`<sup>[2]</sup> renders it as a `ggplot`-based network.
 
 ### Building the graph
 
@@ -104,60 +101,90 @@ cat("Node types:", paste(unique(V(g)$type), collapse = ", "), "\n")
 
 ### Basic network visualization
 
-`ggtangle` extends `ggplot2` to natively support `igraph` objects. You can use familiar aesthetics (`color`, `size`, `shape`) and layers (`geom_point`, `geom_text_repel`).
+`ggtangle`<sup>[2]</sup> extends `ggplot2` to natively support `igraph` objects. You can use familiar aesthetics (`color`, `size`, `shape`) and layers (`geom_point`, `geom_text_repel`).
 
 ```{r net-basic, fig.width=10, fig.height=8, fig.align='center', out.width='95%', collapse=FALSE}
 library(ggtangle)
 library(ggrepel)
 
+# Define a publication-quality color palette
+node_colors <- c(
+  "Herb"     = "#C44E52",
+  "Molecule" = "#4C72B0",
+  "Target"   = "#55A868"
+)
+
+# Define node shape mapping
+node_shapes <- c(
+  "Herb"     = 18,   # diamond
+  "Molecule" = 16,   # filled circle
+  "Target"   = 15    # filled square
+)
+
 set.seed(42)
 p_net <- ggplot(g, layout = "kk") +
-  geom_edge(alpha = 0.3, color = "grey60") +
-  geom_point(aes(color = type, size = centrality)) +
-  scale_color_manual(values = c(
-    "Herb"     = "#E41A1C",
-    "Molecule" = "#377EB8",
-    "Target"   = "#4DAF4A"
-  )) +
-  scale_size_continuous(range = c(2, 8)) +
+  geom_edge(alpha = 0.18, color = "grey60", linewidth = 0.3) +
+  geom_point(aes(color = type, size = centrality, shape = type), alpha = 0.85) +
+  scale_color_manual(values = node_colors, name = "Node Type") +
+  scale_shape_manual(values = node_shapes, name = "Node Type") +
+  scale_size_continuous(name = "Centrality", range = c(2, 9)) +
+  guides(
+    color = guide_legend(order = 1, override.aes = list(size = 4)),
+    shape = guide_legend(order = 1),
+    size  = guide_legend(order = 2)
+  ) +
   theme_void() +
-  labs(title = "Herb–Molecule–Target Network",
-       subtitle = "Layout: Kamada-Kawai | Node size: Eigenvector centrality")
+  theme(
+    legend.position  = "right",
+    legend.text      = element_text(size = 10),
+    legend.title     = element_text(size = 11, face = "bold"),
+    plot.margin      = margin(5, 5, 5, 5)
+  )
 
 print(p_net)
 ```
 
 In this plot:
 
-- **Red nodes** represent herbs, **blue** represent molecules, and **green** represent targets.
+- **Diamond** nodes (<span style="color:#C44E52">■</span>) represent herbs, **circles** (<span style="color:#4C72B0">●</span>) represent molecules, and **squares** (<span style="color:#55A868">■</span>) represent targets.
 - **Larger nodes** have higher eigenvector centrality, indicating greater topological importance.
 - The Kamada-Kawai (`"kk"`) layout positions strongly connected nodes closer together.
 
 ### Adding node labels
 
-For networks with many nodes, `ggrepel::geom_text_repel()` prevents label overlap. Here we label only high-centrality nodes:
+For networks with many nodes, `ggrepel::geom_text_repel()` prevents label overlap. Here we label only high-centrality nodes (top 50%):
 
 ```{r net-labels, fig.width=11, fig.height=9, fig.align='center', out.width='95%', collapse=FALSE}
 set.seed(42)
 
-# Extract centrality threshold (top 30%)
-cent_thresh <- quantile(V(g)$centrality, 0.7)
+# Extract centrality threshold (top 50%)
+cent_thresh <- quantile(V(g)$centrality, 0.5)
 
 p_labeled <- ggplot(g, layout = "kk") +
-  geom_edge(alpha = 0.25, color = "grey70") +
-  geom_point(aes(color = type, size = centrality), alpha = 0.85) +
+  geom_edge(alpha = 0.15, color = "grey55", linewidth = 0.3) +
+  geom_point(aes(color = type, size = centrality, shape = type), alpha = 0.85) +
   geom_text_repel(
     aes(label = ifelse(centrality >= cent_thresh, name, "")),
-    size = 3, max.overlaps = 25, segment.alpha = 0.4
+    size = 2.8, fontface = "italic",
+    max.overlaps = 30, segment.alpha = 0.3,
+    segment.size = 0.3, segment.color = "grey50",
+    box.padding = 0.4, point.padding = 0.3
   ) +
-  scale_color_manual(values = c(
-    "Herb"     = "#E41A1C",
-    "Molecule" = "#377EB8",
-    "Target"   = "#4DAF4A"
-  )) +
-  scale_size_continuous(range = c(1.5, 9)) +
+  scale_color_manual(values = node_colors, name = "Node Type") +
+  scale_shape_manual(values = node_shapes, name = "Node Type") +
+  scale_size_continuous(name = "Centrality", range = c(1.5, 10)) +
+  guides(
+    color = guide_legend(order = 1, override.aes = list(size = 4)),
+    shape = guide_legend(order = 1),
+    size  = guide_legend(order = 2)
+  ) +
   theme_void() +
-  labs(title = "Labeled Network (Top 30% Centrality Nodes)")
+  theme(
+    legend.position  = "right",
+    legend.text      = element_text(size = 10),
+    legend.title     = element_text(size = 11, face = "bold"),
+    plot.margin      = margin(5, 5, 5, 5)
+  )
 
 print(p_labeled)
 ```
@@ -171,34 +198,39 @@ library(aplot)
 
 set.seed(42)
 base_layers <- list(
-  geom_edge(alpha = 0.25, color = "grey70"),
-  geom_point(aes(color = type, size = centrality)),
-  scale_color_manual(values = c(
-    "Herb" = "#E41A1C", "Molecule" = "#377EB8", "Target" = "#4DAF4A")),
-  scale_size_continuous(range = c(1.5, 7)),
-  theme_void()
+  geom_edge(alpha = 0.15, color = "grey55", linewidth = 0.3),
+  geom_point(aes(color = type, size = centrality, shape = type), alpha = 0.85),
+  scale_color_manual(values = node_colors, name = "Node Type"),
+  scale_shape_manual(values = node_shapes, name = "Node Type"),
+  scale_size_continuous(name = "Centrality", range = c(1.5, 7)),
+  guides(
+    color = guide_legend(order = 1, override.aes = list(size = 3.5)),
+    shape = guide_legend(order = 1),
+    size  = guide_legend(order = 2)
+  ),
+  theme_void(),
+  theme(
+    plot.title       = element_text(hjust = 0.5, face = "bold", size = 13),
+    legend.position  = "bottom",
+    legend.text      = element_text(size = 9),
+    legend.title     = element_text(size = 10, face = "bold")
+  )
 )
 
-p_fr  <- ggplot(g, layout = "fr") + base_layers + ggtitle("Fruchterman-Reingold")
-p_kk  <- ggplot(g, layout = "kk") + base_layers + ggtitle("Kamada-Kawai")
-p_star <- ggplot(g, layout = "star") + base_layers + ggtitle("Star")
+p_fr     <- ggplot(g, layout = "fr")     + base_layers + ggtitle("Fruchterman–Reingold")
+p_kk     <- ggplot(g, layout = "kk")     + base_layers + ggtitle("Kamada–Kawai")
+p_star   <- ggplot(g, layout = "star")   + base_layers + ggtitle("Star")
 p_nicely <- ggplot(g, layout = "nicely") + base_layers + ggtitle("Nicely (auto)")
 
 plot_list(p_fr, p_kk, p_star, p_nicely, ncol = 2)
 ```
 
-| Layout | Best for |
-|--------|----------|
-| `"kk"` (Kamada-Kawai) | Medium-sized networks with clear clusters |
-| `"fr"` (Fruchterman-Reingold) | Dense networks; force-directed separation |
-| `"star"` | Highlighting a central hub node |
-| `"nicely"` | Automatic layout selection by igraph |
 
 ### Enriching the network with external data
 
-Using the `%<+%` operator from `ggfun`, you can bind additional data to the network for richer visual encodings:
+Using the `%<+%` operator from `ggfun`, you can bind additional data to the network for richer visual encodings. Here, node size is mapped to **degree** (the number of direct interactions), and all node labels are displayed:
 
-```{r net-external, fig.width=10, fig.height=8, fig.align='center', out.width='95%', collapse=FALSE}
+```{r net-external, fig.width=12, fig.height=10, fig.align='center', out.width='100%', collapse=FALSE}
 # Create a data frame with node-level metrics
 node_df <- data.frame(
   label       = V(g)$name,
@@ -210,31 +242,42 @@ node_df <- data.frame(
 
 set.seed(42)
 p_enriched <- ggplot(g, layout = "kk") +
-  geom_edge(alpha = 0.2, color = "grey70") +
-  geom_point(aes(color = type, size = degree), alpha = 0.85) +
-  scale_color_manual(values = c(
-    "Herb" = "#E41A1C", "Molecule" = "#377EB8", "Target" = "#4DAF4A"
-  )) +
-  scale_size_continuous(name = "Degree", range = c(2, 10)) +
+  geom_edge(alpha = 0.15, color = "grey55", linewidth = 0.3) +
+  geom_point(aes(color = type, size = degree, shape = type), alpha = 0.85) +
+  geom_text_repel(
+    aes(label = name, color = type),
+    size = 2.5, fontface = "italic",
+    max.overlaps = 100, segment.alpha = 0.25,
+    segment.size = 0.2, segment.color = "grey60",
+    box.padding = 0.3, point.padding = 0.2,
+    show.legend = FALSE
+  ) +
+  scale_color_manual(values = node_colors, name = "Node Type") +
+  scale_shape_manual(values = node_shapes, name = "Node Type") +
+  scale_size_continuous(name = "Degree", range = c(2, 11)) +
+  guides(
+    color = guide_legend(order = 1, override.aes = list(size = 4)),
+    shape = guide_legend(order = 1),
+    size  = guide_legend(order = 2)
+  ) +
   theme_void() +
-  labs(title = "Network Colored by Node Type, Sized by Degree")
+  theme(
+    legend.position  = "right",
+    legend.text      = element_text(size = 10),
+    legend.title     = element_text(size = 11, face = "bold"),
+    plot.margin      = margin(10, 10, 10, 10)
+  )
 
 print(p_enriched)
 ```
 
 ---
 
-## Comparing the two approaches
+## References
 
-| Feature | Sankey (`tcm_sankey`) | Network (`ggtangle`) |
-|---------|----------------------|----------------------|
-| Best for | Displaying flows and proportions | Topology and hub detection |
-| Layout | Fixed three-column | Flexible (force-directed, circular, etc.) |
-| Node metrics | Not applicable | Degree, centrality, betweenness, PageRank |
-| Interactivity | Static | Extensible with `ggiraph` |
-| Scalability | ~50–200 connections | ~30–500 nodes |
+1. Brunson JC (2020). "ggalluvial: Layered Grammar for Alluvial Plots." *Journal of Open Source Software*, **5**(49), 2017. doi: [10.21105/joss.02017](https://doi.org/10.21105/joss.02017).
 
-Both visualizations are complementary: the Sankey diagram provides an intuitive overview of which herbs contribute which molecules to which targets, while the network graph reveals structural properties like hub molecules, bridge targets, and community modules.
+2. Yu G (2025). *ggtangle: Draw Network with Data*. R package version 0.1.1. doi: [10.32614/CRAN.package.ggtangle](https://doi.org/10.32614/CRAN.package.ggtangle).
 
 ---
 

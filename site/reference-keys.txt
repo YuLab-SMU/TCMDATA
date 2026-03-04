@@ -9,6 +9,7 @@ visualization
 exporting-results
 herb-ora
 example-diabetic-nephropathy
+references
 session-information-1
 molecule-detection
 resolving-compound-identifiers
@@ -16,6 +17,7 @@ using-resolve_cid
 using-getcid
 retrieving-chemical-properties
 similarity-searching
+references-1
 session-information-2
 target-retrieval
 disease-db
@@ -31,7 +33,7 @@ prepare-gene-sets
 venn-diagram
 upset-plot
 extract-intersection-results
-references
+references-2
 session-information-3
 network-construction
 preparing-the-data
@@ -44,7 +46,7 @@ basic-network-visualization
 adding-node-labels
 alternative-layouts
 enriching-the-network-with-external-data
-comparing-the-two-approaches
+references-3
 session-information-4
 enrichment
 over-representation-analysis-ora
@@ -57,8 +59,9 @@ go-bar-plot
 go-circle-plot
 gene-set-enrichment-analysis-gsea
 prepare-ranked-gene-list
-kegg-gsea
-go-gsea
+kegg-gsea-analysis
+go-gsea-analysis
+session-information-5
 ppi-analysis
 retrieving-ppi-data-from-string
 network-filtering
@@ -74,6 +77,7 @@ basic-ppi-network
 network-colored-by-community
 hub-centric-star-layout
 multi-layout-comparison
-session-information-5
+references-4
+session-information-6
 other-resources
 topics

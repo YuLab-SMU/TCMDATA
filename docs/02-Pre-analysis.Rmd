@@ -6,7 +6,7 @@ Prior to constructing pharmacological networks, a preliminary literature survey 
 
 ## PubMed literature mining
 
-`get_pubmed_data()` queries the NCBI PubMed database via E-utilities and retrieves publications matching a given TCM–disease keyword pair within a specified time frame. The function returns an S3 object of class `tcm_pubmed`, containing the literature records, annual publication counts, and the query string.
+`get_pubmed_data()` queries the NCBI PubMed database via E-utilities<sup>[1]</sup> and retrieves publications matching a given TCM–disease keyword pair within a specified time frame. The function returns an S3 object of class `tcm_pubmed`, containing the literature records, annual publication counts, and the query string.
 
 A valid email address is required by NCBI for API access.
 
@@ -49,11 +49,21 @@ lit_table <- get_pubmed_table(result, n = 20, file = "pubmed_results.csv")
 head(lit_table)
 ```
 
+```{r, echo=FALSE, comment=""}
+cat('      PMID                                              Title Year                   Journal
+1 41625564 Plasmodium vivax elimination from India may need t 2026              IJID regions
+2 41531728 HMOX1 drives dihydroartemisinin-sensitized ferropt 2026                  iScience
+3 41476774 Heme as activator and target for artemisinin: Towa 2026 Biochemistry and biophysi...
+4 41453501 Recrudescence of Plasmodium falciparum malaria imp 2026 Travel medicine and infec...
+5 41447926 Three new single nucleotide polymorphisms identifi 2026 Diagnostic microbiology a...
+6 41416883 Highlights of Medicinal Chemistry Optimization Str 2026 Journal of medicinal chem...')
+```
+
 ---
 
 ## Herb enrichment analysis {#herb-ora}
 
-A central question in TCM network pharmacology is which herbs possess targets that significantly overlap with a given disease gene set. `herb_enricher()` addresses this through Over-Representation Analysis (ORA), using the herb–target relationships curated in TCMDATA as the annotation background. Internally, it wraps `clusterProfiler::enricher()`.
+A central question in TCM network pharmacology is which herbs possess targets that significantly overlap with a given disease gene set. `herb_enricher()` addresses this through Over-Representation Analysis (ORA), using the herb–target relationships curated in TCMDATA as the annotation background. Internally, it wraps `clusterProfiler::enricher()`<sup>[2]</sup>.
 
 The logic is analogous to conventional GO or KEGG enrichment: each herb defines a gene set composed of its known targets, and a Fisher's exact test evaluates whether the overlap between the query genes and each herb's targets exceeds what is expected by chance.
 
@@ -86,6 +96,14 @@ barplot(enrich_res, showCategory = 15)
 ```
 
 In the output, `GeneRatio` indicates the fraction of query genes present in each herb's target set, `p.adjust` gives the Benjamini–Hochberg corrected p-value, and `geneID` lists the overlapping gene symbols. Herbs with lower adjusted p-values and higher gene ratios are stronger candidates for subsequent network analysis.
+
+---
+
+## References
+
+1. Sayers EW, Bolton EE, Fine AM, et al. (2026). "Database resources of the National Center for Biotechnology Information in 2026." *Nucleic Acids Research*, **54**(D1), D20–D27. doi: [10.1093/nar/gkaf1060](https://doi.org/10.1093/nar/gkaf1060).
+
+2. Xu S, Hu E, Cai Y, et al. (2024). "Using clusterProfiler to characterize multiomics data." *Nature Protocols*. doi: [10.1038/s41596-024-01020-z](https://doi.org/10.1038/s41596-024-01020-z).
 
 ---
 

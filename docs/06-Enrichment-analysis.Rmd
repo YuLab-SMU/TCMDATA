@@ -273,3 +273,9 @@ A ridge plot provides a density overview of enrichment score distributions acros
 ```{r gsea-go-plot, fig.width=10, fig.height=8, fig.align='center', out.width='95%', collapse=FALSE, message=FALSE}
 ridgeplot(gsea_go, showCategory = 15)
 ```
+
+## Session information
+
+```{r, collapse=FALSE}
+sessionInfo()
+```

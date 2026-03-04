@@ -140,7 +140,7 @@ Researchers typically query multiple databases and take intersection of the resu
 
 Differential expression analysis identifies genes that are significantly altered between disease and control conditions. In the pharmacology network analysis, these DEGs can be integrated with disease targets to prioritize genes that are both statistically significant in expression and biologically linked to the disease phenotype. The intersection of DEGs and disease targets often represents the most promising candidates for further network analysis and experimental validation.
 
-`TCMDATA` includes a demo `DESeq2` result (Love et al., 2014) from GSE142025 (early DN vs. control) for illustration. Further details about the dataset can be found in the [original GEO page](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE142025).
+`TCMDATA` includes a demo `DESeq2` result<sup>[4]</sup> from GSE142025<sup>[5]</sup> (early DN vs. control) for illustration. Further details about the dataset can be found in the [original GEO page](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE142025).
 
 ### Load and inspect data
 
@@ -155,7 +155,7 @@ table(deg_earlydn$g)
 
 ### Volcano plot with `ivolcano`
 
-[`ivolcano`](https://github.com/YuLab-SMU/ivolcano) is an R package that provides both **static** and **interactive** volcano plot visualizations for differential expression results. The interactive mode allows users to explore DEGs dynamically, which hovers to display gene details, click to redirect to external databases, and zoom into specific regions.
+[`ivolcano`](https://github.com/YuLab-SMU/ivolcano)<sup>[6]</sup> is an R package that provides both **static** and **interactive** volcano plot visualizations for differential expression results. The interactive mode allows users to explore DEGs dynamically, which hovers to display gene details, click to redirect to external databases, and zoom into specific regions.
 
 By specifying dual thresholds, `ivolcano` automatically applies a FigureYa-styled color scheme that clearly separates genes into significance tiers.
 
@@ -230,12 +230,12 @@ venn_df |> head()
 ```
 
 Then, the Venn diagram can be plotted with `ggvenn_plot()`:
-```{r venn-3set, fig.width=8, fig.height=7, fig.align='center', out.width='80%', collapse=FALSE}
+```{r venn-3set, fig.width=12, fig.height=12, fig.align='center', out.width='80%', collapse=FALSE}
 venn1 <- ggvenn_plot(venn_df)
 
 venn2 <- ggvenn_plot(venn_df, set.color = c("#FF8748", "#5BAA56", "#B8BB5B"), stroke.color = "white")
 
-aplot::plot_list(venn1, venn2, ncol = 2)
+aplot::plot_list(venn1, venn2, ncol = 1)
 ```
 
 
@@ -243,7 +243,7 @@ aplot::plot_list(venn1, venn2, ncol = 2)
 
 When comparing 4 or more sets, an UpSet plot provides a clearer intersection overview than a Venn diagram. The function `upset_plot()` from [`aplotExtra`](https://github.com/YuLab-SMU/aplotExtra) package takes a **named list** of character vectors and renders an UpSet-style visualization:
 
-```{r upset-plot, fig.width=8, fig.height=5, fig.align='center', out.width='90%', collapse=FALSE}
+```{r upset-plot, fig.width=10, fig.height=8, fig.align='center', out.width='90%', collapse=FALSE}
 library(aplotExtra)
 
 gene_list <- list(
@@ -252,20 +252,7 @@ gene_list <- list(
   OpenTargets = dn_otp
 )
 
-upset_plot(gene_list)
-```
-
-If a fourth set (e.g., CTD targets) is available, simply extend the list:
-
-```{r upset-4set, eval=FALSE, fig.width=13, fig.height=6, fig.align='center', out.width='90%', collapse=FALSE}
-gene_list4 <- list(
-  DEGs        = degs,
-  GeneCards   = dn_gcds,
-  OpenTargets = dn_otp,
-  CTD         = ctd_targets
-)
-
-upset_plot(gene_list4)
+upset_plot(gene_list, color.intersect.by = "Set2", color.set.by = "Dark2")
 ```
 
 ### Extract intersection results
@@ -304,6 +291,10 @@ The core intersection genes, those shared across multiple databases and DEGs, ca
 3. Davis AP, Wiegers TC, Sciaky D, Barkalow F, Strong M, Wyatt B, Wiegers J, McMorran R, Abrar S, Mattingly CJ. Comparative Toxicogenomics Database's 20th anniversary: update 2025. *Nucleic Acids Research* (2024). doi: [10.1093/nar/gkae822](https://doi.org/10.1093/nar/gkae822).
 
 4. Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. *Genome Biology* (2014), 15, 550. doi: [10.1186/s13059-014-0550-8](https://doi.org/10.1186/s13059-014-0550-8).
+
+5. Fan Y, Yi Z, D'Agati VD, Sun Z, et al. Comparison of Kidney Transcriptomic Profiles of Early and Advanced Diabetic Nephropathy Reveals Potential New Mechanisms for Disease Progression. *Diabetes* (2019), 68:2301–2314. doi: [10.2337/db19-0204](https://doi.org/10.2337/db19-0204). PMID: 32086290.
+
+6. Yu G (2025). *ivolcano: Interactive Volcano Plot*. R package version 0.1.0. [https://CRAN.R-project.org/package=ivolcano](https://CRAN.R-project.org/package=ivolcano).
 
 
 ## Session information

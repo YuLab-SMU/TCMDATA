@@ -1,6 +1,6 @@
 # Molecule annotation {#molecule-detection}
 
-After identifying candidate herbs and their associated molecules through the approaches described in `chapter 2`, it is often necessary to annotate these compounds with chemical descriptors and identifiers from public databases. `TCMDATA` provides a suite of PubChem utilities to facilitate compound annotation and similarity searching.
+After identifying candidate herbs and their associated molecules through the approaches described in `chapter 2`, it is often necessary to annotate these compounds with chemical descriptors and identifiers from public databases. `TCMDATA` provides a suite of PubChem<sup>[1]</sup> utilities to facilitate compound annotation and similarity searching.
 
 ---
 
@@ -132,6 +132,12 @@ sim_by_name <- compound_similarity(
 ```
 
 The function returns a tibble with columns `query_cid`, `query`, `hit_cid`, `hit_smiles`, and `score` (if computed). This enables efficient filtering and prioritization of structurally related molecules for downstream pharmacological analysis.
+
+---
+
+## References
+
+1. Sayers EW, Bolton EE, Fine AM, et al. (2026). "Database resources of the National Center for Biotechnology Information in 2026." *Nucleic Acids Research*, **54**(D1), D20–D27. doi: [10.1093/nar/gkaf1060](https://doi.org/10.1093/nar/gkaf1060).
 
 ---
 
