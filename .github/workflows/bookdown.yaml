@@ -63,7 +63,7 @@ jobs:
               "aplot", "aplotExtra", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
               "igraph", "ivolcano", "magrittr", "Matrix", "paletteer", "purrr",
               "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils",
-              "ggalluvial", "ggtangle", "ggvenn"
+              "ggalluvial", "ggtangle", "ggvenn", "ggridges"
             ))
           '
 

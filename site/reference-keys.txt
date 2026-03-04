@@ -81,5 +81,12 @@ references-4
 session-information-6
 other-resources
 additional-databases
-tf-gene-interactions-dorothea
+tfgene-interactions-dorothea
+application-example
 gut-microbiotahost-interactions-gutmgene
+application-example-guttcm-integration
+network-visualization-with-ggtangle
+additional-visualization
+heatmap-for-molecular-docking-results
+references-5
+session-information-7
