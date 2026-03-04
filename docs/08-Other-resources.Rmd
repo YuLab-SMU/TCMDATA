@@ -171,6 +171,11 @@ ggdock(dock_matrix, order = "median", type = "tile", label = TRUE, label_size = 
 
 ---
 
+### To be continued
+To be continued in future updates.
+
+---
+
 ## References
 
 1. Garcia-Alonso L, Holland CH, Ibrahim MM, Turei D, Saez-Rodriguez J. Benchmark and integration of resources for the estimation of human transcription factor activities. *Genome Research* (2019), 29(8), 1363–1375. doi: [10.1101/gr.240663.118](https://doi.org/10.1101/gr.240663.118).

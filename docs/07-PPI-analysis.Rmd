@@ -109,7 +109,7 @@ rank_df[1:10, c("name", "degree", "betweenness_w", "closeness_w",
                 "MCC", "MNC", "EPC", "Score_network", "Rank_network")]
 ```
 
-### Radar chart visualization
+### Radar plot of topological metrics
 
 For a target of interest, `get_node_profile()` + `radar_plot()` produces a radar chart showing its normalized centrality fingerprint across multiple dimensions:
 
@@ -136,6 +136,20 @@ plot_list(p_radar1, p_radar2, ncol = 2)
 
 ```{r, echo=FALSE, out.width='95%', fig.align='center'}
 knitr::include_graphics("images/ppi-radar-1.png")
+```
+
+---
+
+### Heatmap of topological metrics
+
+The heatmap provides a global overview of selected nodes across multiple topological metrics simultaneously. `plot_node_heatmap()` generates a Z-score normalized heatmap using `ComplexHeatmap`, with hierarchical clustering to reveal nodes with similar centrality profiles:
+
+```{r ppi-heatmap, fig.width=10, fig.height=12, fig.align='center', out.width='95%', collapse=FALSE}
+# Select key metrics for visualization
+selected_cols <- c("degree", "betweenness", "closeness", "MCC", "MNC", 
+                   "DMNC", "EPC", "radiality", "Stress")
+
+plot_node_heatmap(rank_df, select_cols = selected_cols)
 ```
 
 ---
@@ -189,56 +203,62 @@ The `inflation` parameter controls cluster granularity: higher values (e.g., 3�
 
 ## PPI network visualization {#ppi-vis}
 
-`ggtangle` provides `ggplot2`-native network rendering with full aesthetic control over node color, size, labels, and edge styling.
+High-quality network visualization is essential for interpreting PPI analysis results and preparing publication-ready figures. While Cytoscape remains a popular choice for network visualization, it requires manual GUI operations that are difficult to reproduce and integrate into automated workflows.
 
-### Basic PPI network
+`ggtangle`<sup>[5]</sup> addresses these limitations by providing a `ggplot2`-native framework for network rendering. Key advantages include:
+
+- **Full `ggplot2` compatibility** — Seamless integration with the grammar of graphics; supports all `ggplot2` themes, scales, and annotations.
+- **Reproducibility** — All visualizations are generated programmatically, ensuring consistent results across runs.
+- **Publication-ready output** — Fine-grained control over node aesthetics, edge styling, and layout algorithms for SCI-standard figures.
+- **Direct `igraph` support** — Accepts `igraph` objects directly without format conversion.
+
+### Basic network with topological mapping
+
+The following example maps node **degree** to color and **composite score** to size, using the Fruchterman-Reingold force-directed layout:
 
 ```{r ppi-net-basic, eval=FALSE, fig.width=10, fig.height=8, fig.align='center', out.width='95%', collapse=FALSE}
 library(ggtangle)
 library(ggplot2)
 
 set.seed(2025)
-p_ppi <- ggplot(ppi_ranked, layout = "fr") +
-  geom_edge(alpha = 0.15, color = "grey60") +
+ggplot(ppi_ranked, layout = "fr") +
+  geom_edge(alpha = 0.12, color = "grey60") +
   geom_point(aes(color = degree, size = Score_network), alpha = 0.85) +
   scale_color_gradient(low = "#56B4E9", high = "#D55E00", name = "Degree") +
-  scale_size_continuous(range = c(1.5, 8), name = "Score") +
+  scale_size_continuous(range = c(2, 8), name = "Score") +
   theme_void() +
-  labs(title = "PPI Network — Node color: Degree, Size: Composite score")
-
-print(p_ppi)
+  theme(
+    legend.position = "right",
+    legend.title = element_text(face = "bold", size = 10)
+  )
 ```
 
 ```{r, echo=FALSE, out.width='95%', fig.align='center'}
 knitr::include_graphics("images/ppi-net-basic-1.png")
 ```
 
-### Network colored by community
+### Community-colored network
 
-Overlaying cluster assignments on the network layout reveals modular organization:
+Overlaying cluster assignments reveals modular organization. Hub nodes (top 15% by degree) are labeled using `ggrepel` to avoid text overlap:
 
 ```{r ppi-net-louvain, eval=FALSE, fig.width=11, fig.height=9, fig.align='center', out.width='95%', collapse=FALSE}
 library(ggrepel)
-library(RColorBrewer)
 
 set.seed(2025)
-p_community <- ggplot(ppi_louvain, layout = "fr") +
-  geom_edge(alpha = 0.12, color = "grey70") +
-  geom_point(
-    aes(color = louvain_cluster, size = degree),
-    alpha = 0.85
+ggplot(ppi_louvain, layout = "fr") +
+  geom_edge(alpha = 0.10, color = "grey65") +
+  geom_point(aes(color = louvain_cluster, size = degree), alpha = 0.85) +
+  geom_text_repel(
+    aes(label = ifelse(degree >= quantile(degree, 0.85), name, "")),
+    size = 3, max.overlaps = 25, segment.alpha = 0.3
   ) +
   scale_color_brewer(palette = "Set2", name = "Module") +
   scale_size_continuous(range = c(2, 9), name = "Degree") +
-  geom_text_repel(
-    aes(label = ifelse(degree >= quantile(degree, 0.85), name, "")),
-    size = 3, max.overlaps = 20, segment.alpha = 0.3
-  ) +
   theme_void() +
-  labs(title = "PPI Network — Louvain Community Detection",
-       subtitle = "Labels: top 15% degree nodes")
-
-print(p_community)
+  theme(
+    legend.position = "right",
+    legend.title = element_text(face = "bold", size = 10)
+  )
 ```
 
 ```{r, echo=FALSE, out.width='95%', fig.align='center'}
@@ -247,55 +267,60 @@ knitr::include_graphics("images/ppi-net-louvain-1.png")
 
 ### Hub-centric star layout
 
-The star layout places the highest-degree node at the center, making hub–spoke relationships immediately visible:
+The star layout positions the highest-degree node at the center, emphasizing hub–spoke relationships:
 
 ```{r ppi-net-star, eval=FALSE, fig.width=10, fig.height=8, fig.align='center', out.width='95%', collapse=FALSE}
 set.seed(2025)
-p_star <- ggplot(ppi_ranked, layout = "star") +
-  geom_edge(alpha = 0.15, color = "grey60") +
+ggplot(ppi_ranked, layout = "star") +
+  geom_edge(alpha = 0.12, color = "grey60") +
   geom_point(aes(color = Score_network, size = degree), alpha = 0.85) +
   scale_color_viridis_c(option = "C", name = "Score") +
   scale_size_continuous(range = c(2, 10), name = "Degree") +
   theme_void() +
-  labs(title = "PPI Star Layout — Hub at Center")
-
-print(p_star)
+  theme(
+    legend.position = "right",
+    legend.title = element_text(face = "bold", size = 10)
+  )
 ```
 
 ```{r, echo=FALSE, out.width='95%', fig.align='center'}
 knitr::include_graphics("images/ppi-net-star-1.png")
 ```
 
-### Multi-layout comparison
+### Layout algorithm comparison
 
-```{r ppi-net-layouts, eval=FALSE, fig.width=14, fig.height=10, fig.align='center', out.width='100%', collapse=FALSE}
+Different layouts suit different analytical purposes. The following comparison illustrates four common algorithms:
+
+```{r ppi-net-layouts, eval=FALSE, fig.width=12, fig.height=10, fig.align='center', out.width='100%', collapse=FALSE}
+library(aplot)
+
 set.seed(2025)
 base_layers <- list(
-  geom_edge(alpha = 0.12, color = "grey70"),
+  geom_edge(alpha = 0.10, color = "grey65"),
   geom_point(aes(color = degree, size = Score_network), alpha = 0.85),
-  scale_color_gradient(low = "#56B4E9", high = "#D55E00"),
-  scale_size_continuous(range = c(1.5, 7)),
+  scale_color_gradient(low = "#56B4E9", high = "#D55E00", guide = "none"),
+  scale_size_continuous(range = c(1.5, 6), guide = "none"),
   theme_void()
 )
 
-p_fr     <- ggplot(ppi_ranked, layout = "fr")     + base_layers + ggtitle("Fruchterman-Reingold")
-p_kk     <- ggplot(ppi_ranked, layout = "kk")     + base_layers + ggtitle("Kamada-Kawai")
-p_nicely <- ggplot(ppi_ranked, layout = "nicely")  + base_layers + ggtitle("Nicely (auto)")
-p_star2  <- ggplot(ppi_ranked, layout = "star")    + base_layers + ggtitle("Star")
+p_fr     <- ggplot(ppi_ranked, layout = "fr")     + base_layers
+p_kk     <- ggplot(ppi_ranked, layout = "kk")     + base_layers
+p_nicely <- ggplot(ppi_ranked, layout = "nicely") + base_layers
+p_star   <- ggplot(ppi_ranked, layout = "star")   + base_layers
 
-plot_list(p_fr, p_kk, p_nicely, p_star2, ncol = 2)
+plot_list(p_fr, p_kk, p_nicely, p_star, ncol = 2, labels = c("A", "B", "C", "D"))
 ```
 
 ```{r, echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/ppi-net-layouts-1.png")
 ```
 
-| Layout | Best for |
-|--------|----------|
-| `"fr"` (Fruchterman-Reingold) | Dense networks; force-directed separation |
-| `"kk"` (Kamada-Kawai) | Medium-sized networks with clear clusters |
-| `"star"` | Hub-centric analysis |
-| `"nicely"` | Automatic layout selection by igraph |
+| Panel | Layout | Description | Best for |
+|-------|--------|-------------|----------|
+| A | Fruchterman-Reingold | Force-directed; minimizes edge crossings | Dense networks with many edges |
+| B | Kamada-Kawai | Energy-based; preserves graph distances | Medium networks with clear clusters |
+| C | Nicely | Automatic selection by `igraph` | General-purpose visualization |
+| D | Star | Hub at center, others radially arranged | Hub-centric topology analysis |
 
 ---
 
@@ -308,6 +333,8 @@ knitr::include_graphics("images/ppi-net-layouts-1.png")
 3. Blondel VD, Guillaume JL, Lambiotte R, Lefebvre E. Fast unfolding of communities in large networks. *Journal of Statistical Mechanics: Theory and Experiment* (2008), 2008(10), P10008. doi: [10.1088/1742-5468/2008/10/P10008](https://doi.org/10.1088/1742-5468/2008/10/P10008).
 
 4. van Dongen S. Graph clustering via a discrete uncoupling process. *SIAM Journal on Matrix Analysis and Applications* (2008), 30(1), 121–141. doi: [10.1137/040608635](https://doi.org/10.1137/040608635).
+
+5. Yu G. ggtangle: Draw Network and Phylogenetic Tree Using Grammar of Graphics. R package. doi: [10.32614/CRAN.package.ggtangle](https://doi.org/10.32614/CRAN.package.ggtangle).
 
 ---
 
