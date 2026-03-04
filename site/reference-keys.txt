@@ -80,4 +80,6 @@ multi-layout-comparison
 references-4
 session-information-6
 other-resources
-topics
+additional-databases
+tf-gene-interactions-dorothea
+gut-microbiotahost-interactions-gutmgene

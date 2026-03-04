@@ -1,9 +1,19 @@
 # Other resources {#other-resources}
 
-This chapter introduces additional resources and datasets.
+In this chapter, we provide a curated list of additional resources that complement the `TCMDATA` package for TCM network pharmacology research. These include databases, tools, and R packages that can be integrated into your analysis workflow for enhanced data retrieval, processing, and visualization.
 
-## Topics
+## Additional databases
 
-- TF–target interactions
-- Gut microbiota–metabolite links
-- External databases
+### TF-gene interactions (DoRothEA)
+`TCMDATA` provides a comprehensive dataset containing high-confidence (levels A, B, and C) transcription factor (TF) and target gene interactions for both Human and Mouse, derived from the DoRothEA database.
+
+User can access this data via `data("tf_targets")`:
+```{r, collapse=FALSE}
+data("tf_targets")
+
+tf_targets |> head(10)
+```
+
+This dataset can help you identify key TFs regulating disease-associated genes, perform TF enrichment analysis, and construct regulatory networks in TCM pharmacology studies.
+
+### Gut microbiota–host interactions (GutMGene)

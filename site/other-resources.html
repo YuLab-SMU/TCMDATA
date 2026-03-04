@@ -274,7 +274,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>8</b> Other resources</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="other-resources.html"><a href="other-resources.html#topics"><i class="fa fa-check"></i><b>8.1</b> Topics</a></li>
+<li class="chapter" data-level="8.1" data-path="other-resources.html"><a href="other-resources.html#additional-databases"><i class="fa fa-check"></i><b>8.1</b> Additional databases</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="other-resources.html"><a href="other-resources.html#tf-gene-interactions-dorothea"><i class="fa fa-check"></i><b>8.1.1</b> TF-gene interactions (DoRothEA)</a></li>
+<li class="chapter" data-level="8.1.2" data-path="other-resources.html"><a href="other-resources.html#gut-microbiotahost-interactions-gutmgene"><i class="fa fa-check"></i><b>8.1.2</b> Gut microbiota–host interactions (GutMGene)</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
@@ -298,15 +302,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="other-resources" class="section level1 hasAnchor" number="8">
 <h1><span class="header-section-number">Chapter 8</span> Other resources<a href="other-resources.html#other-resources" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This chapter introduces additional resources and datasets.</p>
-<div id="topics" class="section level2 hasAnchor" number="8.1">
-<h2><span class="header-section-number">8.1</span> Topics<a href="other-resources.html#topics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ul>
-<li>TF–target interactions</li>
-<li>Gut microbiota–metabolite links</li>
-<li>External databases</li>
-</ul>
+<p>In this chapter, we provide a curated list of additional resources that complement the <code>TCMDATA</code> package for TCM network pharmacology research. These include databases, tools, and R packages that can be integrated into your analysis workflow for enhanced data retrieval, processing, and visualization.</p>
+<div id="additional-databases" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Additional databases<a href="other-resources.html#additional-databases" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="tf-gene-interactions-dorothea" class="section level3 hasAnchor" number="8.1.1">
+<h3><span class="header-section-number">8.1.1</span> TF-gene interactions (DoRothEA)<a href="other-resources.html#tf-gene-interactions-dorothea" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>TCMDATA</code> provides a comprehensive dataset containing high-confidence (levels A, B, and C) transcription factor (TF) and target gene interactions for both Human and Mouse, derived from the DoRothEA database.</p>
+<p>User can access this data via <code>data("tf_targets")</code>:</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="other-resources.html#cb135-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;tf_targets&quot;</span>)</span>
+<span id="cb135-2"><a href="other-resources.html#cb135-2" tabindex="-1"></a></span>
+<span id="cb135-3"><a href="other-resources.html#cb135-3" tabindex="-1"></a>tf_targets <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code></pre></div>
+<pre><code>#&gt; # A tibble: 10 × 5
+#&gt;    Species TF    Target   Confidence Mode_of_Regulation
+#&gt;    &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                   &lt;dbl&gt;
+#&gt;  1 Human   AHR   CYP1A1   C                           1
+#&gt;  2 Human   AHR   CYP1A2   C                           1
+#&gt;  3 Human   AHR   CYP1B1   C                           1
+#&gt;  4 Human   AHR   FOS      C                           1
+#&gt;  5 Human   AHR   MYC      C                           1
+#&gt;  6 Human   AHR   UGT1A6   C                           1
+#&gt;  7 Human   AHR   ASAP1    C                           1
+#&gt;  8 Human   AHR   ERG      C                           1
+#&gt;  9 Human   AHR   VGLL4    C                           1
+#&gt; 10 Human   AHR   ARHGAP15 C                           1</code></pre>
+<p>This dataset can help you identify key TFs regulating disease-associated genes, perform TF enrichment analysis, and construct regulatory networks in TCM pharmacology studies.</p>
+</div>
+<div id="gut-microbiotahost-interactions-gutmgene" class="section level3 hasAnchor" number="8.1.2">
+<h3><span class="header-section-number">8.1.2</span> Gut microbiota–host interactions (GutMGene)<a href="other-resources.html#gut-microbiotahost-interactions-gutmgene" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 
+</div>
 </div>
 </div>
             </section>

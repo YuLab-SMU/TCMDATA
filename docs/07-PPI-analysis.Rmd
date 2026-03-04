@@ -9,13 +9,23 @@ Protein–protein interaction (PPI) networks are essential for deciphering the f
 `clusterProfiler` provides `getPPI()` function to retrieve Protein-Protein Interaction (PPI) information from the STRING database and return an `igraph` object containing known and predicted protein–protein interactions, with edge weights representing combined confidence scores (range 0–1).
 
 User can retrieve PPI network for a given set of genes using `getPPI()` by specifying the taxonomic ID (e.g., `9606` for human, `10090` for mouse):
-```{r ppi-data, eval=TRUE, collapse=FALSE}
+```{r ppi-data, eval=FALSE, collapse=FALSE}
 library(TCMDATA)
 library(clusterProfiler)
 
 data("dn_gcds")
 
 ppi <- getPPI(dn_gcds[1:50], taxID = 9606)
+```
+
+
+In this example, we use a demo ppi from Diabetic Nephropathy (DN) gene set to illustrate the workflow:
+```{r ppi-data-demo, eval=TRUE, collapse=FALSE}
+library(TCMDATA)
+library(clusterProfiler)
+
+data("demo_ppi")
+ppi <- demo_ppi
 ppi
 ```
 

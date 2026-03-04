@@ -274,7 +274,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>8</b> Other resources</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="other-resources.html"><a href="other-resources.html#topics"><i class="fa fa-check"></i><b>8.1</b> Topics</a></li>
+<li class="chapter" data-level="8.1" data-path="other-resources.html"><a href="other-resources.html#additional-databases"><i class="fa fa-check"></i><b>8.1</b> Additional databases</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="other-resources.html"><a href="other-resources.html#tf-gene-interactions-dorothea"><i class="fa fa-check"></i><b>8.1.1</b> TF-gene interactions (DoRothEA)</a></li>
+<li class="chapter" data-level="8.1.2" data-path="other-resources.html"><a href="other-resources.html#gut-microbiotahost-interactions-gutmgene"><i class="fa fa-check"></i><b>8.1.2</b> Gut microbiota–host interactions (GutMGene)</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
@@ -309,19 +313,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb109-3"><a href="ppi-analysis.html#cb109-3" tabindex="-1"></a></span>
 <span id="cb109-4"><a href="ppi-analysis.html#cb109-4" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;dn_gcds&quot;</span>)</span>
 <span id="cb109-5"><a href="ppi-analysis.html#cb109-5" tabindex="-1"></a></span>
-<span id="cb109-6"><a href="ppi-analysis.html#cb109-6" tabindex="-1"></a>ppi <span class="ot">&lt;-</span> <span class="fu">getPPI</span>(dn_gcds[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>], <span class="at">taxID =</span> <span class="dv">9606</span>)</span>
-<span id="cb109-7"><a href="ppi-analysis.html#cb109-7" tabindex="-1"></a>ppi</span></code></pre></div>
-<pre><code>#&gt; IGRAPH 6ca74ec UN-- 45 345 -- 
+<span id="cb109-6"><a href="ppi-analysis.html#cb109-6" tabindex="-1"></a>ppi <span class="ot">&lt;-</span> <span class="fu">getPPI</span>(dn_gcds[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>], <span class="at">taxID =</span> <span class="dv">9606</span>)</span></code></pre></div>
+<p>In this example, we use a demo ppi from Diabetic Nephropathy (DN) gene set to illustrate the workflow:</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="ppi-analysis.html#cb110-1" tabindex="-1"></a><span class="fu">library</span>(TCMDATA)</span>
+<span id="cb110-2"><a href="ppi-analysis.html#cb110-2" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
+<span id="cb110-3"><a href="ppi-analysis.html#cb110-3" tabindex="-1"></a></span>
+<span id="cb110-4"><a href="ppi-analysis.html#cb110-4" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;demo_ppi&quot;</span>)</span>
+<span id="cb110-5"><a href="ppi-analysis.html#cb110-5" tabindex="-1"></a>ppi <span class="ot">&lt;-</span> demo_ppi</span>
+<span id="cb110-6"><a href="ppi-analysis.html#cb110-6" tabindex="-1"></a>ppi</span></code></pre></div>
+<pre><code>#&gt; IGRAPH 3f74811 UN-- 58 611 -- 
 #&gt; + attr: name (v/c), score (e/n)
-#&gt; + edges from 6ca74ec (vertex names):
-#&gt;  [1] AQP2 --ACE     AQP2 --ALB     AQP2 --NPHS1   AQP2 --AGT     AQP2 --REN    
-#&gt;  [6] AQP2 --AVP     AQP2 --UMOD    AQP2 --AVPR2   RETN --ACE     RETN --APOA1  
-#&gt; [11] RETN --ENPP1   RETN --APOE    RETN --ALB     RETN --REN     RETN --LIPC   
-#&gt; [16] RETN --SLC2A2  RETN --AGT     RETN --INSR    RETN --IRS1    RETN --IL6    
-#&gt; [21] RETN --TNF     RETN --PPARG   RETN --INS     RETN --ADIPOQ  TGFB1--PON1   
-#&gt; [26] TGFB1--COL18A1 TGFB1--NLRP3   TGFB1--HNF4A   TGFB1--COL4A1  TGFB1--ADIPOQ 
-#&gt; [31] TGFB1--APOA1   TGFB1--INSR    TGFB1--NPHS1   TGFB1--CTLA4   TGFB1--ACE    
-#&gt; [36] TGFB1--APOE    TGFB1--INS     TGFB1--ALB     TGFB1--REN     TGFB1--AGT    
+#&gt; + edges from 3f74811 (vertex names):
+#&gt;  [1] SLC2A3  --SERPINE1 SLC2A3  --MYC      RELB    --CCL3     RELB    --ATF3    
+#&gt;  [5] RELB    --CXCR4    RELB    --SELE     RELB    --KLF6     RELB    --CXCL1   
+#&gt;  [9] RELB    --CEBPB    RELB    --VCAM1    RELB    --CCL20    RELB    --FOS     
+#&gt; [13] RELB    --PTGS2    RELB    --IL1RN    RELB    --MYC      RELB    --CCL2    
+#&gt; [17] RELB    --JUN      RELB    --CXCL8    RELB    --ICAM1    RELB    --TRAF1   
+#&gt; [21] RELB    --IL6      RELB    --IL1B     RELB    --BIRC3    RELB    --NFKB2   
+#&gt; [25] SERPINE1--CCL4     SERPINE1--MCL1     SERPINE1--S100A8   SERPINE1--IL1RN   
+#&gt; [29] SERPINE1--EGR1     SERPINE1--FOS      SERPINE1--IL18     SERPINE1--CCL3    
 #&gt; + ... omitted several edges</code></pre>
 <p>The returned <code>igraph</code> object contains a <code>score</code> edge attribute representing STRING combined confidence scores, where higher values indicate stronger evidence for the interaction.</p>
 <hr />
@@ -334,12 +344,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>Top-<em>n</em> degree filter</strong> — retains only the <em>n</em> most connected nodes.</li>
 </ol>
 <p>In this case, we keep edges with a STRING score ≥ 0.7 and then retain the top 100 nodes by degree:</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="ppi-analysis.html#cb111-1" tabindex="-1"></a>ppi_filtered <span class="ot">&lt;-</span> <span class="fu">ppi_subset</span>(ppi, <span class="at">score_cutoff =</span> <span class="fl">0.7</span>, <span class="at">n =</span> <span class="dv">100</span>)</span>
-<span id="cb111-2"><a href="ppi-analysis.html#cb111-2" tabindex="-1"></a></span>
-<span id="cb111-3"><a href="ppi-analysis.html#cb111-3" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Before filtering:&quot;</span>, <span class="fu">vcount</span>(ppi), <span class="st">&quot;nodes,&quot;</span>, <span class="fu">ecount</span>(ppi), <span class="st">&quot;edges</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
-<pre><code>#&gt; Before filtering: 45 nodes, 345 edges</code></pre>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="ppi-analysis.html#cb113-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;After  filtering:&quot;</span>, <span class="fu">vcount</span>(ppi_filtered), <span class="st">&quot;nodes,&quot;</span>, <span class="fu">ecount</span>(ppi_filtered), <span class="st">&quot;edges</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
-<pre><code>#&gt; After  filtering: 44 nodes, 154 edges</code></pre>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="ppi-analysis.html#cb112-1" tabindex="-1"></a>ppi_filtered <span class="ot">&lt;-</span> <span class="fu">ppi_subset</span>(ppi, <span class="at">score_cutoff =</span> <span class="fl">0.7</span>, <span class="at">n =</span> <span class="dv">100</span>)</span>
+<span id="cb112-2"><a href="ppi-analysis.html#cb112-2" tabindex="-1"></a></span>
+<span id="cb112-3"><a href="ppi-analysis.html#cb112-3" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Before filtering:&quot;</span>, <span class="fu">vcount</span>(ppi), <span class="st">&quot;nodes,&quot;</span>, <span class="fu">ecount</span>(ppi), <span class="st">&quot;edges</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Before filtering: 58 nodes, 611 edges</code></pre>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="ppi-analysis.html#cb114-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;After  filtering:&quot;</span>, <span class="fu">vcount</span>(ppi_filtered), <span class="st">&quot;nodes,&quot;</span>, <span class="fu">ecount</span>(ppi_filtered), <span class="st">&quot;edges</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; After  filtering: 49 nodes, 196 edges</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -378,14 +388,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>Extended metric coverage</strong> — Beyond the 11 metrics provided by CytoHubba, <code>compute_nodeinfo()</code> includes additional measures, enabling more comprehensive topological characterization.</li>
 </ol>
 <p>In this example, we calculate a panel of 19 topological metrics for the filtered PPI network, using the <code>score</code> edge attribute as weights where applicable:</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="ppi-analysis.html#cb115-1" tabindex="-1"></a>ppi_scored <span class="ot">&lt;-</span> <span class="fu">compute_nodeinfo</span>(ppi_filtered, <span class="at">weight_attr =</span> <span class="st">&quot;score&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="ppi-analysis.html#cb116-1" tabindex="-1"></a>ppi_scored <span class="ot">&lt;-</span> <span class="fu">compute_nodeinfo</span>(ppi_filtered, <span class="at">weight_attr =</span> <span class="st">&quot;score&quot;</span>)</span></code></pre></div>
 <pre><code>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |                                                                      |   1%  |                                                                              |=                                                                     |   1%  |                                                                              |=                                                                     |   2%  |                                                                              |==                                                                    |   2%  |                                                                              |==                                                                    |   3%  |                                                                              |==                                                                    |   4%  |                                                                              |===                                                                   |   4%  |                                                                              |===                                                                   |   5%  |                                                                              |====                                                                  |   5%  |                                                                              |====                                                                  |   6%  |                                                                              |=====                                                                 |   6%  |                                                                              |=====                                                                 |   7%  |                                                                              |=====                                                                 |   8%  |                                                                              |======                                                                |   8%  |                                                                              |======                                                                |   9%  |                                                                              |=======                                                               |   9%  |                                                                              |=======                                                               |  10%  |                                                                              |=======                                                               |  11%  |                                                                              |========                                                              |  11%  |                                                                              |========                                                              |  12%  |                                                                              |=========                                                             |  12%  |                                                                              |=========                                                             |  13%  |                                                                              |=========                                                             |  14%  |                                                                              |==========                                                            |  14%  |                                                                              |==========                                                            |  15%  |                                                                              |===========                                                           |  15%  |                                                                              |===========                                                           |  16%  |                                                                              |============                                                          |  16%  |                                                                              |============                                                          |  17%  |                                                                              |============                                                          |  18%  |                                                                              |=============                                                         |  18%  |                                                                              |=============                                                         |  19%  |                                                                              |==============                                                        |  19%  |                                                                              |==============                                                        |  20%  |                                                                              |==============                                                        |  21%  |                                                                              |===============                                                       |  21%  |                                                                              |===============                                                       |  22%  |                                                                              |================                                                      |  22%  |                                                                              |================                                                      |  23%  |                                                                              |================                                                      |  24%  |                                                                              |=================                                                     |  24%  |                                                                              |=================                                                     |  25%  |                                                                              |==================                                                    |  25%  |                                                                              |==================                                                    |  26%  |                                                                              |===================                                                   |  26%  |                                                                              |===================                                                   |  27%  |                                                                              |===================                                                   |  28%  |                                                                              |====================                                                  |  28%  |                                                                              |====================                                                  |  29%  |                                                                              |=====================                                                 |  29%  |                                                                              |=====================                                                 |  30%  |                                                                              |=====================                                                 |  31%  |                                                                              |======================                                                |  31%  |                                                                              |======================                                                |  32%  |                                                                              |=======================                                               |  32%  |                                                                              |=======================                                               |  33%  |                                                                              |=======================                                               |  34%  |                                                                              |========================                                              |  34%  |                                                                              |========================                                              |  35%  |                                                                              |=========================                                             |  35%  |                                                                              |=========================                                             |  36%  |                                                                              |==========================                                            |  36%  |                                                                              |==========================                                            |  37%  |                                                                              |==========================                                            |  38%  |                                                                              |===========================                                           |  38%  |                                                                              |===========================                                           |  39%  |                                                                              |============================                                          |  39%  |                                                                              |============================                                          |  40%  |                                                                              |============================                                          |  41%  |                                                                              |=============================                                         |  41%  |                                                                              |=============================                                         |  42%  |                                                                              |==============================                                        |  42%  |                                                                              |==============================                                        |  43%  |                                                                              |==============================                                        |  44%  |                                                                              |===============================                                       |  44%  |                                                                              |===============================                                       |  45%  |                                                                              |================================                                      |  45%  |                                                                              |================================                                      |  46%  |                                                                              |=================================                                     |  46%  |                                                                              |=================================                                     |  47%  |                                                                              |=================================                                     |  48%  |                                                                              |==================================                                    |  48%  |                                                                              |==================================                                    |  49%  |                                                                              |===================================                                   |  49%  |                                                                              |===================================                                   |  50%  |                                                                              |===================================                                   |  51%  |                                                                              |====================================                                  |  51%  |                                                                              |====================================                                  |  52%  |                                                                              |=====================================                                 |  52%  |                                                                              |=====================================                                 |  53%  |                                                                              |=====================================                                 |  54%  |                                                                              |======================================                                |  54%  |                                                                              |======================================                                |  55%  |                                                                              |=======================================                               |  55%  |                                                                              |=======================================                               |  56%  |                                                                              |========================================                              |  56%  |                                                                              |========================================                              |  57%  |                                                                              |========================================                              |  58%  |                                                                              |=========================================                             |  58%  |                                                                              |=========================================                             |  59%  |                                                                              |==========================================                            |  59%  |                                                                              |==========================================                            |  60%  |                                                                              |==========================================                            |  61%  |                                                                              |===========================================                           |  61%  |                                                                              |===========================================                           |  62%  |                                                                              |============================================                          |  62%  |                                                                              |============================================                          |  63%  |                                                                              |============================================                          |  64%  |                                                                              |=============================================                         |  64%  |                                                                              |=============================================                         |  65%  |                                                                              |==============================================                        |  65%  |                                                                              |==============================================                        |  66%  |                                                                              |===============================================                       |  66%  |                                                                              |===============================================                       |  67%  |                                                                              |===============================================                       |  68%  |                                                                              |================================================                      |  68%  |                                                                              |================================================                      |  69%  |                                                                              |=================================================                     |  69%  |                                                                              |=================================================                     |  70%  |                                                                              |=================================================                     |  71%  |                                                                              |==================================================                    |  71%  |                                                                              |==================================================                    |  72%  |                                                                              |===================================================                   |  72%  |                                                                              |===================================================                   |  73%  |                                                                              |===================================================                   |  74%  |                                                                              |====================================================                  |  74%  |                                                                              |====================================================                  |  75%  |                                                                              |=====================================================                 |  75%  |                                                                              |=====================================================                 |  76%  |                                                                              |======================================================                |  76%  |                                                                              |======================================================                |  77%  |                                                                              |======================================================                |  78%  |                                                                              |=======================================================               |  78%  |                                                                              |=======================================================               |  79%  |                                                                              |========================================================              |  79%  |                                                                              |========================================================              |  80%  |                                                                              |========================================================              |  81%  |                                                                              |=========================================================             |  81%  |                                                                              |=========================================================             |  82%  |                                                                              |==========================================================            |  82%  |                                                                              |==========================================================            |  83%  |                                                                              |==========================================================            |  84%  |                                                                              |===========================================================           |  84%  |                                                                              |===========================================================           |  85%  |                                                                              |============================================================          |  85%  |                                                                              |============================================================          |  86%  |                                                                              |=============================================================         |  86%  |                                                                              |=============================================================         |  87%  |                                                                              |=============================================================         |  88%  |                                                                              |==============================================================        |  88%  |                                                                              |==============================================================        |  89%  |                                                                              |===============================================================       |  89%  |                                                                              |===============================================================       |  90%  |                                                                              |===============================================================       |  91%  |                                                                              |================================================================      |  91%  |                                                                              |================================================================      |  92%  |                                                                              |=================================================================     |  92%  |                                                                              |=================================================================     |  93%  |                                                                              |=================================================================     |  94%  |                                                                              |==================================================================    |  94%  |                                                                              |==================================================================    |  95%  |                                                                              |===================================================================   |  95%  |                                                                              |===================================================================   |  96%  |                                                                              |====================================================================  |  96%  |                                                                              |====================================================================  |  97%  |                                                                              |====================================================================  |  98%  |                                                                              |===================================================================== |  98%  |                                                                              |===================================================================== |  99%  |                                                                              |======================================================================|  99%  |                                                                              |======================================================================| 100%</code></pre>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="ppi-analysis.html#cb117-1" tabindex="-1"></a>ppi_scored <span class="sc">|&gt;</span> <span class="fu">str</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="ppi-analysis.html#cb118-1" tabindex="-1"></a>ppi_scored <span class="sc">|&gt;</span> <span class="fu">str</span>()</span></code></pre></div>
 <pre><code>#&gt; Class &#39;igraph&#39;  hidden list of 10
-#&gt;  $ : num 44
+#&gt;  $ : num 49
 #&gt;  $ : logi FALSE
-#&gt;  $ : num [1:154] 28 30 40 32 34 11 31 33 31 14 ...
-#&gt;  $ : num [1:154] 0 0 0 1 1 1 1 1 2 2 ...
+#&gt;  $ : num [1:196] 11 31 37 14 17 12 10 26 38 2 ...
+#&gt;  $ : num [1:196] 0 0 1 1 1 1 1 1 1 1 ...
 #&gt;  $ : NULL
 #&gt;  $ : NULL
 #&gt;  $ : NULL
@@ -394,29 +404,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   ..$ : num [1:3] 1 0 1
 #&gt;   ..$ : Named list()
 #&gt;   ..$ :List of 20
-#&gt;   .. ..$ name            : chr [1:44] &quot;AQP2&quot; &quot;RETN&quot; &quot;TGFB1&quot; &quot;PON1&quot; ...
-#&gt;   .. ..$ degree          : num [1:44] 3 5 8 4 12 3 6 12 12 6 ...
-#&gt;   .. ..$ strength        : num [1:44] 2.82 4.38 6.97 3.63 10.4 ...
-#&gt;   .. ..$ betweenness     : num [1:44] 0.00274 0 0.01678 0.0011 0.06705 ...
-#&gt;   .. ..$ betweenness_w   : num [1:44] 0.00554 0 0.01218 0 0.05094 ...
-#&gt;   .. ..$ closeness       : num [1:44] 0.331 0.451 0.488 0.38 0.526 ...
-#&gt;   .. ..$ closeness_w     : num [1:44] 0.285 0.398 0.415 0.342 0.465 ...
-#&gt;   .. ..$ eigen_centrality: num [1:44] 0.0416 0.3215 0.4358 0.1661 0.4128 ...
-#&gt;   .. ..$ pagerank        : num [1:44] 0.014 0.0159 0.0249 0.015 0.0373 ...
-#&gt;   .. ..$ coreness        : num [1:44] 3 5 6 3 6 3 4 7 7 4 ...
-#&gt;   .. ..$ clustering_coef : num [1:44] 0.333 1 0.679 0.833 0.439 ...
-#&gt;   .. ..$ eccentricity    : num [1:44] 4 3 3 4 3 4 3 3 3 4 ...
-#&gt;   .. ..$ is_articulation : logi [1:44] FALSE FALSE FALSE FALSE TRUE FALSE ...
-#&gt;   .. ..$ MCC             : num [1:44] 3 120 746 12 541 ...
-#&gt;   .. ..$ MNC             : num [1:44] 2 5 8 4 11 3 5 12 12 5 ...
-#&gt;   .. ..$ DMNC            : num [1:44] 0.308 0.648 0.554 0.474 0.492 ...
-#&gt;   .. ..$ BN              : num [1:44] 1 1 2 1 6 1 3 4 6 1 ...
-#&gt;   .. ..$ radiality       : num [1:44] 2 2.77 2.93 2.37 3.07 ...
-#&gt;   .. ..$ Stress          : num [1:44] 16 0 118 10 326 2 262 334 500 50 ...
-#&gt;   .. ..$ EPC             : num [1:44] 32.6 38.3 39.3 36.4 39.4 ...
+#&gt;   .. ..$ name            : chr [1:49] &quot;RELB&quot; &quot;SERPINE1&quot; &quot;CCL2&quot; &quot;EGR1&quot; ...
+#&gt;   .. ..$ degree          : num [1:49] 2 9 20 12 6 5 2 7 7 6 ...
+#&gt;   .. ..$ strength        : num [1:49] 1.72 7.22 17.41 10.35 5.46 ...
+#&gt;   .. ..$ betweenness     : num [1:49] 0 0.012866 0.052748 0.018597 0.000148 ...
+#&gt;   .. ..$ betweenness_w   : num [1:49] 0 0.00709 0.01418 0.00621 0 ...
+#&gt;   .. ..$ closeness       : num [1:49] 0.319 0.465 0.59 0.511 0.397 ...
+#&gt;   .. ..$ closeness_w     : num [1:49] 0.28 0.395 0.511 0.441 0.359 ...
+#&gt;   .. ..$ eigen_centrality: num [1:49] 0.0198 0.3747 0.8258 0.3252 0.196 ...
+#&gt;   .. ..$ pagerank        : num [1:49] 0.0105 0.0198 0.0416 0.0287 0.0158 ...
+#&gt;   .. ..$ coreness        : num [1:49] 2 7 8 6 6 4 2 6 6 6 ...
+#&gt;   .. ..$ clustering_coef : num [1:49] 1 0.611 0.453 0.545 0.933 ...
+#&gt;   .. ..$ eccentricity    : num [1:49] 5 4 4 4 5 4 5 5 4 4 ...
+#&gt;   .. ..$ is_articulation : logi [1:49] FALSE FALSE FALSE FALSE FALSE FALSE ...
+#&gt;   .. ..$ MCC             : num [1:49] 2 5043 28584 1254 240 ...
+#&gt;   .. ..$ MNC             : num [1:49] 2 8 20 12 6 5 2 7 7 6 ...
+#&gt;   .. ..$ DMNC            : num [1:49] 0.308 0.641 0.528 0.527 0.666 ...
+#&gt;   .. ..$ BN              : num [1:49] 1 3 23 5 1 2 1 1 2 1 ...
+#&gt;   .. ..$ radiality       : num [1:49] 3.85 4.79 5.23 4.98 4.44 ...
+#&gt;   .. ..$ Stress          : num [1:49] 0 176 836 278 2 52 0 20 180 2 ...
+#&gt;   .. ..$ EPC             : num [1:49] 25.7 40.4 40.6 40.5 39.9 ...
 #&gt;   ..$ :List of 1
-#&gt;   .. ..$ score: num [1:154] 0.915 0.923 0.982 0.809 0.857 0.858 0.886 0.967 0.758 0.784 ...
-#&gt;  $ :&lt;environment: 0x132850ba8&gt;</code></pre>
+#&gt;   .. ..$ score: num [1:196] 0.717 0.999 0.701 0.719 0.736 0.742 0.746 0.815 0.849 0.918 ...
+#&gt;  $ :&lt;environment: 0x13f4053c8&gt;</code></pre>
 <p>The following metrics are computed and stored as vertex attributes:</p>
 <table>
 <colgroup>
@@ -517,58 +527,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="integrated-ranking" class="section level3 hasAnchor" number="7.3.1">
 <h3><span class="header-section-number">7.3.1</span> Integrated ranking<a href="ppi-analysis.html#integrated-ranking" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><code>rank_ppi_nodes()</code> normalizes all selected metrics to [0, 1], applies user-defined weights (equal by default), and produces a composite score for target prioritization:</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="ppi-analysis.html#cb119-1" tabindex="-1"></a>rank_res <span class="ot">&lt;-</span> <span class="fu">rank_ppi_nodes</span>(ppi_scored, <span class="at">use_weight =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb119-2"><a href="ppi-analysis.html#cb119-2" tabindex="-1"></a></span>
-<span id="cb119-3"><a href="ppi-analysis.html#cb119-3" tabindex="-1"></a><span class="co"># Extract ranked table</span></span>
-<span id="cb119-4"><a href="ppi-analysis.html#cb119-4" tabindex="-1"></a>ppi_ranked <span class="ot">&lt;-</span> rank_res<span class="sc">$</span>graph</span>
-<span id="cb119-5"><a href="ppi-analysis.html#cb119-5" tabindex="-1"></a>rank_df <span class="ot">&lt;-</span> rank_res<span class="sc">$</span>table</span>
-<span id="cb119-6"><a href="ppi-analysis.html#cb119-6" tabindex="-1"></a></span>
-<span id="cb119-7"><a href="ppi-analysis.html#cb119-7" tabindex="-1"></a>rank_df[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="fu">c</span>(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;degree&quot;</span>, <span class="st">&quot;betweenness_w&quot;</span>, <span class="st">&quot;closeness_w&quot;</span>,</span>
-<span id="cb119-8"><a href="ppi-analysis.html#cb119-8" tabindex="-1"></a>                <span class="st">&quot;MCC&quot;</span>, <span class="st">&quot;MNC&quot;</span>, <span class="st">&quot;EPC&quot;</span>, <span class="st">&quot;Score_network&quot;</span>, <span class="st">&quot;Rank_network&quot;</span>)]</span></code></pre></div>
-<pre><code>#&gt;      name degree betweenness_w closeness_w  MCC MNC    EPC Score_network
-#&gt; 32    INS     24   0.467331118   0.6198430 6818  24 39.395     0.8911802
-#&gt; 35    TNF     15   0.083056478   0.4867585 6160  15 39.395     0.5583073
-#&gt; 15    ALB     13   0.079734219   0.4975975 5900  13 39.395     0.5390364
-#&gt; 33    IL6     14   0.016611296   0.4737969 6176  14 39.395     0.5347428
-#&gt; 9     REN     12   0.008859358   0.4514098 5774  12 39.319     0.5259551
-#&gt; 8    APOE     12   0.045404208   0.4656133 5298  12 39.395     0.5197270
-#&gt; 26    AGT     10   0.077519380   0.4528289 5766  10 39.360     0.5099468
-#&gt; 23 KCNJ11     12   0.025470653   0.4463694  294  12 39.366     0.4707266
-#&gt; 13    ACE      7   0.000000000   0.4282791 5040   7 39.059     0.4609530
-#&gt; 5     GCK     12   0.050941307   0.4646869  541  11 39.395     0.4567370
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="ppi-analysis.html#cb120-1" tabindex="-1"></a>rank_res <span class="ot">&lt;-</span> <span class="fu">rank_ppi_nodes</span>(ppi_scored, <span class="at">use_weight =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb120-2"><a href="ppi-analysis.html#cb120-2" tabindex="-1"></a></span>
+<span id="cb120-3"><a href="ppi-analysis.html#cb120-3" tabindex="-1"></a><span class="co"># Extract ranked table</span></span>
+<span id="cb120-4"><a href="ppi-analysis.html#cb120-4" tabindex="-1"></a>ppi_ranked <span class="ot">&lt;-</span> rank_res<span class="sc">$</span>graph</span>
+<span id="cb120-5"><a href="ppi-analysis.html#cb120-5" tabindex="-1"></a>rank_df <span class="ot">&lt;-</span> rank_res<span class="sc">$</span>table</span>
+<span id="cb120-6"><a href="ppi-analysis.html#cb120-6" tabindex="-1"></a></span>
+<span id="cb120-7"><a href="ppi-analysis.html#cb120-7" tabindex="-1"></a>rank_df[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="fu">c</span>(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;degree&quot;</span>, <span class="st">&quot;betweenness_w&quot;</span>, <span class="st">&quot;closeness_w&quot;</span>,</span>
+<span id="cb120-8"><a href="ppi-analysis.html#cb120-8" tabindex="-1"></a>                <span class="st">&quot;MCC&quot;</span>, <span class="st">&quot;MNC&quot;</span>, <span class="st">&quot;EPC&quot;</span>, <span class="st">&quot;Score_network&quot;</span>, <span class="st">&quot;Rank_network&quot;</span>)]</span></code></pre></div>
+<pre><code>#&gt;     name degree betweenness_w closeness_w   MCC MNC    EPC Score_network
+#&gt; 39   IL6     27    0.26684397   0.5901176 46520  27 40.575     0.8073885
+#&gt; 18 CXCL8     22    0.19414894   0.5440404 45146  20 40.575     0.7192179
+#&gt; 11  IL1B     23    0.07180851   0.5582129 45534  23 40.575     0.6802181
+#&gt; 3   CCL2     20    0.01418440   0.5112998 28584  20 40.575     0.6530773
+#&gt; 33   JUN     20    0.21808511   0.5305687  7618  20 40.575     0.6171510
+#&gt; 17   FOS     18    0.11968085   0.4945311  2563  17 40.575     0.5574060
+#&gt; 37 CXCL1     14    0.00000000   0.4682921 37584  14 40.575     0.5174125
+#&gt; 13 ICAM1     14    0.01063830   0.4368779 18144  14 40.575     0.4709080
+#&gt; 27 PTGS2     14    0.00000000   0.4691629 13320  14 40.575     0.4682695
+#&gt; 48  CCL4     10    0.00000000   0.4082640 30240  10 40.575     0.4675394
 #&gt;    Rank_network
-#&gt; 32            1
-#&gt; 35            2
-#&gt; 15            3
-#&gt; 33            4
-#&gt; 9             5
-#&gt; 8             6
-#&gt; 26            7
-#&gt; 23            8
-#&gt; 13            9
-#&gt; 5            10</code></pre>
+#&gt; 39            1
+#&gt; 18            2
+#&gt; 11            3
+#&gt; 3             4
+#&gt; 33            5
+#&gt; 17            6
+#&gt; 37            7
+#&gt; 13            8
+#&gt; 27            9
+#&gt; 48           10</code></pre>
 </div>
 <div id="radar-chart-visualization" class="section level3 hasAnchor" number="7.3.2">
 <h3><span class="header-section-number">7.3.2</span> Radar chart visualization<a href="ppi-analysis.html#radar-chart-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For a target of interest, <code>get_node_profile()</code> + <code>radar_plot()</code> produces a radar chart showing its normalized centrality fingerprint across multiple dimensions:</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="ppi-analysis.html#cb121-1" tabindex="-1"></a><span class="fu">library</span>(aplot)</span>
-<span id="cb121-2"><a href="ppi-analysis.html#cb121-2" tabindex="-1"></a></span>
-<span id="cb121-3"><a href="ppi-analysis.html#cb121-3" tabindex="-1"></a><span class="co"># Pick the top 2 ranked nodes</span></span>
-<span id="cb121-4"><a href="ppi-analysis.html#cb121-4" tabindex="-1"></a>top_nodes <span class="ot">&lt;-</span> rank_df<span class="sc">$</span>name[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb121-5"><a href="ppi-analysis.html#cb121-5" tabindex="-1"></a></span>
-<span id="cb121-6"><a href="ppi-analysis.html#cb121-6" tabindex="-1"></a>p_radar1 <span class="ot">&lt;-</span> <span class="fu">radar_plot</span>(</span>
-<span id="cb121-7"><a href="ppi-analysis.html#cb121-7" tabindex="-1"></a>  <span class="fu">get_node_profile</span>(rank_df, top_nodes[<span class="dv">1</span>]),</span>
-<span id="cb121-8"><a href="ppi-analysis.html#cb121-8" tabindex="-1"></a>  <span class="at">fill_color =</span> <span class="st">&quot;#A3BEDD&quot;</span>, <span class="at">line_color =</span> <span class="st">&quot;#4A7FB5&quot;</span>,</span>
-<span id="cb121-9"><a href="ppi-analysis.html#cb121-9" tabindex="-1"></a>  <span class="at">title =</span> top_nodes[<span class="dv">1</span>]</span>
-<span id="cb121-10"><a href="ppi-analysis.html#cb121-10" tabindex="-1"></a>)</span>
-<span id="cb121-11"><a href="ppi-analysis.html#cb121-11" tabindex="-1"></a></span>
-<span id="cb121-12"><a href="ppi-analysis.html#cb121-12" tabindex="-1"></a>p_radar2 <span class="ot">&lt;-</span> <span class="fu">radar_plot</span>(</span>
-<span id="cb121-13"><a href="ppi-analysis.html#cb121-13" tabindex="-1"></a>  <span class="fu">get_node_profile</span>(rank_df, top_nodes[<span class="dv">2</span>]),</span>
-<span id="cb121-14"><a href="ppi-analysis.html#cb121-14" tabindex="-1"></a>  <span class="at">fill_color =</span> <span class="st">&quot;#D59390&quot;</span>, <span class="at">line_color =</span> <span class="st">&quot;#B5524A&quot;</span>,</span>
-<span id="cb121-15"><a href="ppi-analysis.html#cb121-15" tabindex="-1"></a>  <span class="at">title =</span> top_nodes[<span class="dv">2</span>]</span>
-<span id="cb121-16"><a href="ppi-analysis.html#cb121-16" tabindex="-1"></a>)</span>
-<span id="cb121-17"><a href="ppi-analysis.html#cb121-17" tabindex="-1"></a></span>
-<span id="cb121-18"><a href="ppi-analysis.html#cb121-18" tabindex="-1"></a><span class="fu">plot_list</span>(p_radar1, p_radar2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="ppi-analysis.html#cb122-1" tabindex="-1"></a><span class="fu">library</span>(aplot)</span>
+<span id="cb122-2"><a href="ppi-analysis.html#cb122-2" tabindex="-1"></a></span>
+<span id="cb122-3"><a href="ppi-analysis.html#cb122-3" tabindex="-1"></a><span class="co"># Pick the top 2 ranked nodes</span></span>
+<span id="cb122-4"><a href="ppi-analysis.html#cb122-4" tabindex="-1"></a>top_nodes <span class="ot">&lt;-</span> rank_df<span class="sc">$</span>name[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb122-5"><a href="ppi-analysis.html#cb122-5" tabindex="-1"></a></span>
+<span id="cb122-6"><a href="ppi-analysis.html#cb122-6" tabindex="-1"></a>p_radar1 <span class="ot">&lt;-</span> <span class="fu">radar_plot</span>(</span>
+<span id="cb122-7"><a href="ppi-analysis.html#cb122-7" tabindex="-1"></a>  <span class="fu">get_node_profile</span>(rank_df, top_nodes[<span class="dv">1</span>]),</span>
+<span id="cb122-8"><a href="ppi-analysis.html#cb122-8" tabindex="-1"></a>  <span class="at">fill_color =</span> <span class="st">&quot;#A3BEDD&quot;</span>, <span class="at">line_color =</span> <span class="st">&quot;#4A7FB5&quot;</span>,</span>
+<span id="cb122-9"><a href="ppi-analysis.html#cb122-9" tabindex="-1"></a>  <span class="at">title =</span> top_nodes[<span class="dv">1</span>]</span>
+<span id="cb122-10"><a href="ppi-analysis.html#cb122-10" tabindex="-1"></a>)</span>
+<span id="cb122-11"><a href="ppi-analysis.html#cb122-11" tabindex="-1"></a></span>
+<span id="cb122-12"><a href="ppi-analysis.html#cb122-12" tabindex="-1"></a>p_radar2 <span class="ot">&lt;-</span> <span class="fu">radar_plot</span>(</span>
+<span id="cb122-13"><a href="ppi-analysis.html#cb122-13" tabindex="-1"></a>  <span class="fu">get_node_profile</span>(rank_df, top_nodes[<span class="dv">2</span>]),</span>
+<span id="cb122-14"><a href="ppi-analysis.html#cb122-14" tabindex="-1"></a>  <span class="at">fill_color =</span> <span class="st">&quot;#D59390&quot;</span>, <span class="at">line_color =</span> <span class="st">&quot;#B5524A&quot;</span>,</span>
+<span id="cb122-15"><a href="ppi-analysis.html#cb122-15" tabindex="-1"></a>  <span class="at">title =</span> top_nodes[<span class="dv">2</span>]</span>
+<span id="cb122-16"><a href="ppi-analysis.html#cb122-16" tabindex="-1"></a>)</span>
+<span id="cb122-17"><a href="ppi-analysis.html#cb122-17" tabindex="-1"></a></span>
+<span id="cb122-18"><a href="ppi-analysis.html#cb122-18" tabindex="-1"></a><span class="fu">plot_list</span>(p_radar1, p_radar2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="images/ppi-radar-1.png" width="95%" style="display: block; margin: auto;" /></p>
 <hr />
 </div>
@@ -579,20 +589,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="louvain-modularity-optimization" class="section level3 hasAnchor" number="7.4.1">
 <h3><span class="header-section-number">7.4.1</span> Louvain modularity optimization<a href="ppi-analysis.html#louvain-modularity-optimization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The Louvain algorithm<sup>[3]</sup> is a fast and scalable community detection method that optimizes network modularity through a hierarchical, greedy approach. It iteratively assigns nodes to communities that maximize the modularity gain, then aggregates communities into super-nodes and repeats the process. Due to its computational efficiency and ability to handle large-scale networks, Louvain has become one of the most popular algorithms for detecting functional modules in biological networks.</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="ppi-analysis.html#cb122-1" tabindex="-1"></a>ppi_louvain <span class="ot">&lt;-</span> <span class="fu">run_louvain</span>(ppi_scored, <span class="at">resolution =</span> <span class="fl">1.0</span>)</span>
-<span id="cb122-2"><a href="ppi-analysis.html#cb122-2" tabindex="-1"></a>louvain_scores <span class="ot">&lt;-</span> <span class="fu">add_cluster_score</span>(ppi_louvain, <span class="at">cluster_attr =</span> <span class="st">&quot;louvain_cluster&quot;</span>, <span class="at">min_size =</span> <span class="dv">3</span>)</span>
-<span id="cb122-3"><a href="ppi-analysis.html#cb122-3" tabindex="-1"></a></span>
-<span id="cb122-4"><a href="ppi-analysis.html#cb122-4" tabindex="-1"></a><span class="fu">head</span>(louvain_scores)</span></code></pre></div>
-<pre><code>#&gt;   Cluster_ID Score Nodes Edges Density                              Gene_List
-#&gt; 1          3 6.200    11    31   0.564     GCK, AKR1B1, NEUROD1, KLF11, HNF4A
-#&gt; 2          2 5.818    12    32   0.485         RETN, TGFB1, PPARG, INSR, IRS1
-#&gt; 3          1 5.000    13    30   0.385           AQP2, PON1, APOA1, APOE, REN
-#&gt; 4          4 4.800     6    12   0.800 WFS1, CDKAL1, KCNJ11, IGF2BP2, SLC30A8
-#&gt;                                                          Full_Genes
-#&gt; 1 GCK,AKR1B1,NEUROD1,KLF11,HNF4A,SLC2A2,PAX4,PDX1,HNF1A,HNF1B,ABCC8
-#&gt; 2  RETN,TGFB1,PPARG,INSR,IRS1,NLRP3,TGFBR2,INS,IL6,ADIPOQ,TNF,CTLA4
-#&gt; 3    AQP2,PON1,APOA1,APOE,REN,ACE,ALB,LIPC,AGT,NPHS1,AVP,UMOD,AVPR2
-#&gt; 4                         WFS1,CDKAL1,KCNJ11,IGF2BP2,SLC30A8,TCF7L2</code></pre>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="ppi-analysis.html#cb123-1" tabindex="-1"></a>ppi_louvain <span class="ot">&lt;-</span> <span class="fu">run_louvain</span>(ppi_scored, <span class="at">resolution =</span> <span class="fl">1.0</span>)</span>
+<span id="cb123-2"><a href="ppi-analysis.html#cb123-2" tabindex="-1"></a>louvain_scores <span class="ot">&lt;-</span> <span class="fu">add_cluster_score</span>(ppi_louvain, <span class="at">cluster_attr =</span> <span class="st">&quot;louvain_cluster&quot;</span>, <span class="at">min_size =</span> <span class="dv">3</span>)</span>
+<span id="cb123-3"><a href="ppi-analysis.html#cb123-3" tabindex="-1"></a></span>
+<span id="cb123-4"><a href="ppi-analysis.html#cb123-4" tabindex="-1"></a><span class="fu">head</span>(louvain_scores)</span></code></pre></div>
+<pre><code>#&gt;   Cluster_ID Score Nodes Edges Density                        Gene_List
+#&gt; 1          2 9.810    22   103   0.446 SERPINE1, CCL2, LIF, IL1RN, IL1B
+#&gt; 2          3 6.111    19    55   0.322    EGR1, EGR2, SNAI1, SOX9, FOSB
+#&gt; 3          1 2.667     4     4   0.667        RELB, BIRC3, NFKB2, TRAF1
+#&gt;                                                                                                                      Full_Genes
+#&gt; 1 SERPINE1,CCL2,LIF,IL1RN,IL1B,ICAM1,IL18,VCAM1,CXCL8,SOCS3,SELE,KLRD1,PLAUR,C5AR1,CCL20,PTGS2,CXCL1,IL6,CXCR4,FCGR3B,CCL3,CCL4
+#&gt; 2                           EGR1,EGR2,SNAI1,SOX9,FOSB,CEBPB,FOS,PMAIP1,ATF3,MCL1,DUSP5,JUN,KLF4,CDKN1A,CCN1,KLF6,ZFP36,MYC,MAFF
+#&gt; 3                                                                                                        RELB,BIRC3,NFKB2,TRAF1</code></pre>
 <p>The <code>resolution</code> parameter controls clustering granularity: values &gt; 1 produce more, smaller clusters; values &lt; 1 yield fewer, larger clusters.</p>
 </div>
 <div id="mcode-molecular-complex-detection" class="section level3 hasAnchor" number="7.4.2">
@@ -600,31 +608,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>MCODE (Molecular Complex Detection)<sup>[2]</sup> is a classic graph-clustering algorithm specifically designed for identifying densely connected regions in PPI networks. Originally implemented as a <strong>Cytoscape plugin</strong>, MCODE has become one of the most widely adopted methods for detecting protein complexes and functional modules in network pharmacology studies.</p>
 <p>The algorithm operates in three phases: (1) <strong>vertex weighting</strong> based on local neighborhood density (k-core × density), (2) <strong>seeded growth</strong> from high-scoring seed nodes, and (3) <strong>post-processing</strong> via haircut (removing singly-connected peripheral nodes) or fluff (expanding with dense neighbors).</p>
 <p><code>TCMDATA</code> provides <code>run_mcode()</code>, a native R implementation of the MCODE algorithm, enabling seamless integration into scripted workflows without requiring external software. This eliminates the need to export networks to Cytoscape and manually run the plugin, significantly improving reproducibility and efficiency in PPI analysis pipelines.</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="ppi-analysis.html#cb124-1" tabindex="-1"></a>ppi_mcode <span class="ot">&lt;-</span> <span class="fu">run_mcode</span>(ppi_scored, <span class="at">vwp =</span> <span class="fl">0.2</span>, <span class="at">haircut =</span> <span class="cn">TRUE</span>, <span class="at">fluff =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb124-2"><a href="ppi-analysis.html#cb124-2" tabindex="-1"></a>mcode_res <span class="ot">&lt;-</span> <span class="fu">get_mcode_res</span>(ppi_mcode, <span class="at">only_clusters =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb124-3"><a href="ppi-analysis.html#cb124-3" tabindex="-1"></a></span>
-<span id="cb124-4"><a href="ppi-analysis.html#cb124-4" tabindex="-1"></a><span class="fu">head</span>(mcode_res)</span></code></pre></div>
-<pre><code>#&gt;    name mcode_score  cluster module_score is_seed
-#&gt; 1 TGFB1           6 Module_1          8.5   FALSE
-#&gt; 2   REN           7 Module_1          8.5   FALSE
-#&gt; 3   ACE           7 Module_1          8.5   FALSE
-#&gt; 4   ALB           7 Module_1          8.5   FALSE
-#&gt; 5   AGT           7 Module_1          8.5   FALSE
-#&gt; 6   INS           7 Module_1          8.5   FALSE</code></pre>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="ppi-analysis.html#cb125-1" tabindex="-1"></a>ppi_mcode <span class="ot">&lt;-</span> <span class="fu">run_mcode</span>(ppi_scored, <span class="at">vwp =</span> <span class="fl">0.2</span>, <span class="at">haircut =</span> <span class="cn">TRUE</span>, <span class="at">fluff =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb125-2"><a href="ppi-analysis.html#cb125-2" tabindex="-1"></a>mcode_res <span class="ot">&lt;-</span> <span class="fu">get_mcode_res</span>(ppi_mcode, <span class="at">only_clusters =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb125-3"><a href="ppi-analysis.html#cb125-3" tabindex="-1"></a></span>
+<span id="cb125-4"><a href="ppi-analysis.html#cb125-4" tabindex="-1"></a><span class="fu">head</span>(mcode_res)</span></code></pre></div>
+<pre><code>#&gt;       name mcode_score  cluster module_score is_seed
+#&gt; 1     IL18    6.236364 Module_1          8.6   FALSE
+#&gt; 2     CCL3    6.236364 Module_1          8.6   FALSE
+#&gt; 3 SERPINE1    7.000000 Module_1          8.6   FALSE
+#&gt; 4    VCAM1    7.000000 Module_1          8.6   FALSE
+#&gt; 5     IL1B    7.151515 Module_1          8.6   FALSE
+#&gt; 6    CXCL8    7.151515 Module_1          8.6   FALSE</code></pre>
 </div>
 <div id="mcl-markov-clustering" class="section level3 hasAnchor" number="7.4.3">
 <h3><span class="header-section-number">7.4.3</span> MCL (Markov Clustering)<a href="ppi-analysis.html#mcl-markov-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The Markov Clustering (MCL) algorithm<sup>[4]</sup> detects community structure by simulating stochastic flow (random walks) on the network. It alternates between two operations: <strong>expansion</strong> (matrix squaring to allow flow to spread) and <strong>inflation</strong> (element-wise exponentiation to strengthen strong connections and weaken weak ones). This process naturally separates the network into well-defined clusters based on flow patterns. MCL is particularly effective for PPI networks because protein complexes tend to form densely connected regions that trap random walks.</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="ppi-analysis.html#cb126-1" tabindex="-1"></a>ppi_mcl <span class="ot">&lt;-</span> <span class="fu">run_MCL</span>(ppi_scored, <span class="at">inflation =</span> <span class="fl">2.5</span>)</span>
-<span id="cb126-2"><a href="ppi-analysis.html#cb126-2" tabindex="-1"></a>mcl_scores <span class="ot">&lt;-</span> <span class="fu">add_cluster_score</span>(ppi_mcl, <span class="at">cluster_attr =</span> <span class="st">&quot;MCL_cluster&quot;</span>, <span class="at">min_size =</span> <span class="dv">3</span>)</span>
-<span id="cb126-3"><a href="ppi-analysis.html#cb126-3" tabindex="-1"></a></span>
-<span id="cb126-4"><a href="ppi-analysis.html#cb126-4" tabindex="-1"></a><span class="fu">head</span>(mcl_scores)</span></code></pre></div>
-<pre><code>#&gt;   Cluster_ID Score Nodes Edges Density                              Gene_List
-#&gt; 1          3 7.314    36   128   0.203           AQP2, RETN, TGFB1, PON1, GCK
-#&gt; 2          1 4.800     6    12   0.800 WFS1, CDKAL1, KCNJ11, IGF2BP2, SLC30A8
-#&gt;                                                                                                                                                                                          Full_Genes
-#&gt; 1 AQP2,RETN,TGFB1,PON1,GCK,APOA1,APOE,REN,AKR1B1,PPARG,ACE,NEUROD1,ALB,LIPC,INSR,IRS1,KLF11,HNF4A,SLC2A2,NLRP3,TGFBR2,AGT,PAX4,NPHS1,AVP,PDX1,UMOD,INS,IL6,ADIPOQ,TNF,HNF1A,HNF1B,AVPR2,CTLA4,ABCC8
-#&gt; 2                                                                                                                                                         WFS1,CDKAL1,KCNJ11,IGF2BP2,SLC30A8,TCF7L2</code></pre>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="ppi-analysis.html#cb127-1" tabindex="-1"></a>ppi_mcl <span class="ot">&lt;-</span> <span class="fu">run_MCL</span>(ppi_scored, <span class="at">inflation =</span> <span class="fl">2.5</span>)</span>
+<span id="cb127-2"><a href="ppi-analysis.html#cb127-2" tabindex="-1"></a>mcl_scores <span class="ot">&lt;-</span> <span class="fu">add_cluster_score</span>(ppi_mcl, <span class="at">cluster_attr =</span> <span class="st">&quot;MCL_cluster&quot;</span>, <span class="at">min_size =</span> <span class="dv">3</span>)</span>
+<span id="cb127-3"><a href="ppi-analysis.html#cb127-3" tabindex="-1"></a></span>
+<span id="cb127-4"><a href="ppi-analysis.html#cb127-4" tabindex="-1"></a><span class="fu">head</span>(mcl_scores)</span></code></pre></div>
+<pre><code>#&gt;   Cluster_ID  Score Nodes Edges Density                        Gene_List
+#&gt; 1          7 10.211    20    97   0.511 SERPINE1, CCL2, LIF, IL1RN, IL1B
+#&gt; 2          2  5.000    11    25   0.455     EGR1, EGR2, FOSB, CEBPB, FOS
+#&gt; 3          5  3.200     6     8   0.533     SNAI1, SOX9, ATF3, JUN, KLF6
+#&gt; 4          1  2.667     4     4   0.667        RELB, BIRC3, NFKB2, TRAF1
+#&gt;                                                                                                         Full_Genes
+#&gt; 1 SERPINE1,CCL2,LIF,IL1RN,IL1B,ICAM1,IL18,VCAM1,CXCL8,SOCS3,SELE,PLAUR,C5AR1,CCL20,PTGS2,CXCL1,IL6,CXCR4,CCL3,CCL4
+#&gt; 2                                                        EGR1,EGR2,FOSB,CEBPB,FOS,DUSP5,KLF4,CDKN1A,CCN1,ZFP36,MYC
+#&gt; 3                                                                                    SNAI1,SOX9,ATF3,JUN,KLF6,MAFF
+#&gt; 4                                                                                           RELB,BIRC3,NFKB2,TRAF1</code></pre>
 <p>The <code>inflation</code> parameter controls cluster granularity: higher values (e.g., 3–5) yield tighter, more granular clusters; lower values (e.g., 1.5–2) produce larger, more inclusive modules.</p>
 </div>
 </div>
@@ -633,79 +645,79 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><code>ggtangle</code> provides <code>ggplot2</code>-native network rendering with full aesthetic control over node color, size, labels, and edge styling.</p>
 <div id="basic-ppi-network" class="section level3 hasAnchor" number="7.5.1">
 <h3><span class="header-section-number">7.5.1</span> Basic PPI network<a href="ppi-analysis.html#basic-ppi-network" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="ppi-analysis.html#cb128-1" tabindex="-1"></a><span class="fu">library</span>(ggtangle)</span>
-<span id="cb128-2"><a href="ppi-analysis.html#cb128-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb128-3"><a href="ppi-analysis.html#cb128-3" tabindex="-1"></a></span>
-<span id="cb128-4"><a href="ppi-analysis.html#cb128-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
-<span id="cb128-5"><a href="ppi-analysis.html#cb128-5" tabindex="-1"></a>p_ppi <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
-<span id="cb128-6"><a href="ppi-analysis.html#cb128-6" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>) <span class="sc">+</span></span>
-<span id="cb128-7"><a href="ppi-analysis.html#cb128-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> degree, <span class="at">size =</span> Score_network), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
-<span id="cb128-8"><a href="ppi-analysis.html#cb128-8" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#D55E00&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
-<span id="cb128-9"><a href="ppi-analysis.html#cb128-9" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">8</span>), <span class="at">name =</span> <span class="st">&quot;Score&quot;</span>) <span class="sc">+</span></span>
-<span id="cb128-10"><a href="ppi-analysis.html#cb128-10" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb128-11"><a href="ppi-analysis.html#cb128-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PPI Network — Node color: Degree, Size: Composite score&quot;</span>)</span>
-<span id="cb128-12"><a href="ppi-analysis.html#cb128-12" tabindex="-1"></a></span>
-<span id="cb128-13"><a href="ppi-analysis.html#cb128-13" tabindex="-1"></a><span class="fu">print</span>(p_ppi)</span></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="ppi-analysis.html#cb129-1" tabindex="-1"></a><span class="fu">library</span>(ggtangle)</span>
+<span id="cb129-2"><a href="ppi-analysis.html#cb129-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb129-3"><a href="ppi-analysis.html#cb129-3" tabindex="-1"></a></span>
+<span id="cb129-4"><a href="ppi-analysis.html#cb129-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb129-5"><a href="ppi-analysis.html#cb129-5" tabindex="-1"></a>p_ppi <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
+<span id="cb129-6"><a href="ppi-analysis.html#cb129-6" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>) <span class="sc">+</span></span>
+<span id="cb129-7"><a href="ppi-analysis.html#cb129-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> degree, <span class="at">size =</span> Score_network), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb129-8"><a href="ppi-analysis.html#cb129-8" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#D55E00&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
+<span id="cb129-9"><a href="ppi-analysis.html#cb129-9" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">8</span>), <span class="at">name =</span> <span class="st">&quot;Score&quot;</span>) <span class="sc">+</span></span>
+<span id="cb129-10"><a href="ppi-analysis.html#cb129-10" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb129-11"><a href="ppi-analysis.html#cb129-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PPI Network — Node color: Degree, Size: Composite score&quot;</span>)</span>
+<span id="cb129-12"><a href="ppi-analysis.html#cb129-12" tabindex="-1"></a></span>
+<span id="cb129-13"><a href="ppi-analysis.html#cb129-13" tabindex="-1"></a><span class="fu">print</span>(p_ppi)</span></code></pre></div>
 <p><img src="images/ppi-net-basic-1.png" width="95%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="network-colored-by-community" class="section level3 hasAnchor" number="7.5.2">
 <h3><span class="header-section-number">7.5.2</span> Network colored by community<a href="ppi-analysis.html#network-colored-by-community" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Overlaying cluster assignments on the network layout reveals modular organization:</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="ppi-analysis.html#cb129-1" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb129-2"><a href="ppi-analysis.html#cb129-2" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
-<span id="cb129-3"><a href="ppi-analysis.html#cb129-3" tabindex="-1"></a></span>
-<span id="cb129-4"><a href="ppi-analysis.html#cb129-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
-<span id="cb129-5"><a href="ppi-analysis.html#cb129-5" tabindex="-1"></a>p_community <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_louvain, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
-<span id="cb129-6"><a href="ppi-analysis.html#cb129-6" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.12</span>, <span class="at">color =</span> <span class="st">&quot;grey70&quot;</span>) <span class="sc">+</span></span>
-<span id="cb129-7"><a href="ppi-analysis.html#cb129-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb129-8"><a href="ppi-analysis.html#cb129-8" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">color =</span> louvain_cluster, <span class="at">size =</span> degree),</span>
-<span id="cb129-9"><a href="ppi-analysis.html#cb129-9" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.85</span></span>
-<span id="cb129-10"><a href="ppi-analysis.html#cb129-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb129-11"><a href="ppi-analysis.html#cb129-11" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Module&quot;</span>) <span class="sc">+</span></span>
-<span id="cb129-12"><a href="ppi-analysis.html#cb129-12" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">9</span>), <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
-<span id="cb129-13"><a href="ppi-analysis.html#cb129-13" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
-<span id="cb129-14"><a href="ppi-analysis.html#cb129-14" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(degree <span class="sc">&gt;=</span> <span class="fu">quantile</span>(degree, <span class="fl">0.85</span>), name, <span class="st">&quot;&quot;</span>)),</span>
-<span id="cb129-15"><a href="ppi-analysis.html#cb129-15" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, <span class="at">max.overlaps =</span> <span class="dv">20</span>, <span class="at">segment.alpha =</span> <span class="fl">0.3</span></span>
-<span id="cb129-16"><a href="ppi-analysis.html#cb129-16" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb129-17"><a href="ppi-analysis.html#cb129-17" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb129-18"><a href="ppi-analysis.html#cb129-18" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PPI Network — Louvain Community Detection&quot;</span>,</span>
-<span id="cb129-19"><a href="ppi-analysis.html#cb129-19" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Labels: top 15% degree nodes&quot;</span>)</span>
-<span id="cb129-20"><a href="ppi-analysis.html#cb129-20" tabindex="-1"></a></span>
-<span id="cb129-21"><a href="ppi-analysis.html#cb129-21" tabindex="-1"></a><span class="fu">print</span>(p_community)</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="ppi-analysis.html#cb130-1" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb130-2"><a href="ppi-analysis.html#cb130-2" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb130-3"><a href="ppi-analysis.html#cb130-3" tabindex="-1"></a></span>
+<span id="cb130-4"><a href="ppi-analysis.html#cb130-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb130-5"><a href="ppi-analysis.html#cb130-5" tabindex="-1"></a>p_community <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_louvain, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
+<span id="cb130-6"><a href="ppi-analysis.html#cb130-6" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.12</span>, <span class="at">color =</span> <span class="st">&quot;grey70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb130-7"><a href="ppi-analysis.html#cb130-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb130-8"><a href="ppi-analysis.html#cb130-8" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">color =</span> louvain_cluster, <span class="at">size =</span> degree),</span>
+<span id="cb130-9"><a href="ppi-analysis.html#cb130-9" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.85</span></span>
+<span id="cb130-10"><a href="ppi-analysis.html#cb130-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb130-11"><a href="ppi-analysis.html#cb130-11" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Module&quot;</span>) <span class="sc">+</span></span>
+<span id="cb130-12"><a href="ppi-analysis.html#cb130-12" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">9</span>), <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
+<span id="cb130-13"><a href="ppi-analysis.html#cb130-13" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb130-14"><a href="ppi-analysis.html#cb130-14" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(degree <span class="sc">&gt;=</span> <span class="fu">quantile</span>(degree, <span class="fl">0.85</span>), name, <span class="st">&quot;&quot;</span>)),</span>
+<span id="cb130-15"><a href="ppi-analysis.html#cb130-15" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, <span class="at">max.overlaps =</span> <span class="dv">20</span>, <span class="at">segment.alpha =</span> <span class="fl">0.3</span></span>
+<span id="cb130-16"><a href="ppi-analysis.html#cb130-16" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb130-17"><a href="ppi-analysis.html#cb130-17" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb130-18"><a href="ppi-analysis.html#cb130-18" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PPI Network — Louvain Community Detection&quot;</span>,</span>
+<span id="cb130-19"><a href="ppi-analysis.html#cb130-19" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Labels: top 15% degree nodes&quot;</span>)</span>
+<span id="cb130-20"><a href="ppi-analysis.html#cb130-20" tabindex="-1"></a></span>
+<span id="cb130-21"><a href="ppi-analysis.html#cb130-21" tabindex="-1"></a><span class="fu">print</span>(p_community)</span></code></pre></div>
 <p><img src="images/ppi-net-louvain-1.png" width="95%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="hub-centric-star-layout" class="section level3 hasAnchor" number="7.5.3">
 <h3><span class="header-section-number">7.5.3</span> Hub-centric star layout<a href="ppi-analysis.html#hub-centric-star-layout" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The star layout places the highest-degree node at the center, making hub–spoke relationships immediately visible:</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="ppi-analysis.html#cb130-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
-<span id="cb130-2"><a href="ppi-analysis.html#cb130-2" tabindex="-1"></a>p_star <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;star&quot;</span>) <span class="sc">+</span></span>
-<span id="cb130-3"><a href="ppi-analysis.html#cb130-3" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>) <span class="sc">+</span></span>
-<span id="cb130-4"><a href="ppi-analysis.html#cb130-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> Score_network, <span class="at">size =</span> degree), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
-<span id="cb130-5"><a href="ppi-analysis.html#cb130-5" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">&quot;C&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Score&quot;</span>) <span class="sc">+</span></span>
-<span id="cb130-6"><a href="ppi-analysis.html#cb130-6" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">10</span>), <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
-<span id="cb130-7"><a href="ppi-analysis.html#cb130-7" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb130-8"><a href="ppi-analysis.html#cb130-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PPI Star Layout — Hub at Center&quot;</span>)</span>
-<span id="cb130-9"><a href="ppi-analysis.html#cb130-9" tabindex="-1"></a></span>
-<span id="cb130-10"><a href="ppi-analysis.html#cb130-10" tabindex="-1"></a><span class="fu">print</span>(p_star)</span></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="ppi-analysis.html#cb131-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb131-2"><a href="ppi-analysis.html#cb131-2" tabindex="-1"></a>p_star <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;star&quot;</span>) <span class="sc">+</span></span>
+<span id="cb131-3"><a href="ppi-analysis.html#cb131-3" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>) <span class="sc">+</span></span>
+<span id="cb131-4"><a href="ppi-analysis.html#cb131-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> Score_network, <span class="at">size =</span> degree), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb131-5"><a href="ppi-analysis.html#cb131-5" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">&quot;C&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Score&quot;</span>) <span class="sc">+</span></span>
+<span id="cb131-6"><a href="ppi-analysis.html#cb131-6" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">10</span>), <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
+<span id="cb131-7"><a href="ppi-analysis.html#cb131-7" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb131-8"><a href="ppi-analysis.html#cb131-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;PPI Star Layout — Hub at Center&quot;</span>)</span>
+<span id="cb131-9"><a href="ppi-analysis.html#cb131-9" tabindex="-1"></a></span>
+<span id="cb131-10"><a href="ppi-analysis.html#cb131-10" tabindex="-1"></a><span class="fu">print</span>(p_star)</span></code></pre></div>
 <p><img src="images/ppi-net-star-1.png" width="95%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="multi-layout-comparison" class="section level3 hasAnchor" number="7.5.4">
 <h3><span class="header-section-number">7.5.4</span> Multi-layout comparison<a href="ppi-analysis.html#multi-layout-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="ppi-analysis.html#cb131-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
-<span id="cb131-2"><a href="ppi-analysis.html#cb131-2" tabindex="-1"></a>base_layers <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb131-3"><a href="ppi-analysis.html#cb131-3" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.12</span>, <span class="at">color =</span> <span class="st">&quot;grey70&quot;</span>),</span>
-<span id="cb131-4"><a href="ppi-analysis.html#cb131-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> degree, <span class="at">size =</span> Score_network), <span class="at">alpha =</span> <span class="fl">0.85</span>),</span>
-<span id="cb131-5"><a href="ppi-analysis.html#cb131-5" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#D55E00&quot;</span>),</span>
-<span id="cb131-6"><a href="ppi-analysis.html#cb131-6" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">7</span>)),</span>
-<span id="cb131-7"><a href="ppi-analysis.html#cb131-7" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span>
-<span id="cb131-8"><a href="ppi-analysis.html#cb131-8" tabindex="-1"></a>)</span>
-<span id="cb131-9"><a href="ppi-analysis.html#cb131-9" tabindex="-1"></a></span>
-<span id="cb131-10"><a href="ppi-analysis.html#cb131-10" tabindex="-1"></a>p_fr     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>)     <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Fruchterman-Reingold&quot;</span>)</span>
-<span id="cb131-11"><a href="ppi-analysis.html#cb131-11" tabindex="-1"></a>p_kk     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;kk&quot;</span>)     <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Kamada-Kawai&quot;</span>)</span>
-<span id="cb131-12"><a href="ppi-analysis.html#cb131-12" tabindex="-1"></a>p_nicely <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)  <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Nicely (auto)&quot;</span>)</span>
-<span id="cb131-13"><a href="ppi-analysis.html#cb131-13" tabindex="-1"></a>p_star2  <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;star&quot;</span>)    <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Star&quot;</span>)</span>
-<span id="cb131-14"><a href="ppi-analysis.html#cb131-14" tabindex="-1"></a></span>
-<span id="cb131-15"><a href="ppi-analysis.html#cb131-15" tabindex="-1"></a><span class="fu">plot_list</span>(p_fr, p_kk, p_nicely, p_star2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="ppi-analysis.html#cb132-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb132-2"><a href="ppi-analysis.html#cb132-2" tabindex="-1"></a>base_layers <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb132-3"><a href="ppi-analysis.html#cb132-3" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.12</span>, <span class="at">color =</span> <span class="st">&quot;grey70&quot;</span>),</span>
+<span id="cb132-4"><a href="ppi-analysis.html#cb132-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> degree, <span class="at">size =</span> Score_network), <span class="at">alpha =</span> <span class="fl">0.85</span>),</span>
+<span id="cb132-5"><a href="ppi-analysis.html#cb132-5" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#D55E00&quot;</span>),</span>
+<span id="cb132-6"><a href="ppi-analysis.html#cb132-6" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">7</span>)),</span>
+<span id="cb132-7"><a href="ppi-analysis.html#cb132-7" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span>
+<span id="cb132-8"><a href="ppi-analysis.html#cb132-8" tabindex="-1"></a>)</span>
+<span id="cb132-9"><a href="ppi-analysis.html#cb132-9" tabindex="-1"></a></span>
+<span id="cb132-10"><a href="ppi-analysis.html#cb132-10" tabindex="-1"></a>p_fr     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>)     <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Fruchterman-Reingold&quot;</span>)</span>
+<span id="cb132-11"><a href="ppi-analysis.html#cb132-11" tabindex="-1"></a>p_kk     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;kk&quot;</span>)     <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Kamada-Kawai&quot;</span>)</span>
+<span id="cb132-12"><a href="ppi-analysis.html#cb132-12" tabindex="-1"></a>p_nicely <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)  <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Nicely (auto)&quot;</span>)</span>
+<span id="cb132-13"><a href="ppi-analysis.html#cb132-13" tabindex="-1"></a>p_star2  <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;star&quot;</span>)    <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Star&quot;</span>)</span>
+<span id="cb132-14"><a href="ppi-analysis.html#cb132-14" tabindex="-1"></a></span>
+<span id="cb132-15"><a href="ppi-analysis.html#cb132-15" tabindex="-1"></a><span class="fu">plot_list</span>(p_fr, p_kk, p_nicely, p_star2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="images/ppi-net-layouts-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <table>
 <colgroup>
@@ -752,7 +764,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="session-information-6" class="section level2 hasAnchor" number="7.7">
 <h2><span class="header-section-number">7.7</span> Session information<a href="ppi-analysis.html#session-information-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="ppi-analysis.html#cb132-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="ppi-analysis.html#cb133-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>#&gt; R version 4.5.0 (2025-04-11)
 #&gt; Platform: aarch64-apple-darwin20
 #&gt; Running under: macOS 26.2
@@ -785,41 +797,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   [7] rmarkdown_2.29          GlobalOptions_0.1.2     fs_1.6.6               
 #&gt;  [10] vctrs_0.6.5             memoise_2.0.1           paletteer_1.6.0        
 #&gt;  [13] ggtree_3.16.3           htmltools_0.5.8.1       forcats_1.0.0          
-#&gt;  [16] curl_6.4.0              gridGraphics_0.5-1      sass_0.4.10            
-#&gt;  [19] bslib_0.9.0             htmlwidgets_1.6.4       plyr_1.8.9             
-#&gt;  [22] cachem_1.1.0            lifecycle_1.0.4         iterators_1.0.14       
-#&gt;  [25] pkgconfig_2.0.3         Matrix_1.7-3            R6_2.6.1               
-#&gt;  [28] fastmap_1.2.0           gson_0.1.0              clue_0.3-66            
-#&gt;  [31] GenomeInfoDbData_1.2.14 digest_0.6.37           colorspace_2.1-1       
-#&gt;  [34] rematch2_2.1.2          patchwork_1.3.1         maftools_2.24.0        
-#&gt;  [37] RSQLite_2.4.2           labeling_0.4.3          httr_1.4.7             
-#&gt;  [40] compiler_4.5.0          bit64_4.6.0-1           fontquiver_0.2.1       
-#&gt;  [43] withr_3.0.2             doParallel_1.0.17       S7_0.2.0               
-#&gt;  [46] BiocParallel_1.42.1     DBI_1.2.3               R.utils_2.13.0         
-#&gt;  [49] rjson_0.2.23            DNAcopy_1.82.0          tools_4.5.0            
-#&gt;  [52] ape_5.8-1               R.oo_1.27.1             glue_1.8.0             
-#&gt;  [55] nlme_3.1-168            GOSemSim_2.34.0         grid_4.5.0             
-#&gt;  [58] cluster_2.1.8.1         ggvenn_0.1.10           reshape2_1.4.4         
-#&gt;  [61] fgsea_1.34.2            gtable_0.3.6            R.methodsS3_1.8.2      
-#&gt;  [64] tidyr_1.3.1             data.table_1.18.0       XVector_0.48.0         
-#&gt;  [67] foreach_1.5.2           pillar_1.11.0           stringr_1.5.1          
-#&gt;  [70] yulab.utils_0.2.0       circlize_0.4.16         splines_4.5.0          
-#&gt;  [73] treeio_1.32.0           lattice_0.22-7          survival_3.8-3         
-#&gt;  [76] bit_4.6.0               tidyselect_1.2.1        fontLiberation_0.1.0   
-#&gt;  [79] GO.db_3.21.0            ComplexHeatmap_2.24.1   Biostrings_2.76.0      
-#&gt;  [82] knitr_1.50              fontBitstreamVera_0.1.1 gridExtra_2.3          
-#&gt;  [85] bookdown_0.46           xfun_0.54               matrixStats_1.5.0      
-#&gt;  [88] stringi_1.8.7           UCSC.utils_1.4.0        lazyeval_0.2.2         
-#&gt;  [91] ggfun_0.2.0             yaml_2.3.10             evaluate_1.0.4         
-#&gt;  [94] codetools_0.2-20        gdtools_0.4.4           tibble_3.3.0           
-#&gt;  [97] qvalue_2.40.0           ggplotify_0.1.2         cli_3.6.5              
-#&gt; [100] systemfonts_1.3.1       jquerylib_0.1.4         Rcpp_1.1.0             
-#&gt; [103] GenomeInfoDb_1.44.1     png_0.1-8               parallel_4.5.0         
-#&gt; [106] blob_1.2.4              ggalluvial_0.12.5       DOSE_4.2.0             
-#&gt; [109] ggstar_1.0.4            tidytree_0.4.6          ggiraph_0.9.2          
-#&gt; [112] ggridges_0.5.6          scales_1.4.0            purrr_1.1.0            
-#&gt; [115] crayon_1.5.3            GetoptLong_1.0.5        rlang_1.1.6            
-#&gt; [118] cowplot_1.2.0           fastmatch_1.1-6         KEGGREST_1.48.1</code></pre>
+#&gt;  [16] gridGraphics_0.5-1      sass_0.4.10             bslib_0.9.0            
+#&gt;  [19] htmlwidgets_1.6.4       plyr_1.8.9              cachem_1.1.0           
+#&gt;  [22] lifecycle_1.0.4         iterators_1.0.14        pkgconfig_2.0.3        
+#&gt;  [25] Matrix_1.7-3            R6_2.6.1                fastmap_1.2.0          
+#&gt;  [28] gson_0.1.0              clue_0.3-66             GenomeInfoDbData_1.2.14
+#&gt;  [31] digest_0.6.37           colorspace_2.1-1        rematch2_2.1.2         
+#&gt;  [34] patchwork_1.3.1         maftools_2.24.0         RSQLite_2.4.2          
+#&gt;  [37] labeling_0.4.3          httr_1.4.7              compiler_4.5.0         
+#&gt;  [40] bit64_4.6.0-1           fontquiver_0.2.1        withr_3.0.2            
+#&gt;  [43] doParallel_1.0.17       S7_0.2.0                BiocParallel_1.42.1    
+#&gt;  [46] DBI_1.2.3               R.utils_2.13.0          rjson_0.2.23           
+#&gt;  [49] DNAcopy_1.82.0          tools_4.5.0             ape_5.8-1              
+#&gt;  [52] R.oo_1.27.1             glue_1.8.0              nlme_3.1-168           
+#&gt;  [55] GOSemSim_2.34.0         grid_4.5.0              cluster_2.1.8.1        
+#&gt;  [58] ggvenn_0.1.10           reshape2_1.4.4          fgsea_1.34.2           
+#&gt;  [61] gtable_0.3.6            R.methodsS3_1.8.2       tidyr_1.3.1            
+#&gt;  [64] data.table_1.18.0       XVector_0.48.0          foreach_1.5.2          
+#&gt;  [67] pillar_1.11.0           stringr_1.5.1           yulab.utils_0.2.0      
+#&gt;  [70] circlize_0.4.16         splines_4.5.0           treeio_1.32.0          
+#&gt;  [73] lattice_0.22-7          survival_3.8-3          bit_4.6.0              
+#&gt;  [76] tidyselect_1.2.1        fontLiberation_0.1.0    GO.db_3.21.0           
+#&gt;  [79] ComplexHeatmap_2.24.1   Biostrings_2.76.0       knitr_1.50             
+#&gt;  [82] fontBitstreamVera_0.1.1 gridExtra_2.3           bookdown_0.46          
+#&gt;  [85] xfun_0.54               matrixStats_1.5.0       stringi_1.8.7          
+#&gt;  [88] UCSC.utils_1.4.0        lazyeval_0.2.2          ggfun_0.2.0            
+#&gt;  [91] yaml_2.3.10             evaluate_1.0.4          codetools_0.2-20       
+#&gt;  [94] gdtools_0.4.4           tibble_3.3.0            qvalue_2.40.0          
+#&gt;  [97] ggplotify_0.1.2         cli_3.6.5               systemfonts_1.3.1      
+#&gt; [100] jquerylib_0.1.4         Rcpp_1.1.0              GenomeInfoDb_1.44.1    
+#&gt; [103] png_0.1-8               parallel_4.5.0          blob_1.2.4             
+#&gt; [106] ggalluvial_0.12.5       DOSE_4.2.0              ggstar_1.0.4           
+#&gt; [109] tidytree_0.4.6          ggiraph_0.9.2           ggridges_0.5.6         
+#&gt; [112] scales_1.4.0            purrr_1.1.0             crayon_1.5.3           
+#&gt; [115] GetoptLong_1.0.5        rlang_1.1.6             cowplot_1.2.0          
+#&gt; [118] fastmatch_1.1-6         KEGGREST_1.48.1</code></pre>
 
 </div>
 </div>
