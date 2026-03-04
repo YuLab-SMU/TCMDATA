@@ -13,4 +13,11 @@ _bookdown_files/
 docs/*.md
 !docs/*.Rmd
 
-site/ 
+# build output (CI deploys to gh-pages)
+site/
+
+# intermediate cache in images/
+docs/images/*_cache.rds
+
+# old static PPI network images (now generated dynamically)
+docs/images/ppi-net-*.png
