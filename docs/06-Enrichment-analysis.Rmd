@@ -229,7 +229,7 @@ head(gene_rank)
 head(gene_rank)
 ```
 
-### KEGG GSEA
+### KEGG GSEA analysis
 
 ```{r gsea-kegg, eval=FALSE}
 gsea_kegg <- gseKEGG(geneList = gene_rank,
@@ -251,7 +251,7 @@ The classic GSEA running-score plot visualizes the enrichment profile of selecte
 gseaplot2(gsea_kegg, geneSetID = 1:3, pvalue_table = TRUE)
 ```
 
-### GO GSEA
+### GO GSEA analysis
 
 ```{r gsea-go, eval=FALSE}
 gsea_go <- gseGO(geneList = gene_rank,

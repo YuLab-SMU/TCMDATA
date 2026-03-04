@@ -49,7 +49,10 @@ jobs:
         run: |
           Rscript -e '
             pak::pkg_install("BiocManager")
-            BiocManager::install(c("clusterProfiler", "enrichplot", "org.Hs.eg.db"), update = FALSE, ask = FALSE)
+            BiocManager::install(c(
+              "clusterProfiler", "enrichplot", "org.Hs.eg.db",
+              "ComplexHeatmap", "circlize"
+            ), update = FALSE, ask = FALSE)
           '
 
       - name: Install CRAN packages
@@ -60,7 +63,7 @@ jobs:
               "aplot", "aplotExtra", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
               "igraph", "ivolcano", "magrittr", "Matrix", "paletteer", "purrr",
               "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils",
-              "ggalluvial", "ggtangle"
+              "ggalluvial", "ggtangle", "ggvenn"
             ))
           '
 
@@ -90,18 +93,26 @@ jobs:
           RSCRIPT
           Rscript /tmp/install_tcmdata.R 2>&1 | tee install_tcmdata.log
 
-      - name: Verify all packages
+      - name: Verify all packages and datasets
         run: |
           Rscript -e '
             pkgs <- c("TCMDATA", "bookdown", "rmarkdown", "knitr", "ggtangle", "ggalluvial",
                        "clusterProfiler", "enrichplot", "aplot", "aplotExtra", "ivolcano",
-                       "ggrepel", "igraph", "ggfun", "ggvenn")
+                       "ggrepel", "igraph", "ggfun", "ggvenn", "circlize", "ComplexHeatmap",
+                       "org.Hs.eg.db")
             for (p in pkgs) {
               if (requireNamespace(p, quietly = TRUE)) {
                 message("OK: ", p, " (", packageVersion(p), ")")
               } else {
                 stop("MISSING: ", p)
               }
+            }
+            # Verify TCMDATA datasets are accessible
+            library(TCMDATA)
+            datasets <- c("demo_ppi", "dn_gcds", "dn_otp", "deg_earlydn", "gutMGene", "tf_targets")
+            for (ds in datasets) {
+              data(list = ds)
+              message("DATA OK: ", ds, " (", nrow(get(ds)), " rows)")
             }
           '
 
