@@ -1,3 +1,4 @@
+fig:workflow-overview
 load-data
 search-by-herb-name
 using-pinyin-format

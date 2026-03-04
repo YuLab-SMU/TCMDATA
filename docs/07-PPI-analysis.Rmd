@@ -216,14 +216,16 @@ High-quality network visualization is essential for interpreting PPI analysis re
 
 The following example maps node **degree** to color and **composite score** to size, using the Fruchterman-Reingold force-directed layout:
 
-```{r ppi-net-basic, eval=FALSE, fig.width=10, fig.height=8, fig.align='center', out.width='95%', collapse=FALSE}
+```{r ppi-net-basic, eval=TRUE, fig.width=10, fig.height=8, fig.align='center', out.width='95%', collapse=FALSE}
 library(ggtangle)
 library(ggplot2)
+library(ggrepel)
 
 set.seed(2025)
 ggplot(ppi_ranked, layout = "fr") +
   geom_edge(alpha = 0.12, color = "grey60") +
   geom_point(aes(color = degree, size = Score_network), alpha = 0.85) +
+  geom_text_repel(aes(label = name), size = 2.5, max.overlaps = 30, segment.alpha = 0.3) +
   scale_color_gradient(low = "#56B4E9", high = "#D55E00", name = "Degree") +
   scale_size_continuous(range = c(2, 8), name = "Score") +
   theme_void() +
@@ -233,25 +235,18 @@ ggplot(ppi_ranked, layout = "fr") +
   )
 ```
 
-```{r, echo=FALSE, out.width='95%', fig.align='center'}
-knitr::include_graphics("images/ppi-net-basic-1.png")
-```
-
 ### Community-colored network
 
 Overlaying cluster assignments reveals modular organization. Hub nodes (top 15% by degree) are labeled using `ggrepel` to avoid text overlap:
 
-```{r ppi-net-louvain, eval=FALSE, fig.width=11, fig.height=9, fig.align='center', out.width='95%', collapse=FALSE}
+```{r ppi-net-louvain, eval=TRUE, fig.width=11, fig.height=9, fig.align='center', out.width='95%', collapse=FALSE}
 library(ggrepel)
 
 set.seed(2025)
 ggplot(ppi_louvain, layout = "fr") +
   geom_edge(alpha = 0.10, color = "grey65") +
   geom_point(aes(color = louvain_cluster, size = degree), alpha = 0.85) +
-  geom_text_repel(
-    aes(label = ifelse(degree >= quantile(degree, 0.85), name, "")),
-    size = 3, max.overlaps = 25, segment.alpha = 0.3
-  ) +
+  geom_text_repel(aes(label = name), size = 2.5, max.overlaps = 30, segment.alpha = 0.3) +
   scale_color_brewer(palette = "Set2", name = "Module") +
   scale_size_continuous(range = c(2, 9), name = "Degree") +
   theme_void() +
@@ -261,19 +256,16 @@ ggplot(ppi_louvain, layout = "fr") +
   )
 ```
 
-```{r, echo=FALSE, out.width='95%', fig.align='center'}
-knitr::include_graphics("images/ppi-net-louvain-1.png")
-```
-
 ### Hub-centric star layout
 
 The star layout positions the highest-degree node at the center, emphasizing hub–spoke relationships:
 
-```{r ppi-net-star, eval=FALSE, fig.width=10, fig.height=8, fig.align='center', out.width='95%', collapse=FALSE}
+```{r ppi-net-star, eval=TRUE, fig.width=10, fig.height=8, fig.align='center', out.width='95%', collapse=FALSE}
 set.seed(2025)
 ggplot(ppi_ranked, layout = "star") +
   geom_edge(alpha = 0.12, color = "grey60") +
   geom_point(aes(color = Score_network, size = degree), alpha = 0.85) +
+  geom_text_repel(aes(label = name), size = 2.5, max.overlaps = 30, segment.alpha = 0.3) +
   scale_color_viridis_c(option = "C", name = "Score") +
   scale_size_continuous(range = c(2, 10), name = "Degree") +
   theme_void() +
@@ -283,21 +275,18 @@ ggplot(ppi_ranked, layout = "star") +
   )
 ```
 
-```{r, echo=FALSE, out.width='95%', fig.align='center'}
-knitr::include_graphics("images/ppi-net-star-1.png")
-```
-
 ### Layout algorithm comparison
 
 Different layouts suit different analytical purposes. The following comparison illustrates four common algorithms:
 
-```{r ppi-net-layouts, eval=FALSE, fig.width=12, fig.height=10, fig.align='center', out.width='100%', collapse=FALSE}
+```{r ppi-net-layouts, eval=TRUE, fig.width=12, fig.height=10, fig.align='center', out.width='100%', collapse=FALSE}
 library(aplot)
 
 set.seed(2025)
 base_layers <- list(
   geom_edge(alpha = 0.10, color = "grey65"),
   geom_point(aes(color = degree, size = Score_network), alpha = 0.85),
+  geom_text_repel(aes(label = name), size = 2, max.overlaps = 25, segment.alpha = 0.3),
   scale_color_gradient(low = "#56B4E9", high = "#D55E00", guide = "none"),
   scale_size_continuous(range = c(1.5, 6), guide = "none"),
   theme_void()
@@ -309,10 +298,6 @@ p_nicely <- ggplot(ppi_ranked, layout = "nicely") + base_layers
 p_star   <- ggplot(ppi_ranked, layout = "star")   + base_layers
 
 plot_list(p_fr, p_kk, p_nicely, p_star, ncol = 2, labels = c("A", "B", "C", "D"))
-```
-
-```{r, echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics("images/ppi-net-layouts-1.png")
 ```
 
 | Panel | Layout | Description | Best for |

@@ -434,7 +434,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt;   .. ..$ EPC             : num [1:49] 25.7 40.4 40.6 40.5 39.9 ...
 #&gt;   ..$ :List of 1
 #&gt;   .. ..$ score: num [1:196] 0.717 0.999 0.701 0.719 0.736 0.742 0.746 0.815 0.849 0.918 ...
-#&gt;  $ :&lt;environment: 0x1747f0000&gt;</code></pre>
+#&gt;  $ :&lt;environment: 0x4a562ddb8&gt;</code></pre>
 <p>The following metrics are computed and stored as vertex attributes:</p>
 <table>
 <colgroup>
@@ -674,19 +674,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The following example maps node <strong>degree</strong> to color and <strong>composite score</strong> to size, using the Fruchterman-Reingold force-directed layout:</p>
 <div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="ppi-analysis.html#cb130-1" tabindex="-1"></a><span class="fu">library</span>(ggtangle)</span>
 <span id="cb130-2"><a href="ppi-analysis.html#cb130-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb130-3"><a href="ppi-analysis.html#cb130-3" tabindex="-1"></a></span>
-<span id="cb130-4"><a href="ppi-analysis.html#cb130-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
-<span id="cb130-5"><a href="ppi-analysis.html#cb130-5" tabindex="-1"></a><span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
-<span id="cb130-6"><a href="ppi-analysis.html#cb130-6" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.12</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>) <span class="sc">+</span></span>
-<span id="cb130-7"><a href="ppi-analysis.html#cb130-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> degree, <span class="at">size =</span> Score_network), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
-<span id="cb130-8"><a href="ppi-analysis.html#cb130-8" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#D55E00&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
-<span id="cb130-9"><a href="ppi-analysis.html#cb130-9" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">8</span>), <span class="at">name =</span> <span class="st">&quot;Score&quot;</span>) <span class="sc">+</span></span>
-<span id="cb130-10"><a href="ppi-analysis.html#cb130-10" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb130-11"><a href="ppi-analysis.html#cb130-11" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb130-12"><a href="ppi-analysis.html#cb130-12" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
-<span id="cb130-13"><a href="ppi-analysis.html#cb130-13" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
-<span id="cb130-14"><a href="ppi-analysis.html#cb130-14" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="images/ppi-net-basic-1.png" width="95%" style="display: block; margin: auto;" /></p>
+<span id="cb130-3"><a href="ppi-analysis.html#cb130-3" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb130-4"><a href="ppi-analysis.html#cb130-4" tabindex="-1"></a></span>
+<span id="cb130-5"><a href="ppi-analysis.html#cb130-5" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb130-6"><a href="ppi-analysis.html#cb130-6" tabindex="-1"></a><span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
+<span id="cb130-7"><a href="ppi-analysis.html#cb130-7" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.12</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>) <span class="sc">+</span></span>
+<span id="cb130-8"><a href="ppi-analysis.html#cb130-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> degree, <span class="at">size =</span> Score_network), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb130-9"><a href="ppi-analysis.html#cb130-9" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">max.overlaps =</span> <span class="dv">30</span>, <span class="at">segment.alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb130-10"><a href="ppi-analysis.html#cb130-10" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#D55E00&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
+<span id="cb130-11"><a href="ppi-analysis.html#cb130-11" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">8</span>), <span class="at">name =</span> <span class="st">&quot;Score&quot;</span>) <span class="sc">+</span></span>
+<span id="cb130-12"><a href="ppi-analysis.html#cb130-12" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb130-13"><a href="ppi-analysis.html#cb130-13" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb130-14"><a href="ppi-analysis.html#cb130-14" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb130-15"><a href="ppi-analysis.html#cb130-15" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
+<span id="cb130-16"><a href="ppi-analysis.html#cb130-16" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ppi-net-basic-1.png" width="95%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="community-colored-network" class="section level3 hasAnchor" number="7.5.2">
 <h3><span class="header-section-number">7.5.2</span> Community-colored network<a href="ppi-analysis.html#community-colored-network" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -697,18 +699,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb131-4"><a href="ppi-analysis.html#cb131-4" tabindex="-1"></a><span class="fu">ggplot</span>(ppi_louvain, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
 <span id="cb131-5"><a href="ppi-analysis.html#cb131-5" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.10</span>, <span class="at">color =</span> <span class="st">&quot;grey65&quot;</span>) <span class="sc">+</span></span>
 <span id="cb131-6"><a href="ppi-analysis.html#cb131-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> louvain_cluster, <span class="at">size =</span> degree), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
-<span id="cb131-7"><a href="ppi-analysis.html#cb131-7" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
-<span id="cb131-8"><a href="ppi-analysis.html#cb131-8" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(degree <span class="sc">&gt;=</span> <span class="fu">quantile</span>(degree, <span class="fl">0.85</span>), name, <span class="st">&quot;&quot;</span>)),</span>
-<span id="cb131-9"><a href="ppi-analysis.html#cb131-9" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, <span class="at">max.overlaps =</span> <span class="dv">25</span>, <span class="at">segment.alpha =</span> <span class="fl">0.3</span></span>
-<span id="cb131-10"><a href="ppi-analysis.html#cb131-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb131-11"><a href="ppi-analysis.html#cb131-11" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Module&quot;</span>) <span class="sc">+</span></span>
-<span id="cb131-12"><a href="ppi-analysis.html#cb131-12" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">9</span>), <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
-<span id="cb131-13"><a href="ppi-analysis.html#cb131-13" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb131-14"><a href="ppi-analysis.html#cb131-14" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb131-15"><a href="ppi-analysis.html#cb131-15" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
-<span id="cb131-16"><a href="ppi-analysis.html#cb131-16" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
-<span id="cb131-17"><a href="ppi-analysis.html#cb131-17" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="images/ppi-net-louvain-1.png" width="95%" style="display: block; margin: auto;" /></p>
+<span id="cb131-7"><a href="ppi-analysis.html#cb131-7" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">max.overlaps =</span> <span class="dv">30</span>, <span class="at">segment.alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb131-8"><a href="ppi-analysis.html#cb131-8" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Module&quot;</span>) <span class="sc">+</span></span>
+<span id="cb131-9"><a href="ppi-analysis.html#cb131-9" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">9</span>), <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
+<span id="cb131-10"><a href="ppi-analysis.html#cb131-10" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb131-11"><a href="ppi-analysis.html#cb131-11" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb131-12"><a href="ppi-analysis.html#cb131-12" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb131-13"><a href="ppi-analysis.html#cb131-13" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
+<span id="cb131-14"><a href="ppi-analysis.html#cb131-14" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ppi-net-louvain-1.png" width="95%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="hub-centric-star-layout" class="section level3 hasAnchor" number="7.5.3">
 <h3><span class="header-section-number">7.5.3</span> Hub-centric star layout<a href="ppi-analysis.html#hub-centric-star-layout" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -717,14 +716,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb132-2"><a href="ppi-analysis.html#cb132-2" tabindex="-1"></a><span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;star&quot;</span>) <span class="sc">+</span></span>
 <span id="cb132-3"><a href="ppi-analysis.html#cb132-3" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.12</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>) <span class="sc">+</span></span>
 <span id="cb132-4"><a href="ppi-analysis.html#cb132-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> Score_network, <span class="at">size =</span> degree), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
-<span id="cb132-5"><a href="ppi-analysis.html#cb132-5" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">&quot;C&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Score&quot;</span>) <span class="sc">+</span></span>
-<span id="cb132-6"><a href="ppi-analysis.html#cb132-6" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">10</span>), <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
-<span id="cb132-7"><a href="ppi-analysis.html#cb132-7" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb132-8"><a href="ppi-analysis.html#cb132-8" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb132-9"><a href="ppi-analysis.html#cb132-9" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
-<span id="cb132-10"><a href="ppi-analysis.html#cb132-10" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
-<span id="cb132-11"><a href="ppi-analysis.html#cb132-11" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="images/ppi-net-star-1.png" width="95%" style="display: block; margin: auto;" /></p>
+<span id="cb132-5"><a href="ppi-analysis.html#cb132-5" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">max.overlaps =</span> <span class="dv">30</span>, <span class="at">segment.alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb132-6"><a href="ppi-analysis.html#cb132-6" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">&quot;C&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Score&quot;</span>) <span class="sc">+</span></span>
+<span id="cb132-7"><a href="ppi-analysis.html#cb132-7" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">10</span>), <span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span></span>
+<span id="cb132-8"><a href="ppi-analysis.html#cb132-8" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb132-9"><a href="ppi-analysis.html#cb132-9" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb132-10"><a href="ppi-analysis.html#cb132-10" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb132-11"><a href="ppi-analysis.html#cb132-11" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">10</span>)</span>
+<span id="cb132-12"><a href="ppi-analysis.html#cb132-12" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ppi-net-star-1.png" width="95%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="layout-algorithm-comparison" class="section level3 hasAnchor" number="7.5.4">
 <h3><span class="header-section-number">7.5.4</span> Layout algorithm comparison<a href="ppi-analysis.html#layout-algorithm-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -735,18 +735,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb133-4"><a href="ppi-analysis.html#cb133-4" tabindex="-1"></a>base_layers <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
 <span id="cb133-5"><a href="ppi-analysis.html#cb133-5" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.10</span>, <span class="at">color =</span> <span class="st">&quot;grey65&quot;</span>),</span>
 <span id="cb133-6"><a href="ppi-analysis.html#cb133-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> degree, <span class="at">size =</span> Score_network), <span class="at">alpha =</span> <span class="fl">0.85</span>),</span>
-<span id="cb133-7"><a href="ppi-analysis.html#cb133-7" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#D55E00&quot;</span>, <span class="at">guide =</span> <span class="st">&quot;none&quot;</span>),</span>
-<span id="cb133-8"><a href="ppi-analysis.html#cb133-8" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">6</span>), <span class="at">guide =</span> <span class="st">&quot;none&quot;</span>),</span>
-<span id="cb133-9"><a href="ppi-analysis.html#cb133-9" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span>
-<span id="cb133-10"><a href="ppi-analysis.html#cb133-10" tabindex="-1"></a>)</span>
-<span id="cb133-11"><a href="ppi-analysis.html#cb133-11" tabindex="-1"></a></span>
-<span id="cb133-12"><a href="ppi-analysis.html#cb133-12" tabindex="-1"></a>p_fr     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>)     <span class="sc">+</span> base_layers</span>
-<span id="cb133-13"><a href="ppi-analysis.html#cb133-13" tabindex="-1"></a>p_kk     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;kk&quot;</span>)     <span class="sc">+</span> base_layers</span>
-<span id="cb133-14"><a href="ppi-analysis.html#cb133-14" tabindex="-1"></a>p_nicely <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>) <span class="sc">+</span> base_layers</span>
-<span id="cb133-15"><a href="ppi-analysis.html#cb133-15" tabindex="-1"></a>p_star   <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;star&quot;</span>)   <span class="sc">+</span> base_layers</span>
-<span id="cb133-16"><a href="ppi-analysis.html#cb133-16" tabindex="-1"></a></span>
-<span id="cb133-17"><a href="ppi-analysis.html#cb133-17" tabindex="-1"></a><span class="fu">plot_list</span>(p_fr, p_kk, p_nicely, p_star, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;D&quot;</span>))</span></code></pre></div>
-<p><img src="images/ppi-net-layouts-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<span id="cb133-7"><a href="ppi-analysis.html#cb133-7" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">size =</span> <span class="dv">2</span>, <span class="at">max.overlaps =</span> <span class="dv">25</span>, <span class="at">segment.alpha =</span> <span class="fl">0.3</span>),</span>
+<span id="cb133-8"><a href="ppi-analysis.html#cb133-8" tabindex="-1"></a>  <span class="fu">scale_color_gradient</span>(<span class="at">low =</span> <span class="st">&quot;#56B4E9&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#D55E00&quot;</span>, <span class="at">guide =</span> <span class="st">&quot;none&quot;</span>),</span>
+<span id="cb133-9"><a href="ppi-analysis.html#cb133-9" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">6</span>), <span class="at">guide =</span> <span class="st">&quot;none&quot;</span>),</span>
+<span id="cb133-10"><a href="ppi-analysis.html#cb133-10" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span>
+<span id="cb133-11"><a href="ppi-analysis.html#cb133-11" tabindex="-1"></a>)</span>
+<span id="cb133-12"><a href="ppi-analysis.html#cb133-12" tabindex="-1"></a></span>
+<span id="cb133-13"><a href="ppi-analysis.html#cb133-13" tabindex="-1"></a>p_fr     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>)     <span class="sc">+</span> base_layers</span>
+<span id="cb133-14"><a href="ppi-analysis.html#cb133-14" tabindex="-1"></a>p_kk     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;kk&quot;</span>)     <span class="sc">+</span> base_layers</span>
+<span id="cb133-15"><a href="ppi-analysis.html#cb133-15" tabindex="-1"></a>p_nicely <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>) <span class="sc">+</span> base_layers</span>
+<span id="cb133-16"><a href="ppi-analysis.html#cb133-16" tabindex="-1"></a>p_star   <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ppi_ranked, <span class="at">layout =</span> <span class="st">&quot;star&quot;</span>)   <span class="sc">+</span> base_layers</span>
+<span id="cb133-17"><a href="ppi-analysis.html#cb133-17" tabindex="-1"></a></span>
+<span id="cb133-18"><a href="ppi-analysis.html#cb133-18" tabindex="-1"></a><span class="fu">plot_list</span>(p_fr, p_kk, p_nicely, p_star, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;D&quot;</span>))</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ppi-net-layouts-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <table>
 <colgroup>
 <col width="18%" />
@@ -869,10 +870,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #&gt; [100] jquerylib_0.1.4         Rcpp_1.1.0              GenomeInfoDb_1.44.1    
 #&gt; [103] png_0.1-8               parallel_4.5.0          blob_1.2.4             
 #&gt; [106] ggalluvial_0.12.5       DOSE_4.2.0              ggstar_1.0.4           
-#&gt; [109] tidytree_0.4.6          ggiraph_0.9.2           ggridges_0.5.7         
-#&gt; [112] scales_1.4.0            purrr_1.1.0             crayon_1.5.3           
-#&gt; [115] GetoptLong_1.0.5        rlang_1.1.6             cowplot_1.2.0          
-#&gt; [118] fastmatch_1.1-6         KEGGREST_1.48.1</code></pre>
+#&gt; [109] viridisLite_0.4.2       tidytree_0.4.6          ggiraph_0.9.2          
+#&gt; [112] ggridges_0.5.7          scales_1.4.0            purrr_1.1.0            
+#&gt; [115] crayon_1.5.3            GetoptLong_1.0.5        rlang_1.1.6            
+#&gt; [118] cowplot_1.2.0           fastmatch_1.1-6         KEGGREST_1.48.1</code></pre>
 
 </div>
 </div>
