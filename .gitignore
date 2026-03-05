@@ -4,3 +4,20 @@
 .Rhistory
 *.RData
 *.Rhistory
+
+# bookdown build artifacts
+docs/_book/
+docs/_bookdown_files/
+docs/TCMDATA_files/
+_bookdown_files/
+docs/*.md
+!docs/*.Rmd
+
+# build output (CI deploys to gh-pages)
+site/
+
+# intermediate cache in images/
+docs/images/*_cache.rds
+
+# old static PPI network images (now generated dynamically)
+docs/images/ppi-net-*.png

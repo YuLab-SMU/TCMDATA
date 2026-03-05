@@ -1,0 +1,78 @@
+# Load TCM Data {#load-data}
+
+`TCMDATA` provides two primary functions for retrieving Traditional Chinese Medicine data: `search_herb()` and `search_target()`.
+
+Both functions return a `data.frame` containing three key columns:
+
+- **herb**: Herb name
+- **molecule**: Molecule/compound name  
+- **target**: Target gene symbol
+
+These columns represent the core components of TCM network pharmacology analysis.
+
+---
+
+## Search by herb name
+
+Users can query TCM data by providing an herb name and specifying the name format:
+
+```{r, collapse=FALSE}
+library(TCMDATA)
+
+# Query using Chinese name
+herbs <- c("灵芝")
+lz <- search_herb(herb = herbs, type = "Herb_cn_name")
+head(lz)
+```
+
+The `herb` parameter accepts three name formats:
+
+| Type | Description | Example |
+|------|-------------|---------|
+| `Herb_cn_name` | Chinese characters (recommended) | `"灵芝"` |
+| `Herb_pinyin_name` | Pinyin romanization (recommended) | `"lingzhi"` |
+| `Herb_en_name` | English translation | `"Ganoderma"` or `"GANODERMA"` |
+
+> 💡 **Tip**: Chinese and Pinyin formats are preferred for best search accuracy.
+
+### Using Pinyin format
+
+For Pinyin queries, concatenate all syllables without spaces or hyphens:
+
+```{r, collapse=FALSE}
+# Correct: continuous pinyin
+lz_py <- search_herb(herb = "lingzhi", type = "Herb_pinyin_name")
+head(lz_py)
+```
+
+**Common mistakes to avoid:**
+```{r, eval=FALSE}
+# ✗ contains space
+search_herb(herb = "ling zhi", type = "Herb_pinyin_name")
+
+# ✗ contains hyphen
+search_herb(herb = "ling-zhi", type = "Herb_pinyin_name")
+```
+
+---
+
+## Search by target gene
+
+All targets in `TCMDATA` are stored as gene symbols (e.g., HGNC nomenclature). You can retrieve associated herbs and molecules by querying target genes:
+
+```{r, collapse=FALSE}
+# Query multiple target genes
+genes <- c("TP53", "EGFR", "BRCA1")
+results <- search_target(genes)
+head(results)
+```
+
+The output shows which herbs and molecules interact with the specified targets, enabling reverse pharmacology analysis.
+
+---
+
+## Session information
+
+```{r, collapse=FALSE}
+sessionInfo()
+```

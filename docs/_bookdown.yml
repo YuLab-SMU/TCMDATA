@@ -1,0 +1,15 @@
+book_filename: "TCMDATA"
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
+rmd_files:
+  - index.Rmd
+  - 01-Load-TCM-Data.Rmd
+  - 02-Pre-analysis.Rmd
+  - 03-Molecule-detection.Rmd
+  - 04-Target-retrieval-analysis.Rmd
+  - 05-TCM-network-construction.Rmd
+  - 06-Enrichment-analysis.Rmd
+  - 07-PPI-analysis.Rmd
+  - 08-Other-resources.Rmd

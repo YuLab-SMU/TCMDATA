@@ -6,3 +6,5 @@ README_files
 ^data-raw$
 ^\.RData$
 ^\.Rhistory$"
+^docs$
+^\.github$

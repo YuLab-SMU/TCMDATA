@@ -107,23 +107,102 @@
 "demo_ppi"
 
 
-#' Diabetic Nephropathy (DN) Associated Genes
+#' Diabetic Nephropathy (DN) Associated Genes from GeneCards
 #'
 #' A dataset containing gene symbols associated with Diabetic Nephropathy (DN),
-#' retrieved from the GeneCards database. All targets in this list have an
-#' inference score greater than 0.
+#' retrieved from the GeneCards database. All targets in this list have a
+#' Relevance Score greater than 0.
 #'
-#' @format A character vector with `r length(dn_targets)` elements:
+#' @format A character vector with `r length(dn_gcds)` elements:
 #' \describe{
-#'   \item{dn_targets}{A list of HGNC gene symbols representing potential targets for DN.}
+#'   \item{dn_gcds}{A list of HGNC gene symbols representing potential targets for DN.}
 #' }
 #' @source \url{https://www.genecards.org/}
-#' @usage data(dn_targets)
+#' @usage data(dn_gcds)
 #' @examples
 #' # Load the data
-#' data(dn_targets)
+#' data(dn_gcds)
 #'
 #' # Check the first few genes
-#' head(dn_targets)
+#' head(dn_gcds)
 #'
-"dn_targets"
+"dn_gcds"
+
+
+#' DESeq2 Differential Expression Results for Early Diabetic Nephropathy
+#'
+#' A data frame containing DESeq2 differential expression analysis results
+#' comparing early-stage diabetic nephropathy (early DN) glomerular samples
+#' versus normal controls from the GEO dataset GSE142025. This dataset serves
+#' as a ready-to-use input for volcano plot visualization and Gene Set
+#' Enrichment Analysis (GSEA).
+#'
+#' @format A data frame with `r nrow(deg_earlydn)` rows and 8 columns:
+#' \describe{
+#'   \item{baseMean}{Numeric. Mean of normalized counts across all samples.}
+#'   \item{log2FoldChange}{Numeric. Log2 fold change of early DN versus control.
+#'     Positive values indicate up-regulation in early DN.}
+#'   \item{lfcSE}{Numeric. Standard error of the log2 fold change estimate.}
+#'   \item{stat}{Numeric. Wald test statistic.}
+#'   \item{pvalue}{Numeric. Raw p-value from the Wald test.}
+#'   \item{padj}{Numeric. Benjamini–Hochberg adjusted p-value.}
+#'   \item{names}{Character. HGNC gene symbol.}
+#'   \item{g}{Character. Differential expression category:
+#'     \itemize{
+#'       \item \strong{"up"}: Significantly up-regulated (653 genes).
+#'       \item \strong{"down"}: Significantly down-regulated (678 genes).
+#'       \item \strong{"normal"}: Not significantly changed (25,852 genes).
+#'     }
+#'   }
+#' }
+#'
+#' @details
+#' The dataset was generated using the \code{DESeq2} pipeline on RNA-seq data
+#' from GSE142025, which profiled glomerular transcriptomes of patients with
+#' early diabetic nephropathy and healthy controls. Rows are named by gene
+#' symbol and cover all 27,183 detected genes (not filtered by significance),
+#' making it suitable for both threshold-based (volcano plot) and rank-based
+#' (GSEA) analyses.
+#'
+#' @source \url{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE142025}
+#'
+#' @references
+#' Fan Y, Yi Z, D'Agati VD, Sun Z, Bhatt K, et al.
+#' Comparison of Kidney Transcriptomic Profiles of Early and Advanced
+#' Diabetic Nephropathy Reveals Potential New Mechanisms for Disease Progression.
+#' \emph{Diabetes}. 2019;68(12):2301–2314. \doi{10.2337/db19-0204}
+#'
+#' Love MI, Huber W, Anders S.
+#' Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2.
+#' \emph{Genome Biology}. 2014;15(12):550. \doi{10.1186/s13059-014-0550-8}
+#'
+#' @usage data(deg_earlydn)
+"deg_earlydn"
+
+
+#' Diabetic Nephropathy (DN) Associated Genes from Open Targets Platform
+#'
+#' A character vector of gene symbols associated with Diabetic Nephropathy (DN),
+#' retrieved from the Open Targets Platform (EFO:0000401). The Open Targets
+#' Platform aggregates target–disease association evidence from multiple data
+#' sources, including GWAS, literature mining, and clinical data.
+#'
+#' @format A character vector with `r length(dn_otp)` elements:
+#' \describe{
+#'   \item{dn_otp}{HGNC gene symbols representing targets associated with DN,
+#'     ordered by their overall association score (descending).}
+#' }
+#'
+#' @source \url{https://platform.opentargets.org/}
+#'
+#' @references
+#' Ochoa D, Karim M, Ghoussaini M, Hulcoop DG, McDonagh EM, Dunham I.
+#' Human genetics evidence supports two-thirds of the 2021 FDA-approved drugs.
+#' \emph{Nature Reviews Drug Discovery}. 2022;21:551. \doi{10.1038/d41573-022-00120-3}
+#'
+#' @usage data(dn_otp)
+#' @examples
+#' data(dn_otp)
+#' head(dn_otp)
+#' length(dn_otp)
+"dn_otp"

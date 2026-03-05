@@ -1,0 +1,13 @@
+bookdown::gitbook:
+  css: style.css
+  split_by: chapter
+  config:
+    toc:
+      before: |
+        <li><a href="./">TCMDATA User Guide</a></li>
+      after: |
+        <li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
+    sharing:
+      github: yes
+      facebook: no
+      twitter: yes

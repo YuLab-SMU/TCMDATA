@@ -1,0 +1,141 @@
+name: bookdown
+
+on:
+  push:
+    branches:
+      - docs/rpkg-usage
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bookdown-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      LANG: en_US.UTF-8
+      LC_ALL: en_US.UTF-8
+
+    steps:
+      - name: Checkout docs branch
+        uses: actions/checkout@v4
+        with:
+          ref: docs/rpkg-usage
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "release"
+          use-public-rspm: true
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libxml2-dev libssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev fonts-noto-cjk locales
+          sudo locale-gen en_US.UTF-8
+          sudo update-locale LANG=en_US.UTF-8
+          fc-cache -fv
+
+      - name: Install pak
+        run: |
+          Rscript -e 'install.packages("pak", repos = sprintf("https://r-lib.github.io/p/pak/stable/%s/%s/%s", .Platform$pkgType, R.Version()$os, R.Version()$arch))'
+
+      - name: Install Bioconductor packages
+        run: |
+          Rscript -e '
+            pak::pkg_install("BiocManager")
+            BiocManager::install(c(
+              "clusterProfiler", "enrichplot", "org.Hs.eg.db",
+              "ComplexHeatmap", "circlize"
+            ), update = FALSE, ask = FALSE)
+          '
+
+      - name: Install CRAN packages
+        run: |
+          Rscript -e '
+            pak::pkg_install(c(
+              "bookdown", "rmarkdown", "knitr",
+              "aplot", "aplotExtra", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
+              "igraph", "ivolcano", "magrittr", "Matrix", "paletteer", "purrr",
+              "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils",
+              "ggalluvial", "ggtangle", "ggvenn", "ggridges"
+            ))
+          '
+
+      - name: Install TCMDATA from source
+        run: |
+          set -o pipefail
+          cat > /tmp/install_tcmdata.R << 'RSCRIPT'
+          options(error = function() {
+            message("=== INSTALL ERROR ===")
+            traceback(2)
+            q(status = 1)
+          })
+          message("Working dir: ", getwd())
+          message("Repo files: ", paste(list.files(), collapse = ", "))
+          if (file.exists("DESCRIPTION")) {
+            message("=== DESCRIPTION ===")
+            cat(readLines("DESCRIPTION"), sep = "\n")
+            message("=== END DESCRIPTION ===")
+          } else {
+            stop("DESCRIPTION not found in repo root")
+          }
+          pak::local_install(".", dependencies = TRUE, upgrade = FALSE)
+          if (!requireNamespace("TCMDATA", quietly = TRUE)) {
+            stop("TCMDATA not installed!")
+          }
+          message("TCMDATA ", packageVersion("TCMDATA"), " installed OK")
+          RSCRIPT
+          Rscript /tmp/install_tcmdata.R 2>&1 | tee install_tcmdata.log
+
+      - name: Verify all packages and datasets
+        run: |
+          Rscript -e '
+            pkgs <- c("TCMDATA", "bookdown", "rmarkdown", "knitr", "ggtangle", "ggalluvial",
+                       "clusterProfiler", "enrichplot", "aplot", "aplotExtra", "ivolcano",
+                       "ggrepel", "igraph", "ggfun", "ggvenn", "circlize", "ComplexHeatmap",
+                       "org.Hs.eg.db")
+            for (p in pkgs) {
+              if (requireNamespace(p, quietly = TRUE)) {
+                message("OK: ", p, " (", packageVersion(p), ")")
+              } else {
+                stop("MISSING: ", p)
+              }
+            }
+            # Verify TCMDATA datasets are accessible
+            library(TCMDATA)
+            datasets <- c("demo_ppi", "dn_gcds", "dn_otp", "deg_earlydn", "gutMGene", "tf_targets")
+            for (ds in datasets) {
+              data(list = ds)
+              message("DATA OK: ", ds, " (", nrow(get(ds)), " rows)")
+            }
+          '
+
+      - name: Build book
+        working-directory: docs
+        run: |
+          set -o pipefail
+          Rscript _build.R 2>&1 | tee build.log
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: |
+            docs/build.log
+            install_tcmdata.log
+            docs/*.md
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          publish_branch: gh-pages
+          force_orphan: true
