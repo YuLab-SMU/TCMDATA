@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - docs/rpkg-usage
+      - ppi_knock
 
 permissions:
   contents: write
@@ -23,8 +24,6 @@ jobs:
     steps:
       - name: Checkout docs branch
         uses: actions/checkout@v4
-        with:
-          ref: docs/rpkg-usage
 
       - uses: r-lib/actions/setup-pandoc@v2
 
