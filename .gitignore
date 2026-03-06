@@ -21,3 +21,6 @@ docs/images/*_cache.rds
 
 # old static PPI network images (now generated dynamically)
 docs/images/ppi-net-*.png
+
+# skill
+skill.md

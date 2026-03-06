@@ -200,6 +200,84 @@ head(mcl_scores)
 
 The `inflation` parameter controls cluster granularity: higher values (e.g., 3–5) yield tighter, more granular clusters; lower values (e.g., 1.5–2) produce larger, more inclusive modules.
 
+## PPI network robustness analysis {#robustness}
+
+Assessing the robustness of PPI networks to node perturbation is crucial for understanding the resilience of biological systems and identifying critical vulnerabilities. The `ppi_knock()` function simulates targeted node removal (knockout) and evaluates the impact on network integrity by comparing against randomized null models, following the drug attack model proposed by Xi et al. (2022)<sup>[6]</sup>.
+
+### Algorithm overview
+
+The algorithm tracks four network-level topological metrics — **ASPL** (Average Shortest Path Length), **AD** (Average Degree), **DC** (Degree Centralization), and **CC** (Closeness Centrality) — and proceeds in four stages:
+
+1. **Baseline**: Compute the four metrics on the intact network.
+2. **Real attack**: Remove the target nodes and re-compute metrics. The Robustness Index (RI) quantifies relative change: $RI = (M_{after} - M_{before}) / M_{before}$.
+3. **Permutation null**: Rewire the network $n$ times (preserving degree sequence), shuffle edge weights, randomly knock out the same number of nodes, and compute the random RI distribution.
+4. **Z-score normalization**: $Z = (RI_{real} - \mu_{null}) / \sigma_{null}$, with p-values derived via normal approximation: $p = 2\Phi(-|Z|)$.
+
+The **Total Score** integrates all metrics: $Total = Z_{ASPL} - Z_{AD} - Z_{DC} - Z_{CC}$. A large positive value indicates the knocked-out targets are structurally critical. The **Total P-value** is derived by comparing the real combined RI against the permutation null distribution of combined RIs.
+
+### Example: knocking out IL6
+
+```{r ppi-knock, eval=TRUE, collapse=FALSE}
+res <- ppi_knock(ppi_scored, targets = "IL6", n_perm = 100)
+res$Summary
+cat("Total Score:", res$Total_Score, "\n")
+cat("Total P-value:", res$Total_Pvalue, "\n")
+```
+
+The results show that removing IL6 causes ASPL to increase (network paths become longer) while AD, DC, and CC decrease (connectivity drops), all deviating significantly from the random null (|Z| > 1.96, p < 0.05 for all metrics). The high Total Score (with a highly significant p-value) confirms IL6 as a structurally critical hub in this PPI network.
+
+### Visualization: before vs. after knockout
+
+To visually compare network topology before and after knockout, we plot the intact network (with the target highlighted in red) alongside the post-knockout network:
+
+```{r ppi-knock-vis, eval=TRUE, fig.width=12, fig.height=6, fig.align='center', out.width='100%', collapse=FALSE}
+library(ggtangle)
+library(igraph)
+library(ggplot2)
+library(ggrepel)
+library(aplot)
+
+target_node <- "IL6"
+
+## prepare before / after igraph objects
+g_before <- ppi_ranked
+V(g_before)$is_target <- ifelse(V(g_before)$name == target_node, "Target", "Other")
+
+g_after <- delete_vertices(g_before, target_node)
+
+## network before knockout
+set.seed(2025)
+p_before <- ggplot(g_before, layout = "fr") +
+  geom_edge(alpha = 0.10, color = "grey65") +
+  geom_point(aes(color = is_target, size = degree), alpha = 0.85) +
+  geom_text_repel(aes(label = name), size = 2.5, max.overlaps = 25,
+                  segment.alpha = 0.3, fontface = "italic") +
+  scale_color_manual(values = c(Other = "#56B4E9", Target = "#D55E00"),
+                     guide = "none") +
+  scale_size_continuous(range = c(2, 8), guide = "none") +
+  ggtitle("Before knockout") +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 12))
+
+## network after knockout
+set.seed(2025)
+p_after <- ggplot(g_after, layout = "fr") +
+  geom_edge(alpha = 0.10, color = "grey65") +
+  geom_point(aes(color = degree, size = Score_network), alpha = 0.85) +
+  geom_text_repel(aes(label = name), size = 2.5, max.overlaps = 25,
+                  segment.alpha = 0.3, fontface = "italic") +
+  scale_color_gradient(low = "#56B4E9", high = "#D55E00", name = "Degree") +
+  scale_size_continuous(range = c(2, 8), name = "Score") +
+  ggtitle(paste0("After knockout (", target_node, " removed)")) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 12))
+
+plot_list(p_before, p_after, ncol = 2, labels = c("A", "B"))
+```
+
+- **Panel A** shows the intact network with IL6 highlighted in red, revealing its central position and high degree.
+- **Panel B** shows the network after removing IL6 — the loss of its connections visibly fragments local connectivity.
+
 
 ## PPI network visualization {#ppi-vis}
 
@@ -320,6 +398,8 @@ plot_list(p_fr, p_kk, p_nicely, p_star, ncol = 2, labels = c("A", "B", "C", "D")
 4. van Dongen S. Graph clustering via a discrete uncoupling process. *SIAM Journal on Matrix Analysis and Applications* (2008), 30(1), 121–141. doi: [10.1137/040608635](https://doi.org/10.1137/040608635).
 
 5. Yu G. ggtangle: Draw Network and Phylogenetic Tree Using Grammar of Graphics. R package. doi: [10.32614/CRAN.package.ggtangle](https://doi.org/10.32614/CRAN.package.ggtangle).
+
+6. Xi Y, et al. Exploration of the Specific Pathology of HXMM Tablet Against Retinal Injury Based on Drug Attack Model to Network Robustness. *Frontiers in Pharmacology* (2022), 13, 826535. doi: [10.3389/fphar.2022.826535](https://doi.org/10.3389/fphar.2022.826535).
 
 ---
 
