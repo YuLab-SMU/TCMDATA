@@ -8,3 +8,5 @@ README_files
 ^\.Rhistory$"
 ^docs$
 ^\.github$
+^site$
+^skill\.md$
