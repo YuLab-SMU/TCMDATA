@@ -16,6 +16,7 @@ tcm_sankey(
     "#ffeda0", "#BB5234", "#BB7813", "#FF6158"),
   plot_font = "sans",
   font_face = "bold",
+  target_fontface = "italic",
   font_size = 3.6,
   width = 0.05,
   alpha = 0.3,
@@ -38,6 +39,8 @@ TCM_sankey(...)
 \item{plot_font}{Character string specifying the font family used for text. Default is \code{"sans"}.}
 
 \item{font_face}{Character string specifying the font face. Default is \code{"bold"}.}
+
+\item{target_fontface}{Character string specifying the font face for target labels (rightmost axis). Default is \code{"italic"}.}
 
 \item{font_size}{Numeric value controlling the size of node labels. Default is \code{3.5}.}
 

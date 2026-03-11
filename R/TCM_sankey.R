@@ -7,6 +7,7 @@
 #' @param target_cols Character vector defining the base color palette for the target.
 #' @param plot_font Character string specifying the font family used for text. Default is \code{"sans"}.
 #' @param font_face Character string specifying the font face. Default is \code{"bold"}.
+#' @param target_fontface Character string specifying the font face for target labels (rightmost axis). Default is \code{"italic"}.
 #' @param font_size Numeric value controlling the size of node labels. Default is \code{3.5}.
 #' @param width Numeric value controlling the width of both nodes and flows. Default is \code{0.05}.
 #' @param alpha Numeric value controlling the transparency of the flows. Default is \code{0.3}.
@@ -32,6 +33,7 @@ tcm_sankey <- function(
                    "#e6f598", "#ffeda0", "#BB5234", "#BB7813", "#FF6158"),
     plot_font = "sans",
     font_face = "bold",
+    target_fontface = "italic",
     font_size = 3.6,
     width = 0.05,
     alpha = 0.3,
@@ -114,7 +116,7 @@ tcm_sankey <- function(
                 ifelse(grepl("spacer_", as.character(after_stat(.data$stratum))), "",
                        as.character(after_stat(.data$stratum))),50)),
               hjust = 0, nudge_x = 0.03,
-              size = font_size, family = plot_font, fontface = font_face) +
+              size = font_size, family = plot_font, fontface = target_fontface) +
     scale_x_discrete(limits = c("herb", "molecule", "target"), expand = c(0, 0)) +
     scale_fill_identity() +
     guides(fill = "none") +

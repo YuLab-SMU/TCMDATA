@@ -148,6 +148,7 @@ make_colors <- function(items, colors, insert = NULL) {
 #' @param dot_width Numeric. Relative width of the dot plot panel in the combined plot. Default is `1`.
 #' @param font_family Character. Font family for all text elements. Default is `"Arial"`.
 #' @param font_face Character. Font face for all text. Default is `"bold"`.
+#' @param gene_fontface Character. Font face for gene labels (rightmost axis). Default is `"italic"`.
 #' @param sankey_lab Character. Label for the x-axis of the Sankey diagram. Default is `"Gene-Pathway"`.
 #' @param seed Integer. Random seed for reproducibility of layout. Default is `2025`.
 #' @param ... Additional arguments passed to internal helper functions.
@@ -185,6 +186,7 @@ ggdot_sankey <- function(
     dot_width = 1,
     font_family = "sans",
     font_face = "bold",
+    gene_fontface = "italic",
     sankey_lab = "Gene-Pathway",
     seed = 2025,
     ...){
@@ -250,7 +252,7 @@ ggdot_sankey <- function(
         "", as.character(after_stat(.data$stratum))
       )),
       hjust = 0, nudge_x = 0.03,
-      size = sankey_text_size, family = font_family, fontface = font_face) +
+      size = sankey_text_size, family = font_family, fontface = gene_fontface) +
     geom_text(
       stat = ggalluvial::StatStratum,
       data = function(x) dplyr::filter(x, .data$axis == "Pathway"),
