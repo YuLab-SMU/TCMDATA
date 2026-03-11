@@ -5,6 +5,7 @@ on:
     branches:
       - docs/rpkg-usage
       - ppi_knock
+      - ml
 
 permissions:
   contents: write
