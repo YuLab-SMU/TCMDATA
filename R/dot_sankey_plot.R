@@ -147,7 +147,7 @@ make_colors <- function(items, colors, insert = NULL) {
 #' @param sankey_width Numeric. Relative width of the Sankey panel in the combined plot. Default is `2`.
 #' @param dot_width Numeric. Relative width of the dot plot panel in the combined plot. Default is `1`.
 #' @param font_family Character. Font family for all text elements. Default is `"Arial"`.
-#' @param font_face Character. Font face for all text. Default is `"bold"`.
+#' @param font_face Character. Font face for all text. Default is `"plain"`.
 #' @param gene_fontface Character. Font face for gene labels (rightmost axis). Default is `"italic"`.
 #' @param sankey_lab Character. Label for the x-axis of the Sankey diagram. Default is `"Gene-Pathway"`.
 #' @param seed Integer. Random seed for reproducibility of layout. Default is `2025`.
@@ -185,7 +185,7 @@ ggdot_sankey <- function(
     sankey_width = 2,
     dot_width = 1,
     font_family = "sans",
-    font_face = "bold",
+    font_face = "plain",
     gene_fontface = "italic",
     sankey_lab = "Gene-Pathway",
     seed = 2025,

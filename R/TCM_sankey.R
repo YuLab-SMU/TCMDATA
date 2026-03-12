@@ -6,7 +6,7 @@
 #' @param mol_cols Character vector defining the base color palette for the molecule.
 #' @param target_cols Character vector defining the base color palette for the target.
 #' @param plot_font Character string specifying the font family used for text. Default is \code{"sans"}.
-#' @param font_face Character string specifying the font face. Default is \code{"bold"}.
+#' @param font_face Character string specifying the font face. Default is \code{"plain"}.
 #' @param target_fontface Character string specifying the font face for target labels (rightmost axis). Default is \code{"italic"}.
 #' @param font_size Numeric value controlling the size of node labels. Default is \code{3.5}.
 #' @param width Numeric value controlling the width of both nodes and flows. Default is \code{0.05}.
@@ -32,7 +32,7 @@ tcm_sankey <- function(
     target_cols = c("#c49c94", "#f7b6d2", "#dbdb8d", "#c7e9c0", "#f4cae4",
                    "#e6f598", "#ffeda0", "#BB5234", "#BB7813", "#FF6158"),
     plot_font = "sans",
-    font_face = "bold",
+    font_face = "plain",
     target_fontface = "italic",
     font_size = 3.6,
     width = 0.05,
