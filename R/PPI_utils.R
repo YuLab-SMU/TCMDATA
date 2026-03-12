@@ -443,12 +443,12 @@ compute_BN <- function(g) {
       root        = s,
       mode        = "all",
       unreachable = FALSE,
-      father      = TRUE,
+      parent      = TRUE,
       dist        = TRUE
     )
 
     dist   <- as.numeric(bfs_res$dist)
-    father <- as.numeric(bfs_res$father)
+    parent <- as.numeric(bfs_res$parent)
 
     reachable_indices <- which(!is.na(dist))
     nT <- length(reachable_indices)
@@ -461,7 +461,7 @@ compute_BN <- function(g) {
     ord <- reachable_indices[order(dist[reachable_indices], decreasing = TRUE)]
 
     for (v in ord) {
-      p <- father[v]
+      p <- parent[v]
       if (!is.na(p) && p > 0 && p != v) {
         subtree_size[p] <- subtree_size[p] + subtree_size[v]
       }

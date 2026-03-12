@@ -12,31 +12,81 @@ plot_node_heatmap(
   colors = c("#2166AC", "white", "#B2182B"),
   cluster_rows = TRUE,
   cluster_cols = FALSE,
+  row_fontsize = 12,
+  row_fontface = "italic",
+  col_fontsize = 10,
+  col_fontface = "bold",
+  col_rotation = 45,
+  show_row_names = TRUE,
+  show_column_names = TRUE,
+  legend_title = "Z-score",
+  border_color = "white",
+  border_width = 1,
   ...
 )
 
 PlotNodeHeatmap(...)
 }
 \arguments{
-\item{data}{A data frame containing the nodes names and metric values.}
+\item{data}{A data frame containing the node names and metric values.}
 
-\item{id_col}{Character. The column name serving as row names. Default is "name".}
+\item{id_col}{Character. The column name serving as row identifiers.
+Default is \code{"name"}.}
 
-\item{select_cols}{Character Vector. The specific columns to include in the heatmap. Default all columns except \code{id_col} are used.}
+\item{select_cols}{Character vector. Columns to include in the heatmap.
+If \code{NULL} (default), all numeric columns except \code{id_col} are
+used.}
 
-\item{colors}{Vector of length 3. Colors for low (-2), zero (0), and high (2) values. Default is c("#2166AC", "white", "#B2182B").}
+\item{colors}{Character vector of length 3. Colours mapped to Z-score
+values \code{-2}, \code{0}, and \code{2}. Default is
+\code{c("#2166AC", "white", "#B2182B")}.}
 
-\item{cluster_rows}{Logical. Whether to perform hierarchical clustering on rows. Default is TRUE.}
+\item{cluster_rows}{Logical. Perform hierarchical clustering on rows?
+Default \code{TRUE}.}
 
-\item{cluster_cols}{Logical. Whether to perform hierarchical clustering on columns. Default is FALSE.}
+\item{cluster_cols}{Logical. Perform hierarchical clustering on columns?
+Default \code{FALSE}.}
 
-\item{...}{Additional arguments passed to \code{ComplexHeatmap::Heatmap}.}
+\item{row_fontsize}{Numeric. Font size for row (gene) names.
+Default \code{12}.}
+
+\item{row_fontface}{Character. Font face for row names. One of
+\code{"plain"}, \code{"italic"}, \code{"bold"}, or
+\code{"bold.italic"}. Default \code{"italic"}.}
+
+\item{col_fontsize}{Numeric. Font size for column (metric) names.
+Default \code{10}.}
+
+\item{col_fontface}{Character. Font face for column names. Default
+\code{"bold"}.}
+
+\item{col_rotation}{Numeric. Rotation angle (degrees) for column labels.
+Default \code{45}.}
+
+\item{show_row_names}{Logical. Show row names? Default \code{TRUE}.}
+
+\item{show_column_names}{Logical. Show column names? Default \code{TRUE}.}
+
+\item{legend_title}{Character. Title for the colour legend. Default
+\code{"Z-score"}.}
+
+\item{border_color}{Character. Cell border colour. Default \code{"white"}.
+Set to \code{NA} to remove borders.}
+
+\item{border_width}{Numeric. Cell border line width. Default \code{1}.}
+
+\item{...}{Additional arguments passed to
+\code{\link[ComplexHeatmap]{Heatmap}}.}
 }
 \value{
-A Heatmap object.
+A \code{Heatmap} object that can be printed or combined with other
+heatmaps via \code{+} or \code{\%v\%}.
 }
 \description{
-Plot PPI nodes metrics Heatmap
+Create a Z-score normalized heatmap of PPI node topological metrics using
+\code{ComplexHeatmap}.  Provides convenient parameters for the most common
+styling adjustments while still accepting any additional argument via
+\code{...}.
 }
 \examples{
 data(demo_ppi)
@@ -45,4 +95,5 @@ rk_res <- rank_ppi_nodes(ppi)[[2]]
 selected_cols <- colnames(rk_res)[c(2, 3, 4, 6, 9, 12, 14, 15, 16)]
 p1 <- plot_node_heatmap(rk_res, select_cols = selected_cols)
 print(p1)
+
 }
