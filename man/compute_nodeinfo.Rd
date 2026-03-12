@@ -4,12 +4,14 @@
 \alias{compute_nodeinfo}
 \title{Compute some useful metrics for PPI nodes}
 \usage{
-compute_nodeinfo(g, weight_attr = "score", seed = 42)
+compute_nodeinfo(g, weight_attr = "score", normalize = FALSE, seed = 42)
 }
 \arguments{
 \item{g}{An igraph object containing PPI information.}
 
 \item{weight_attr}{Character; The attribute of weight in this PPI object.}
+
+\item{normalize}{Logical; whether to normalize betweenness and closeness centrality to the range \code{[0, 1]}. When \code{TRUE}, each value is divided by the theoretical maximum.}
 
 \item{seed}{Numeric; Random seed for function \code{compute_EPC}. Default is 42.}
 }

@@ -76,6 +76,7 @@ ppi_subset <- function(ppi_obj,
 #' Compute some useful metrics for PPI nodes
 #' @param g An igraph object containing PPI information.
 #' @param weight_attr Character; The attribute of weight in this PPI object.
+#' @param normalize Logical; whether to normalize betweenness and closeness centrality to the range \code{[0, 1]}. When \code{TRUE}, each value is divided by the theoretical maximum.
 #' @param seed Numeric; Random seed for function `compute_EPC`. Default is 42.
 #' @importFrom igraph E V edge_attr_names edge_attr
 #' @importFrom igraph degree strength betweenness closeness
@@ -89,7 +90,7 @@ ppi_subset <- function(ppi_obj,
 #' str(ppi)
 #'
 #' @export
-compute_nodeinfo <- function(g, weight_attr = "score", seed = 42) {
+compute_nodeinfo <- function(g, weight_attr = "score", normalize = FALSE, seed = 42) {
   stopifnot(inherits(g, "igraph"))
 
   ## PPI score
@@ -109,23 +110,23 @@ compute_nodeinfo <- function(g, weight_attr = "score", seed = 42) {
   V(g)$strength <- if (!is.null(w)) igraph::strength(g, mode = "all", weights = w) else NA_real_
 
   message("Calculating betweenness (unweighted) ...")
-  V(g)$betweenness <- igraph::betweenness(g, directed = FALSE, normalized = TRUE)
+  V(g)$betweenness <- igraph::betweenness(g, directed = FALSE, normalized = normalize)
 
   if (!is.null(w_dist)) {
     message("Calculating betweenness (weighted) ...")
     V(g)$betweenness_w <- igraph::betweenness(g, directed = FALSE,
                                               weights = w_dist,
-                                              normalized = TRUE)
+                                              normalized = normalize)
   } else {
     V(g)$betweenness_w <- NA_real_
   }
 
   message("Calculating closeness (unweighted) ...")
-  V(g)$closeness <- igraph::closeness(g, normalized = TRUE)
+  V(g)$closeness <- igraph::closeness(g, normalized = normalize)
 
   if (!is.null(w_dist)) {
     message("Calculating closeness (weighted) ...")
-    V(g)$closeness_w <- igraph::closeness(g, normalized = TRUE,
+    V(g)$closeness_w <- igraph::closeness(g, normalized = normalize,
                                           weights = w_dist)
   } else {
     V(g)$closeness_w <- NA_real_
