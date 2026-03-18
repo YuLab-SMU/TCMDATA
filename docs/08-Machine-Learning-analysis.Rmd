@@ -1,0 +1,340 @@
+# Machine learning–based key target screening {#ml-analysis}
+
+In network pharmacology, candidate targets derived from compound–target mapping and PPI network analysis often number in the dozens to hundreds. Identifying a concise set of **key targets**, which are the most predictive of the disease phenotype, is essential for downstream experimental validation and mechanistic interpretation. **Machine learning (ML)** offers a data-driven, unbiased approach to this task: by training classifiers on transcriptomic profiles and evaluating feature importance, ML methods can distill large candidate pools into biologically meaningful gene signatures.
+
+A growing number of publications employ a **multi-algorithm consensus** strategy, in which several complementary ML methods (e.g., LASSO, Random Forest, SVM-RFE, XGBoost) are applied in parallel; genes consistently selected across methods are reported as the final key targets. This consensus approach mitigates algorithm-specific biases and enhances the robustness of the selected biomarkers.
+
+`TCMDATA` provides an **ML module** that implements this workflow end-to-end: from data preparation and model fitting through consensus extraction and publication-ready visualization. Three evaluation modes are supported:
+
+| Mode | Description | Use case |
+|------|-------------|----------|
+| **A** | All samples used for training; performance assessed via out-of-fold (OOF) or out-of-bag (OOB) predictions | Single dataset; most common in network pharmacology studies |
+| **B** | Internal random train/test split | When an independent cohort is unavailable but held-out validation is desired |
+| **C** | External validation on an independent test set | When a separate cohort (e.g., different GEO series) is available |
+
+---
+
+## Introduction
+### Example dataset {#ml-data}
+
+Throughout this chapter we use the built-in `covid19` dataset, which contains RNA-seq expression profiles from 100 COVID-19 patients (GSE157103). Samples are labelled as ICU (intensive care unit) or NonICU, providing a clinically relevant binary classification task.
+
+```{r ml-load-data, eval=TRUE, collapse=FALSE}
+library(TCMDATA)
+
+data("covid19")
+str(covid19, max.level = 1)
+```
+
+We extract the expression matrix (genes × samples) and the group labels. To simulate a realistic candidate gene list, we select the **top 50 most variable genes** by inter-sample variance — in practice these would be the candidate targets obtained from upstream PPI / compound–target analysis:
+
+```{r ml-prepare-data, eval=TRUE, collapse=FALSE}
+expr_mat <- as.matrix(covid19$expr)
+group <- covid19$group_info$group
+
+## Select top 50 most variable genes by row variance
+gene_var <- apply(expr_mat, 1, var)
+genes <- names(sort(gene_var, decreasing = TRUE))[1:50]
+
+cat("Expression matrix:", nrow(expr_mat), "genes ×", ncol(expr_mat), "samples\n")
+cat("Group levels:", levels(group), "\n")
+cat("Top 50 high-variance genes selected:", length(genes), "\n")
+cat(genes, sep = ", ")
+```
+
+---
+
+### Data preparation {#ml-prepare}
+
+`prepare_ml_data()` converts a gene × sample expression matrix into a structured `tcm_ml_data` object that all downstream modelling functions accept. It handles level reordering (so that the positive class is always `levels[1]`), zero-variance gene removal, and syntactic name cleaning.
+
+For Mode A (full cross-validation, no hold-out), simply pass the matrix, group labels, and the desired positive class:
+
+```{r ml-mode-a-data, eval=TRUE, collapse=FALSE}
+ml_data <- prepare_ml_data(
+  expr_mat,
+  group,
+  positive_class = "ICU",
+  genes = genes)
+```
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `expr_mat` | Numeric matrix (genes × samples) | — |
+| `group` | Factor or character vector of class labels (length = `ncol(expr_mat)`) | — |
+| `positive_class` | Which level to treat as the positive class | `NULL` (alphabetical) |
+| `genes` | Character vector of candidate genes to retain | `NULL` (all genes) |
+| `split` | Logical; `TRUE` activates Mode B (internal split) | `FALSE` |
+| `train_ratio` | Training fraction for Mode B | 0.7 |
+| `test_expr` / `test_group` | External test data for Mode C | `NULL` |
+
+---
+
+## Mode A: full cross-validation {#ml-mode-a}
+
+In Mode A, **all samples** participate in model training. Model performance is assessed using out-of-fold (OOF) predictions from cross-validation (LASSO, SVM-RFE, XGBoost) or out-of-bag (OOB) estimates (Random Forest). This is the most widely used setup in network pharmacology ML screening, as it maximises the training data and avoids random split bias.
+
+### LASSO regression {#ml-lasso}
+
+The Least Absolute Shrinkage and Selection Operator (LASSO)<sup>[2]</sup> applies an $L_1$ penalty to logistic regression, driving irrelevant coefficients exactly to zero and thereby performing automatic feature selection. The penalty strength $\lambda$ is selected via cross-validation; `ml_lasso()` supports both `lambda.min` (lowest CV error) and `lambda.1se` (most parsimonious model within one standard error), with the latter being the default.
+
+$$\min_{\beta} \left\{ -\frac{1}{n} \sum_{i=1}^{n} \ell(y_i, \beta_0 + x_i^T \beta) + \lambda \|\beta\|_1 \right\}$$
+
+```{r ml-lasso-fit, eval=TRUE, collapse=FALSE}
+res_lasso <- ml_lasso(ml_data, cv_folds = 10, seed = 2025)
+res_lasso
+```
+
+#### CV error curve
+
+The cross-validation curve shows the AUC (or deviance) as a function of $\log(\lambda)$. The two vertical dashed lines mark `lambda.min` and `lambda.1se`:
+
+```{r ml-lasso-cv, eval=TRUE, fig.width=7, fig.height=5, fig.align='center', out.width='80%', collapse=FALSE}
+plot_enet_cv(res_lasso)
+```
+
+#### Coefficient path
+
+The coefficient path traces how each gene's coefficient evolves along the regularisation path. Setting `top_n = 20` restricts the display to the 20 features with the largest absolute coefficients:
+
+```{r ml-lasso-path, eval=TRUE, fig.width=7, fig.height=5, fig.align='center', out.width='80%', collapse=FALSE}
+plot_enet_path(res_lasso, top_n = 20)
+```
+
+#### Coefficient bar chart
+
+A horizontal bar chart coloured by sign provides an intuitive summary of the selected features and their directional effects:
+
+```{r ml-lasso-coefs, eval=TRUE, fig.width=7, fig.height=5, fig.align='center', out.width='80%', collapse=FALSE}
+plot_enet_coefs(res_lasso)
+```
+
+---
+
+### Random Forest and Boruta {#ml-rf}
+
+Random Forest (RF)<sup>[3]</sup> constructs an ensemble of decision trees, each trained on a bootstrap sample of the data. Feature importance is quantified by the mean decrease in Gini impurity (or accuracy) across all trees. To move from importance ranking to formal feature *selection*, `ml_rf()` employs the **Boruta** algorithm<sup>[4]</sup>, which compares each real feature's importance against that of randomly shuffled "shadow" copies; only features that consistently outperform their shadows are confirmed as relevant.
+
+The pipeline proceeds in three phases:
+
+1. Train an RF on **all** candidate genes to obtain importance scores.
+2. Run Boruta all-relevant feature selection (tentative features resolved via `TentativeRoughFix`).
+3. *(Optional, default)* Re-fit an RF on the **selected** genes only, so that OOB metrics honestly reflect the chosen subset.
+
+```{r ml-rf-fit, eval=TRUE, collapse=FALSE}
+res_rf <- ml_rf(ml_data, n_trees = 500, seed = 2025)
+res_rf
+```
+
+#### Boruta importance plot
+
+The Boruta plot shows the median importance of each feature, coloured by selection decision (Confirmed / Tentative / Rejected). The dashed vertical line marks the shadow maximum threshold:
+
+```{r ml-rf-boruta, eval=TRUE, fig.width=7, fig.height=6, fig.align='center', out.width='80%', collapse=FALSE}
+plot_rf_boruta(res_rf, top_n = 25)
+```
+
+#### Variable importance (Gini)
+
+A standard bar chart of Mean Decrease Gini for the top features in the refitted model:
+
+```{r ml-rf-importance, eval=TRUE, fig.width=7, fig.height=5, fig.align='center', out.width='80%', collapse=FALSE}
+plot_rf_importance(res_rf, top_n = 20)
+```
+
+---
+
+### SVM-RFE {#ml-svm-rfe}
+
+Support Vector Machine–Recursive Feature Elimination (SVM-RFE) iteratively trains a linear SVM and removes the feature(s) with the smallest weight magnitude $|w_j|^2$ at each step, following the backward elimination framework of Guyon et al.<sup>[1]</sup>. The optimal feature-subset size is determined by the cross-validated ROC (or accuracy) profile across a grid of subset sizes. `ml_svm_rfe()` wraps `caret::rfe()` with sensible defaults tailored for gene expression data.
+
+```{r ml-svm-fit, eval=TRUE, collapse=FALSE, warning=FALSE}
+res_svm <- ml_svm_rfe(ml_data, cv_folds = 5, cv_repeats = 3, seed = 2025)
+res_svm
+```
+
+#### RFE accuracy profile
+
+The profile plot visualises the CV metric (ROC or Accuracy) as a function of the number of features retained. The dashed red line indicates the selected optimal subset size:
+
+```{r ml-svm-curve, eval=TRUE, fig.width=7, fig.height=5, fig.align='center', out.width='80%', collapse=FALSE}
+plot_svm_rfe_curve(res_svm)
+```
+
+---
+
+### XGBoost {#ml-xgboost}
+
+eXtreme Gradient Boosting (XGBoost)<sup>[5]</sup> builds an ensemble of shallow decision trees sequentially, with each new tree correcting the residual errors of its predecessors. An internal $k$-fold CV with early stopping determines the optimal number of boosting rounds, preventing overfitting. Features are ranked by their cumulative information **Gain** across all trees.
+
+```{r ml-xgb-fit, eval=TRUE, collapse=FALSE}
+res_xgb <- ml_xgboost(ml_data, cv_folds = 5, seed = 2025)
+res_xgb
+```
+
+#### Feature importance (Gain)
+
+```{r ml-xgb-importance, eval=TRUE, fig.width=7, fig.height=5, fig.align='center', out.width='80%', collapse=FALSE}
+plot_xgb_importance(res_xgb, top_n = 20)
+```
+
+---
+
+### Consensus analysis {#ml-consensus}
+
+The multi-algorithm consensus strategy identifies genes that are selected by at least `min_methods` models, thereby filtering out method-specific noise and retaining only robust biomarker candidates.
+
+#### Running all methods together
+
+`run_ml_screening()` provides a convenient one-call interface:
+
+```{r ml-screening, eval=TRUE, collapse=FALSE, warning=FALSE}
+ml_list <- run_ml_screening(
+  ml_data,
+  methods = c("lasso", "rf", "svm_rfe", "xgboost"),
+  cv_folds = 5,
+  seed = 2025
+)
+summary(ml_list)
+```
+
+#### Venn diagram
+
+```{r ml-venn, eval=TRUE, fig.width=7, fig.height=6, fig.align='center', out.width='70%', collapse=FALSE, warning=FALSE}
+plot_ml_venn(ml_list)
+```
+
+#### Extracting consensus genes
+
+```{r ml-consensus-genes, eval=TRUE, collapse=FALSE}
+consensus <- get_ml_consensus(ml_list, min_methods = 2)
+cat("Consensus genes (≥ 2 methods):\n")
+cat(consensus, sep = ", ")
+```
+
+#### ROC curves
+
+The ROC curves visualise discrimination performance for each method. In Mode A, curves are derived from out-of-fold / out-of-bag predictions, providing an honest assessment without data leakage:
+
+```{r ml-roc, eval=TRUE, fig.width=7, fig.height=6, fig.align='center', out.width='80%', collapse=FALSE}
+plot_ml_roc(ml_list)
+```
+
+---
+
+## Mode B: internal train/test split {#ml-mode-b}
+
+When a single dataset is available but held-out validation is desired, Mode B randomly partitions samples into training and test sets. This avoids the optimistic bias of purely cross-validated metrics while still operating within a single cohort.
+
+```{r ml-mode-b, eval=TRUE, collapse=FALSE, warning=FALSE}
+ml_data_B <- prepare_ml_data(
+  expr_mat, group,
+  positive_class = "ICU",
+  genes = genes,
+  split = TRUE,
+  train_ratio = 0.7,
+  seed = 2025
+)
+
+ml_list_B <- run_ml_screening(
+  ml_data_B,
+  methods = c("lasso", "rf", "svm_rfe", "xgboost"),
+  cv_folds = 5,
+  seed = 2025
+)
+```
+
+The ROC curves are now evaluated on the held-out **test set**, yielding an independent estimate of classifier performance:
+
+```{r ml-mode-b-roc, eval=TRUE, fig.width=7, fig.height=6, fig.align='center', out.width='80%', collapse=FALSE}
+plot_ml_roc(ml_list_B)
+```
+
+```{r ml-mode-b-venn, eval=TRUE, fig.width=7, fig.height=6, fig.align='center', out.width='70%', collapse=FALSE, warning=FALSE}
+plot_ml_venn(ml_list_B)
+```
+
+---
+
+## Mode C: external validation {#ml-mode-c}
+
+Mode C mirrors the most rigorous study design: the model is trained on one cohort and validated on an entirely independent dataset. `prepare_ml_data()` automatically intersects the gene spaces of the two matrices to ensure compatibility.
+
+```{r ml-mode-c, eval=FALSE, collapse=FALSE}
+## Example (not run): two separate GEO datasets
+ml_data_C <- prepare_ml_data(
+  train_expr, train_group,
+  test_expr  = external_expr,
+  test_group = external_group,
+  positive_class = "Disease",
+  genes = candidate_genes
+)
+
+ml_list_C <- run_ml_screening(ml_data_C)
+plot_ml_roc(ml_list_C)    # ROC on external test set
+plot_ml_venn(ml_list_C)
+```
+
+Because external validation is dataset-dependent, we illustrate it here with a simulated split from the same cohort:
+
+```{r ml-mode-c-sim, eval=TRUE, collapse=FALSE, warning=FALSE}
+set.seed(2025)
+idx <- caret::createDataPartition(group, p = 0.7, list = FALSE)[, 1]
+
+ml_data_C <- prepare_ml_data(
+  expr_mat[, idx], group[idx],
+  test_expr  = expr_mat[, -idx],
+  test_group = group[-idx],
+  positive_class = "ICU",
+  genes = genes
+)
+
+ml_list_C <- run_ml_screening(
+  ml_data_C,
+  methods = c("lasso", "rf", "svm_rfe", "xgboost"),
+  cv_folds = 5,
+  seed = 2025
+)
+```
+
+```{r ml-mode-c-roc, eval=TRUE, fig.width=7, fig.height=6, fig.align='center', out.width='80%', collapse=FALSE}
+plot_ml_roc(ml_list_C)
+```
+
+---
+
+## Post-hoc feature trimming {#ml-select}
+
+After initial model fitting, `select_features()` allows fine-grained control over the number of retained genes without re-training the full model. This is particularly useful for Ridge regression and XGBoost, which do not inherently perform variable selection:
+
+```{r ml-select, eval=TRUE, collapse=FALSE}
+res_xgb_top10 <- select_features(res_xgb, top_n = 10)
+cat("Original features:", length(res_xgb$genes), "\n")
+cat("After trimming:  ", length(res_xgb_top10$genes), "\n")
+cat("Top 10 genes:", paste(res_xgb_top10$genes, collapse = ", "), "\n")
+```
+
+---
+
+## Summary {#ml-summary}
+
+The table below summarises the ML methods available in `TCMDATA` and their key characteristics:
+
+| Method | Function | Selection mechanism | Key hyperparameters |
+|--------|----------|--------------------|--------------------|
+| LASSO | `ml_lasso()` | $L_1$ penalty drives coefficients to zero | `lambda_rule`, `cv_folds` |
+| Elastic Net | `ml_enet()` | $L_1 + L_2$ penalty (configurable `alpha`) | `alpha`, `lambda_rule` |
+| Ridge | `ml_ridge()` | $L_2$ penalty; requires manual `top_n` cutoff | `top_n`, `lambda_rule` |
+| Random Forest | `ml_rf()` | Boruta all-relevant selection on Gini importance | `n_trees`, `max_runs` |
+| SVM-RFE | `ml_svm_rfe()` | Backward elimination by SVM weight $\|w_j\|^2$ | `kernel`, `cv_folds`, `cv_repeats` |
+| XGBoost | `ml_xgboost()` | Gain-based ranking; requires manual `top_n` cutoff | `nrounds`, `max_depth`, `eta` |
+
+---
+
+## References
+
+1. Guyon, I., Weston, J., Barnhill, S., & Vapnik, V. (2002). Gene selection for cancer classification using support vector machines. *Machine Learning*, 46, 389–422.
+2. Tibshirani, R. (1996). Regression shrinkage and selection via the lasso. *Journal of the Royal Statistical Society: Series B*, 58(1), 267–288.
+3. Breiman, L. (2001). Random forests. *Machine Learning*, 45, 5–32.
+4. Kursa, M. B., & Rudnicki, W. R. (2010). Feature selection with the Boruta package. *Journal of Statistical Software*, 36(11), 1–13.
+5. Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. In *Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining* (pp. 785–794).

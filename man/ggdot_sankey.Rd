@@ -23,7 +23,7 @@ ggdot_sankey(
   sankey_width = 2,
   dot_width = 1,
   font_family = "sans",
-  font_face = "bold",
+  font_face = "plain",
   gene_fontface = "italic",
   sankey_lab = "Gene-Pathway",
   seed = 2025,
@@ -64,7 +64,7 @@ the Sankey diagram. Default is \code{c("Pathway", "Gene")}.}
 
 \item{font_family}{Character. Font family for all text elements. Default is \code{"Arial"}.}
 
-\item{font_face}{Character. Font face for all text. Default is \code{"bold"}.}
+\item{font_face}{Character. Font face for all text. Default is \code{"plain"}.}
 
 \item{gene_fontface}{Character. Font face for gene labels (rightmost axis). Default is \code{"italic"}.}
 

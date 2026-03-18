@@ -15,7 +15,7 @@ tcm_sankey(
   target_cols = c("#c49c94", "#f7b6d2", "#dbdb8d", "#c7e9c0", "#f4cae4", "#e6f598",
     "#ffeda0", "#BB5234", "#BB7813", "#FF6158"),
   plot_font = "sans",
-  font_face = "bold",
+  font_face = "plain",
   target_fontface = "italic",
   font_size = 3.6,
   width = 0.05,
@@ -38,7 +38,7 @@ TCM_sankey(...)
 
 \item{plot_font}{Character string specifying the font family used for text. Default is \code{"sans"}.}
 
-\item{font_face}{Character string specifying the font face. Default is \code{"bold"}.}
+\item{font_face}{Character string specifying the font face. Default is \code{"plain"}.}
 
 \item{target_fontface}{Character string specifying the font face for target labels (rightmost axis). Default is \code{"italic"}.}
 

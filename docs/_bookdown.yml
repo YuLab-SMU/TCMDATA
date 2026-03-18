@@ -12,4 +12,5 @@ rmd_files:
   - 05-TCM-network-construction.Rmd
   - 06-Enrichment-analysis.Rmd
   - 07-PPI-analysis.Rmd
-  - 08-Other-resources.Rmd
+  - 08-Machine-Learning-analysis.Rmd
+  - 09-Other-resources.Rmd
