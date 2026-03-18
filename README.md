@@ -22,9 +22,11 @@ publication-ready visualization.
 | **Data retrieval** | Bidirectional query of 500+ herbs, 10 000+ compounds, and validated targets | `search_herb()`, `search_target()` |
 | **Network construction** | Build herb–molecule–target networks with topological metrics | `prepare_herb_graph()` |
 | **Enrichment analysis** | ORA using herbs as functional categories; GO/KEGG compatible | `herb_enricher()` |
-| **PPI analysis** | Filtering, 15+ centrality metrics, and community detection | `ppi_subset()`, `compute_nodeinfo()`, `rank_ppi_nodes()` |
+| **PPI analysis** | Filtering, 15+ centrality metrics, community detection, and PPI robustness analysis | `ppi_subset()`, `compute_nodeinfo()`, `rank_ppi_nodes()` |
 | **Clustering** | Louvain, MCL, and MCODE algorithms | `run_louvain()`, `run_MCL()`, `runMCODE()` |
+| **ML screening** | LASSO, Elastic Net, Ridge, Random Forest + Boruta, SVM-RFE, XGBoost; three validation modes (A/B/C) with consensus analysis | `run_ml_screening()`, `plot_ml_roc()`, `plot_ml_venn()` |
 | **Visualization** | Sankey, docking heatmap, PPI heatmap, network plots | `tcm_sankey()`, `ggdock()`, `plot_node_heatmap()` |
+| **Other resources** | Supplementary datasets: gut microbiota–metabolite associations (gutMGene) and transcription factor–target regulation pairs | `gutMGene`, `tf_targets`, `dn_targets` |
 
 ## Installation
 
@@ -37,6 +39,6 @@ devtools::install_github("YuLab-SMU/TCMDATA")
 
 ## Documentation
 
-Full documentation with worked examples is available at: **[https://hinna0818.github.io/TCMDATA/](https://hinna0818.github.io/TCMDATA/)**
+Full documentation with worked examples is available at **[here](https://hinna0818.github.io/TCMDATA/)**.
 
 
