@@ -751,7 +751,22 @@ ml_xgboost <- function(ml_data,
     verbose = 0
   )
 
-  best_iter <- cv_res$best_iteration
+  ## xgboost >= 2.1: best_iteration moved into $early_stop sub-list
+  best_iter <- if (!is.null(cv_res$best_iteration)) {
+    cv_res$best_iteration
+  } else if (!is.null(cv_res$early_stop$best_iteration)) {
+    cv_res$early_stop$best_iteration
+  } else {
+    NULL
+  }
+  if (is.null(best_iter) || length(best_iter) == 0L) {
+    ## fallback: locate peak from evaluation_log
+    cv_log_tmp <- as.data.frame(cv_res$evaluation_log)
+    metric_col <- grep(paste0("test.*", eval_metric, ".*mean"),
+                       names(cv_log_tmp), value = TRUE)[1]
+    best_iter <- if (!is.na(metric_col)) which.max(cv_log_tmp[[metric_col]])
+                 else nrounds
+  }
   cv_log <- as.data.frame(cv_res$evaluation_log)
 
   ## Train final model
@@ -766,8 +781,10 @@ ml_xgboost <- function(ml_data,
 
   ## Importance
   imp_mat <- xgboost::xgb.importance(model = xgb_fit)
+  ## xgboost >= 2.1 renamed 'Feature' → 'Features'
+  feat_col <- if ("Feature" %in% names(imp_mat)) "Feature" else "Features"
   imp_df <- data.frame(
-    gene = imp_mat$Feature,
+    gene = imp_mat[[feat_col]],
     importance = imp_mat$Gain,
     stringsAsFactors = FALSE
   )
@@ -790,20 +807,40 @@ ml_xgboost <- function(ml_data,
   cv_sd <- if (!is.na(sd_col)) cv_log[[sd_col]][best_iter] else NA_real_
 
   ## CV Sens / Spec from out-of-fold predictions
-  oof_prob <- cv_res$pred
-  oof_cls <- factor(
-    ifelse(oof_prob > 0.5, ml_data$levels[1], ml_data$levels[2]),
-    levels = ml_data$levels
-  )
+  ## xgboost >= 2.1: predictions moved into $cv_predict sub-list
+  oof_prob <- if (!is.null(cv_res$pred)) {
+    cv_res$pred
+  } else if (!is.null(cv_res$cv_predict$pred)) {
+    cv_res$cv_predict$pred
+  } else {
+    NULL
+  }
+  if (is.null(oof_prob)) {
+    warning("Out-of-fold predictions unavailable; CV Sens/Spec set to NA.",
+            call. = FALSE)
+  }
+  oof_cls <- if (!is.null(oof_prob)) {
+    factor(
+      ifelse(oof_prob > 0.5, ml_data$levels[1], ml_data$levels[2]),
+      levels = ml_data$levels
+    )
+  }
   pos <- ml_data$levels[1]; neg <- ml_data$levels[2]
-  tp <- sum(oof_cls == pos & ml_data$train_y == pos)
-  fn <- sum(oof_cls == neg & ml_data$train_y == pos)
-  tn <- sum(oof_cls == neg & ml_data$train_y == neg)
-  fp <- sum(oof_cls == pos & ml_data$train_y == neg)
+  if (!is.null(oof_cls)) {
+    tp <- sum(oof_cls == pos & ml_data$train_y == pos)
+    fn <- sum(oof_cls == neg & ml_data$train_y == pos)
+    tn <- sum(oof_cls == neg & ml_data$train_y == neg)
+    fp <- sum(oof_cls == pos & ml_data$train_y == neg)
+    cv_sens <- tp / (tp + fn)
+    cv_spec <- tn / (tn + fp)
+  } else {
+    cv_sens <- NA_real_
+    cv_spec <- NA_real_
+  }
 
   cv_perf <- list(auc = cv_auc, auc_sd = cv_sd,
-                  sensitivity = tp / (tp + fn),
-                  specificity = tn / (tn + fp),
+                  sensitivity = cv_sens,
+                  specificity = cv_spec,
                   best_iteration = best_iter)
 
   ## Test evaluation
