@@ -51,3 +51,11 @@ Supports three modes:
 \item \strong{Mode C}: external validation (\code{test_expr} + \code{test_group}).
 }
 }
+\examples{
+\dontrun{
+  ## Mode A: full CV
+  ml_data <- prepare_ml_data(expr_mat, group, positive_class = "Disease")
+  ## Mode B: internal split
+  ml_data <- prepare_ml_data(expr_mat, group, split = TRUE, train_ratio = 0.7)
+}
+}

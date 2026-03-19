@@ -16,45 +16,25 @@ ml_rf(
 )
 }
 \arguments{
-\item{ml_data}{A \code{tcm_ml_data} object produced by
-\code{\link{prepare_ml_data}}. Must contain exactly \strong{two} classes.}
+\item{ml_data}{A \code{tcm_ml_data} object produced by \code{\link{prepare_ml_data}}. Must contain exactly two classes.}
 
-\item{n_trees}{Number of trees for both the initial RF and the refit RF.
-Default \code{500}.}
+\item{n_trees}{Number of trees for both the initial RF and the refit RF. Default \code{500}.}
 
-\item{top_n}{Hard cap: keep at most \code{top_n} Boruta-confirmed genes
-(ranked by MeanDecreaseGini). \code{NULL} = no cap (default).}
+\item{top_n}{Hard cap: keep at most \code{top_n} Boruta-confirmed genes (ranked by MeanDecreaseGini). \code{NULL} = no cap (default).}
 
-\item{boruta_fallback_n}{When Boruta confirms \strong{zero} features, fall back
-to the top-\code{boruta_fallback_n} genes ranked by MeanDecreaseGini.
+\item{boruta_fallback_n}{When Boruta confirms zero features, fall back to the top-\code{boruta_fallback_n} genes ranked by MeanDecreaseGini.
 Default \code{20}.}
 
-\item{max_runs}{Maximum Boruta iterations passed to
-\code{\link[Boruta]{Boruta}}. Default \code{100}.}
+\item{max_runs}{Maximum Boruta iterations passed to \code{\link[Boruta]{Boruta}}. Default \code{100}.}
 
-\item{refit_on_selected}{Logical. Re-fit a RF on selected genes only so
-that OOB / test metrics reflect the actual feature subset.
-Default \code{TRUE} (recommended).}
+\item{refit_on_selected}{Logical. Re-fit a RF on selected genes only so that OOB / test metrics reflect the actual feature subset. Default \code{TRUE} (recommended).}
 
 \item{seed}{Random seed. Default \code{2025}.}
 
-\item{...}{Additional arguments forwarded to
-\code{\link[randomForest]{randomForest}}.}
+\item{...}{Additional arguments forwarded to \code{\link[randomForest]{randomForest}}.}
 }
 \value{
-A \code{tcm_ml} object (list) with extra slots:
-\describe{
-\item{\code{$genes}}{Character vector of selected gene symbols.}
-\item{\code{$boruta}}{The \code{\link[Boruta]{Boruta}} result.}
-\item{\code{$rf_full}}{The full-feature RF model.}
-\item{\code{$rf_fit}}{The \strong{active} RF model used for evaluation
-(refit model when available; full model otherwise).}
-\item{\code{$oob_full}}{OOB performance list from the full-feature RF.}
-\item{\code{$importance}}{Importance table from the full-feature RF
-(MeanDecreaseGini-ranked).}
-\item{\code{$importance_refit}}{Importance from the refit RF
-(\code{NULL} when \code{refit_on_selected = FALSE}).}
-}
+A \code{tcm_ml} object after feature selection.
 }
 \description{
 Supervised feature-selection pipeline designed for network-pharmacology
@@ -62,7 +42,7 @@ workflows: starting from PPI-derived candidate genes and RNA-seq expression
 profiles, this function identifies a stable, interpretable set of key genes
 rather than optimising prediction accuracy.
 
-\strong{Pipeline overview}
+Pipeline overview
 \enumerate{
 \item Train a Random Forest on \strong{all} candidate genes to obtain
 importance scores (MeanDecreaseGini / MeanDecreaseAccuracy).
@@ -73,33 +53,16 @@ genes only so that OOB and test-set metrics honestly reflect the
 chosen subset (\code{refit_on_selected = TRUE}).
 }
 }
-\note{
-This function is restricted to \strong{binary classification}. Supplying a
-\code{ml_data} object with more than two levels will raise an error.
-}
 \section{Positive class}{
 
 \code{ml_data$levels[1]} is treated as the positive class throughout
 (Sensitivity, Specificity, AUC direction).
-Set it via the \code{positive_class} argument in
-\code{\link{prepare_ml_data}}.
+Set it via the \code{positive_class} argument in \code{\link{prepare_ml_data}}.
 }
 
-\section{Performance bookkeeping}{
-
-\describe{
-\item{\code{$oob_full}}{OOB metrics from the initial full-feature RF.}
-\item{\code{$cv_performance}}{OOB metrics from the \strong{active} model
-(refit model when \code{refit_on_selected = TRUE}; full model
-otherwise). This is the slot consumed by \code{print} /
-\code{summary}.}
-\item{\code{$test_performance}}{Hold-out evaluation (Mode B / C only),
-using the active model on selected features.}
+\examples{
+\dontrun{
+  ml_data <- prepare_ml_data(expr_mat, group)
+  res <- ml_rf(ml_data)
 }
-}
-
-\seealso{
-\code{\link{prepare_ml_data}}, \code{\link{select_features}},
-\code{\link{run_ml_screening}}, \code{\link[Boruta]{Boruta}},
-\code{\link[randomForest]{randomForest}}
 }

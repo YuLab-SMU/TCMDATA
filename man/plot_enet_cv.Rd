@@ -4,15 +4,19 @@
 \alias{plot_enet_cv}
 \title{Plot Elastic Net / LASSO / Ridge CV curve}
 \usage{
-plot_enet_cv(result)
+plot_enet_cv(result, ...)
 }
 \arguments{
-\item{result}{A \code{tcm_ml} object from \code{\link[=ml_enet]{ml_enet()}}, \code{\link[=ml_lasso]{ml_lasso()}} or
-\code{\link[=ml_ridge]{ml_ridge()}}.}
+\item{result}{A \code{tcm_ml} object from \code{\link[=ml_enet]{ml_enet()}}, \code{\link[=ml_lasso]{ml_lasso()}} or \code{\link[=ml_ridge]{ml_ridge()}}.}
+
+\item{...}{Additional arguments passed to \code{plot.cv.glmnet()}.}
 }
 \value{
-A base R plot (invisible \code{NULL}).
+Invisible \code{NULL}. Called for its side effect (a base R plot).
 }
 \description{
-Plot Elastic Net / LASSO / Ridge CV curve
+Wrapper around the default \code{plot.cv.glmnet()} method from the
+\pkg{glmnet} package. Displays the CV metric (AUC / deviance) as a
+function of \eqn{\log(\lambda)}, with ± 1 SE error bars and vertical
+dashed lines at \code{lambda.min} and \code{lambda.1se}.
 }

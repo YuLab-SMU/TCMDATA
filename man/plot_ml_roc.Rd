@@ -16,6 +16,8 @@ A \code{ggplot} object, or \code{NULL} if no data available.
 Supports all modes.
 \itemize{
 \item Mode B / C: ROC is computed on the held-out test set.
-\item Mode A: ROC is computed on the training set (RF uses OOB votes).
+\item Mode A: uses out-of-fold (LASSO / Enet / XGBoost / SVM-RFE) or OOB (RF)
+predictions.
+SVM-RFE falls back to resubstitution when OOF is unavailable.
 }
 }

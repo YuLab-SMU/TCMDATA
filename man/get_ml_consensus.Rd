@@ -2,7 +2,8 @@
 % Please edit documentation in R/ml_models.r
 \name{get_ml_consensus}
 \alias{get_ml_consensus}
-\title{Consensus features across ML methods}
+\title{Consensus features across ML methods
+Genes selected by >= \code{min_methods} models.}
 \usage{
 get_ml_consensus(ml_list, min_methods = 2)
 }
@@ -15,5 +16,13 @@ get_ml_consensus(ml_list, min_methods = 2)
 Character vector of consensus gene symbols.
 }
 \description{
+Consensus features across ML methods
 Genes selected by >= \code{min_methods} models.
+}
+\examples{
+\dontrun{
+  ml_data <- prepare_ml_data(expr_mat, group)
+  res_list <- run_ml_screening(ml_data)
+  get_ml_consensus(res_list, min_methods = 2)
+}
 }

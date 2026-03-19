@@ -52,10 +52,17 @@ ml_enet <- function(ml_data,
   x <- as.matrix(ml_data$train_x)
   y <- ml_data$train_y
 
+  ## Relevel so that glmnet treats levels[1] (our positive class) as
+
+  ## its event class (= the second factor level).  This makes
+  ## predict(type = "response") return P(levels[1]) directly and
+  ## avoids scattered 1-p inversions elsewhere.
+  y_glm <- stats::relevel(y, ref = ml_data$levels[2])
+
   set.seed(seed)
   message(sprintf("Running %s (cv.glmnet, alpha = %g) ...",
                   toupper(method_name), alpha))
-  cvfit <- glmnet::cv.glmnet(x = x, y = y, family = "binomial",
+  cvfit <- glmnet::cv.glmnet(x = x, y = y_glm, family = "binomial",
                               alpha = alpha, nfolds = cv_folds,
                               type.measure = type_measure,
                               keep = TRUE, ...)
@@ -88,10 +95,10 @@ ml_enet <- function(ml_data,
 
   ## CV Sens / Spec from out-of-fold predictions
   ## fit.preval is n x nlambda on the linear predictor (logit) scale;
-  ## plogis() converts to P(levels[2]).
+  ## after releveling, plogis() converts to P(levels[1]) directly.
   oof_prob <- stats::plogis(cvfit$fit.preval[, idx_lam])
   oof_cls <- factor(
-    ifelse(oof_prob > 0.5, ml_data$levels[2], ml_data$levels[1]),
+    ifelse(oof_prob > 0.5, ml_data$levels[1], ml_data$levels[2]),
     levels = ml_data$levels
   )
 
@@ -133,7 +140,8 @@ ml_enet <- function(ml_data,
   obj$coefficients <- coef_df
   obj$genes <- selected
   ## Store OOF probability as P(levels[1]) for ROC plotting
-  obj$oof_prob <- 1 - oof_prob
+  ## (already P(levels[1]) after releveling — no inversion needed)
+  obj$oof_prob <- oof_prob
 
   sel_msg <- if (alpha == 0)
     sprintf("Top %d / %d (by |coef|)", length(selected), ncol(x))

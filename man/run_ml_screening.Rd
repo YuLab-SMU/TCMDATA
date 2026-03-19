@@ -2,7 +2,10 @@
 % Please edit documentation in R/ml_models.r
 \name{run_ml_screening}
 \alias{run_ml_screening}
-\title{Run multiple ML methods for feature selection}
+\title{Run multiple ML methods for feature selection
+Convenience wrapper that runs LASSO / Elastic Net / Ridge / RF / SVM-RFE / XGBoost.
+By default \code{top_n = NULL}: Ridge and XGBoost retain all features, SVM-RFE auto-selects the optimal size.
+After inspecting results, call \code{\link[=select_features]{select_features()}} on individual models to trim to the desired count.}
 \usage{
 run_ml_screening(
   ml_data,
@@ -18,8 +21,7 @@ run_ml_screening(
 \arguments{
 \item{ml_data}{A \code{tcm_ml_data} object.}
 
-\item{methods}{Subset of
-\code{c("lasso", "enet", "ridge", "rf", "svm_rfe", "xgboost")}.}
+\item{methods}{Subset of \code{c("lasso", "enet", "ridge", "rf", "svm_rfe", "xgboost")}.}
 
 \item{seed}{Random seed. Default 2025.}
 
@@ -29,8 +31,7 @@ run_ml_screening(
 
 \item{alpha}{Elastic Net alpha. Default 0.5 (ignored for lasso/ridge).}
 
-\item{top_n}{Top-n features for Ridge / XGBoost / SVM-RFE.
-Default \code{NULL} (keep all or auto-select).}
+\item{top_n}{Top-n features for Ridge / XGBoost / SVM-RFE. Default \code{NULL} (keep all or auto-select).}
 
 \item{...}{Forwarded to individual model functions.}
 }
@@ -38,10 +39,15 @@ Default \code{NULL} (keep all or auto-select).}
 A named \code{tcm_ml_list}.
 }
 \description{
-Convenience wrapper that runs LASSO / Elastic Net / Ridge / RF / SVM-RFE /
-XGBoost.
-By default \code{top_n = NULL}: Ridge and XGBoost retain all features,
-SVM-RFE auto-selects the optimal size.
-After inspecting results, call \code{\link[=select_features]{select_features()}} on individual
-models to trim to the desired count.
+Run multiple ML methods for feature selection
+Convenience wrapper that runs LASSO / Elastic Net / Ridge / RF / SVM-RFE / XGBoost.
+By default \code{top_n = NULL}: Ridge and XGBoost retain all features, SVM-RFE auto-selects the optimal size.
+After inspecting results, call \code{\link[=select_features]{select_features()}} on individual models to trim to the desired count.
+}
+\examples{
+\dontrun{
+  ml_data <- prepare_ml_data(expr_mat, group)
+  res_list <- run_ml_screening(ml_data, methods = c("lasso", "rf"))
+  summary(res_list)
+}
 }

@@ -2,7 +2,10 @@
 % Please edit documentation in R/ml_models.r
 \name{ml_xgboost}
 \alias{ml_xgboost}
-\title{XGBoost feature selection}
+\title{XGBoost feature selection
+Trains an XGBoost classifier with \code{nrounds}-round CV, then ranks features by information gain.
+Since XGBoost does not inherently perform variable selection, \code{top_n} controls how many top features to keep.
+When \code{top_n = NULL} (default), all features with Gain > 0 are retained; use \code{\link[=select_features]{select_features()}} afterwards to trim.}
 \usage{
 ml_xgboost(
   ml_data,
@@ -20,8 +23,7 @@ ml_xgboost(
 \arguments{
 \item{ml_data}{A \code{tcm_ml_data} object.}
 
-\item{top_n}{Number of top features to select by Gain.
-Default \code{NULL} (keep all).}
+\item{top_n}{Number of top features to select by Gain. Default \code{NULL} (keep all).}
 
 \item{eval_metric}{Evaluation metric for XGBoost CV. Default \code{"auc"}.
 Other options include \code{"error"}, \code{"logloss"}, \code{"aucpr"}.
@@ -35,22 +37,24 @@ See \code{xgboost} documentation for full list.}
 
 \item{cv_folds}{CV folds for early stopping. Default 5.}
 
-\item{early_stopping_rounds}{Stop if no improvement for this many rounds.
-Default 20.}
+\item{early_stopping_rounds}{Stop if no improvement for this many rounds. Default 20.}
 
 \item{seed}{Random seed. Default 2025.}
 
 \item{...}{Passed to \code{\link[xgboost:xgb.cv]{xgboost::xgb.cv()}} and \code{\link[xgboost:xgb.train]{xgboost::xgb.train()}}.}
 }
 \value{
-A \code{tcm_ml} object with \code{$xgb_fit}, \code{$cv_log},
-\code{$genes}.
+A \code{tcm_ml} object with \code{$xgb_fit}, \code{$cv_log}, \code{$genes}.
 }
 \description{
-Trains an XGBoost classifier with \code{nrounds}-round CV, then ranks
-features by information gain.
-Since XGBoost does not inherently perform variable selection,
-\code{top_n} controls how many top features to keep.
-When \code{top_n = NULL} (default), all features with Gain > 0 are
-retained; use \code{\link[=select_features]{select_features()}} afterwards to trim.
+XGBoost feature selection
+Trains an XGBoost classifier with \code{nrounds}-round CV, then ranks features by information gain.
+Since XGBoost does not inherently perform variable selection, \code{top_n} controls how many top features to keep.
+When \code{top_n = NULL} (default), all features with Gain > 0 are retained; use \code{\link[=select_features]{select_features()}} afterwards to trim.
+}
+\examples{
+\dontrun{
+  ml_data <- prepare_ml_data(expr_mat, group)
+  res <- ml_xgboost(ml_data)
+}
 }

@@ -40,3 +40,9 @@ Calls \code{\link[=ml_enet]{ml_enet()}} with \code{alpha = 0}.
 Caution: Ridge does not shrink coefficients to zero; when \code{top_n = NULL}
 (default), all features are kept. Use \code{\link[=select_features]{select_features()}} after inspecting importance to trim.
 }
+\examples{
+\dontrun{
+  ml_data <- prepare_ml_data(expr_mat, group)
+  res <- ml_ridge(ml_data)
+}
+}

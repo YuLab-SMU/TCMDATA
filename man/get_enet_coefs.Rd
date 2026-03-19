@@ -29,3 +29,10 @@ A data.frame: \code{gene}, \code{coefficient}, \code{abs_coef}.
 \description{
 Extract ranked coefficients from LASSO / Elastic Net / Ridge
 }
+\examples{
+\dontrun{
+  ml_data <- prepare_ml_data(expr_mat, group)
+  res <- ml_lasso(ml_data)
+  get_enet_coefs(res, top_n = 20)
+}
+}

@@ -31,3 +31,9 @@ A \code{tcm_ml} object (method = "lasso").
 LASSO feature selection (a wrapper function from \code{\link[=ml_enet]{ml_enet()}})
 Calls \code{\link[=ml_enet]{ml_enet()}} with \code{alpha = 1}.
 }
+\examples{
+\dontrun{
+  ml_data <- prepare_ml_data(expr_mat, group)
+  res <- ml_lasso(ml_data)
+}
+}

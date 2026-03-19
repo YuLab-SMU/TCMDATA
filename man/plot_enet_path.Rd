@@ -4,15 +4,25 @@
 \alias{plot_enet_path}
 \title{Plot Elastic Net / LASSO / Ridge coefficient path}
 \usage{
-plot_enet_path(result)
+plot_enet_path(result, top_n = 20, xvar = "lambda", ...)
 }
 \arguments{
-\item{result}{A \code{tcm_ml} object from \code{\link[=ml_enet]{ml_enet()}}, \code{\link[=ml_lasso]{ml_lasso()}} or
-\code{\link[=ml_ridge]{ml_ridge()}}.}
+\item{result}{A \code{tcm_ml} object from \code{\link[=ml_enet]{ml_enet()}}, \code{\link[=ml_lasso]{ml_lasso()}} or \code{\link[=ml_ridge]{ml_ridge()}}.}
+
+\item{top_n}{Integer or \code{NULL}. If non-\code{NULL} and fewer features
+than the total, only the \code{top_n} features with largest absolute
+coefficient at the selected \eqn{\lambda} are drawn. Default 20.}
+
+\item{xvar}{Variable on x-axis: \code{"lambda"} (default), \code{"norm"}, or \code{"dev"}.}
+
+\item{...}{Additional arguments passed to \code{plot.glmnet()}.}
 }
 \value{
-A base R plot (invisible \code{NULL}).
+Invisible \code{NULL}. Called for its side effect (a base R plot).
 }
 \description{
-Plot Elastic Net / LASSO / Ridge coefficient path
+Wrapper around the default \code{plot.glmnet()} method.
+Each curve traces one feature's coefficient across the \eqn{\lambda} grid.
+When \code{top_n} is set, only the features with the largest absolute
+coefficients at the selected \eqn{\lambda} are shown.
 }

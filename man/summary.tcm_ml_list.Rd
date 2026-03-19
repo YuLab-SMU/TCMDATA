@@ -20,3 +20,10 @@ Returns a tidy data.frame with one row per method, showing the number of
 selected features and performance metrics (CV or Test AUC, Sensitivity,
 Specificity).
 }
+\examples{
+\dontrun{
+  ml_data <- prepare_ml_data(expr_mat, group)
+  res_list <- run_ml_screening(ml_data)
+  summary(res_list)
+}
+}

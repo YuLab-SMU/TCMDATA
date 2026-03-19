@@ -272,6 +272,8 @@ plot_ml_roc <- function(ml_list) {
         ## Mode B / C: predict on test set 
         if (nm %in% c("lasso", "enet", "ridge")) {
           sub <- ml_data$test_x
+          ## After releveling y in ml_enet(), predict(type = "response")
+          ## returns P(levels[1]) directly — no inversion needed.
           as.numeric(stats::predict(
             res$cv_fit, newx = as.matrix(sub),
             s = res$lambda_used, type = "response"
@@ -282,10 +284,13 @@ plot_ml_roc <- function(ml_list) {
             res$rf_fit, newdata = sub, type = "prob"
           )[, ml_data$levels[1]])
         } else if (nm == "svm_rfe") {
-          sub <- ml_data$test_x[, genes, drop = FALSE]
-          as.numeric(stats::predict(
-            res$rfe_result, newdata = sub
-          )[, ml_data$levels[1]])
+          ## predict.rfe() requires all original features, not just
+          ## the selected subset; use pre-computed test probabilities
+          if (!is.null(res$test_performance$probabilities)) {
+            as.numeric(
+              res$test_performance$probabilities[[ml_data$levels[1]]]
+            )
+          } else { NULL }
         } else if (nm == "xgboost") {
           sub <- ml_data$test_x
           as.numeric(stats::predict(res$xgb_fit, newdata = as.matrix(sub)))

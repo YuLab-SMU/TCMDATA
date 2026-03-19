@@ -39,7 +39,9 @@ prepare_ml_data <- function(expr_mat,
                             test_group = NULL,
                             seed = 2025) {
 
-  .check_ml_deps("caret")
+  if (isTRUE(split)) {
+     .check_ml_deps("caret")
+   }
 
   if (is.data.frame(group) || is.matrix(group)) {
     if (ncol(group) == 1) {

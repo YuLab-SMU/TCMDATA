@@ -4,14 +4,27 @@
 \alias{plot_ml_venn}
 \title{Venn diagram of selected genes}
 \usage{
-plot_ml_venn(ml_list)
+plot_ml_venn(..., set_names = NULL)
 }
 \arguments{
-\item{ml_list}{A \code{tcm_ml_list} from \code{\link[=run_ml_screening]{run_ml_screening()}}.}
+\item{...}{One of the following:
+\describe{
+\item{A single \code{tcm_ml_list}}{from \code{\link[=run_ml_screening]{run_ml_screening()}}.}
+\item{Multiple \code{tcm_ml} objects}{e.g.
+\code{get_ml_gene_sets(res_lasso, res_rf, res_xgb)}.}
+\item{A single named list}{of character vectors or \code{tcm_ml} objects.}
+\item{Multiple character vectors}{gene sets directly.}
+}}
+
+\item{set_names}{Optional character vector of names for the sets.
+Ignored when names can be inferred from the input.}
 }
 \value{
 A \code{ggplot} object.
 }
 \description{
-Internally calls \code{\link[=getvenndata]{getvenndata()}} + \code{\link[=ggvenn_plot]{ggvenn_plot()}}.
+Convenience wrapper: calls \code{\link[=get_ml_gene_sets]{get_ml_gene_sets()}} to extract gene sets,
+then draws a Venn diagram via \code{\link[=getvenndata]{getvenndata()}} + \code{\link[=ggvenn_plot]{ggvenn_plot()}}.
+Accepts the same flexible inputs as \code{\link[=get_ml_gene_sets]{get_ml_gene_sets()}}.
+For > 4 sets consider using \code{aplotExtra::upset_plot(get_ml_gene_sets(...))}.
 }

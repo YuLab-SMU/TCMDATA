@@ -62,3 +62,9 @@ When \code{top_n = NULL} (default), all features are retained so that
 users can inspect \code{$importance} first, then call
 \code{\link[=select_features]{select_features()}} to trim to the desired number.
 }
+\examples{
+\dontrun{
+  ml_data <- prepare_ml_data(expr_mat, group)
+  res <- ml_enet(ml_data)
+}
+}
