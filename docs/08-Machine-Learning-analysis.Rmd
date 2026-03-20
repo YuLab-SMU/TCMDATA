@@ -316,6 +316,44 @@ cat("Top 10 genes:", paste(res_xgb_top10$genes, collapse = ", "), "\n")
 
 ---
 
+## Assembling models manually {#ml-manual-list}
+
+In some workflows you may wish to run individual model functions in separate
+sessions—or selectively combine only a subset of methods—rather than calling
+`run_ml_screening()` in one shot.  `create_tcm_ml_list()` assembles any
+collection of `tcm_ml` objects into a `tcm_ml_list` that is fully compatible
+with all downstream utilities (`plot_ml_roc()`, `plot_ml_venn()`,
+`get_ml_consensus()`).
+
+```{r ml-manual-prepare, eval=FALSE}
+## prepare the same ml_data for every model
+ml_data <- prepare_ml_data(expr_mat, group_vec)
+
+## run whichever models you need
+res_lasso <- ml_lasso(ml_data)
+res_rf <- ml_rf(ml_data)
+res_svm <- ml_svm_rfe(ml_data)
+```
+
+Pass the individual results as named arguments to `create_tcm_ml_list()`.
+The names you provide become the method labels used in all downstream plots.
+If you omit names, the function falls back to the `$method` slot stored inside
+each object.
+
+```{r ml-manual-create, eval=FALSE}
+ml_list_custom <- create_tcm_ml_list(
+  lasso = res_lasso,
+  rf = res_rf,
+  svm_rfe = res_svm)
+
+## downstream analyses are identical to run_ml_screening() output 
+# plot_ml_roc(ml_list_custom)                      
+# plot_ml_venn(ml_list_custom)             
+# get_ml_consensus(ml_list_custom, min_methods = 2) 
+```
+
+---
+
 ## Summary {#ml-summary}
 
 The table below summarises the ML methods available in `TCMDATA` and their key characteristics:
@@ -338,3 +376,11 @@ The table below summarises the ML methods available in `TCMDATA` and their key c
 3. Breiman, L. (2001). Random forests. *Machine Learning*, 45, 5–32.
 4. Kursa, M. B., & Rudnicki, W. R. (2010). Feature selection with the Boruta package. *Journal of Statistical Software*, 36(11), 1–13.
 5. Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. In *Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining* (pp. 785–794).
+
+---
+
+## Session Information {#ml-session-info}
+
+```{r session-info, collapse=TRUE}
+sessionInfo()
+```
