@@ -996,3 +996,62 @@ get_ml_consensus <- function(ml_list, min_methods = 2) {
 
   return(consensus)
 }
+
+
+#' Assemble individually fitted ML models into a \code{tcm_ml_list}
+#' @param ... Named or unnamed \code{tcm_ml} objects. Names become the method labels used in downstream plots. At least one object must be supplied.
+#' @return A \code{tcm_ml_list} object identical in structure to the output of \code{\link{run_ml_screening}}, with the \code{"ml_data"} attribute set from the first element.
+#'
+#' @examples
+#' \dontrun{
+#'   ml_data <- prepare_ml_data(expr_mat, group)
+#'   res_lasso <- ml_lasso(ml_data)
+#'   res_rf <- ml_rf(ml_data)
+#'   res_svm <- ml_svm_rfe(ml_data)
+#'
+#'   ## assemble into a tcm_ml_list
+#'   ml_list <- create_tcm_ml_list(
+#'     lasso   = res_lasso,
+#'     rf      = res_rf,
+#'     svm_rfe = res_svm)
+#' }
+#' @export
+create_tcm_ml_list <- function(...) {
+  lst <- list(...)
+
+  if (length(lst) == 0L)
+    stop("Please provide at least one tcm_ml object.", call. = FALSE)
+
+  bad <- vapply(lst, function(x) !inherits(x, "tcm_ml"), logical(1L))
+  if (any(bad))
+    stop(sprintf(
+      "All inputs must be <tcm_ml> objects. Non-conforming element(s) at position(s): %s",
+      paste(which(bad), collapse = ", ")
+    ), call. = FALSE)
+
+  nms <- names(lst)
+  if (is.null(nms)) nms <- rep("", length(lst))
+  unnamed_idx <- which(nms == "")
+  if (length(unnamed_idx) > 0L) {
+    used <- nms[nms != ""]
+    for (i in unnamed_idx) {
+      base_nm <- if (!is.null(lst[[i]]$method)) lst[[i]]$method else paste0("model", i)
+      nm <- base_nm
+      suffix <- 1L
+      while (nm %in% used) {
+        nm <- paste0(base_nm, "_", suffix)
+        suffix <- suffix + 1L
+      }
+      nms[i] <- nm
+      used <- c(used, nm)
+    }
+    names(lst) <- nms
+  }
+
+  class(lst) <- "tcm_ml_list"
+
+  if (!is.null(lst[[1L]]$ml_data))
+    attr(lst, "ml_data") <- lst[[1L]]$ml_data
+
+  return(lst)
+}

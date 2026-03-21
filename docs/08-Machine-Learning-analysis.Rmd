@@ -354,6 +354,64 @@ ml_list_custom <- create_tcm_ml_list(
 
 ---
 
+## Single-gene diagnostic analysis {#ml-gene-diag}
+
+After identifying consensus genes via `get_ml_consensus()`, it is natural to
+ask: *how well does each gene alone discriminate between the two groups?*
+TCMDATA provides three companion functions for this purpose.
+
+### AUC summary table
+
+`get_gene_auc()` treats each gene's expression as a univariate predictor and
+returns a tidy table with AUC, 95% DeLong CI, optimal cutoff (Youden's J),
+sensitivity, specificity and a test against AUC = 0.5.
+
+```{r ml-gene-auc, eval=TRUE}
+consensus <- get_ml_consensus(ml_list, min_methods = 2)
+auc_tbl   <- get_gene_auc(consensus, ml_data = ml_data)
+head(auc_tbl)
+```
+
+Both `ml_data` (from `prepare_ml_data()`) and raw `expr_mat + group` are
+accepted.  When `ml_data` is Mode B / C, the **test set** is used
+automatically; for Mode A the training set is used.
+
+### Single-gene ROC curves
+
+`plot_gene_roc()` overlays one ROC curve per gene on a single panel:
+
+```{r ml-gene-roc, eval=TRUE, fig.width=6, fig.height=5}
+plot_gene_roc(consensus, ml_data = ml_data)
+
+## Optional: show 95% CI bands
+plot_gene_roc(consensus, ml_data = ml_data, show_ci = TRUE)
+```
+
+The legend lists genes in descending AUC order, and the full AUC table is
+available via `attr(p, "auc_table")`.
+
+### Two-group expression boxplot
+
+`plot_gene_boxplot()` draws a faceted boxplot with statistical test annotation
+(Wilcoxon rank-sum by default), jittered data points and optional violin
+overlay — publication-ready with zero extra dependencies.
+
+```{r ml-gene-box, eval=TRUE, fig.width=8, fig.height=6}
+## Default: Wilcoxon test, p-value as number
+plot_gene_boxplot(consensus, ml_data = ml_data)
+
+## Stars instead of numeric p, add violin overlay
+plot_gene_boxplot(consensus, ml_data = ml_data,
+                  violin = TRUE, p_label = "p.signif")
+
+## Also works with raw expression matrix
+# plot_gene_boxplot(consensus, expr_mat = expr_mat, group = group)
+```
+
+The underlying test statistics are stored in `attr(p, "test_table")`.
+
+---
+
 ## Summary {#ml-summary}
 
 The table below summarises the ML methods available in `TCMDATA` and their key characteristics:
