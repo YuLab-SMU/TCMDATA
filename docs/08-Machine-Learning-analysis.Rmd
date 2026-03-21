@@ -367,9 +367,11 @@ returns a tidy table with AUC, 95% DeLong CI, optimal cutoff (Youden's J),
 sensitivity, specificity and a test against AUC = 0.5.
 
 ```{r ml-gene-auc, eval=TRUE}
-consensus <- get_ml_consensus(ml_list, min_methods = 2)
-auc_tbl   <- get_gene_auc(consensus, ml_data = ml_data)
-head(auc_tbl)
+consensus <- get_ml_consensus(ml_list, min_methods = 3)
+## Use top 4 genes for demonstration
+top4 <- consensus[1:min(4, length(consensus))]
+auc_tbl <- get_gene_auc(top4, ml_data = ml_data)
+auc_tbl
 ```
 
 Both `ml_data` (from `prepare_ml_data()`) and raw `expr_mat + group` are
@@ -380,11 +382,15 @@ automatically; for Mode A the training set is used.
 
 `plot_gene_roc()` overlays one ROC curve per gene on a single panel:
 
-```{r ml-gene-roc, eval=TRUE, fig.width=6, fig.height=5}
-plot_gene_roc(consensus, ml_data = ml_data)
+```{r ml-gene-roc, eval=TRUE, fig.width=6, fig.height=5, fig.align='center', out.width='80%'}
+plot_gene_roc(top4, ml_data = ml_data)
+```
 
-## Optional: show 95% CI bands
-plot_gene_roc(consensus, ml_data = ml_data, show_ci = TRUE)
+Set `combine = FALSE` to draw each gene's ROC in its own facet — useful when
+curves overlap heavily or you want per-gene CI bands:
+
+```{r ml-gene-roc-facet, eval=TRUE, fig.width=8, fig.height=6, fig.align='center', out.width='90%'}
+plot_gene_roc(top4, ml_data = ml_data, combine = FALSE, show_ci = TRUE, ncol = 2)
 ```
 
 The legend lists genes in descending AUC order, and the full AUC table is
@@ -396,16 +402,21 @@ available via `attr(p, "auc_table")`.
 (Wilcoxon rank-sum by default), jittered data points and optional violin
 overlay — publication-ready with zero extra dependencies.
 
-```{r ml-gene-box, eval=TRUE, fig.width=8, fig.height=6}
+```{r ml-gene-box, eval=TRUE, fig.width=8, fig.height=6, fig.align='center', out.width='90%'}
 ## Default: Wilcoxon test, p-value as number
-plot_gene_boxplot(consensus, ml_data = ml_data)
+plot_gene_boxplot(top4, ml_data = ml_data)
+```
 
+```{r ml-gene-box-violin, eval=TRUE, fig.width=8, fig.height=6, fig.align='center', out.width='90%'}
 ## Stars instead of numeric p, add violin overlay
-plot_gene_boxplot(consensus, ml_data = ml_data,
+plot_gene_boxplot(top4, ml_data = ml_data,
                   violin = TRUE, p_label = "p.signif")
+```
 
-## Also works with raw expression matrix
-# plot_gene_boxplot(consensus, expr_mat = expr_mat, group = group)
+Also works with raw expression matrix:
+
+```r
+plot_gene_boxplot(top4, expr_mat = expr_mat, group = group)
 ```
 
 The underlying test statistics are stored in `attr(p, "test_table")`.
