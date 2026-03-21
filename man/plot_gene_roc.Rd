@@ -36,30 +36,24 @@ ignored.}
 \code{"auto"} (default; test set if available, else train),
 \code{"train"}, or \code{"test"}.}
 
-\item{combine}{Logical; if \code{TRUE} (default) all curves are overlaid
-on one panel.  If \code{FALSE} each gene gets its own facet.}
+\item{combine}{Logical; if \code{TRUE} (default) all curves are overlaid on one panel.  If \code{FALSE} each gene gets its own facet.}
 
-\item{palette}{Character vector of colours (one per gene), or \code{NULL}
-for the built-in 12-colour publication palette.}
+\item{palette}{Character vector of colours (one per gene), or \code{NULL} for the built-in 12-colour publication palette.}
 
-\item{show_ci}{Logical; add a translucent 95 \\% CI band around each curve?
-Default \code{FALSE}.  Requires \code{pROC::ci.se()}.}
+\item{show_ci}{Logical; Whether to add a translucent 95 \\% CI band around each curve. Default \code{FALSE}.  Requires \code{pROC::ci.se()}.}
 
-\item{ncol}{Integer; number of columns when \code{combine = FALSE}.
-Default \code{NULL} (auto).}
+\item{ncol}{Integer; number of columns when \code{combine = FALSE}. Default \code{NULL} (auto).}
 
 \item{label_size}{Legend text size. Default 9.}
 
 \item{p_adjust_method}{Method for multiple-testing correction passed to
-\code{\link[stats]{p.adjust}}.  Default \code{"BH"} (Benjamini–Hochberg
+\code{\link[stats]{p.adjust}}.  Default \code{"BH"} (Benjamini--Hochberg
 FDR).  Other common choices: \code{"bonferroni"}, \code{"holm"},
 \code{"none"}.  When only a single gene is supplied no correction is
 needed and \code{p_adj} equals \code{p_value} regardless of method.}
 }
 \value{
-A \code{ggplot} object.
-\code{attr(, "auc_table")} contains the same data.frame produced by
-\code{\link{get_gene_auc}}.
+A \code{ggplot} object. \code{attr(, "auc_table")} contains the same data.frame produced by \code{\link{get_gene_auc}}.
 }
 \description{
 Overlays one ROC curve per gene on a single panel (\code{combine = TRUE},

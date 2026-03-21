@@ -1,6 +1,26 @@
 ## Single-gene diagnostic analysis
 ## Functions for evaluating individual gene diagnostic ability after ML-based consensus feature selection.
 
+## Internal formatting helpers
+#' Format a p-value as a compact string
+#' @keywords internal
+#' @noRd
+.fmt_p <- function(pval) {
+  ifelse(pval < 0.001, sprintf("%.2e", pval),
+         sprintf("%.4f", pval))
+}
+
+#' Convert a p-value to significance stars
+#' @keywords internal
+#' @noRd
+.signif_stars <- function(pval) {
+  ifelse(pval < 0.0001, "****",
+  ifelse(pval < 0.001, "***",
+  ifelse(pval < 0.01, "**",
+  ifelse(pval < 0.05, "*", "ns"))))
+}
+
+## Input resolution helper
 ## make input format consistent
 #' @keywords internal
 #' @noRd
@@ -86,7 +106,7 @@
 #' @param ci Logical; compute 95 \% DeLong confidence interval?
 #'   Default \code{TRUE}.
 #' @param p_adjust_method Method for multiple-testing correction passed to
-#'   \code{\link[stats]{p.adjust}}.  Default \code{"BH"} (Benjamini–Hochberg
+#'   \code{\link[stats]{p.adjust}}.  Default \code{"BH"} (Benjamini--Hochberg
 #'   FDR).  Other common choices: \code{"bonferroni"}, \code{"holm"},
 #'   \code{"none"}.  When only a single gene is supplied no correction is
 #'   needed and \code{p_adj} equals \code{p_value} regardless of method.
@@ -156,16 +176,16 @@ get_gene_auc <- function(genes,
     }, error = function(e) NA_real_)
 
     data.frame(
-      gene            = name_map[[col]],
-      auc             = auc_val,
-      ci_lower        = ci_lo,
-      ci_upper        = ci_hi,
-      direction       = roc_obj$direction,
-      optimal_cutoff  = best$threshold,
-      sensitivity     = best$sensitivity,
-      specificity     = best$specificity,
-      youden_J        = best$sensitivity + best$specificity - 1,
-      p_value         = p_val,
+      gene = name_map[[col]],
+      auc = auc_val,
+      ci_lower = ci_lo,
+      ci_upper = ci_hi,
+      direction = roc_obj$direction,
+      optimal_cutoff = best$threshold,
+      sensitivity = best$sensitivity,
+      specificity = best$specificity,
+      youden_J = best$sensitivity + best$specificity - 1,
+      p_value = p_val,
       stringsAsFactors = FALSE
     )
   })
@@ -188,19 +208,13 @@ get_gene_auc <- function(genes,
 #' consensus genes are fed back to evaluate their individual diagnostic power.
 #'
 #' @inheritParams get_gene_auc
-#' @param combine Logical; if \code{TRUE} (default) all curves are overlaid
-#'   on one panel.  If \code{FALSE} each gene gets its own facet.
-#' @param palette Character vector of colours (one per gene), or \code{NULL}
-#'   for the built-in 12-colour publication palette.
-#' @param show_ci Logical; add a translucent 95 \% CI band around each curve?
-#'   Default \code{FALSE}.  Requires \code{pROC::ci.se()}.
-#' @param ncol Integer; number of columns when \code{combine = FALSE}.
-#'   Default \code{NULL} (auto).
+#' @param combine Logical; if \code{TRUE} (default) all curves are overlaid on one panel.  If \code{FALSE} each gene gets its own facet.
+#' @param palette Character vector of colours (one per gene), or \code{NULL} for the built-in 12-colour publication palette.
+#' @param show_ci Logical; Whether to add a translucent 95 \% CI band around each curve. Default \code{FALSE}.  Requires \code{pROC::ci.se()}.
+#' @param ncol Integer; number of columns when \code{combine = FALSE}. Default \code{NULL} (auto).
 #' @param label_size Legend text size. Default 9.
 #'
-#' @return A \code{ggplot} object.
-#'   \code{attr(, "auc_table")} contains the same data.frame produced by
-#'   \code{\link{get_gene_auc}}.
+#' @return A \code{ggplot} object. \code{attr(, "auc_table")} contains the same data.frame produced by \code{\link{get_gene_auc}}.
 #'
 #' @examples
 #' \dontrun{
@@ -323,7 +337,6 @@ plot_gene_roc <- function(genes,
     theme_bw(base_size = 12)
 
   if (isTRUE(combine)) {
-    ## ── Combined mode: all curves on one panel ──────────────────────────
     p <- p + theme(
       legend.position = c(0.98, 0.02),
       legend.justification = c(1, 0),
@@ -438,13 +451,14 @@ plot_gene_boxplot <- function(genes,
 
   long_list <- lapply(colnames(expr_df), function(col) {
     data.frame(
-      gene       = name_map[[col]],
-      group      = grp,
+      gene = name_map[[col]],
+      group = grp,
       expression = expr_df[[col]],
       stringsAsFactors = FALSE
     )
   })
   long_df <- do.call(rbind, long_list)
+
   ## Preserve gene order from input
   gene_order <- unique(name_map[colnames(expr_df)])
   long_df$gene  <- factor(long_df$gene, levels = gene_order)
@@ -479,17 +493,6 @@ plot_gene_boxplot <- function(genes,
   })
   test_tbl <- do.call(rbind, test_rows)
   test_tbl$p_adj <- stats::p.adjust(test_tbl$p_value, method = p_adjust_method)
-
-  .fmt_p <- function(pval) {
-    ifelse(pval < 0.001, sprintf("%.2e", pval),
-           sprintf("%.4f", pval))
-  }
-  .signif_stars <- function(pval) {
-    ifelse(pval < 0.0001, "****",
-    ifelse(pval < 0.001,  "***",
-    ifelse(pval < 0.01,   "**",
-    ifelse(pval < 0.05,   "*", "ns"))))
-  }
 
   test_tbl$label <- switch(p_label,
     p.format = paste0("p = ", .fmt_p(test_tbl$p_value)),

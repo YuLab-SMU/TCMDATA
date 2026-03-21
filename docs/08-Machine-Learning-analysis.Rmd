@@ -368,6 +368,7 @@ sensitivity, specificity and a test against AUC = 0.5.
 
 ```{r ml-gene-auc, eval=TRUE}
 consensus <- get_ml_consensus(ml_list, min_methods = 3)
+
 ## Use top 4 genes for demonstration
 top4 <- consensus[1:min(4, length(consensus))]
 auc_tbl <- get_gene_auc(top4, ml_data = ml_data)
@@ -380,13 +381,17 @@ automatically; for Mode A the training set is used.
 
 ### Single-gene ROC curves
 
-`plot_gene_roc()` overlays one ROC curve per gene on a single panel:
+`plot_gene_roc()` overlays one ROC curve per gene on a single panel.
+ROC analysis is performed via the **pROC** package
+([CRAN](https://cran.r-project.org/web/packages/pROC/index.html);
+Robin *et al.*, BMC Bioinformatics 2011), which provides DeLong confidence
+intervals and optimal-cutoff calculation:
 
 ```{r ml-gene-roc, eval=TRUE, fig.width=6, fig.height=5, fig.align='center', out.width='80%'}
 plot_gene_roc(top4, ml_data = ml_data)
 ```
 
-Set `combine = FALSE` to draw each gene's ROC in its own facet — useful when
+Set `combine = FALSE` to draw each gene's ROC in its own facet. It is useful when
 curves overlap heavily or you want per-gene CI bands:
 
 ```{r ml-gene-roc-facet, eval=TRUE, fig.width=8, fig.height=6, fig.align='center', out.width='90%'}

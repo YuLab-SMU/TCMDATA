@@ -36,7 +36,7 @@ ignored.}
 Default \code{TRUE}.}
 
 \item{p_adjust_method}{Method for multiple-testing correction passed to
-\code{\link[stats]{p.adjust}}.  Default \code{"BH"} (Benjamini–Hochberg
+\code{\link[stats]{p.adjust}}.  Default \code{"BH"} (Benjamini--Hochberg
 FDR).  Other common choices: \code{"bonferroni"}, \code{"holm"},
 \code{"none"}.  When only a single gene is supplied no correction is
 needed and \code{p_adj} equals \code{p_value} regardless of method.}

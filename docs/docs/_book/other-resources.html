@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 Other resources | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</title>
+  <meta name="description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 Other resources | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="github-repo" content="YuLab-SMU/TCMDATA" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 Other resources | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  
+  <meta name="twitter:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  
+
+<meta name="author" content="Yulab-SMU" />
+
+
+<meta name="date" content="2026-03-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ml-analysis.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/ggiraphjs-0.9.2/girafe.css" rel="stylesheet" />
+<script src="libs/ggiraphjs-0.9.2/girafe.js"></script>
+<script src="libs/girafe-binding-0.9.2/girafe.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">TCMDATA User Guide</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="load-data.html"><a href="load-data.html"><i class="fa fa-check"></i><b>1</b> Load TCM Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="load-data.html"><a href="load-data.html#search-by-herb-name"><i class="fa fa-check"></i><b>1.1</b> Search by herb name</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="load-data.html"><a href="load-data.html#using-pinyin-format"><i class="fa fa-check"></i><b>1.1.1</b> Using Pinyin format</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="load-data.html"><a href="load-data.html#search-by-target-gene"><i class="fa fa-check"></i><b>1.2</b> Search by target gene</a></li>
+<li class="chapter" data-level="1.3" data-path="load-data.html"><a href="load-data.html#session-information"><i class="fa fa-check"></i><b>1.3</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="pre-analysis.html"><a href="pre-analysis.html"><i class="fa fa-check"></i><b>2</b> Pre-analysis</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#pubmed-literature-mining"><i class="fa fa-check"></i><b>2.1</b> PubMed literature mining</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="pre-analysis.html"><a href="pre-analysis.html#visualization"><i class="fa fa-check"></i><b>2.1.1</b> Visualization</a></li>
+<li class="chapter" data-level="2.1.2" data-path="pre-analysis.html"><a href="pre-analysis.html#exporting-results"><i class="fa fa-check"></i><b>2.1.2</b> Exporting results</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="pre-analysis.html"><a href="pre-analysis.html#herb-ora"><i class="fa fa-check"></i><b>2.2</b> Herb enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#example-diabetic-nephropathy"><i class="fa fa-check"></i><b>2.2.1</b> Example: Diabetic Nephropathy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="pre-analysis.html"><a href="pre-analysis.html#references"><i class="fa fa-check"></i><b>2.3</b> References</a></li>
+<li class="chapter" data-level="2.4" data-path="pre-analysis.html"><a href="pre-analysis.html#session-information-1"><i class="fa fa-check"></i><b>2.4</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="molecule-detection.html"><a href="molecule-detection.html"><i class="fa fa-check"></i><b>3</b> Molecule annotation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="molecule-detection.html"><a href="molecule-detection.html#resolving-compound-identifiers"><i class="fa fa-check"></i><b>3.1</b> Resolving compound identifiers</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="molecule-detection.html"><a href="molecule-detection.html#using-resolve_cid"><i class="fa fa-check"></i><b>3.1.1</b> Using <code>resolve_cid()</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="molecule-detection.html"><a href="molecule-detection.html#using-getcid"><i class="fa fa-check"></i><b>3.1.2</b> Using <code>getcid()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="molecule-detection.html"><a href="molecule-detection.html#retrieving-chemical-properties"><i class="fa fa-check"></i><b>3.2</b> Retrieving chemical properties</a></li>
+<li class="chapter" data-level="3.3" data-path="molecule-detection.html"><a href="molecule-detection.html#similarity-searching"><i class="fa fa-check"></i><b>3.3</b> Similarity searching</a></li>
+<li class="chapter" data-level="3.4" data-path="molecule-detection.html"><a href="molecule-detection.html#references-1"><i class="fa fa-check"></i><b>3.4</b> References</a></li>
+<li class="chapter" data-level="3.5" data-path="molecule-detection.html"><a href="molecule-detection.html#session-information-2"><i class="fa fa-check"></i><b>3.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="target-retrieval.html"><a href="target-retrieval.html"><i class="fa fa-check"></i><b>4</b> Target retrieval and DEG analysis</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="target-retrieval.html"><a href="target-retrieval.html#disease-db"><i class="fa fa-check"></i><b>4.1</b> Disease target databases</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="target-retrieval.html"><a href="target-retrieval.html#genecards"><i class="fa fa-check"></i><b>4.1.1</b> GeneCards</a></li>
+<li class="chapter" data-level="4.1.2" data-path="target-retrieval.html"><a href="target-retrieval.html#open-targets-platform"><i class="fa fa-check"></i><b>4.1.2</b> Open Targets Platform</a></li>
+<li class="chapter" data-level="4.1.3" data-path="target-retrieval.html"><a href="target-retrieval.html#ctd-comparative-toxicogenomics-database"><i class="fa fa-check"></i><b>4.1.3</b> CTD (Comparative Toxicogenomics Database)</a></li>
+<li class="chapter" data-level="4.1.4" data-path="target-retrieval.html"><a href="target-retrieval.html#other-databases"><i class="fa fa-check"></i><b>4.1.4</b> Other databases</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano"><i class="fa fa-check"></i><b>4.2</b> DEG visualization</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="target-retrieval.html"><a href="target-retrieval.html#load-and-inspect-data"><i class="fa fa-check"></i><b>4.2.1</b> Load and inspect data</a></li>
+<li class="chapter" data-level="4.2.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano-plot-with-ivolcano"><i class="fa fa-check"></i><b>4.2.2</b> Volcano plot with <code>ivolcano</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="target-retrieval.html"><a href="target-retrieval.html#intersection"><i class="fa fa-check"></i><b>4.3</b> Intersection analysis</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="target-retrieval.html"><a href="target-retrieval.html#prepare-gene-sets"><i class="fa fa-check"></i><b>4.3.1</b> Prepare gene sets</a></li>
+<li class="chapter" data-level="4.3.2" data-path="target-retrieval.html"><a href="target-retrieval.html#venn-diagram"><i class="fa fa-check"></i><b>4.3.2</b> Venn diagram</a></li>
+<li class="chapter" data-level="4.3.3" data-path="target-retrieval.html"><a href="target-retrieval.html#upset-plot"><i class="fa fa-check"></i><b>4.3.3</b> UpSet plot</a></li>
+<li class="chapter" data-level="4.3.4" data-path="target-retrieval.html"><a href="target-retrieval.html#extract-intersection-results"><i class="fa fa-check"></i><b>4.3.4</b> Extract intersection results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="target-retrieval.html"><a href="target-retrieval.html#references-2"><i class="fa fa-check"></i><b>4.4</b> References</a></li>
+<li class="chapter" data-level="4.5" data-path="target-retrieval.html"><a href="target-retrieval.html#session-information-3"><i class="fa fa-check"></i><b>4.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="network-construction.html"><a href="network-construction.html"><i class="fa fa-check"></i><b>5</b> TCM network construction</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="network-construction.html"><a href="network-construction.html#preparing-the-data"><i class="fa fa-check"></i><b>5.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="5.2" data-path="network-construction.html"><a href="network-construction.html#sankey-diagram-visualization"><i class="fa fa-check"></i><b>5.2</b> Sankey diagram visualization</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="network-construction.html"><a href="network-construction.html#basic-usage"><i class="fa fa-check"></i><b>5.2.1</b> Basic usage</a></li>
+<li class="chapter" data-level="5.2.2" data-path="network-construction.html"><a href="network-construction.html#customizing-colors-and-appearance"><i class="fa fa-check"></i><b>5.2.2</b> Customizing colors and appearance</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="network-construction.html"><a href="network-construction.html#network-graph-with-ggtangle"><i class="fa fa-check"></i><b>5.3</b> Network graph with <code>ggtangle</code></a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="network-construction.html"><a href="network-construction.html#building-the-graph"><i class="fa fa-check"></i><b>5.3.1</b> Building the graph</a></li>
+<li class="chapter" data-level="5.3.2" data-path="network-construction.html"><a href="network-construction.html#basic-network-visualization"><i class="fa fa-check"></i><b>5.3.2</b> Basic network visualization</a></li>
+<li class="chapter" data-level="5.3.3" data-path="network-construction.html"><a href="network-construction.html#adding-node-labels"><i class="fa fa-check"></i><b>5.3.3</b> Adding node labels</a></li>
+<li class="chapter" data-level="5.3.4" data-path="network-construction.html"><a href="network-construction.html#alternative-layouts"><i class="fa fa-check"></i><b>5.3.4</b> Alternative layouts</a></li>
+<li class="chapter" data-level="5.3.5" data-path="network-construction.html"><a href="network-construction.html#enriching-the-network-with-external-data"><i class="fa fa-check"></i><b>5.3.5</b> Enriching the network with external data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="network-construction.html"><a href="network-construction.html#references-3"><i class="fa fa-check"></i><b>5.4</b> References</a></li>
+<li class="chapter" data-level="5.5" data-path="network-construction.html"><a href="network-construction.html#session-information-4"><i class="fa fa-check"></i><b>5.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="enrichment.html"><a href="enrichment.html"><i class="fa fa-check"></i><b>6</b> Enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="enrichment.html"><a href="enrichment.html#over-representation-analysis-ora"><i class="fa fa-check"></i><b>6.1</b> Over Representation Analysis (ORA)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="enrichment.html"><a href="enrichment.html#kegg-enrichment-analysis"><i class="fa fa-check"></i><b>6.1.1</b> KEGG enrichment analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="enrichment.html"><a href="enrichment.html#go-enrichment-analysis"><i class="fa fa-check"></i><b>6.2</b> GO enrichment analysis</a></li>
+<li class="chapter" data-level="6.3" data-path="enrichment.html"><a href="enrichment.html#advanced-visualization"><i class="fa fa-check"></i><b>6.3</b> Advanced visualization</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="enrichment.html"><a href="enrichment.html#lollipop-plot"><i class="fa fa-check"></i><b>6.3.1</b> Lollipop plot</a></li>
+<li class="chapter" data-level="6.3.2" data-path="enrichment.html"><a href="enrichment.html#dot-sankey-plot"><i class="fa fa-check"></i><b>6.3.2</b> Dot-sankey plot</a></li>
+<li class="chapter" data-level="6.3.3" data-path="enrichment.html"><a href="enrichment.html#go-bar-plot"><i class="fa fa-check"></i><b>6.3.3</b> GO bar plot</a></li>
+<li class="chapter" data-level="6.3.4" data-path="enrichment.html"><a href="enrichment.html#go-circle-plot"><i class="fa fa-check"></i><b>6.3.4</b> GO circle plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="enrichment.html"><a href="enrichment.html#gene-set-enrichment-analysis-gsea"><i class="fa fa-check"></i><b>6.4</b> Gene Set Enrichment Analysis (GSEA)</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="enrichment.html"><a href="enrichment.html#prepare-ranked-gene-list"><i class="fa fa-check"></i><b>6.4.1</b> Prepare ranked gene list</a></li>
+<li class="chapter" data-level="6.4.2" data-path="enrichment.html"><a href="enrichment.html#kegg-gsea-analysis"><i class="fa fa-check"></i><b>6.4.2</b> KEGG GSEA analysis</a></li>
+<li class="chapter" data-level="6.4.3" data-path="enrichment.html"><a href="enrichment.html#go-gsea-analysis"><i class="fa fa-check"></i><b>6.4.3</b> GO GSEA analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="enrichment.html"><a href="enrichment.html#session-information-5"><i class="fa fa-check"></i><b>6.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ppi-analysis.html"><a href="ppi-analysis.html"><i class="fa fa-check"></i><b>7</b> PPI network analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#retrieving-ppi-data-from-string"><i class="fa fa-check"></i><b>7.1</b> Retrieving PPI data from STRING</a></li>
+<li class="chapter" data-level="7.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#network-filtering"><i class="fa fa-check"></i><b>7.2</b> Network filtering</a></li>
+<li class="chapter" data-level="7.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#topology"><i class="fa fa-check"></i><b>7.3</b> Topological metrics</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#integrated-ranking"><i class="fa fa-check"></i><b>7.3.1</b> Integrated ranking</a></li>
+<li class="chapter" data-level="7.3.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#radar-plot-of-topological-metrics"><i class="fa fa-check"></i><b>7.3.2</b> Radar plot of topological metrics</a></li>
+<li class="chapter" data-level="7.3.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#heatmap-of-topological-metrics"><i class="fa fa-check"></i><b>7.3.3</b> Heatmap of topological metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#clustering"><i class="fa fa-check"></i><b>7.4</b> Community detection</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#louvain-modularity-optimization"><i class="fa fa-check"></i><b>7.4.1</b> Louvain modularity optimization</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcode-molecular-complex-detection"><i class="fa fa-check"></i><b>7.4.2</b> MCODE (Molecular Complex Detection)</a></li>
+<li class="chapter" data-level="7.4.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcl-markov-clustering"><i class="fa fa-check"></i><b>7.4.3</b> MCL (Markov Clustering)</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="ppi-analysis.html"><a href="ppi-analysis.html#robustness"><i class="fa fa-check"></i><b>7.5</b> PPI network robustness analysis</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#algorithm-overview"><i class="fa fa-check"></i><b>7.5.1</b> Algorithm overview</a></li>
+<li class="chapter" data-level="7.5.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#example-knocking-out-il6"><i class="fa fa-check"></i><b>7.5.2</b> Example: knocking out IL6</a></li>
+<li class="chapter" data-level="7.5.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#visualization-before-vs.-after-knockout"><i class="fa fa-check"></i><b>7.5.3</b> Visualization: before vs. after knockout</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="ppi-analysis.html"><a href="ppi-analysis.html#ppi-vis"><i class="fa fa-check"></i><b>7.6</b> PPI network visualization</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#basic-network-with-topological-mapping"><i class="fa fa-check"></i><b>7.6.1</b> Basic network with topological mapping</a></li>
+<li class="chapter" data-level="7.6.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#community-colored-network"><i class="fa fa-check"></i><b>7.6.2</b> Community-colored network</a></li>
+<li class="chapter" data-level="7.6.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#hub-centric-star-layout"><i class="fa fa-check"></i><b>7.6.3</b> Hub-centric star layout</a></li>
+<li class="chapter" data-level="7.6.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#layout-algorithm-comparison"><i class="fa fa-check"></i><b>7.6.4</b> Layout algorithm comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="ppi-analysis.html"><a href="ppi-analysis.html#references-4"><i class="fa fa-check"></i><b>7.7</b> References</a></li>
+<li class="chapter" data-level="7.8" data-path="ppi-analysis.html"><a href="ppi-analysis.html#session-information-6"><i class="fa fa-check"></i><b>7.8</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ml-analysis.html"><a href="ml-analysis.html"><i class="fa fa-check"></i><b>8</b> Machine learning–based key target screening</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ml-analysis.html"><a href="ml-analysis.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-data"><i class="fa fa-check"></i><b>8.1.1</b> Example dataset</a></li>
+<li class="chapter" data-level="8.1.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-prepare"><i class="fa fa-check"></i><b>8.1.2</b> Data preparation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-a"><i class="fa fa-check"></i><b>8.2</b> Mode A: full cross-validation</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-lasso"><i class="fa fa-check"></i><b>8.2.1</b> LASSO regression</a></li>
+<li class="chapter" data-level="8.2.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-rf"><i class="fa fa-check"></i><b>8.2.2</b> Random Forest and Boruta</a></li>
+<li class="chapter" data-level="8.2.3" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-svm-rfe"><i class="fa fa-check"></i><b>8.2.3</b> SVM-RFE</a></li>
+<li class="chapter" data-level="8.2.4" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-xgboost"><i class="fa fa-check"></i><b>8.2.4</b> XGBoost</a></li>
+<li class="chapter" data-level="8.2.5" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-consensus"><i class="fa fa-check"></i><b>8.2.5</b> Consensus analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-b"><i class="fa fa-check"></i><b>8.3</b> Mode B: internal train/test split</a></li>
+<li class="chapter" data-level="8.4" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-c"><i class="fa fa-check"></i><b>8.4</b> Mode C: external validation</a></li>
+<li class="chapter" data-level="8.5" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-select"><i class="fa fa-check"></i><b>8.5</b> Post-hoc feature trimming</a></li>
+<li class="chapter" data-level="8.6" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-manual-list"><i class="fa fa-check"></i><b>8.6</b> Assembling models manually</a></li>
+<li class="chapter" data-level="8.7" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-gene-diag"><i class="fa fa-check"></i><b>8.7</b> Single-gene diagnostic analysis</a>
+<ul>
+<li class="chapter" data-level="8.7.1" data-path="ml-analysis.html"><a href="ml-analysis.html#auc-summary-table"><i class="fa fa-check"></i><b>8.7.1</b> AUC summary table</a></li>
+<li class="chapter" data-level="8.7.2" data-path="ml-analysis.html"><a href="ml-analysis.html#single-gene-roc-curves"><i class="fa fa-check"></i><b>8.7.2</b> Single-gene ROC curves</a></li>
+<li class="chapter" data-level="8.7.3" data-path="ml-analysis.html"><a href="ml-analysis.html#two-group-expression-boxplot"><i class="fa fa-check"></i><b>8.7.3</b> Two-group expression boxplot</a></li>
+</ul></li>
+<li class="chapter" data-level="8.8" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-summary"><i class="fa fa-check"></i><b>8.8</b> Summary</a></li>
+<li class="chapter" data-level="8.9" data-path="ml-analysis.html"><a href="ml-analysis.html#references-5"><i class="fa fa-check"></i><b>8.9</b> References</a></li>
+<li class="chapter" data-level="8.10" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-session-info"><i class="fa fa-check"></i><b>8.10</b> Session Information</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>9</b> Other resources</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="other-resources.html"><a href="other-resources.html#additional-databases"><i class="fa fa-check"></i><b>9.1</b> Additional databases</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="other-resources.html"><a href="other-resources.html#tfgene-interactions-dorothea"><i class="fa fa-check"></i><b>9.1.1</b> TF–gene interactions (DoRothEA)</a></li>
+<li class="chapter" data-level="9.1.2" data-path="other-resources.html"><a href="other-resources.html#gut-microbiotahost-interactions-gutmgene"><i class="fa fa-check"></i><b>9.1.2</b> Gut microbiota–host interactions (GutMGene)</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="other-resources.html"><a href="other-resources.html#additional-visualization"><i class="fa fa-check"></i><b>9.2</b> Additional visualization</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="other-resources.html"><a href="other-resources.html#heatmap-for-molecular-docking-results"><i class="fa fa-check"></i><b>9.2.1</b> Heatmap for molecular docking results</a></li>
+<li class="chapter" data-level="9.2.2" data-path="other-resources.html"><a href="other-resources.html#to-be-continued"><i class="fa fa-check"></i><b>9.2.2</b> To be continued</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="other-resources.html"><a href="other-resources.html#references-6"><i class="fa fa-check"></i><b>9.3</b> References</a></li>
+<li class="chapter" data-level="9.4" data-path="other-resources.html"><a href="other-resources.html#session-information-7"><i class="fa fa-check"></i><b>9.4</b> Session information</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="other-resources" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> Other resources<a href="other-resources.html#other-resources" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this chapter, we provide a curated list of additional resources that complement the <code>TCMDATA</code> package for TCM network pharmacology research. These include databases, tools, and R packages that can be integrated into your analysis workflow for enhanced data retrieval, processing, and visualization.</p>
+<div id="additional-databases" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Additional databases<a href="other-resources.html#additional-databases" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="tfgene-interactions-dorothea" class="section level3 hasAnchor" number="9.1.1">
+<h3><span class="header-section-number">9.1.1</span> TF–gene interactions (DoRothEA)<a href="other-resources.html#tfgene-interactions-dorothea" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Transcription factors (TFs) are master regulators that control gene expression by binding to specific DNA sequences. In network pharmacology, understanding TF–target relationships is crucial for identifying upstream regulators of disease-associated genes and constructing comprehensive regulatory networks.</p>
+<p><code>TCMDATA</code> provides a curated dataset of high-confidence TF–target interactions derived from the <strong>DoRothEA</strong> database<sup>[1]</sup>. The dataset includes interactions at confidence levels A, B, and C for both Human and Mouse:</p>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="40%" />
+<col width="30%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Confidence</th>
+<th>Evidence Source</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td>Literature-curated</td>
+<td>High confidence; manually curated from publications</td>
+</tr>
+<tr class="even">
+<td><strong>B</strong></td>
+<td>ChIP-seq evidence</td>
+<td>Moderate confidence; supported by chromatin immunoprecipitation data</td>
+</tr>
+<tr class="odd">
+<td><strong>C</strong></td>
+<td>TFBS + ChIP-seq</td>
+<td>Medium confidence; predicted binding sites validated by ChIP-seq</td>
+</tr>
+</tbody>
+</table>
+<p>User can access this data via <code>data("tf_targets")</code>:</p>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="other-resources.html#cb198-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;tf_targets&quot;</span>)</span>
+<span id="cb198-2"><a href="other-resources.html#cb198-2" tabindex="-1"></a></span>
+<span id="cb198-3"><a href="other-resources.html#cb198-3" tabindex="-1"></a>tf_targets <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code></pre></div>
+<pre><code>#&gt; # A tibble: 10 × 5
+#&gt;    Species TF    Target   Confidence Mode_of_Regulation
+#&gt;    &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;                   &lt;dbl&gt;
+#&gt;  1 Human   AHR   CYP1A1   C                           1
+#&gt;  2 Human   AHR   CYP1A2   C                           1
+#&gt;  3 Human   AHR   CYP1B1   C                           1
+#&gt;  4 Human   AHR   FOS      C                           1
+#&gt;  5 Human   AHR   MYC      C                           1
+#&gt;  6 Human   AHR   UGT1A6   C                           1
+#&gt;  7 Human   AHR   ASAP1    C                           1
+#&gt;  8 Human   AHR   ERG      C                           1
+#&gt;  9 Human   AHR   VGLL4    C                           1
+#&gt; 10 Human   AHR   ARHGAP15 C                           1</code></pre>
+<p>The <code>Mode_of_Regulation</code> column indicates whether the TF activates (<code>1</code>) or inhibits (<code>-1</code>) the target gene, enabling construction of signed regulatory networks.</p>
+<div id="application-example" class="section level4 hasAnchor" number="9.1.1.1">
+<h4><span class="header-section-number">9.1.1.1</span> Application example<a href="other-resources.html#application-example" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>This dataset is particularly useful for:</p>
+<ol style="list-style-type: decimal">
+<li><strong>TF enrichment analysis</strong> — Identify which TFs are significantly associated with your disease targets.</li>
+<li><strong>Regulatory network construction</strong> — Build TF → target → disease networks to reveal upstream regulatory mechanisms.</li>
+<li><strong>Integration with TCM networks</strong> — Link TCM targets to their upstream TFs, extending the herb → molecule → target → TF cascade.</li>
+</ol>
+<hr />
+</div>
+</div>
+<div id="gut-microbiotahost-interactions-gutmgene" class="section level3 hasAnchor" number="9.1.2">
+<h3><span class="header-section-number">9.1.2</span> Gut microbiota–host interactions (GutMGene)<a href="other-resources.html#gut-microbiotahost-interactions-gutmgene" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The gut microbiome plays a critical role in human health by producing metabolites that modulate host physiology. These microbial metabolites, which are similar to TCM active compounds, are small molecules that interact with host target proteins. This “<strong>Gut Microbiota → Metabolite → Host Target</strong>” axis provides a natural extension to the classical TCM network pharmacology paradigm, enabling researchers to explore how gut microbiota may mediate or modulate the therapeutic effects of herbal medicines.</p>
+<p><code>TCMDATA</code> integrates comprehensive gut microbiota–metabolite–target interaction data from the <strong>GutMGene v2.0</strong> database<sup>[2]</sup>. The dataset covers both Human and Mouse and includes:</p>
+<ul>
+<li><strong>Bacteria–Metabolite</strong> relationships: Which gut bacteria produce specific metabolites</li>
+<li><strong>Metabolite–Target</strong> relationships: Which host genes are regulated by microbial metabolites</li>
+<li><strong>Interaction type</strong>: Whether the metabolite activates or inhibits the target</li>
+</ul>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="other-resources.html#cb200-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;gutMGene&quot;</span>)</span>
+<span id="cb200-2"><a href="other-resources.html#cb200-2" tabindex="-1"></a></span>
+<span id="cb200-3"><a href="other-resources.html#cb200-3" tabindex="-1"></a><span class="co"># Access human data</span></span>
+<span id="cb200-4"><a href="other-resources.html#cb200-4" tabindex="-1"></a>gutMGene<span class="sc">$</span>gut_axis_human <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code></pre></div>
+<pre><code>#&gt;                  Bacteria Bacteria_ID Metabolite Metabolite_ID Target Target_ID
+#&gt; 1  Christensenella minuta      626937    Acetate           175  FFAR3      2865
+#&gt; 2  Christensenella minuta      626937    Acetate           175  FFAR2      2867
+#&gt; 3  Christensenella minuta      626937    Acetate           175   CCL2      6347
+#&gt; 4  Christensenella minuta      626937    Acetate           175   LGR5      8549
+#&gt; 5  Christensenella minuta      626937    Acetate           175   ALPI       248
+#&gt; 6  Christensenella minuta      626937    Acetate           175   MUC2      4583
+#&gt; 7  Christensenella minuta      626937    Acetate           175  DCLK1      9201
+#&gt; 8  Christensenella minuta      626937    Acetate           175   OCLN 100506658
+#&gt; 9  Christensenella minuta      626937    Acetate           175  CLDN3      1365
+#&gt; 10 Christensenella minuta      626937    Acetate           175   TJP1      7082
+#&gt;    Interaction PMID_Bac_Met PMID_Met_Target
+#&gt; 1   activation     21357455        28322790
+#&gt; 2   activation     21357455        28322790
+#&gt; 3   inhibition     21357455        28322790
+#&gt; 4   activation     21357455        32240190
+#&gt; 5   activation     21357455        32240190
+#&gt; 6   activation     21357455        32240190
+#&gt; 7   activation     21357455        32240190
+#&gt; 8   activation     21357455        32240190
+#&gt; 9   activation     21357455        32240190
+#&gt; 10  activation     21357455        32240190</code></pre>
+<p><code>data("gutMGene")</code> loads a list with two data frames: <code>gut_axis_human</code> and <code>gut_axis_mouse</code>.</p>
+<div id="application-example-guttcm-integration" class="section level4 hasAnchor" number="9.1.2.1">
+<h4><span class="header-section-number">9.1.2.1</span> Application example: Gut–TCM integration<a href="other-resources.html#application-example-guttcm-integration" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Since microbial metabolites and TCM active compounds are both small molecules targeting host proteins, you can integrate GutMGene with TCM network analysis to explore:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Shared targets</strong> — Do TCM compounds and gut metabolites regulate the same host genes?</li>
+<li><strong>Synergistic effects</strong> — Can TCM herbs modulate gut microbiota composition, thereby influencing metabolite production?</li>
+<li><strong>Multi-layer networks</strong> — Construct Bacteria → Metabolite → Target → Pathway networks analogous to Herb → Molecule → Target → Pathway networks.</li>
+</ol>
+</div>
+<div id="network-visualization-with-ggtangle" class="section level4 hasAnchor" number="9.1.2.2">
+<h4><span class="header-section-number">9.1.2.2</span> Network visualization with ggtangle<a href="other-resources.html#network-visualization-with-ggtangle" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The tripartite structure of gut microbiota data (Bacteria → Metabolite → Target) mirrors the TCM network paradigm (Herb → Molecule → Target). Below we demonstrate how to visualize this relationship using <code>ggtangle</code>:</p>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="other-resources.html#cb202-1" tabindex="-1"></a><span class="fu">library</span>(TCMDATA)</span>
+<span id="cb202-2"><a href="other-resources.html#cb202-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb202-3"><a href="other-resources.html#cb202-3" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb202-4"><a href="other-resources.html#cb202-4" tabindex="-1"></a><span class="fu">library</span>(ggtangle)</span>
+<span id="cb202-5"><a href="other-resources.html#cb202-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb202-6"><a href="other-resources.html#cb202-6" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb202-7"><a href="other-resources.html#cb202-7" tabindex="-1"></a></span>
+<span id="cb202-8"><a href="other-resources.html#cb202-8" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;gutMGene&quot;</span>)</span>
+<span id="cb202-9"><a href="other-resources.html#cb202-9" tabindex="-1"></a></span>
+<span id="cb202-10"><a href="other-resources.html#cb202-10" tabindex="-1"></a><span class="co"># Select one bacterium with multiple metabolites and targets</span></span>
+<span id="cb202-11"><a href="other-resources.html#cb202-11" tabindex="-1"></a>bac_name <span class="ot">&lt;-</span> <span class="st">&quot;Bifidobacterium longum&quot;</span></span>
+<span id="cb202-12"><a href="other-resources.html#cb202-12" tabindex="-1"></a></span>
+<span id="cb202-13"><a href="other-resources.html#cb202-13" tabindex="-1"></a>gut_sub <span class="ot">&lt;-</span> gutMGene<span class="sc">$</span>gut_axis_human <span class="sc">|&gt;</span></span>
+<span id="cb202-14"><a href="other-resources.html#cb202-14" tabindex="-1"></a>  <span class="fu">filter</span>(Bacteria <span class="sc">==</span> bac_name, <span class="sc">!</span><span class="fu">is.na</span>(Metabolite), <span class="sc">!</span><span class="fu">is.na</span>(Target))</span>
+<span id="cb202-15"><a href="other-resources.html#cb202-15" tabindex="-1"></a></span>
+<span id="cb202-16"><a href="other-resources.html#cb202-16" tabindex="-1"></a><span class="co"># Sample targets to keep the network readable</span></span>
+<span id="cb202-17"><a href="other-resources.html#cb202-17" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb202-18"><a href="other-resources.html#cb202-18" tabindex="-1"></a>gut_sub <span class="ot">&lt;-</span> gut_sub <span class="sc">|&gt;</span></span>
+<span id="cb202-19"><a href="other-resources.html#cb202-19" tabindex="-1"></a>  <span class="fu">group_by</span>(Metabolite) <span class="sc">|&gt;</span></span>
+<span id="cb202-20"><a href="other-resources.html#cb202-20" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">8</span>) <span class="sc">|&gt;</span></span>
+<span id="cb202-21"><a href="other-resources.html#cb202-21" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb202-22"><a href="other-resources.html#cb202-22" tabindex="-1"></a></span>
+<span id="cb202-23"><a href="other-resources.html#cb202-23" tabindex="-1"></a><span class="co"># Build edges: Bacteria → Metabolite → Target</span></span>
+<span id="cb202-24"><a href="other-resources.html#cb202-24" tabindex="-1"></a>edges <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb202-25"><a href="other-resources.html#cb202-25" tabindex="-1"></a>  gut_sub <span class="sc">|&gt;</span> <span class="fu">distinct</span>(<span class="at">from =</span> Bacteria, <span class="at">to =</span> Metabolite),</span>
+<span id="cb202-26"><a href="other-resources.html#cb202-26" tabindex="-1"></a>  gut_sub <span class="sc">|&gt;</span> <span class="fu">distinct</span>(<span class="at">from =</span> Metabolite, <span class="at">to =</span> Target)</span>
+<span id="cb202-27"><a href="other-resources.html#cb202-27" tabindex="-1"></a>)</span>
+<span id="cb202-28"><a href="other-resources.html#cb202-28" tabindex="-1"></a></span>
+<span id="cb202-29"><a href="other-resources.html#cb202-29" tabindex="-1"></a><span class="co"># Node attributes</span></span>
+<span id="cb202-30"><a href="other-resources.html#cb202-30" tabindex="-1"></a>nodes <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">name =</span> <span class="fu">unique</span>(<span class="fu">c</span>(edges<span class="sc">$</span>from, edges<span class="sc">$</span>to))) <span class="sc">|&gt;</span></span>
+<span id="cb202-31"><a href="other-resources.html#cb202-31" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb202-32"><a href="other-resources.html#cb202-32" tabindex="-1"></a>    name <span class="sc">==</span> bac_name <span class="sc">~</span> <span class="st">&quot;Bacteria&quot;</span>,</span>
+<span id="cb202-33"><a href="other-resources.html#cb202-33" tabindex="-1"></a>    name <span class="sc">%in%</span> gut_sub<span class="sc">$</span>Metabolite <span class="sc">~</span> <span class="st">&quot;Metabolite&quot;</span>,</span>
+<span id="cb202-34"><a href="other-resources.html#cb202-34" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;Target&quot;</span></span>
+<span id="cb202-35"><a href="other-resources.html#cb202-35" tabindex="-1"></a>  ))</span>
+<span id="cb202-36"><a href="other-resources.html#cb202-36" tabindex="-1"></a></span>
+<span id="cb202-37"><a href="other-resources.html#cb202-37" tabindex="-1"></a><span class="co"># Build and plot network</span></span>
+<span id="cb202-38"><a href="other-resources.html#cb202-38" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_data_frame</span>(edges, <span class="at">directed =</span> <span class="cn">FALSE</span>, <span class="at">vertices =</span> nodes)</span>
+<span id="cb202-39"><a href="other-resources.html#cb202-39" tabindex="-1"></a></span>
+<span id="cb202-40"><a href="other-resources.html#cb202-40" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb202-41"><a href="other-resources.html#cb202-41" tabindex="-1"></a><span class="fu">ggplot</span>(g, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>) <span class="sc">+</span></span>
+<span id="cb202-42"><a href="other-resources.html#cb202-42" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="st">&quot;grey55&quot;</span>) <span class="sc">+</span></span>
+<span id="cb202-43"><a href="other-resources.html#cb202-43" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> type, <span class="at">shape =</span> type, <span class="at">size =</span> type), <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb202-44"><a href="other-resources.html#cb202-44" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb202-45"><a href="other-resources.html#cb202-45" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> name),</span>
+<span id="cb202-46"><a href="other-resources.html#cb202-46" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, <span class="at">max.overlaps =</span> <span class="dv">30</span>, <span class="at">segment.alpha =</span> <span class="fl">0.3</span></span>
+<span id="cb202-47"><a href="other-resources.html#cb202-47" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb202-48"><a href="other-resources.html#cb202-48" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb202-49"><a href="other-resources.html#cb202-49" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;Bacteria&quot;</span> <span class="ot">=</span> <span class="st">&quot;#E64B35&quot;</span>, <span class="st">&quot;Metabolite&quot;</span> <span class="ot">=</span> <span class="st">&quot;#4DBBD5&quot;</span>, <span class="st">&quot;Target&quot;</span> <span class="ot">=</span> <span class="st">&quot;#00A087&quot;</span>),</span>
+<span id="cb202-50"><a href="other-resources.html#cb202-50" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span></span>
+<span id="cb202-51"><a href="other-resources.html#cb202-51" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb202-52"><a href="other-resources.html#cb202-52" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(</span>
+<span id="cb202-53"><a href="other-resources.html#cb202-53" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;Bacteria&quot;</span> <span class="ot">=</span> <span class="dv">18</span>, <span class="st">&quot;Metabolite&quot;</span> <span class="ot">=</span> <span class="dv">15</span>, <span class="st">&quot;Target&quot;</span> <span class="ot">=</span> <span class="dv">16</span>),</span>
+<span id="cb202-54"><a href="other-resources.html#cb202-54" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span></span>
+<span id="cb202-55"><a href="other-resources.html#cb202-55" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb202-56"><a href="other-resources.html#cb202-56" tabindex="-1"></a>  <span class="fu">scale_size_manual</span>(</span>
+<span id="cb202-57"><a href="other-resources.html#cb202-57" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;Bacteria&quot;</span> <span class="ot">=</span> <span class="dv">6</span>, <span class="st">&quot;Metabolite&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, <span class="st">&quot;Target&quot;</span> <span class="ot">=</span> <span class="fl">3.5</span>),</span>
+<span id="cb202-58"><a href="other-resources.html#cb202-58" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span></span>
+<span id="cb202-59"><a href="other-resources.html#cb202-59" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb202-60"><a href="other-resources.html#cb202-60" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb202-61"><a href="other-resources.html#cb202-61" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb202-62"><a href="other-resources.html#cb202-62" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb202-63"><a href="other-resources.html#cb202-63" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb202-64"><a href="other-resources.html#cb202-64" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)</span>
+<span id="cb202-65"><a href="other-resources.html#cb202-65" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/gutmgene-network-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>The network reveals the multi-target nature of gut microbial metabolites—analogous to TCM active compounds—where a single metabolite (e.g., Acetate, Butyrate) can modulate multiple host genes through distinct signaling pathways.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="additional-visualization" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Additional visualization<a href="other-resources.html#additional-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="heatmap-for-molecular-docking-results" class="section level3 hasAnchor" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> Heatmap for molecular docking results<a href="other-resources.html#heatmap-for-molecular-docking-results" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Molecular docking is a key computational method in network pharmacology for validating interactions between TCM active compounds and target proteins. After performing docking simulations (e.g., with AutoDock Vina), users typically obtain a matrix of binding affinities (kcal/mol) where <strong>more negative values indicate stronger binding</strong>.</p>
+<p><code>TCMDATA</code> provides <code>ggdock()</code> for visualizing docking results as heatmaps. The function supports both <strong>dot plots</strong> and <strong>tile plots</strong>, with flexible color palettes and optional affinity labels.</p>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="other-resources.html#cb203-1" tabindex="-1"></a><span class="fu">library</span>(TCMDATA)</span>
+<span id="cb203-2"><a href="other-resources.html#cb203-2" tabindex="-1"></a></span>
+<span id="cb203-3"><a href="other-resources.html#cb203-3" tabindex="-1"></a><span class="co"># Generate demo docking data</span></span>
+<span id="cb203-4"><a href="other-resources.html#cb203-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb203-5"><a href="other-resources.html#cb203-5" tabindex="-1"></a>molecules <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Quercetin&quot;</span>, <span class="st">&quot;Kaempferol&quot;</span>, <span class="st">&quot;Luteolin&quot;</span>, <span class="st">&quot;Apigenin&quot;</span>, <span class="st">&quot;Baicalein&quot;</span>)</span>
+<span id="cb203-6"><a href="other-resources.html#cb203-6" tabindex="-1"></a>targets <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;AKT1&quot;</span>, <span class="st">&quot;EGFR&quot;</span>, <span class="st">&quot;TNF&quot;</span>, <span class="st">&quot;IL6&quot;</span>, <span class="st">&quot;VEGFA&quot;</span>, <span class="st">&quot;CASP3&quot;</span>)</span>
+<span id="cb203-7"><a href="other-resources.html#cb203-7" tabindex="-1"></a></span>
+<span id="cb203-8"><a href="other-resources.html#cb203-8" tabindex="-1"></a>dock_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
+<span id="cb203-9"><a href="other-resources.html#cb203-9" tabindex="-1"></a>  <span class="fu">runif</span>(<span class="fu">length</span>(molecules) <span class="sc">*</span> <span class="fu">length</span>(targets), <span class="at">min =</span> <span class="sc">-</span><span class="fl">9.5</span>, <span class="at">max =</span> <span class="sc">-</span><span class="fl">4.5</span>),</span>
+<span id="cb203-10"><a href="other-resources.html#cb203-10" tabindex="-1"></a>  <span class="at">nrow =</span> <span class="fu">length</span>(targets),</span>
+<span id="cb203-11"><a href="other-resources.html#cb203-11" tabindex="-1"></a>  <span class="at">dimnames =</span> <span class="fu">list</span>(targets, molecules)</span>
+<span id="cb203-12"><a href="other-resources.html#cb203-12" tabindex="-1"></a>)</span>
+<span id="cb203-13"><a href="other-resources.html#cb203-13" tabindex="-1"></a></span>
+<span id="cb203-14"><a href="other-resources.html#cb203-14" tabindex="-1"></a><span class="co"># Dot plot</span></span>
+<span id="cb203-15"><a href="other-resources.html#cb203-15" tabindex="-1"></a><span class="fu">ggdock</span>(dock_matrix, <span class="at">order =</span> <span class="st">&quot;median&quot;</span>, <span class="at">type =</span> <span class="st">&quot;dot&quot;</span>, <span class="at">point_size =</span> <span class="dv">10</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ggdock-demo-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>Also, you can try tile plot with affinity labels:</p>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="other-resources.html#cb204-1" tabindex="-1"></a><span class="fu">ggdock</span>(dock_matrix, <span class="at">order =</span> <span class="st">&quot;median&quot;</span>, <span class="at">type =</span> <span class="st">&quot;tile&quot;</span>, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">label_size =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ggdock-tile-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="to-be-continued" class="section level3 hasAnchor" number="9.2.2">
+<h3><span class="header-section-number">9.2.2</span> To be continued<a href="other-resources.html#to-be-continued" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To be continued in future updates.</p>
+<hr />
+</div>
+</div>
+<div id="references-6" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> References<a href="other-resources.html#references-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Garcia-Alonso L, Holland CH, Ibrahim MM, Turei D, Saez-Rodriguez J. Benchmark and integration of resources for the estimation of human transcription factor activities. <em>Genome Research</em> (2019), 29(8), 1363–1375. doi: <a href="https://doi.org/10.1101/gr.240663.118">10.1101/gr.240663.118</a>.</p></li>
+<li><p>Qi C, He G, Qian K, et al. GutMGene v2.0: an updated comprehensive database for target genes of gut microbes and microbial metabolites. <em>Nucleic Acids Research</em> (2025), 53(D1), D783–D788. doi: <a href="https://doi.org/10.1093/nar/gkae1002">10.1093/nar/gkae1002</a>.</p></li>
+</ol>
+<hr />
+</div>
+<div id="session-information-7" class="section level2 hasAnchor" number="9.4">
+<h2><span class="header-section-number">9.4</span> Session information<a href="other-resources.html#session-information-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="other-resources.html#cb205-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<pre><code>#&gt; R version 4.5.0 (2025-04-11)
+#&gt; Platform: aarch64-apple-darwin20
+#&gt; Running under: macOS 26.2
+#&gt; 
+#&gt; Matrix products: default
+#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+#&gt; 
+#&gt; locale:
+#&gt; [1] zh_CN.UTF-8/zh_CN.UTF-8/zh_CN.UTF-8/C/zh_CN.UTF-8/zh_CN.UTF-8
+#&gt; 
+#&gt; time zone: Asia/Shanghai
+#&gt; tzcode source: internal
+#&gt; 
+#&gt; attached base packages:
+#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+#&gt; [8] base     
+#&gt; 
+#&gt; other attached packages:
+#&gt;  [1] caret_7.0-1            lattice_0.22-7         org.Hs.eg.db_3.21.0   
+#&gt;  [4] AnnotationDbi_1.70.0   IRanges_2.42.0         S4Vectors_0.46.0      
+#&gt;  [7] Biobase_2.68.0         BiocGenerics_0.54.0    generics_0.1.4        
+#&gt; [10] clusterProfiler_4.16.0 aplot_0.2.9            ggrepel_0.9.7         
+#&gt; [13] ggtangle_0.0.7         igraph_2.2.2           ggplot2_4.0.2         
+#&gt; [16] dplyr_1.2.0            aplotExtra_0.0.4       ivolcano_0.0.5        
+#&gt; [19] enrichplot_1.28.4      TCMDATA_0.0.0.9000     testthat_3.2.3        
+#&gt; 
+#&gt; loaded via a namespace (and not attached):
+#&gt;   [1] fs_1.6.7                matrixStats_1.5.0       devtools_2.4.5         
+#&gt;   [4] lubridate_1.9.4         httr_1.4.7              RColorBrewer_1.1-3     
+#&gt;   [7] doParallel_1.0.17       profvis_0.4.0           tools_4.5.0            
+#&gt;  [10] utf8_1.2.6              R6_2.6.1                lazyeval_0.2.2         
+#&gt;  [13] GetoptLong_1.0.5        urlchecker_1.0.1        withr_3.0.2            
+#&gt;  [16] gridExtra_2.3           cli_3.6.5               prismatic_1.1.2        
+#&gt;  [19] labeling_0.4.3          sass_0.4.10             S7_0.2.1               
+#&gt;  [22] randomForest_4.7-1.2    proxy_0.4-27            ggridges_0.5.7         
+#&gt;  [25] systemfonts_1.3.1       yulab.utils_0.2.4       gson_0.1.0             
+#&gt;  [28] DOSE_4.2.0              R.utils_2.13.0          parallelly_1.45.1      
+#&gt;  [31] sessioninfo_1.2.3       rstudioapi_0.18.0       RSQLite_2.4.2          
+#&gt;  [34] gridGraphics_0.5-1      shape_1.4.6.1           GO.db_3.21.0           
+#&gt;  [37] Matrix_1.7-3            R.methodsS3_1.8.2       lifecycle_1.0.5        
+#&gt;  [40] yaml_2.3.10             recipes_1.3.1           qvalue_2.40.0          
+#&gt;  [43] paletteer_1.7.0         grid_4.5.0              blob_1.2.4             
+#&gt;  [46] promises_1.3.3          crayon_1.5.3            miniUI_0.1.2           
+#&gt;  [49] cowplot_1.2.0           KEGGREST_1.48.1         pillar_1.11.1          
+#&gt;  [52] knitr_1.50              ComplexHeatmap_2.24.1   fgsea_1.34.2           
+#&gt;  [55] rjson_0.2.23            xgboost_3.2.0.1         future.apply_1.20.0    
+#&gt;  [58] codetools_0.2-20        fastmatch_1.1-6         glue_1.8.0             
+#&gt;  [61] ggiraph_0.9.2           ggvenn_0.1.10           ggfun_0.2.0            
+#&gt;  [64] fontLiberation_0.1.0    data.table_1.18.0       remotes_2.5.0          
+#&gt;  [67] vctrs_0.7.1             png_0.1-8               treeio_1.32.0          
+#&gt;  [70] gtable_0.3.6            kernlab_0.9-33          rematch2_2.1.2         
+#&gt;  [73] cachem_1.1.0            gower_1.0.2             xfun_0.54              
+#&gt;  [76] mime_0.13               prodlim_2025.04.28      survival_3.8-3         
+#&gt;  [79] timeDate_4051.111       iterators_1.0.14        hardhat_1.4.2          
+#&gt;  [82] maftools_2.24.0         lava_1.8.2              ellipsis_0.3.2         
+#&gt;  [85] ipred_0.9-15            nlme_3.1-168            ggtree_3.16.3          
+#&gt;  [88] usethis_3.1.0           bit64_4.6.0-1           fontquiver_0.2.1       
+#&gt;  [91] GenomeInfoDb_1.44.1     rprojroot_2.1.0         bslib_0.9.0            
+#&gt;  [94] rpart_4.1.24            colorspace_2.1-1        DBI_1.2.3              
+#&gt;  [97] nnet_7.3-20             DNAcopy_1.82.0          tidyselect_1.2.1       
+#&gt; [100] bit_4.6.0               compiler_4.5.0          glmnet_4.1-10          
+#&gt; [103] desc_1.4.3              fontBitstreamVera_0.1.1 bookdown_0.46          
+#&gt; [106] scales_1.4.0            rappdirs_0.3.4          stringr_1.6.0          
+#&gt; [109] digest_0.6.39           rmarkdown_2.29          XVector_0.48.0         
+#&gt; [112] htmltools_0.5.8.1       pkgconfig_2.0.3         fastmap_1.2.0          
+#&gt; [115] ggthemes_5.1.0          rlang_1.1.7             GlobalOptions_0.1.2    
+#&gt; [118] htmlwidgets_1.6.4       UCSC.utils_1.4.0        shiny_1.11.1           
+#&gt; [121] farver_2.1.2            jquerylib_0.1.4         jsonlite_2.0.0         
+#&gt; [124] BiocParallel_1.42.1     GOSemSim_2.34.0         ModelMetrics_1.2.2.2   
+#&gt; [127] R.oo_1.27.1             magrittr_2.0.4          GenomeInfoDbData_1.2.14
+#&gt; [130] ggplotify_0.1.3         patchwork_1.3.2         Rcpp_1.1.1             
+#&gt; [133] ape_5.8-1               gdtools_0.4.4           stringi_1.8.7          
+#&gt; [136] pROC_1.19.0.1           ggstar_1.0.4            ggalluvial_0.12.5      
+#&gt; [139] brio_1.1.5              MASS_7.3-65             plyr_1.8.9             
+#&gt; [142] pkgbuild_1.4.8          parallel_4.5.0          listenv_0.9.1          
+#&gt; [145] forcats_1.0.1           Biostrings_2.76.0       splines_4.5.0          
+#&gt; [148] circlize_0.4.16         Boruta_9.0.0            ranger_0.17.0          
+#&gt; [151] reshape2_1.4.4          pkgload_1.4.0           evaluate_1.0.4         
+#&gt; [154] foreach_1.5.2           httpuv_1.6.16           tidyr_1.3.2            
+#&gt; [157] purrr_1.2.1             future_1.67.0           clue_0.3-66            
+#&gt; [160] xtable_1.8-4            e1071_1.7-16            tidytree_0.4.6         
+#&gt; [163] later_1.4.2             viridisLite_0.4.3       class_7.3-23           
+#&gt; [166] tibble_3.3.1            memoise_2.0.1           cluster_2.1.8.1        
+#&gt; [169] timechange_0.3.0        globals_0.18.0</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ml-analysis.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": true,
+    "facebook": false,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

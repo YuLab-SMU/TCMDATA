@@ -775,6 +775,9 @@ ml_xgboost <- function(ml_data,
     best_iter <- if (!is.na(metric_col)) which.max(cv_log_tmp[[metric_col]])
                  else nrounds
   }
+  ## Final safety guard — which.max() may return integer(0) on all-NaN columns
+  if (length(best_iter) == 0L || !is.finite(best_iter) || best_iter <= 0L)
+    best_iter <- nrounds
   cv_log <- as.data.frame(cv_res$evaluation_log)
 
   ## Train final model

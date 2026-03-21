@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 TCM network construction | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</title>
+  <meta name="description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 TCM network construction | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="github-repo" content="YuLab-SMU/TCMDATA" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 TCM network construction | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  
+  <meta name="twitter:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  
+
+<meta name="author" content="Yulab-SMU" />
+
+
+<meta name="date" content="2026-03-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="target-retrieval.html"/>
+<link rel="next" href="enrichment.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/ggiraphjs-0.9.2/girafe.css" rel="stylesheet" />
+<script src="libs/ggiraphjs-0.9.2/girafe.js"></script>
+<script src="libs/girafe-binding-0.9.2/girafe.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">TCMDATA User Guide</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="load-data.html"><a href="load-data.html"><i class="fa fa-check"></i><b>1</b> Load TCM Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="load-data.html"><a href="load-data.html#search-by-herb-name"><i class="fa fa-check"></i><b>1.1</b> Search by herb name</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="load-data.html"><a href="load-data.html#using-pinyin-format"><i class="fa fa-check"></i><b>1.1.1</b> Using Pinyin format</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="load-data.html"><a href="load-data.html#search-by-target-gene"><i class="fa fa-check"></i><b>1.2</b> Search by target gene</a></li>
+<li class="chapter" data-level="1.3" data-path="load-data.html"><a href="load-data.html#session-information"><i class="fa fa-check"></i><b>1.3</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="pre-analysis.html"><a href="pre-analysis.html"><i class="fa fa-check"></i><b>2</b> Pre-analysis</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#pubmed-literature-mining"><i class="fa fa-check"></i><b>2.1</b> PubMed literature mining</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="pre-analysis.html"><a href="pre-analysis.html#visualization"><i class="fa fa-check"></i><b>2.1.1</b> Visualization</a></li>
+<li class="chapter" data-level="2.1.2" data-path="pre-analysis.html"><a href="pre-analysis.html#exporting-results"><i class="fa fa-check"></i><b>2.1.2</b> Exporting results</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="pre-analysis.html"><a href="pre-analysis.html#herb-ora"><i class="fa fa-check"></i><b>2.2</b> Herb enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#example-diabetic-nephropathy"><i class="fa fa-check"></i><b>2.2.1</b> Example: Diabetic Nephropathy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="pre-analysis.html"><a href="pre-analysis.html#references"><i class="fa fa-check"></i><b>2.3</b> References</a></li>
+<li class="chapter" data-level="2.4" data-path="pre-analysis.html"><a href="pre-analysis.html#session-information-1"><i class="fa fa-check"></i><b>2.4</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="molecule-detection.html"><a href="molecule-detection.html"><i class="fa fa-check"></i><b>3</b> Molecule annotation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="molecule-detection.html"><a href="molecule-detection.html#resolving-compound-identifiers"><i class="fa fa-check"></i><b>3.1</b> Resolving compound identifiers</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="molecule-detection.html"><a href="molecule-detection.html#using-resolve_cid"><i class="fa fa-check"></i><b>3.1.1</b> Using <code>resolve_cid()</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="molecule-detection.html"><a href="molecule-detection.html#using-getcid"><i class="fa fa-check"></i><b>3.1.2</b> Using <code>getcid()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="molecule-detection.html"><a href="molecule-detection.html#retrieving-chemical-properties"><i class="fa fa-check"></i><b>3.2</b> Retrieving chemical properties</a></li>
+<li class="chapter" data-level="3.3" data-path="molecule-detection.html"><a href="molecule-detection.html#similarity-searching"><i class="fa fa-check"></i><b>3.3</b> Similarity searching</a></li>
+<li class="chapter" data-level="3.4" data-path="molecule-detection.html"><a href="molecule-detection.html#references-1"><i class="fa fa-check"></i><b>3.4</b> References</a></li>
+<li class="chapter" data-level="3.5" data-path="molecule-detection.html"><a href="molecule-detection.html#session-information-2"><i class="fa fa-check"></i><b>3.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="target-retrieval.html"><a href="target-retrieval.html"><i class="fa fa-check"></i><b>4</b> Target retrieval and DEG analysis</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="target-retrieval.html"><a href="target-retrieval.html#disease-db"><i class="fa fa-check"></i><b>4.1</b> Disease target databases</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="target-retrieval.html"><a href="target-retrieval.html#genecards"><i class="fa fa-check"></i><b>4.1.1</b> GeneCards</a></li>
+<li class="chapter" data-level="4.1.2" data-path="target-retrieval.html"><a href="target-retrieval.html#open-targets-platform"><i class="fa fa-check"></i><b>4.1.2</b> Open Targets Platform</a></li>
+<li class="chapter" data-level="4.1.3" data-path="target-retrieval.html"><a href="target-retrieval.html#ctd-comparative-toxicogenomics-database"><i class="fa fa-check"></i><b>4.1.3</b> CTD (Comparative Toxicogenomics Database)</a></li>
+<li class="chapter" data-level="4.1.4" data-path="target-retrieval.html"><a href="target-retrieval.html#other-databases"><i class="fa fa-check"></i><b>4.1.4</b> Other databases</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano"><i class="fa fa-check"></i><b>4.2</b> DEG visualization</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="target-retrieval.html"><a href="target-retrieval.html#load-and-inspect-data"><i class="fa fa-check"></i><b>4.2.1</b> Load and inspect data</a></li>
+<li class="chapter" data-level="4.2.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano-plot-with-ivolcano"><i class="fa fa-check"></i><b>4.2.2</b> Volcano plot with <code>ivolcano</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="target-retrieval.html"><a href="target-retrieval.html#intersection"><i class="fa fa-check"></i><b>4.3</b> Intersection analysis</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="target-retrieval.html"><a href="target-retrieval.html#prepare-gene-sets"><i class="fa fa-check"></i><b>4.3.1</b> Prepare gene sets</a></li>
+<li class="chapter" data-level="4.3.2" data-path="target-retrieval.html"><a href="target-retrieval.html#venn-diagram"><i class="fa fa-check"></i><b>4.3.2</b> Venn diagram</a></li>
+<li class="chapter" data-level="4.3.3" data-path="target-retrieval.html"><a href="target-retrieval.html#upset-plot"><i class="fa fa-check"></i><b>4.3.3</b> UpSet plot</a></li>
+<li class="chapter" data-level="4.3.4" data-path="target-retrieval.html"><a href="target-retrieval.html#extract-intersection-results"><i class="fa fa-check"></i><b>4.3.4</b> Extract intersection results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="target-retrieval.html"><a href="target-retrieval.html#references-2"><i class="fa fa-check"></i><b>4.4</b> References</a></li>
+<li class="chapter" data-level="4.5" data-path="target-retrieval.html"><a href="target-retrieval.html#session-information-3"><i class="fa fa-check"></i><b>4.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="network-construction.html"><a href="network-construction.html"><i class="fa fa-check"></i><b>5</b> TCM network construction</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="network-construction.html"><a href="network-construction.html#preparing-the-data"><i class="fa fa-check"></i><b>5.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="5.2" data-path="network-construction.html"><a href="network-construction.html#sankey-diagram-visualization"><i class="fa fa-check"></i><b>5.2</b> Sankey diagram visualization</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="network-construction.html"><a href="network-construction.html#basic-usage"><i class="fa fa-check"></i><b>5.2.1</b> Basic usage</a></li>
+<li class="chapter" data-level="5.2.2" data-path="network-construction.html"><a href="network-construction.html#customizing-colors-and-appearance"><i class="fa fa-check"></i><b>5.2.2</b> Customizing colors and appearance</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="network-construction.html"><a href="network-construction.html#network-graph-with-ggtangle"><i class="fa fa-check"></i><b>5.3</b> Network graph with <code>ggtangle</code></a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="network-construction.html"><a href="network-construction.html#building-the-graph"><i class="fa fa-check"></i><b>5.3.1</b> Building the graph</a></li>
+<li class="chapter" data-level="5.3.2" data-path="network-construction.html"><a href="network-construction.html#basic-network-visualization"><i class="fa fa-check"></i><b>5.3.2</b> Basic network visualization</a></li>
+<li class="chapter" data-level="5.3.3" data-path="network-construction.html"><a href="network-construction.html#adding-node-labels"><i class="fa fa-check"></i><b>5.3.3</b> Adding node labels</a></li>
+<li class="chapter" data-level="5.3.4" data-path="network-construction.html"><a href="network-construction.html#alternative-layouts"><i class="fa fa-check"></i><b>5.3.4</b> Alternative layouts</a></li>
+<li class="chapter" data-level="5.3.5" data-path="network-construction.html"><a href="network-construction.html#enriching-the-network-with-external-data"><i class="fa fa-check"></i><b>5.3.5</b> Enriching the network with external data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="network-construction.html"><a href="network-construction.html#references-3"><i class="fa fa-check"></i><b>5.4</b> References</a></li>
+<li class="chapter" data-level="5.5" data-path="network-construction.html"><a href="network-construction.html#session-information-4"><i class="fa fa-check"></i><b>5.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="enrichment.html"><a href="enrichment.html"><i class="fa fa-check"></i><b>6</b> Enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="enrichment.html"><a href="enrichment.html#over-representation-analysis-ora"><i class="fa fa-check"></i><b>6.1</b> Over Representation Analysis (ORA)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="enrichment.html"><a href="enrichment.html#kegg-enrichment-analysis"><i class="fa fa-check"></i><b>6.1.1</b> KEGG enrichment analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="enrichment.html"><a href="enrichment.html#go-enrichment-analysis"><i class="fa fa-check"></i><b>6.2</b> GO enrichment analysis</a></li>
+<li class="chapter" data-level="6.3" data-path="enrichment.html"><a href="enrichment.html#advanced-visualization"><i class="fa fa-check"></i><b>6.3</b> Advanced visualization</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="enrichment.html"><a href="enrichment.html#lollipop-plot"><i class="fa fa-check"></i><b>6.3.1</b> Lollipop plot</a></li>
+<li class="chapter" data-level="6.3.2" data-path="enrichment.html"><a href="enrichment.html#dot-sankey-plot"><i class="fa fa-check"></i><b>6.3.2</b> Dot-sankey plot</a></li>
+<li class="chapter" data-level="6.3.3" data-path="enrichment.html"><a href="enrichment.html#go-bar-plot"><i class="fa fa-check"></i><b>6.3.3</b> GO bar plot</a></li>
+<li class="chapter" data-level="6.3.4" data-path="enrichment.html"><a href="enrichment.html#go-circle-plot"><i class="fa fa-check"></i><b>6.3.4</b> GO circle plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="enrichment.html"><a href="enrichment.html#gene-set-enrichment-analysis-gsea"><i class="fa fa-check"></i><b>6.4</b> Gene Set Enrichment Analysis (GSEA)</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="enrichment.html"><a href="enrichment.html#prepare-ranked-gene-list"><i class="fa fa-check"></i><b>6.4.1</b> Prepare ranked gene list</a></li>
+<li class="chapter" data-level="6.4.2" data-path="enrichment.html"><a href="enrichment.html#kegg-gsea-analysis"><i class="fa fa-check"></i><b>6.4.2</b> KEGG GSEA analysis</a></li>
+<li class="chapter" data-level="6.4.3" data-path="enrichment.html"><a href="enrichment.html#go-gsea-analysis"><i class="fa fa-check"></i><b>6.4.3</b> GO GSEA analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="enrichment.html"><a href="enrichment.html#session-information-5"><i class="fa fa-check"></i><b>6.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ppi-analysis.html"><a href="ppi-analysis.html"><i class="fa fa-check"></i><b>7</b> PPI network analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#retrieving-ppi-data-from-string"><i class="fa fa-check"></i><b>7.1</b> Retrieving PPI data from STRING</a></li>
+<li class="chapter" data-level="7.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#network-filtering"><i class="fa fa-check"></i><b>7.2</b> Network filtering</a></li>
+<li class="chapter" data-level="7.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#topology"><i class="fa fa-check"></i><b>7.3</b> Topological metrics</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#integrated-ranking"><i class="fa fa-check"></i><b>7.3.1</b> Integrated ranking</a></li>
+<li class="chapter" data-level="7.3.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#radar-plot-of-topological-metrics"><i class="fa fa-check"></i><b>7.3.2</b> Radar plot of topological metrics</a></li>
+<li class="chapter" data-level="7.3.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#heatmap-of-topological-metrics"><i class="fa fa-check"></i><b>7.3.3</b> Heatmap of topological metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#clustering"><i class="fa fa-check"></i><b>7.4</b> Community detection</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#louvain-modularity-optimization"><i class="fa fa-check"></i><b>7.4.1</b> Louvain modularity optimization</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcode-molecular-complex-detection"><i class="fa fa-check"></i><b>7.4.2</b> MCODE (Molecular Complex Detection)</a></li>
+<li class="chapter" data-level="7.4.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcl-markov-clustering"><i class="fa fa-check"></i><b>7.4.3</b> MCL (Markov Clustering)</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="ppi-analysis.html"><a href="ppi-analysis.html#robustness"><i class="fa fa-check"></i><b>7.5</b> PPI network robustness analysis</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#algorithm-overview"><i class="fa fa-check"></i><b>7.5.1</b> Algorithm overview</a></li>
+<li class="chapter" data-level="7.5.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#example-knocking-out-il6"><i class="fa fa-check"></i><b>7.5.2</b> Example: knocking out IL6</a></li>
+<li class="chapter" data-level="7.5.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#visualization-before-vs.-after-knockout"><i class="fa fa-check"></i><b>7.5.3</b> Visualization: before vs. after knockout</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="ppi-analysis.html"><a href="ppi-analysis.html#ppi-vis"><i class="fa fa-check"></i><b>7.6</b> PPI network visualization</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#basic-network-with-topological-mapping"><i class="fa fa-check"></i><b>7.6.1</b> Basic network with topological mapping</a></li>
+<li class="chapter" data-level="7.6.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#community-colored-network"><i class="fa fa-check"></i><b>7.6.2</b> Community-colored network</a></li>
+<li class="chapter" data-level="7.6.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#hub-centric-star-layout"><i class="fa fa-check"></i><b>7.6.3</b> Hub-centric star layout</a></li>
+<li class="chapter" data-level="7.6.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#layout-algorithm-comparison"><i class="fa fa-check"></i><b>7.6.4</b> Layout algorithm comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="ppi-analysis.html"><a href="ppi-analysis.html#references-4"><i class="fa fa-check"></i><b>7.7</b> References</a></li>
+<li class="chapter" data-level="7.8" data-path="ppi-analysis.html"><a href="ppi-analysis.html#session-information-6"><i class="fa fa-check"></i><b>7.8</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ml-analysis.html"><a href="ml-analysis.html"><i class="fa fa-check"></i><b>8</b> Machine learning–based key target screening</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ml-analysis.html"><a href="ml-analysis.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-data"><i class="fa fa-check"></i><b>8.1.1</b> Example dataset</a></li>
+<li class="chapter" data-level="8.1.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-prepare"><i class="fa fa-check"></i><b>8.1.2</b> Data preparation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-a"><i class="fa fa-check"></i><b>8.2</b> Mode A: full cross-validation</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-lasso"><i class="fa fa-check"></i><b>8.2.1</b> LASSO regression</a></li>
+<li class="chapter" data-level="8.2.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-rf"><i class="fa fa-check"></i><b>8.2.2</b> Random Forest and Boruta</a></li>
+<li class="chapter" data-level="8.2.3" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-svm-rfe"><i class="fa fa-check"></i><b>8.2.3</b> SVM-RFE</a></li>
+<li class="chapter" data-level="8.2.4" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-xgboost"><i class="fa fa-check"></i><b>8.2.4</b> XGBoost</a></li>
+<li class="chapter" data-level="8.2.5" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-consensus"><i class="fa fa-check"></i><b>8.2.5</b> Consensus analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-b"><i class="fa fa-check"></i><b>8.3</b> Mode B: internal train/test split</a></li>
+<li class="chapter" data-level="8.4" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-c"><i class="fa fa-check"></i><b>8.4</b> Mode C: external validation</a></li>
+<li class="chapter" data-level="8.5" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-select"><i class="fa fa-check"></i><b>8.5</b> Post-hoc feature trimming</a></li>
+<li class="chapter" data-level="8.6" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-manual-list"><i class="fa fa-check"></i><b>8.6</b> Assembling models manually</a></li>
+<li class="chapter" data-level="8.7" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-gene-diag"><i class="fa fa-check"></i><b>8.7</b> Single-gene diagnostic analysis</a>
+<ul>
+<li class="chapter" data-level="8.7.1" data-path="ml-analysis.html"><a href="ml-analysis.html#auc-summary-table"><i class="fa fa-check"></i><b>8.7.1</b> AUC summary table</a></li>
+<li class="chapter" data-level="8.7.2" data-path="ml-analysis.html"><a href="ml-analysis.html#single-gene-roc-curves"><i class="fa fa-check"></i><b>8.7.2</b> Single-gene ROC curves</a></li>
+<li class="chapter" data-level="8.7.3" data-path="ml-analysis.html"><a href="ml-analysis.html#two-group-expression-boxplot"><i class="fa fa-check"></i><b>8.7.3</b> Two-group expression boxplot</a></li>
+</ul></li>
+<li class="chapter" data-level="8.8" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-summary"><i class="fa fa-check"></i><b>8.8</b> Summary</a></li>
+<li class="chapter" data-level="8.9" data-path="ml-analysis.html"><a href="ml-analysis.html#references-5"><i class="fa fa-check"></i><b>8.9</b> References</a></li>
+<li class="chapter" data-level="8.10" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-session-info"><i class="fa fa-check"></i><b>8.10</b> Session Information</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>9</b> Other resources</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="other-resources.html"><a href="other-resources.html#additional-databases"><i class="fa fa-check"></i><b>9.1</b> Additional databases</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="other-resources.html"><a href="other-resources.html#tfgene-interactions-dorothea"><i class="fa fa-check"></i><b>9.1.1</b> TF–gene interactions (DoRothEA)</a></li>
+<li class="chapter" data-level="9.1.2" data-path="other-resources.html"><a href="other-resources.html#gut-microbiotahost-interactions-gutmgene"><i class="fa fa-check"></i><b>9.1.2</b> Gut microbiota–host interactions (GutMGene)</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="other-resources.html"><a href="other-resources.html#additional-visualization"><i class="fa fa-check"></i><b>9.2</b> Additional visualization</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="other-resources.html"><a href="other-resources.html#heatmap-for-molecular-docking-results"><i class="fa fa-check"></i><b>9.2.1</b> Heatmap for molecular docking results</a></li>
+<li class="chapter" data-level="9.2.2" data-path="other-resources.html"><a href="other-resources.html#to-be-continued"><i class="fa fa-check"></i><b>9.2.2</b> To be continued</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="other-resources.html"><a href="other-resources.html#references-6"><i class="fa fa-check"></i><b>9.3</b> References</a></li>
+<li class="chapter" data-level="9.4" data-path="other-resources.html"><a href="other-resources.html#session-information-7"><i class="fa fa-check"></i><b>9.4</b> Session information</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="network-construction" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> TCM network construction<a href="network-construction.html#network-construction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>A core objective of network pharmacology is to reveal the multi-component, multi-target therapeutic mechanism of Traditional Chinese Medicine through network visualization. <code>TCMDATA</code> provides two complementary approaches for constructing and visualizing herb–molecule–target relationship networks: <strong>Sankey diagrams</strong> via <code>ggalluvial</code><sup>[1]</sup> for depicting the directional flow of interactions, and <strong>force-directed network graphs</strong> via <code>ggtangle</code><sup>[2]</sup> for revealing topological structure and hub nodes.</p>
+<hr />
+<div id="preparing-the-data" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Preparing the data<a href="network-construction.html#preparing-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>All network visualizations start from the herb–molecule–target data frame returned by <code>search_herb()</code> or <code>search_target()</code>.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="network-construction.html#cb67-1" tabindex="-1"></a><span class="fu">library</span>(TCMDATA)</span>
+<span id="cb67-2"><a href="network-construction.html#cb67-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb67-3"><a href="network-construction.html#cb67-3" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="network-construction.html#cb67-4" tabindex="-1"></a><span class="co"># Query herbs and their molecular targets</span></span>
+<span id="cb67-5"><a href="network-construction.html#cb67-5" tabindex="-1"></a>herbs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;灵芝&quot;</span>, <span class="st">&quot;黄芪&quot;</span>)</span>
+<span id="cb67-6"><a href="network-construction.html#cb67-6" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">search_herb</span>(<span class="at">herb =</span> herbs, <span class="at">type =</span> <span class="st">&quot;Herb_cn_name&quot;</span>)</span>
+<span id="cb67-7"><a href="network-construction.html#cb67-7" tabindex="-1"></a></span>
+<span id="cb67-8"><a href="network-construction.html#cb67-8" tabindex="-1"></a>df <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code></pre></div>
+<pre><code>#&gt;       herb                  molecule target
+#&gt; 1  lingzhi 3,4-Dihydroxybenzoic acid    GAA
+#&gt; 2  lingzhi 3,4-Dihydroxybenzoic acid   POLB
+#&gt; 3  lingzhi 3,4-Dihydroxybenzoic acid    APP
+#&gt; 4  lingzhi 3,4-Dihydroxybenzoic acid    CA1
+#&gt; 5  lingzhi 3,4-Dihydroxybenzoic acid   CA12
+#&gt; 6  lingzhi 3,4-Dihydroxybenzoic acid   CA14
+#&gt; 7  lingzhi 3,4-Dihydroxybenzoic acid    CA2
+#&gt; 8  lingzhi 3,4-Dihydroxybenzoic acid    CA4
+#&gt; 9  lingzhi 3,4-Dihydroxybenzoic acid    CA6
+#&gt; 10 lingzhi 3,4-Dihydroxybenzoic acid    CA7</code></pre>
+<p>The returned data frame contains three core columns: <code>herb</code>, <code>molecule</code>, and <code>target</code>, representing the tripartite relationship.</p>
+<hr />
+</div>
+<div id="sankey-diagram-visualization" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Sankey diagram visualization<a href="network-construction.html#sankey-diagram-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The Sankey diagram displays herb → molecule → target flows, with band width proportional to shared frequency. <code>tcm_sankey()</code> is powered by <code>ggalluvial</code><sup>[1]</sup> and supports rich color customization.</p>
+<div id="basic-usage" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Basic usage<a href="network-construction.html#basic-usage" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="network-construction.html#cb69-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb69-2"><a href="network-construction.html#cb69-2" tabindex="-1"></a></span>
+<span id="cb69-3"><a href="network-construction.html#cb69-3" tabindex="-1"></a><span class="do">## prepare input data</span></span>
+<span id="cb69-4"><a href="network-construction.html#cb69-4" tabindex="-1"></a>top_mol <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb69-5"><a href="network-construction.html#cb69-5" tabindex="-1"></a>  <span class="fu">count</span>(molecule, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb69-6"><a href="network-construction.html#cb69-6" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb69-7"><a href="network-construction.html#cb69-7" tabindex="-1"></a>  <span class="fu">pull</span>(molecule)</span>
+<span id="cb69-8"><a href="network-construction.html#cb69-8" tabindex="-1"></a></span>
+<span id="cb69-9"><a href="network-construction.html#cb69-9" tabindex="-1"></a>df_sub <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(molecule <span class="sc">%in%</span> top_mol)</span>
+<span id="cb69-10"><a href="network-construction.html#cb69-10" tabindex="-1"></a></span>
+<span id="cb69-11"><a href="network-construction.html#cb69-11" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb69-12"><a href="network-construction.html#cb69-12" tabindex="-1"></a>sampled_targets <span class="ot">&lt;-</span> df_sub <span class="sc">%&gt;%</span></span>
+<span id="cb69-13"><a href="network-construction.html#cb69-13" tabindex="-1"></a>  <span class="fu">distinct</span>(target) <span class="sc">%&gt;%</span></span>
+<span id="cb69-14"><a href="network-construction.html#cb69-14" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="fu">min</span>(<span class="dv">30</span>, <span class="fu">n</span>())) <span class="sc">%&gt;%</span></span>
+<span id="cb69-15"><a href="network-construction.html#cb69-15" tabindex="-1"></a>  <span class="fu">pull</span>(target)</span>
+<span id="cb69-16"><a href="network-construction.html#cb69-16" tabindex="-1"></a></span>
+<span id="cb69-17"><a href="network-construction.html#cb69-17" tabindex="-1"></a>df_sankey <span class="ot">&lt;-</span> df_sub <span class="sc">%&gt;%</span> <span class="fu">filter</span>(target <span class="sc">%in%</span> sampled_targets)</span>
+<span id="cb69-18"><a href="network-construction.html#cb69-18" tabindex="-1"></a></span>
+<span id="cb69-19"><a href="network-construction.html#cb69-19" tabindex="-1"></a>p_sankey <span class="ot">&lt;-</span> <span class="fu">tcm_sankey</span>(df_sankey)</span>
+<span id="cb69-20"><a href="network-construction.html#cb69-20" tabindex="-1"></a><span class="fu">print</span>(p_sankey)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/sankey-basic-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Each vertical band represents a stratum (herb, molecule, or target), and the colored flows trace the associations between them. Wider bands indicate higher interaction frequency.</p>
+</div>
+<div id="customizing-colors-and-appearance" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Customizing colors and appearance<a href="network-construction.html#customizing-colors-and-appearance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>tcm_sankey()</code> offers fine-grained control over color palettes, font style, flow transparency, and curvature. Below is an example with a publication-ready color scheme:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="network-construction.html#cb70-1" tabindex="-1"></a>p_sankey2 <span class="ot">&lt;-</span> <span class="fu">tcm_sankey</span>(</span>
+<span id="cb70-2"><a href="network-construction.html#cb70-2" tabindex="-1"></a>  df_sankey,</span>
+<span id="cb70-3"><a href="network-construction.html#cb70-3" tabindex="-1"></a>  <span class="at">herb_cols   =</span> <span class="fu">c</span>(<span class="st">&quot;#C44E52&quot;</span>, <span class="st">&quot;#4C72B0&quot;</span>),</span>
+<span id="cb70-4"><a href="network-construction.html#cb70-4" tabindex="-1"></a>  <span class="at">mol_cols    =</span> <span class="fu">c</span>(<span class="st">&quot;#55A868&quot;</span>, <span class="st">&quot;#DD8452&quot;</span>, <span class="st">&quot;#8172B3&quot;</span>, <span class="st">&quot;#C44E52&quot;</span>,</span>
+<span id="cb70-5"><a href="network-construction.html#cb70-5" tabindex="-1"></a>                  <span class="st">&quot;#DA8BC3&quot;</span>),</span>
+<span id="cb70-6"><a href="network-construction.html#cb70-6" tabindex="-1"></a>  <span class="at">target_cols =</span> <span class="fu">c</span>(<span class="st">&quot;#1A7A6D&quot;</span>, <span class="st">&quot;#BF6D2A&quot;</span>, <span class="st">&quot;#6A5ACD&quot;</span>, <span class="st">&quot;#C04779&quot;</span>,</span>
+<span id="cb70-7"><a href="network-construction.html#cb70-7" tabindex="-1"></a>                  <span class="st">&quot;#5B8C2A&quot;</span>, <span class="st">&quot;#D4A017&quot;</span>, <span class="st">&quot;#8B6914&quot;</span>, <span class="st">&quot;#607D8B&quot;</span>),</span>
+<span id="cb70-8"><a href="network-construction.html#cb70-8" tabindex="-1"></a>  <span class="at">font_size   =</span> <span class="fl">3.5</span>,</span>
+<span id="cb70-9"><a href="network-construction.html#cb70-9" tabindex="-1"></a>  <span class="at">alpha       =</span> <span class="fl">0.4</span>,</span>
+<span id="cb70-10"><a href="network-construction.html#cb70-10" tabindex="-1"></a>  <span class="at">knot.pos    =</span> <span class="fl">0.25</span></span>
+<span id="cb70-11"><a href="network-construction.html#cb70-11" tabindex="-1"></a>)</span>
+<span id="cb70-12"><a href="network-construction.html#cb70-12" tabindex="-1"></a><span class="fu">print</span>(p_sankey2)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/sankey-custom-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="network-graph-with-ggtangle" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Network graph with <code>ggtangle</code><a href="network-construction.html#network-graph-with-ggtangle" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>While the Sankey diagram excels at showing flows, a force-directed network layout can reveal topological structure, hub nodes, and community patterns. <code>prepare_herb_graph()</code> builds an <code>igraph</code> object with pre-computed node metrics, and <code>ggtangle</code><sup>[2]</sup> renders it as a <code>ggplot</code>-based network.</p>
+<div id="building-the-graph" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Building the graph<a href="network-construction.html#building-the-graph" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="network-construction.html#cb71-1" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb71-2"><a href="network-construction.html#cb71-2" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="network-construction.html#cb71-3" tabindex="-1"></a><span class="co"># Build the network (using a moderate subset for clarity)</span></span>
+<span id="cb71-4"><a href="network-construction.html#cb71-4" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">prepare_herb_graph</span>(df, <span class="at">n =</span> <span class="dv">60</span>, <span class="at">compute_metrics =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb71-5"><a href="network-construction.html#cb71-5" tabindex="-1"></a></span>
+<span id="cb71-6"><a href="network-construction.html#cb71-6" tabindex="-1"></a><span class="co"># Inspect graph summary</span></span>
+<span id="cb71-7"><a href="network-construction.html#cb71-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Nodes:&quot;</span>, <span class="fu">vcount</span>(g), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Nodes: 55</code></pre>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="network-construction.html#cb73-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Edges:&quot;</span>, <span class="fu">ecount</span>(g), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Edges: 120</code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="network-construction.html#cb75-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Node types:&quot;</span>, <span class="fu">paste</span>(<span class="fu">unique</span>(<span class="fu">V</span>(g)<span class="sc">$</span>type), <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Node types: Herb, Molecule, Target</code></pre>
+<p><code>prepare_herb_graph()</code> automatically:</p>
+<ul>
+<li>Creates directed edges: Herb → Molecule → Target</li>
+<li>Computes per-node metrics: <code>degree</code>, <code>centrality</code> (eigenvector), <code>betweenness</code>, <code>closeness</code>, <code>pagerank</code></li>
+<li>Assigns <code>type</code> labels (<code>"Herb"</code>, <code>"Molecule"</code>, <code>"Target"</code>) to each node</li>
+</ul>
+</div>
+<div id="basic-network-visualization" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> Basic network visualization<a href="network-construction.html#basic-network-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>ggtangle</code><sup>[2]</sup> extends <code>ggplot2</code> to natively support <code>igraph</code> objects. You can use familiar aesthetics (<code>color</code>, <code>size</code>, <code>shape</code>) and layers (<code>geom_point</code>, <code>geom_text_repel</code>).</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="network-construction.html#cb77-1" tabindex="-1"></a><span class="fu">library</span>(ggtangle)</span>
+<span id="cb77-2"><a href="network-construction.html#cb77-2" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb77-3"><a href="network-construction.html#cb77-3" tabindex="-1"></a></span>
+<span id="cb77-4"><a href="network-construction.html#cb77-4" tabindex="-1"></a><span class="co"># Define a publication-quality color palette</span></span>
+<span id="cb77-5"><a href="network-construction.html#cb77-5" tabindex="-1"></a>node_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb77-6"><a href="network-construction.html#cb77-6" tabindex="-1"></a>  <span class="st">&quot;Herb&quot;</span>     <span class="ot">=</span> <span class="st">&quot;#C44E52&quot;</span>,</span>
+<span id="cb77-7"><a href="network-construction.html#cb77-7" tabindex="-1"></a>  <span class="st">&quot;Molecule&quot;</span> <span class="ot">=</span> <span class="st">&quot;#4C72B0&quot;</span>,</span>
+<span id="cb77-8"><a href="network-construction.html#cb77-8" tabindex="-1"></a>  <span class="st">&quot;Target&quot;</span>   <span class="ot">=</span> <span class="st">&quot;#55A868&quot;</span></span>
+<span id="cb77-9"><a href="network-construction.html#cb77-9" tabindex="-1"></a>)</span>
+<span id="cb77-10"><a href="network-construction.html#cb77-10" tabindex="-1"></a></span>
+<span id="cb77-11"><a href="network-construction.html#cb77-11" tabindex="-1"></a><span class="co"># Define node shape mapping</span></span>
+<span id="cb77-12"><a href="network-construction.html#cb77-12" tabindex="-1"></a>node_shapes <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb77-13"><a href="network-construction.html#cb77-13" tabindex="-1"></a>  <span class="st">&quot;Herb&quot;</span>     <span class="ot">=</span> <span class="dv">18</span>,   <span class="co"># diamond</span></span>
+<span id="cb77-14"><a href="network-construction.html#cb77-14" tabindex="-1"></a>  <span class="st">&quot;Molecule&quot;</span> <span class="ot">=</span> <span class="dv">16</span>,   <span class="co"># filled circle</span></span>
+<span id="cb77-15"><a href="network-construction.html#cb77-15" tabindex="-1"></a>  <span class="st">&quot;Target&quot;</span>   <span class="ot">=</span> <span class="dv">15</span>    <span class="co"># filled square</span></span>
+<span id="cb77-16"><a href="network-construction.html#cb77-16" tabindex="-1"></a>)</span>
+<span id="cb77-17"><a href="network-construction.html#cb77-17" tabindex="-1"></a></span>
+<span id="cb77-18"><a href="network-construction.html#cb77-18" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb77-19"><a href="network-construction.html#cb77-19" tabindex="-1"></a>p_net <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(g, <span class="at">layout =</span> <span class="st">&quot;kk&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-20"><a href="network-construction.html#cb77-20" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.18</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb77-21"><a href="network-construction.html#cb77-21" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> type, <span class="at">size =</span> centrality, <span class="at">shape =</span> type), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb77-22"><a href="network-construction.html#cb77-22" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> node_colors, <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-23"><a href="network-construction.html#cb77-23" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> node_shapes, <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-24"><a href="network-construction.html#cb77-24" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">name =</span> <span class="st">&quot;Centrality&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">9</span>)) <span class="sc">+</span></span>
+<span id="cb77-25"><a href="network-construction.html#cb77-25" tabindex="-1"></a>  <span class="fu">guides</span>(</span>
+<span id="cb77-26"><a href="network-construction.html#cb77-26" tabindex="-1"></a>    <span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">1</span>, <span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">4</span>)),</span>
+<span id="cb77-27"><a href="network-construction.html#cb77-27" tabindex="-1"></a>    <span class="at">shape =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">1</span>),</span>
+<span id="cb77-28"><a href="network-construction.html#cb77-28" tabindex="-1"></a>    <span class="at">size  =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">2</span>)</span>
+<span id="cb77-29"><a href="network-construction.html#cb77-29" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb77-30"><a href="network-construction.html#cb77-30" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb77-31"><a href="network-construction.html#cb77-31" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb77-32"><a href="network-construction.html#cb77-32" tabindex="-1"></a>    <span class="at">legend.position  =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb77-33"><a href="network-construction.html#cb77-33" tabindex="-1"></a>    <span class="at">legend.text      =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb77-34"><a href="network-construction.html#cb77-34" tabindex="-1"></a>    <span class="at">legend.title     =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb77-35"><a href="network-construction.html#cb77-35" tabindex="-1"></a>    <span class="at">plot.margin      =</span> <span class="fu">margin</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb77-36"><a href="network-construction.html#cb77-36" tabindex="-1"></a>  )</span>
+<span id="cb77-37"><a href="network-construction.html#cb77-37" tabindex="-1"></a></span>
+<span id="cb77-38"><a href="network-construction.html#cb77-38" tabindex="-1"></a><span class="fu">print</span>(p_net)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/net-basic-1.png" width="95%" style="display: block; margin: auto;" /></p>
+<p>In this plot:</p>
+<ul>
+<li><strong>Diamond</strong> nodes (<span style="color:#C44E52">■</span>) represent herbs, <strong>circles</strong> (<span style="color:#4C72B0">●</span>) represent molecules, and <strong>squares</strong> (<span style="color:#55A868">■</span>) represent targets.</li>
+<li><strong>Larger nodes</strong> have higher eigenvector centrality, indicating greater topological importance.</li>
+<li>The Kamada-Kawai (<code>"kk"</code>) layout positions strongly connected nodes closer together.</li>
+</ul>
+</div>
+<div id="adding-node-labels" class="section level3 hasAnchor" number="5.3.3">
+<h3><span class="header-section-number">5.3.3</span> Adding node labels<a href="network-construction.html#adding-node-labels" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For networks with many nodes, <code>ggrepel::geom_text_repel()</code> prevents label overlap. Here we label only high-centrality nodes (top 50%):</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="network-construction.html#cb78-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb78-2"><a href="network-construction.html#cb78-2" tabindex="-1"></a></span>
+<span id="cb78-3"><a href="network-construction.html#cb78-3" tabindex="-1"></a><span class="co"># Extract centrality threshold (top 50%)</span></span>
+<span id="cb78-4"><a href="network-construction.html#cb78-4" tabindex="-1"></a>cent_thresh <span class="ot">&lt;-</span> <span class="fu">quantile</span>(<span class="fu">V</span>(g)<span class="sc">$</span>centrality, <span class="fl">0.5</span>)</span>
+<span id="cb78-5"><a href="network-construction.html#cb78-5" tabindex="-1"></a></span>
+<span id="cb78-6"><a href="network-construction.html#cb78-6" tabindex="-1"></a>p_labeled <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(g, <span class="at">layout =</span> <span class="st">&quot;kk&quot;</span>) <span class="sc">+</span></span>
+<span id="cb78-7"><a href="network-construction.html#cb78-7" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="st">&quot;grey55&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb78-8"><a href="network-construction.html#cb78-8" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> type, <span class="at">size =</span> centrality, <span class="at">shape =</span> type), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb78-9"><a href="network-construction.html#cb78-9" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb78-10"><a href="network-construction.html#cb78-10" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">ifelse</span>(centrality <span class="sc">&gt;=</span> cent_thresh, name, <span class="st">&quot;&quot;</span>)),</span>
+<span id="cb78-11"><a href="network-construction.html#cb78-11" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.8</span>, <span class="at">fontface =</span> <span class="st">&quot;italic&quot;</span>,</span>
+<span id="cb78-12"><a href="network-construction.html#cb78-12" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="dv">30</span>, <span class="at">segment.alpha =</span> <span class="fl">0.3</span>,</span>
+<span id="cb78-13"><a href="network-construction.html#cb78-13" tabindex="-1"></a>    <span class="at">segment.size =</span> <span class="fl">0.3</span>, <span class="at">segment.color =</span> <span class="st">&quot;grey50&quot;</span>,</span>
+<span id="cb78-14"><a href="network-construction.html#cb78-14" tabindex="-1"></a>    <span class="at">box.padding =</span> <span class="fl">0.4</span>, <span class="at">point.padding =</span> <span class="fl">0.3</span></span>
+<span id="cb78-15"><a href="network-construction.html#cb78-15" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb78-16"><a href="network-construction.html#cb78-16" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> node_colors, <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span>) <span class="sc">+</span></span>
+<span id="cb78-17"><a href="network-construction.html#cb78-17" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> node_shapes, <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span>) <span class="sc">+</span></span>
+<span id="cb78-18"><a href="network-construction.html#cb78-18" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">name =</span> <span class="st">&quot;Centrality&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb78-19"><a href="network-construction.html#cb78-19" tabindex="-1"></a>  <span class="fu">guides</span>(</span>
+<span id="cb78-20"><a href="network-construction.html#cb78-20" tabindex="-1"></a>    <span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">1</span>, <span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">4</span>)),</span>
+<span id="cb78-21"><a href="network-construction.html#cb78-21" tabindex="-1"></a>    <span class="at">shape =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">1</span>),</span>
+<span id="cb78-22"><a href="network-construction.html#cb78-22" tabindex="-1"></a>    <span class="at">size  =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">2</span>)</span>
+<span id="cb78-23"><a href="network-construction.html#cb78-23" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb78-24"><a href="network-construction.html#cb78-24" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb78-25"><a href="network-construction.html#cb78-25" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb78-26"><a href="network-construction.html#cb78-26" tabindex="-1"></a>    <span class="at">legend.position  =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb78-27"><a href="network-construction.html#cb78-27" tabindex="-1"></a>    <span class="at">legend.text      =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb78-28"><a href="network-construction.html#cb78-28" tabindex="-1"></a>    <span class="at">legend.title     =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb78-29"><a href="network-construction.html#cb78-29" tabindex="-1"></a>    <span class="at">plot.margin      =</span> <span class="fu">margin</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>)</span>
+<span id="cb78-30"><a href="network-construction.html#cb78-30" tabindex="-1"></a>  )</span>
+<span id="cb78-31"><a href="network-construction.html#cb78-31" tabindex="-1"></a></span>
+<span id="cb78-32"><a href="network-construction.html#cb78-32" tabindex="-1"></a><span class="fu">print</span>(p_labeled)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/net-labels-1.png" width="95%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="alternative-layouts" class="section level3 hasAnchor" number="5.3.4">
+<h3><span class="header-section-number">5.3.4</span> Alternative layouts<a href="network-construction.html#alternative-layouts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>ggtangle</code> supports all <code>igraph</code> layout algorithms. Common choices include:</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="network-construction.html#cb79-1" tabindex="-1"></a><span class="fu">library</span>(aplot)</span>
+<span id="cb79-2"><a href="network-construction.html#cb79-2" tabindex="-1"></a></span>
+<span id="cb79-3"><a href="network-construction.html#cb79-3" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb79-4"><a href="network-construction.html#cb79-4" tabindex="-1"></a>base_layers <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb79-5"><a href="network-construction.html#cb79-5" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="st">&quot;grey55&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb79-6"><a href="network-construction.html#cb79-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> type, <span class="at">size =</span> centrality, <span class="at">shape =</span> type), <span class="at">alpha =</span> <span class="fl">0.85</span>),</span>
+<span id="cb79-7"><a href="network-construction.html#cb79-7" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> node_colors, <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span>),</span>
+<span id="cb79-8"><a href="network-construction.html#cb79-8" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> node_shapes, <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span>),</span>
+<span id="cb79-9"><a href="network-construction.html#cb79-9" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">name =</span> <span class="st">&quot;Centrality&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">7</span>)),</span>
+<span id="cb79-10"><a href="network-construction.html#cb79-10" tabindex="-1"></a>  <span class="fu">guides</span>(</span>
+<span id="cb79-11"><a href="network-construction.html#cb79-11" tabindex="-1"></a>    <span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">1</span>, <span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="fl">3.5</span>)),</span>
+<span id="cb79-12"><a href="network-construction.html#cb79-12" tabindex="-1"></a>    <span class="at">shape =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">1</span>),</span>
+<span id="cb79-13"><a href="network-construction.html#cb79-13" tabindex="-1"></a>    <span class="at">size  =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">2</span>)</span>
+<span id="cb79-14"><a href="network-construction.html#cb79-14" tabindex="-1"></a>  ),</span>
+<span id="cb79-15"><a href="network-construction.html#cb79-15" tabindex="-1"></a>  <span class="fu">theme_void</span>(),</span>
+<span id="cb79-16"><a href="network-construction.html#cb79-16" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb79-17"><a href="network-construction.html#cb79-17" tabindex="-1"></a>    <span class="at">plot.title       =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb79-18"><a href="network-construction.html#cb79-18" tabindex="-1"></a>    <span class="at">legend.position  =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb79-19"><a href="network-construction.html#cb79-19" tabindex="-1"></a>    <span class="at">legend.text      =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb79-20"><a href="network-construction.html#cb79-20" tabindex="-1"></a>    <span class="at">legend.title     =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>)</span>
+<span id="cb79-21"><a href="network-construction.html#cb79-21" tabindex="-1"></a>  )</span>
+<span id="cb79-22"><a href="network-construction.html#cb79-22" tabindex="-1"></a>)</span>
+<span id="cb79-23"><a href="network-construction.html#cb79-23" tabindex="-1"></a></span>
+<span id="cb79-24"><a href="network-construction.html#cb79-24" tabindex="-1"></a>p_fr     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(g, <span class="at">layout =</span> <span class="st">&quot;fr&quot;</span>)     <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Fruchterman–Reingold&quot;</span>)</span>
+<span id="cb79-25"><a href="network-construction.html#cb79-25" tabindex="-1"></a>p_kk     <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(g, <span class="at">layout =</span> <span class="st">&quot;kk&quot;</span>)     <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Kamada–Kawai&quot;</span>)</span>
+<span id="cb79-26"><a href="network-construction.html#cb79-26" tabindex="-1"></a>p_star   <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(g, <span class="at">layout =</span> <span class="st">&quot;star&quot;</span>)   <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Star&quot;</span>)</span>
+<span id="cb79-27"><a href="network-construction.html#cb79-27" tabindex="-1"></a>p_nicely <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(g, <span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>) <span class="sc">+</span> base_layers <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;Nicely (auto)&quot;</span>)</span>
+<span id="cb79-28"><a href="network-construction.html#cb79-28" tabindex="-1"></a></span>
+<span id="cb79-29"><a href="network-construction.html#cb79-29" tabindex="-1"></a><span class="fu">plot_list</span>(p_fr, p_kk, p_star, p_nicely, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/net-layouts-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="enriching-the-network-with-external-data" class="section level3 hasAnchor" number="5.3.5">
+<h3><span class="header-section-number">5.3.5</span> Enriching the network with external data<a href="network-construction.html#enriching-the-network-with-external-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Using the <code>%&lt;+%</code> operator from <code>ggfun</code>, you can bind additional data to the network for richer visual encodings. Here, node size is mapped to <strong>degree</strong> (the number of direct interactions), and all node labels are displayed:</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="network-construction.html#cb80-1" tabindex="-1"></a><span class="co"># Create a data frame with node-level metrics</span></span>
+<span id="cb80-2"><a href="network-construction.html#cb80-2" tabindex="-1"></a>node_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb80-3"><a href="network-construction.html#cb80-3" tabindex="-1"></a>  <span class="at">label       =</span> <span class="fu">V</span>(g)<span class="sc">$</span>name,</span>
+<span id="cb80-4"><a href="network-construction.html#cb80-4" tabindex="-1"></a>  <span class="at">type        =</span> <span class="fu">V</span>(g)<span class="sc">$</span>type,</span>
+<span id="cb80-5"><a href="network-construction.html#cb80-5" tabindex="-1"></a>  <span class="at">degree      =</span> <span class="fu">V</span>(g)<span class="sc">$</span>degree,</span>
+<span id="cb80-6"><a href="network-construction.html#cb80-6" tabindex="-1"></a>  <span class="at">betweenness =</span> <span class="fu">V</span>(g)<span class="sc">$</span>betweenness,</span>
+<span id="cb80-7"><a href="network-construction.html#cb80-7" tabindex="-1"></a>  <span class="at">pagerank    =</span> <span class="fu">V</span>(g)<span class="sc">$</span>pagerank</span>
+<span id="cb80-8"><a href="network-construction.html#cb80-8" tabindex="-1"></a>)</span>
+<span id="cb80-9"><a href="network-construction.html#cb80-9" tabindex="-1"></a></span>
+<span id="cb80-10"><a href="network-construction.html#cb80-10" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb80-11"><a href="network-construction.html#cb80-11" tabindex="-1"></a>p_enriched <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(g, <span class="at">layout =</span> <span class="st">&quot;kk&quot;</span>) <span class="sc">+</span></span>
+<span id="cb80-12"><a href="network-construction.html#cb80-12" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="st">&quot;grey55&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb80-13"><a href="network-construction.html#cb80-13" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> type, <span class="at">size =</span> degree, <span class="at">shape =</span> type), <span class="at">alpha =</span> <span class="fl">0.85</span>) <span class="sc">+</span></span>
+<span id="cb80-14"><a href="network-construction.html#cb80-14" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb80-15"><a href="network-construction.html#cb80-15" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> name, <span class="at">color =</span> type),</span>
+<span id="cb80-16"><a href="network-construction.html#cb80-16" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>, <span class="at">fontface =</span> <span class="st">&quot;italic&quot;</span>,</span>
+<span id="cb80-17"><a href="network-construction.html#cb80-17" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="dv">100</span>, <span class="at">segment.alpha =</span> <span class="fl">0.25</span>,</span>
+<span id="cb80-18"><a href="network-construction.html#cb80-18" tabindex="-1"></a>    <span class="at">segment.size =</span> <span class="fl">0.2</span>, <span class="at">segment.color =</span> <span class="st">&quot;grey60&quot;</span>,</span>
+<span id="cb80-19"><a href="network-construction.html#cb80-19" tabindex="-1"></a>    <span class="at">box.padding =</span> <span class="fl">0.3</span>, <span class="at">point.padding =</span> <span class="fl">0.2</span>,</span>
+<span id="cb80-20"><a href="network-construction.html#cb80-20" tabindex="-1"></a>    <span class="at">show.legend =</span> <span class="cn">FALSE</span></span>
+<span id="cb80-21"><a href="network-construction.html#cb80-21" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb80-22"><a href="network-construction.html#cb80-22" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> node_colors, <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span>) <span class="sc">+</span></span>
+<span id="cb80-23"><a href="network-construction.html#cb80-23" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(<span class="at">values =</span> node_shapes, <span class="at">name =</span> <span class="st">&quot;Node Type&quot;</span>) <span class="sc">+</span></span>
+<span id="cb80-24"><a href="network-construction.html#cb80-24" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">name =</span> <span class="st">&quot;Degree&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">11</span>)) <span class="sc">+</span></span>
+<span id="cb80-25"><a href="network-construction.html#cb80-25" tabindex="-1"></a>  <span class="fu">guides</span>(</span>
+<span id="cb80-26"><a href="network-construction.html#cb80-26" tabindex="-1"></a>    <span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">1</span>, <span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">4</span>)),</span>
+<span id="cb80-27"><a href="network-construction.html#cb80-27" tabindex="-1"></a>    <span class="at">shape =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">1</span>),</span>
+<span id="cb80-28"><a href="network-construction.html#cb80-28" tabindex="-1"></a>    <span class="at">size  =</span> <span class="fu">guide_legend</span>(<span class="at">order =</span> <span class="dv">2</span>)</span>
+<span id="cb80-29"><a href="network-construction.html#cb80-29" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb80-30"><a href="network-construction.html#cb80-30" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb80-31"><a href="network-construction.html#cb80-31" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb80-32"><a href="network-construction.html#cb80-32" tabindex="-1"></a>    <span class="at">legend.position  =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb80-33"><a href="network-construction.html#cb80-33" tabindex="-1"></a>    <span class="at">legend.text      =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb80-34"><a href="network-construction.html#cb80-34" tabindex="-1"></a>    <span class="at">legend.title     =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb80-35"><a href="network-construction.html#cb80-35" tabindex="-1"></a>    <span class="at">plot.margin      =</span> <span class="fu">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb80-36"><a href="network-construction.html#cb80-36" tabindex="-1"></a>  )</span>
+<span id="cb80-37"><a href="network-construction.html#cb80-37" tabindex="-1"></a></span>
+<span id="cb80-38"><a href="network-construction.html#cb80-38" tabindex="-1"></a><span class="fu">print</span>(p_enriched)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/net-external-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="references-3" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> References<a href="network-construction.html#references-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Brunson JC (2020). “ggalluvial: Layered Grammar for Alluvial Plots.” <em>Journal of Open Source Software</em>, <strong>5</strong>(49), 2017. doi: <a href="https://doi.org/10.21105/joss.02017">10.21105/joss.02017</a>.</p></li>
+<li><p>Yu G (2025). <em>ggtangle: Draw Network with Data</em>. R package version 0.1.1. doi: <a href="https://doi.org/10.32614/CRAN.package.ggtangle">10.32614/CRAN.package.ggtangle</a>.</p></li>
+</ol>
+<hr />
+</div>
+<div id="session-information-4" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Session information<a href="network-construction.html#session-information-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="network-construction.html#cb81-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<pre><code>#&gt; R version 4.5.0 (2025-04-11)
+#&gt; Platform: aarch64-apple-darwin20
+#&gt; Running under: macOS 26.2
+#&gt; 
+#&gt; Matrix products: default
+#&gt; BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+#&gt; LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+#&gt; 
+#&gt; locale:
+#&gt; [1] zh_CN.UTF-8/zh_CN.UTF-8/zh_CN.UTF-8/C/zh_CN.UTF-8/zh_CN.UTF-8
+#&gt; 
+#&gt; time zone: Asia/Shanghai
+#&gt; tzcode source: internal
+#&gt; 
+#&gt; attached base packages:
+#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     
+#&gt; 
+#&gt; other attached packages:
+#&gt;  [1] aplot_0.2.9        ggrepel_0.9.7      ggtangle_0.0.7     igraph_2.2.2      
+#&gt;  [5] ggplot2_4.0.2      dplyr_1.2.0        aplotExtra_0.0.4   ivolcano_0.0.5    
+#&gt;  [9] enrichplot_1.28.4  TCMDATA_0.0.0.9000 testthat_3.2.3    
+#&gt; 
+#&gt; loaded via a namespace (and not attached):
+#&gt;   [1] RColorBrewer_1.1-3      rstudioapi_0.18.0       jsonlite_2.0.0         
+#&gt;   [4] magrittr_2.0.4          farver_2.1.2            rmarkdown_2.29         
+#&gt;   [7] fs_1.6.7                vctrs_0.7.1             memoise_2.0.1          
+#&gt;  [10] paletteer_1.7.0         ggtree_3.16.3           htmltools_0.5.8.1      
+#&gt;  [13] forcats_1.0.1           usethis_3.1.0           gridGraphics_0.5-1     
+#&gt;  [16] sass_0.4.10             bslib_0.9.0             htmlwidgets_1.6.4      
+#&gt;  [19] desc_1.4.3              plyr_1.8.9              cachem_1.1.0           
+#&gt;  [22] mime_0.13               lifecycle_1.0.5         pkgconfig_2.0.3        
+#&gt;  [25] Matrix_1.7-3            R6_2.6.1                fastmap_1.2.0          
+#&gt;  [28] gson_0.1.0              GenomeInfoDbData_1.2.14 shiny_1.11.1           
+#&gt;  [31] digest_0.6.39           colorspace_2.1-1        rematch2_2.1.2         
+#&gt;  [34] maftools_2.24.0         patchwork_1.3.2         AnnotationDbi_1.70.0   
+#&gt;  [37] S4Vectors_0.46.0        rprojroot_2.1.0         pkgload_1.4.0          
+#&gt;  [40] RSQLite_2.4.2           labeling_0.4.3          httr_1.4.7             
+#&gt;  [43] compiler_4.5.0          remotes_2.5.0           fontquiver_0.2.1       
+#&gt;  [46] bit64_4.6.0-1           withr_3.0.2             S7_0.2.1               
+#&gt;  [49] BiocParallel_1.42.1     DBI_1.2.3               pkgbuild_1.4.8         
+#&gt;  [52] R.utils_2.13.0          rappdirs_0.3.4          sessioninfo_1.2.3      
+#&gt;  [55] DNAcopy_1.82.0          tools_4.5.0             ape_5.8-1              
+#&gt;  [58] httpuv_1.6.16           R.oo_1.27.1             glue_1.8.0             
+#&gt;  [61] nlme_3.1-168            GOSemSim_2.34.0         promises_1.3.3         
+#&gt;  [64] grid_4.5.0              ggvenn_0.1.10           reshape2_1.4.4         
+#&gt;  [67] fgsea_1.34.2            generics_0.1.4          gtable_0.3.6           
+#&gt;  [70] R.methodsS3_1.8.2       tidyr_1.3.2             data.table_1.18.0      
+#&gt;  [73] XVector_0.48.0          BiocGenerics_0.54.0     pillar_1.11.1          
+#&gt;  [76] stringr_1.6.0           yulab.utils_0.2.4       later_1.4.2            
+#&gt;  [79] splines_4.5.0           treeio_1.32.0           lattice_0.22-7         
+#&gt;  [82] survival_3.8-3          bit_4.6.0               tidyselect_1.2.1       
+#&gt;  [85] fontLiberation_0.1.0    GO.db_3.21.0            Biostrings_2.76.0      
+#&gt;  [88] miniUI_0.1.2            knitr_1.50              gridExtra_2.3          
+#&gt;  [91] fontBitstreamVera_0.1.1 bookdown_0.46           IRanges_2.42.0         
+#&gt;  [94] stats4_4.5.0            xfun_0.54               Biobase_2.68.0         
+#&gt;  [97] devtools_2.4.5          brio_1.1.5              stringi_1.8.7          
+#&gt; [100] UCSC.utils_1.4.0        lazyeval_0.2.2          ggfun_0.2.0            
+#&gt; [103] yaml_2.3.10             evaluate_1.0.4          codetools_0.2-20       
+#&gt; [106] gdtools_0.4.4           tibble_3.3.1            qvalue_2.40.0          
+#&gt; [109] ggplotify_0.1.3         cli_3.6.5               systemfonts_1.3.1      
+#&gt; [112] xtable_1.8-4            jquerylib_0.1.4         Rcpp_1.1.1             
+#&gt; [115] GenomeInfoDb_1.44.1     png_0.1-8               parallel_4.5.0         
+#&gt; [118] ellipsis_0.3.2          blob_1.2.4              ggalluvial_0.12.5      
+#&gt; [121] clusterProfiler_4.16.0  profvis_0.4.0           DOSE_4.2.0             
+#&gt; [124] urlchecker_1.0.1        ggstar_1.0.4            tidytree_0.4.6         
+#&gt; [127] ggiraph_0.9.2           scales_1.4.0            purrr_1.2.1            
+#&gt; [130] crayon_1.5.3            rlang_1.1.7             cowplot_1.2.0          
+#&gt; [133] fastmatch_1.1-6         KEGGREST_1.48.1</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="target-retrieval.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="enrichment.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": true,
+    "facebook": false,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
