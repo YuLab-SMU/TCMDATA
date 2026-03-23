@@ -16,7 +16,7 @@ However, GeneCards does not offer a direct API for bulk retrieval, so the common
 
 For example, to retrieve targets for "Diabetic Nephropathy", we can manually search GeneCards, export the results as a CSV file, and filter by Relevance Score.
 
-![genecards_dn_targets](images/genecards.png)
+![](images/genecards.png)
 
 Then, we can read the exported CSV and filter genes based on the Relevance Score:
 ```{r genecards-demo, eval=FALSE, collapse=FALSE}
@@ -49,7 +49,7 @@ User can retrieve disease targets by both API and web interface. The API allows 
 
 For web interface, "Diabetic Nephropathy" can be searched directly, and the resulting target list can be exported as json and tsv format for downstream analysis:
 
-![opentargetplatform](images/open_target_platform.png)
+![](images/open_target_platform.png)
 
 ```{r opentarget-demo, eval=FALSE, collapse=FALSE}
 ot <- read.delim("OT-EFO_0000401-associated-targets-2_21_2026-v25_12.tsv")
@@ -151,7 +151,7 @@ Users can submit a compound by entering its **SMILES string**, drawing the chemi
 
 In network pharmacology studies of TCM, SwissTargetPrediction is often used to **supplement missing target annotations for monomeric compounds derived from herbs**. Its main advantage lies in its ease of use and clear output, which facilitates quick target collection and downstream standardization of gene symbols. However, users should note that the predictions are still model-based inferences rather than direct experimental evidence. Therefore, the predicted targets are usually filtered further by species, probability, target type, or by taking the intersection with disease targets and DEGs, so as to improve biological plausibility and reduce false-positive results.
 
-![swisstarget1](images/swisstarget1.png)
+![](images/swisstarget1.png)
 
 To get SMILES of your query compounds, it is easy to use `resolve_cid()` and `getprops()` functions in `TCMDATA` to retrieve the canonical SMILES for a list of CIDs:
 
@@ -176,14 +176,14 @@ print(lz_mol_smiles)
 
 The predicted targets can be downloaded as a `CSV` file, which can be read into R for further processing and integration with disease targets and DEGs in the network pharmacology workflow using `TCMDATA`.
 
-![swisstarget2](images/swisstarget2.png)
+![](images/swisstarget2.png)
 
 
 ### Similarity Ensemble Approach (SEA)
 
 The [Similarity Ensemble Approach (SEA)](https://sea.bkslab.org/) is another widely used ligand-based method for target prediction. Unlike single-pair similarity scoring, SEA evaluates the relationship between a query compound and an entire **ligand set** known to bind a given protein target. In other words, it compares the chemical similarity between the submitted molecule and the ensemble of known ligands for each target, and then assesses whether the observed similarity is greater than expected by chance.
 
-![sea](images/SEA1.png)
+![](images/SEA1.png)
 
 A key feature of SEA is that it provides a more statistically oriented framework for target prediction. Its output commonly includes predicted targets together with measures such as **E-values**, significance scores, or confidence-related statistics, which help users judge the relative reliability of the predictions. Because of this set-to-set comparison strategy, SEA is often considered a useful complement to other chemical similarity tools, especially when researchers want to broaden the search space for potential compound–target associations.
 
@@ -191,7 +191,7 @@ In the context of TCM network pharmacology, SEA is frequently applied to predict
 
 Also, we set "C1=CC(=C(C=C1C(=O)O)O)O" as SEA input, and results are as follows:
 
-![sea2](images/SEA2.png)
+![](images/SEA2.png)
 
 The predicted targets can be downloaded and read into R for further integration with disease targets and DEGs in the network pharmacology workflow using `TCMDATA`.
 
