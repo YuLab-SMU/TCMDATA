@@ -43,7 +43,6 @@ The `from` argument specifies the input identifier type. Supported values includ
 ```{r, eval=FALSE, collapse=FALSE}
 # Alternative method using webchem backend
 cid_results <- getcid(lz_mol, from = "name", match = "first")
-head(cid_results)
 ```
 
 ---
@@ -54,23 +53,23 @@ Once CIDs are obtained, `getprops()` retrieves a range of chemical descriptors f
 
 ```{r, eval=FALSE, collapse=FALSE}
 # Get properties for resolved CIDs
-props <- getprops(lz_mol_cid, 
-                  properties = c("MolecularFormula", 
-                                "MolecularWeight", 
-                                "CanonicalSMILES", 
-                                "InChIKey"))
+props <- getprops(lz_mol_cid, properties = c("MolecularFormula", 
+                                             "MolecularWeight", 
+                                             "CanonicalSMILES", 
+                                             "InChIKey"))
+
 head(props)
 ```
 
 ```{r, eval=FALSE, collapse=FALSE}
 # A tibble: 5 × 6
-#  cid   CID   MolecularFormula MolecularWeight ConnectivitySMILES               InChIKey     
-#  <chr> <chr> <chr>            <chr>           <chr>                            <chr>        
-# 1 72    72    C7H6O4           154.12          C1=CC(=C(C=C1C(=O)O)O)O          YQUVCSBJEUQK…
-# 2 135   135   C7H6O3           138.12          C1=CC(=CC=C1C(=O)O)O             FJKROLUGYXJW…
-# 3 190   190   C5H5N5           135.13          C1=NC2=NC=NC(=C2N1)N             GFFGJBXGBJIS…
-# 4 1174  1174  C4H4N2O2         112.09          C1=CNC(=O)NC1=O                  ISAKRJDGNUQO…
-# 5 5789  5789  C10H14N2O5       242.23          CC1=CN(C(=O)NC1=O)C2CC(C(O2)CO)O IQFYYKKMVGJF…
+  cid   CID   MolecularFormula MolecularWeight ConnectivitySMILES               InChIKey        
+  <chr> <chr> <chr>            <chr>           <chr>                            <chr>           
+1 72    72    C7H6O4           154.12          C1=CC(=C(C=C1C(=O)O)O)O          YQUVCSBJEUQKSH-…
+2 135   135   C7H6O3           138.12          C1=CC(=CC=C1C(=O)O)O             FJKROLUGYXJWQN-…
+3 190   190   C5H5N5           135.13          C1=NC2=NC=NC(=C2N1)N             GFFGJBXGBJISGV-…
+4 1174  1174  C4H4N2O2         112.09          C1=CNC(=O)NC1=O                  ISAKRJDGNUQOIC-…
+5 5789  5789  C10H14N2O5       242.23          CC1=CN(C(=O)NC1=O)C2CC(C(O2)CO)O IQFYYKKMVGJFEH-…
 ```
 
 The function internally uses rate limiting and retry logic to handle transient API errors. By default, it retrieves six common properties: `MolecularFormula`, `MolecularWeight`, `IUPACName`, `CanonicalSMILES`, `InChIKey`, and `XLogP`. Additional properties supported by PubChem can be specified via the `properties` argument.
@@ -88,8 +87,7 @@ sim_hits <- compound_similarity(
   from = "cid",
   threshold = 90,
   topn = 10,
-  compute_score = TRUE
-)
+  compute_score = TRUE)
 
 head(sim_hits)
 ```
@@ -116,8 +114,7 @@ sim_by_smiles <- compound_similarity(
   from = "smiles",
   threshold = 85,
   topn = 5,
-  compute_score = FALSE
-)
+  compute_score = FALSE)
 ```
 
 ```{r, eval=FALSE, collapse=FALSE}
@@ -127,8 +124,7 @@ sim_by_name <- compound_similarity(
   from = "name",
   threshold = 90,
   topn = 10,
-  compute_score = FALSE
-)
+  compute_score = FALSE)
 ```
 
 The function returns a tibble with columns `query_cid`, `query`, `hit_cid`, `hit_smiles`, and `score` (if computed). This enables efficient filtering and prioritization of structurally related molecules for downstream pharmacological analysis.

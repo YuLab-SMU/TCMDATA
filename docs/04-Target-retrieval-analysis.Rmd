@@ -136,6 +136,66 @@ In addition to the databases detailed above, several other resources are frequen
 
 Researchers typically query multiple databases and take intersection of the results to form a robust disease target set.
 
+
+## Compound target prediction {#compound-target}
+
+In addition to disease-associated genes, target retrieval on the compound side is also an essential step in network pharmacology analysis. For many herbal ingredients or small-molecule constituents, experimentally validated targets are often incomplete or unavailable in public databases. Therefore, **in silico target prediction** tools are commonly used to expand the candidate target space before downstream intersection, network construction, and enrichment analysis.
+
+Among the currently most widely used strategies, **SwissTargetPrediction** and **Similarity Ensemble Approach (SEA)** are two representative and user-friendly resources for predicting potential targets of small molecules. Although both methods are based on the principle that structurally or chemically similar compounds tend to interact with similar proteins, they differ in their implementation details, scoring systems, and output formats. In practice, researchers often use one or both resources to obtain a broader and more comprehensive target set for compound-level network pharmacology studies.
+
+### SwissTargetPrediction {#compound-target-swisstarget}
+
+[SwissTargetPrediction](https://www.swisstargetprediction.ch/) is one of the most commonly used web-based tools for predicting the potential targets of bioactive small molecules (Daina et al., 2019). It was developed based on the assumption that similar molecules are likely to bind similar targets, and it combines both **2D chemical similarity** and **3D molecular similarity** to compare a query compound against a curated collection of ligands with known experimentally validated targets.
+
+Users can submit a compound by entering its **SMILES string**, drawing the chemical structure, or uploading a molecular file. After the query is processed, the platform returns a ranked list of predicted protein targets, usually accompanied by target class annotation, probability scores, and related chemical information. The results are intuitive and convenient for manual browsing, making SwissTargetPrediction particularly suitable for studies involving a limited number of herbal ingredients or representative active compounds.
+
+In network pharmacology studies of TCM, SwissTargetPrediction is often used to **supplement missing target annotations for monomeric compounds derived from herbs**. Its main advantage lies in its ease of use and clear output, which facilitates quick target collection and downstream standardization of gene symbols. However, users should note that the predictions are still model-based inferences rather than direct experimental evidence. Therefore, the predicted targets are usually filtered further by species, probability, target type, or by taking the intersection with disease targets and DEGs, so as to improve biological plausibility and reduce false-positive results.
+
+![swisstarget1](images/swisstarget1.png)
+
+To get SMILES of your query compounds, it is easy to use `resolve_cid()` and `getprops()` functions in `TCMDATA` to retrieve the canonical SMILES for a list of CIDs:
+
+```{r get-smiles, eval=FALSE, collapse=FALSE}
+## suppose you have a vector of CIDs for your compounds of interest (lingzhi example)
+library(TCMDATA)
+herbs <- c("灵芝")
+lz_mol <- search_herb(herb = herbs, type = "Herb_cn_name")$molecule |> unique() |> head(1)
+lz_mol_cid <- resolve_cid(lz_mol, from = "name")
+lz_mol_smiles <- getprops(lz_mol_cid, properties = "CanonicalSMILES")
+
+print(lz_mol_smiles)
+```
+
+```
+# A tibble: 1 × 3
+#  cid   CID   ConnectivitySMILES     
+#  <chr> <chr> <chr>                  
+#1 72    72    C1=CC(=C(C=C1C(=O)O)O)O
+
+```
+
+The predicted targets can be downloaded as a `CSV` file, which can be read into R for further processing and integration with disease targets and DEGs in the network pharmacology workflow using `TCMDATA`.
+
+![swisstarget2](images/swisstarget2.png)
+
+
+### Similarity Ensemble Approach (SEA)
+
+The [Similarity Ensemble Approach (SEA)](https://sea.bkslab.org/) is another widely used ligand-based method for target prediction. Unlike single-pair similarity scoring, SEA evaluates the relationship between a query compound and an entire **ligand set** known to bind a given protein target. In other words, it compares the chemical similarity between the submitted molecule and the ensemble of known ligands for each target, and then assesses whether the observed similarity is greater than expected by chance.
+
+![sea](images/SEA1.png)
+
+A key feature of SEA is that it provides a more statistically oriented framework for target prediction. Its output commonly includes predicted targets together with measures such as **E-values**, significance scores, or confidence-related statistics, which help users judge the relative reliability of the predictions. Because of this set-to-set comparison strategy, SEA is often considered a useful complement to other chemical similarity tools, especially when researchers want to broaden the search space for potential compound–target associations.
+
+In the context of TCM network pharmacology, SEA is frequently applied to predict candidate protein targets for herbal monomers whose direct experimental annotations are sparse. The predicted targets can then be merged with results from SwissTargetPrediction or other databases to form a more comprehensive compound target pool. As with all computational prediction tools, SEA results should be interpreted cautiously and are generally recommended for **candidate expansion and prioritization**, rather than being treated as definitive evidence. A common practice is to retain overlapping targets supported by multiple prediction resources and then integrate them with disease targets and transcriptomic signals for subsequent network analysis.
+
+Also, we set "C1=CC(=C(C=C1C(=O)O)O)O" as SEA input, and results are as follows:
+
+![sea2](images/SEA2.png)
+
+The predicted targets can be downloaded and read into R for further integration with disease targets and DEGs in the network pharmacology workflow using `TCMDATA`.
+
+
 ## DEG visualization{#volcano}
 
 Differential expression analysis identifies genes that are significantly altered between disease and control conditions. In the pharmacology network analysis, these DEGs can be integrated with disease targets to prioritize genes that are both statistically significant in expression and biologically linked to the disease phenotype. The intersection of DEGs and disease targets often represents the most promising candidates for further network analysis and experimental validation.
