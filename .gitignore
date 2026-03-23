@@ -22,5 +22,19 @@ docs/images/*_cache.rds
 # old static PPI network images (now generated dynamically)
 docs/images/ppi-net-*.png
 
-# skill
+# skill / dev notes
 skill.md
+inst/ml_skill.md
+
+# R CMD check output
+*.Rcheck/
+..Rcheck/
+
+# built package tarball
+*.tar.gz
+
+# auto-generated plot file
+Rplots.pdf
+
+# example / test artefacts
+inst/examples/

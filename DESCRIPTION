@@ -34,10 +34,17 @@ Imports:
     utils,
     yulab.utils
 Suggests:
+    Boruta,
+    caret,
     circlize,
     ComplexHeatmap,
+    glmnet,
     httr,
     jsonlite,
+    kernlab,
+    pROC,
+    randomForest,
+    xgboost,
     xml2,
     rcdk,
     webchem,

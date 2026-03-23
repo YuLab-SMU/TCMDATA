@@ -206,3 +206,43 @@
 #' head(dn_otp)
 #' length(dn_otp)
 "dn_otp"
+
+#' COVID-19 Bulk RNA-seq Demo Dataset for Machine Learning Module
+#'
+#' A preprocessed bulk RNA-seq dataset from hospitalized COVID-19 patients,
+#' used for demonstrating machine learning classification workflows
+#' (ICU vs Non-ICU severity prediction).
+#'
+#' @details
+#' This dataset is derived from GEO accession
+#' \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE157103}{GSE157103},
+#' a large-scale multi-omic study of COVID-19 severity
+#' (Overmyer et al., \emph{Cell Systems}, 2021).
+#'
+#' Only COVID-19-positive patients are included. Samples are classified
+#' into ICU (severe) and Non-ICU (non-severe) groups based on clinical
+#' ICU admission status. Low-expression genes were removed, and the top
+#' 5,000 most variable genes were retained. Expression values are
+#' log2-transformed TPM (\code{log2(TPM + 1)}).
+#'
+#' @format A \code{list} with three elements:
+#' \describe{
+#'   \item{expr}{A \code{data.frame} of dimension 5000 genes × 100 samples,
+#'     containing \code{log2(TPM + 1)} expression values.
+#'     Row names are gene symbols; column names are sample IDs.}
+#'   \item{group_info}{A \code{data.frame} with 100 rows and 2 columns:
+#'     \describe{
+#'       \item{sample_id}{Sample identifier matching column names of \code{expr}.}
+#'       \item{group}{A factor with levels \code{"NonICU"} and \code{"ICU"}.}
+#'     }}
+#'   \item{info}{A \code{list} of dataset metadata, including dataset accession,
+#'     disease, comparison, value type, gene and sample counts.}
+#' }
+#'
+#' @usage data(covid19)
+#'
+#' @source GEO accession GSE157103.
+#' Overmyer KA, Shishkova E, Miller IJ, et al. Large-Scale Multi-omic
+#' Analysis of COVID-19 Severity. \emph{Cell Syst}. 2021;12(1):23-40.e7.
+#' \doi{10.1016/j.cels.2020.10.003}
+"covid19"
