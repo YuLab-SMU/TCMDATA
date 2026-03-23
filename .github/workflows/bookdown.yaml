@@ -6,6 +6,7 @@ on:
       - docs/rpkg-usage
       - ppi_knock
       - ml
+      - docs_update
 
 permissions:
   contents: write
