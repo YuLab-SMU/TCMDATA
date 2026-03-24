@@ -40,7 +40,7 @@ ignored.}
 
 \item{palette}{Character vector of colours (one per gene), or \code{NULL} for the built-in 12-colour publication palette.}
 
-\item{show_ci}{Logical; Whether to add a translucent 95 \\% CI band around each curve. Default \code{FALSE}.  Requires \code{pROC::ci.se()}.}
+\item{show_ci}{Logical; Whether to add a translucent 95 percent CI band around each curve. Default \code{FALSE}.  Requires \code{pROC::ci.se()}.}
 
 \item{ncol}{Integer; number of columns when \code{combine = FALSE}. Default \code{NULL} (auto).}
 
