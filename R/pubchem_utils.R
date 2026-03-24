@@ -489,17 +489,12 @@ download_ligand_structure <- function(cid,
 #' (\url{https://www.rcsb.org}) given a 4-character PDB ID.
 #' Supports PDB (legacy) and PDBx/mmCIF formats.
 #'
-#' @param pdb_id Character scalar. A 4-character PDB identifier
-#'   (e.g. \code{"4hhb"}, \code{"1A2B"}). Case-insensitive.
-#' @param format Character. One of \code{"pdb"} (legacy PDB format) or
-#'   \code{"cif"} (PDBx/mmCIF format). Default \code{"pdb"}.
+#' @param pdb_id Character scalar. A 4-character PDB identifier (e.g. \code{"4hhb"}, \code{"1A2B"}). Case-insensitive.
+#' @param format Character. One of \code{"pdb"} (legacy PDB format) or \code{"cif"} (PDBx/mmCIF format). Default \code{"pdb"}.
 #' @param destdir Character. Directory to save the file. Default \code{"."}.
-#' @param filename Character or \code{NULL}. Output file name. If \code{NULL}
-#'   (default), named as \code{<pdb_id>.<format>}.
-#' @param overwrite Logical. Whether to overwrite an existing file.
-#'   Default \code{FALSE}.
-#' @param quiet Logical. Whether to suppress progress messages.
-#'   Default \code{FALSE}.
+#' @param filename Character or \code{NULL}. Output file name. If \code{NULL} (default), named as \code{<pdb_id>.<format>}.
+#' @param overwrite Logical. Whether to overwrite an existing file. Default \code{FALSE}.
+#' @param quiet Logical. Whether to suppress progress messages. Default \code{FALSE}.
 #'
 #' @return Character scalar (invisible): full path of the saved file.
 #'
@@ -560,20 +555,28 @@ download_receptor_structure <- function(pdb_id,
 }
 
 
-#' Convert SDF file to PDB format
+#' Convert molecular structure files between formats
 #'
-#' Convert a molecular structure file from SDF (Structure Data Format) to PDB
-#' format using Open Babel (\command{obabel}). This is commonly used to prepare
-#' ligand structures downloaded from PubChem for molecular docking.
+#' Convert a molecular structure file from one format to another using
+#' Open Babel (\command{obabel}). Supports 100+ formats including SDF, PDB,
+#' MOL2, MOL, XYZ, SMILES, and more. Commonly used to prepare ligand/receptor
+#' structures for molecular docking.
 #'
-#' @param sdf_file Character scalar. Path to the input SDF file.
-#' @param pdb_file Character scalar or \code{NULL}. Path for the output PDB
-#'   file. If \code{NULL} (default), the output file name is derived from
-#'   \code{sdf_file} by replacing the \code{.sdf} extension with \code{.pdb}.
+#' @param input_file Character scalar. Path to the input structure file.
+#' @param output_file Character scalar or \code{NULL}. Path for the output
+#'   file. If \code{NULL} (default), derived from \code{input_file} by
+#'   replacing the extension with \code{output_type}.
+#' @param input_type Character scalar or \code{NULL}. Input format code for
+#'   Open Babel (e.g. \code{"sdf"}, \code{"pdb"}, \code{"mol2"},
+#'   \code{"xyz"}, \code{"smi"}). If \code{NULL} (default), auto-detected
+#'   from the file extension.
+#' @param output_type Character scalar. Output format code for Open Babel.
+#'   Default \code{"pdb"}. Common values: \code{"pdb"}, \code{"sdf"},
+#'   \code{"mol2"}, \code{"xyz"}, \code{"smi"}, \code{"mol"}.
 #' @param add_hydrogens Logical. Whether to add hydrogen atoms
-#'   (\code{obabel -h}). Default \code{TRUE}.
-#' @param gen3d Logical. Whether to generate 3D coordinates if the input is 2D
-#'   (\code{obabel --gen3d}). Default \code{FALSE}.
+#'   (\code{obabel -h}). Default \code{FALSE}.
+#' @param gen3d Logical. Whether to generate 3D coordinates if the input
+#'   is 2D (\code{obabel --gen3d}). Default \code{FALSE}.
 #' @param overwrite Logical. Whether to overwrite an existing output file.
 #'   Default \code{FALSE}.
 #' @param quiet Logical. Whether to suppress messages. Default \code{FALSE}.
@@ -581,23 +584,38 @@ download_receptor_structure <- function(pdb_id,
 #' @details
 #' This function requires \href{https://openbabel.org/}{Open Babel} to be
 #' installed and accessible as \command{obabel} on the system PATH.
-#' On macOS you can install it with \code{brew install open-babel};
-#' on Ubuntu/Debian with \code{sudo apt install openbabel}.
+#' On macOS: \code{brew install open-babel};
+#' on Ubuntu/Debian: \code{sudo apt install openbabel}.
 #'
-#' @return Character scalar (invisible): full path of the output PDB file.
+#' To see all supported format codes, run \code{system("obabel -L formats")}
+#' in the terminal.
+#'
+#' @return Character scalar (invisible): full path of the output file.
 #'
 #' @examples
 #' \dontrun{
+#' # SDF -> PDB (default)
 #' sdf <- download_ligand_structure(2244, destdir = tempdir())
-#' pdb <- sdf_to_pdb(sdf)
+#' pdb <- convert_structure(sdf)
+#'
+#' # SDF -> MOL2
+#' mol2 <- convert_structure(sdf, output_type = "mol2")
+#'
+#' # PDB -> XYZ, explicit input type
+#' xyz <- convert_structure("receptor.pdb", output_type = "xyz", input_type = "pdb")
+#'
+#' # Add hydrogens and generate 3D coords
+#' pdb <- convert_structure(sdf, output_type = "pdb", add_hydrogens = TRUE, gen3d = TRUE)
 #' }
 #' @export
-sdf_to_pdb <- function(sdf_file,
-                        pdb_file = NULL,
-                        add_hydrogens = TRUE,
-                        gen3d = FALSE,
-                        overwrite = FALSE,
-                        quiet = FALSE) {
+convert_structure <- function(input_file,
+                               output_file = NULL,
+                               input_type   = NULL,
+                               output_type  = "pdb",
+                               add_hydrogens = FALSE,
+                               gen3d   = FALSE,
+                               overwrite = FALSE,
+                               quiet   = FALSE) {
 
   obabel <- Sys.which("obabel")
   if (!nzchar(obabel))
@@ -605,33 +623,55 @@ sdf_to_pdb <- function(sdf_file,
          "Install it first (e.g. `brew install open-babel` on macOS, ",
          "`sudo apt install openbabel` on Ubuntu).")
 
-  sdf_file <- normalizePath(sdf_file, mustWork = TRUE)
+  input_file <- normalizePath(input_file, mustWork = TRUE)
 
-  if (is.null(pdb_file))
-    pdb_file <- sub("\\.sdf$", ".pdb", sdf_file, ignore.case = TRUE)
+  # Auto-detect input format from file extension
+  if (is.null(input_type)) {
+    ext <- tolower(tools::file_ext(input_file))
+    if (!nzchar(ext))
+      stop("Cannot auto-detect input format: '", basename(input_file),
+           "' has no extension. Please specify `input_type`.")
+    input_type <- ext
+  } else {
+    input_type <- tolower(trimws(input_type))
+  }
 
-  if (file.exists(pdb_file) && !overwrite)
+  output_type <- tolower(trimws(output_type))
+
+  # Auto-generate output file path
+  if (is.null(output_file)) {
+    stem <- sub(paste0("\\.", tools::file_ext(input_file), "$"), "",
+                input_file, ignore.case = TRUE)
+    output_file <- paste0(stem, ".", output_type)
+  }
+
+  if (file.exists(output_file) && !overwrite)
     stop(sprintf("File '%s' already exists. Set overwrite = TRUE to replace.",
-                 pdb_file))
+                 output_file))
 
-  args <- c("-isdf", sdf_file, "-opdb", "-O", pdb_file)
+  args <- c(paste0("-i", input_type), input_file,
+            paste0("-o", output_type), "-O", output_file)
   if (add_hydrogens) args <- c(args, "-h")
-  if (gen3d)         args <- c(args, "--gen3d")
+  if (gen3d) args <- c(args, "--gen3d")
 
-  if (!quiet) message("Converting: ", basename(sdf_file), " -> ", basename(pdb_file))
+  if (!quiet)
+    message(sprintf("Converting [%s -> %s]: %s -> %s",
+                    toupper(input_type), toupper(output_type),
+                    basename(input_file), basename(output_file)))
+
   res <- system2(obabel, args = args, stdout = TRUE, stderr = TRUE)
   status <- attr(res, "status")
 
   if (!is.null(status) && status != 0)
     stop("Open Babel conversion failed:\n", paste(res, collapse = "\n"))
 
-  if (!file.exists(pdb_file))
+  if (!file.exists(output_file))
     stop("Conversion completed but output file was not created.")
 
   if (!quiet)
-    message(sprintf("Converted %s -> %s (%.1f KB)",
-                    basename(sdf_file), basename(pdb_file),
-                    file.info(pdb_file)$size / 1024))
+    message(sprintf("Done: %s (%.1f KB)",
+                    basename(output_file),
+                    file.info(output_file)$size / 1024))
 
-  invisible(pdb_file)
+  invisible(output_file)
 }
