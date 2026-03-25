@@ -391,3 +391,280 @@ add_simscore <- function(df) {
 
   return(df)
 }
+
+
+#' Download ligand SDF from PubChem
+#'
+#' @param cid PubChem Compound ID.
+#' @param type \code{"auto"} (default, 3D then 2D), \code{"3d"}, or \code{"2d"}.
+#' @param destdir Save directory. Default \code{"."}.
+#' @param filename Output name, or \code{NULL} for auto-naming.
+#' @param overwrite Overwrite existing file? Default \code{FALSE}.
+#' @param quiet Suppress messages? Default \code{FALSE}.
+#' @return File path (invisible).
+#' @examples
+#' \dontrun{
+#' download_ligand_structure(2244)
+#' download_ligand_structure(2244, type = "3d", destdir = tempdir())
+#' }
+#' @export
+download_ligand_structure <- function(cid,
+                               type = c("auto", "3d", "2d"),
+                               destdir = ".",
+                               filename = NULL,
+                               overwrite = FALSE,
+                               quiet = FALSE) {
+
+  if (!requireNamespace("httr", quietly = TRUE))
+    stop("Package 'httr' is required. Please install it.")
+
+  type <- match.arg(type)
+  cid  <- as.character(cid)[1]
+
+  if (is.na(cid) || !grepl("^[0-9]+$", cid))
+    stop("`cid` must be a valid positive integer (PubChem CID).")
+
+  if (!dir.exists(destdir)) {
+    dir.create(destdir, recursive = TRUE)
+    if (!quiet) message("Created directory: ", destdir)
+  }
+
+  .try_download <- function(record_type) {
+    url <- sprintf("%scompound/cid/%s/SDF?record_type=%s",
+                   .pug_base, cid, record_type)
+    resp <- httr::GET(url, httr::user_agent("TCMDATA/download_structure"))
+    list(resp = resp, code = httr::status_code(resp), type = record_type)
+  }
+
+  if (type == "auto") {
+    attempt <- .try_download("3d")
+    if (attempt$code == 200) {
+      actual_type <- "3d"
+      resp <- attempt$resp
+    } else {
+      if (!quiet) message("3D conformer not available for CID ", cid, ", falling back to 2D.")
+      attempt2 <- .try_download("2d")
+      if (attempt2$code != 200)
+        stop(sprintf("Failed to download structure for CID %s (HTTP %d).", cid, attempt2$code))
+      actual_type <- "2d"
+      resp <- attempt2$resp
+    }
+  } else {
+    attempt <- .try_download(type)
+    if (attempt$code != 200)
+      stop(sprintf("Failed to download %s structure for CID %s (HTTP %d).",
+                   toupper(type), cid, attempt$code))
+    actual_type <- type
+    resp <- attempt$resp
+  }
+
+  if (is.null(filename))
+    filename <- sprintf("CID_%s_%s.sdf", cid, actual_type)
+  destfile <- file.path(destdir, filename)
+
+  if (file.exists(destfile) && !overwrite)
+    stop(sprintf("File '%s' already exists. Set overwrite = TRUE to replace.",
+                 destfile))
+
+  sdf_content <- httr::content(resp, as = "text", encoding = "UTF-8")
+  writeLines(sdf_content, destfile)
+
+  if (!quiet)
+    message(sprintf("Downloaded %s structure for CID %s -> %s",
+                    toupper(actual_type), cid, destfile))
+
+  invisible(destfile)
+}
+
+
+#' Download receptor structure from RCSB PDB
+#'
+#' @param pdb_id 4-character PDB ID (e.g. \code{"4hhb"}). Case-insensitive.
+#' @param format \code{"pdb"} (default) or \code{"cif"}.
+#' @param destdir Save directory. Default \code{"."}.
+#' @param filename Output name, or \code{NULL} for auto-naming.
+#' @param overwrite Overwrite existing file? Default \code{FALSE}.
+#' @param quiet Suppress messages? Default \code{FALSE}.
+#' @return File path (invisible).
+#' @examples
+#' \dontrun{
+#' download_receptor_structure("4hhb")
+#' download_receptor_structure("4hhb", format = "cif", destdir = tempdir())
+#' }
+#' @export
+download_receptor_structure <- function(pdb_id,
+                                        format = c("pdb", "cif"),
+                                        destdir = ".",
+                                        filename = NULL,
+                                        overwrite = FALSE,
+                                        quiet = FALSE) {
+
+  if (!requireNamespace("httr", quietly = TRUE))
+    stop("Package 'httr' is required. Please install it.")
+
+  format <- match.arg(format)
+  pdb_id <- tolower(trimws(as.character(pdb_id)[1]))
+
+  if (is.na(pdb_id) || !grepl("^[a-z0-9]{4}$", pdb_id))
+    stop("`pdb_id` must be a valid 4-character PDB identifier (e.g. '4hhb').")
+
+  if (!dir.exists(destdir)) {
+    dir.create(destdir, recursive = TRUE)
+    if (!quiet) message("Created directory: ", destdir)
+  }
+
+  url <- sprintf("https://files.rcsb.org/download/%s.%s", pdb_id, format)
+  resp <- httr::GET(url, httr::user_agent("TCMDATA/download_receptor_structure"))
+  status <- httr::status_code(resp)
+
+  if (status != 200)
+    stop(sprintf("Failed to download structure for PDB ID '%s' (HTTP %d). Check the PDB ID.",
+                 toupper(pdb_id), status))
+
+  if (is.null(filename))
+    filename <- sprintf("%s.%s", pdb_id, format)
+  destfile <- file.path(destdir, filename)
+
+  if (file.exists(destfile) && !overwrite)
+    stop(sprintf("File '%s' already exists. Set overwrite = TRUE to replace.",
+                 destfile))
+
+  content <- httr::content(resp, as = "text", encoding = "UTF-8")
+  writeLines(content, destfile)
+
+  if (!quiet)
+    message(sprintf("Downloaded %s structure for PDB %s -> %s",
+                    toupper(format), toupper(pdb_id), destfile))
+
+  invisible(destfile)
+}
+
+
+#' Convert molecular structure files between formats
+#'
+#' Convert molecular structure format via Open Babel
+#'
+#' Requires \command{obabel} on PATH
+#' (\code{brew install open-babel} / \code{apt install openbabel}).
+#'
+#' @param input_file Path to input structure file.
+#' @param output_file Output path, or \code{NULL} to auto-derive.
+#' @param input_type Input format (e.g. \code{"sdf"}), or \code{NULL}
+#'   to detect from extension.
+#' @param output_type Output format. Default \code{"pdb"}.
+#' @param add_hydrogens Add hydrogens? Default \code{FALSE}.
+#' @param gen3d Generate 3D coordinates? Default \code{FALSE}.
+#' @param overwrite Overwrite existing file? Default \code{FALSE}.
+#' @param quiet Suppress messages? Default \code{FALSE}.
+#' @return Output file path (invisible).
+#' @examples
+#' \dontrun{
+#' sdf <- download_ligand_structure(2244, destdir = tempdir())
+#' convert_structure(sdf)                          # SDF -> PDB
+#' convert_structure(sdf, output_type = "mol2")    # SDF -> MOL2
+#' }
+#' @export
+convert_structure <- function(input_file,
+                               output_file = NULL,
+                               input_type   = NULL,
+                               output_type  = "pdb",
+                               add_hydrogens = FALSE,
+                               gen3d   = FALSE,
+                               overwrite = FALSE,
+                               quiet   = FALSE) {
+
+  obabel <- Sys.which("obabel")
+  if (!nzchar(obabel))
+    stop("Open Babel ('obabel') not found on PATH. ",
+         "Install it first (e.g. `brew install open-babel` on macOS, ",
+         "`sudo apt install openbabel` on Ubuntu).")
+
+  input_file <- normalizePath(input_file, mustWork = TRUE)
+
+  # Auto-detect input format from file extension
+  if (is.null(input_type)) {
+    ext <- tolower(tools::file_ext(input_file))
+    if (!nzchar(ext))
+      stop("Cannot auto-detect input format: '", basename(input_file),
+           "' has no extension. Please specify `input_type`.")
+    input_type <- ext
+  } else {
+    input_type <- tolower(trimws(input_type))
+  }
+
+  output_type <- tolower(trimws(output_type))
+
+  # Auto-generate output file path
+  if (is.null(output_file)) {
+    stem <- sub(paste0("\\.", tools::file_ext(input_file), "$"), "",
+                input_file, ignore.case = TRUE)
+    output_file <- paste0(stem, ".", output_type)
+  }
+
+  if (file.exists(output_file) && !overwrite)
+    stop(sprintf("File '%s' already exists. Set overwrite = TRUE to replace.",
+                 output_file))
+
+  args <- c(paste0("-i", input_type), input_file,
+            paste0("-o", output_type), "-O", output_file)
+  if (add_hydrogens) args <- c(args, "-h")
+  if (gen3d) args <- c(args, "--gen3d")
+
+  if (!quiet)
+    message(sprintf("Converting [%s -> %s]: %s -> %s",
+                    toupper(input_type), toupper(output_type),
+                    basename(input_file), basename(output_file)))
+
+  res <- system2(obabel, args = args, stdout = TRUE, stderr = TRUE)
+  status <- attr(res, "status")
+
+  if (!is.null(status) && status != 0)
+    stop("Open Babel conversion failed:\n", paste(res, collapse = "\n"))
+
+  if (!file.exists(output_file))
+    stop("Conversion completed but output file was not created.")
+
+  if (!quiet)
+    message(sprintf("Done: %s (%.1f KB)",
+                    basename(output_file),
+                    file.info(output_file)$size / 1024))
+
+  invisible(output_file)
+}
+
+
+#' Convert SDF file to PDB format
+#'
+#' Backward-compatible wrapper around \code{\link{convert_structure}} for
+#' the common SDF-to-PDB conversion workflow.
+#'
+#' @param sdf_file Path to input SDF file.
+#' @param pdb_file Output PDB path, or \code{NULL} to auto-derive.
+#' @param add_hydrogens Add hydrogens? Default \code{TRUE}.
+#' @param gen3d Generate 3D coordinates? Default \code{FALSE}.
+#' @param overwrite Overwrite existing file? Default \code{FALSE}.
+#' @param quiet Suppress messages? Default \code{FALSE}.
+#' @return Output PDB file path (invisible).
+#' @examples
+#' \dontrun{
+#' sdf <- download_ligand_structure(2244, destdir = tempdir())
+#' pdb <- sdf_to_pdb(sdf)
+#' }
+#' @export
+sdf_to_pdb <- function(sdf_file,
+                       pdb_file = NULL,
+                       add_hydrogens = TRUE,
+                       gen3d = FALSE,
+                       overwrite = FALSE,
+                       quiet = FALSE) {
+  convert_structure(
+    input_file = sdf_file,
+    output_file = pdb_file,
+    input_type = "sdf",
+    output_type = "pdb",
+    add_hydrogens = add_hydrogens,
+    gen3d = gen3d,
+    overwrite = overwrite,
+    quiet = quiet
+  )
+}

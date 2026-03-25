@@ -20,6 +20,7 @@ publication-ready visualization.
 | Module | Description | Key Functions |
 |--------|-------------|---------------|
 | **Data retrieval** | Bidirectional query of 500+ herbs, 10 000+ compounds, and validated targets | `search_herb()`, `search_target()` |
+| **Molecule detection** | PubChem-based compound identifier resolution, property annotation, similarity search, structure download, and format conversion | `resolve_cid()`, `getprops()`, `compound_similarity()`, `download_ligand_structure()` |
 | **Network construction** | Build herb–molecule–target networks with topological metrics | `prepare_herb_graph()` |
 | **Enrichment analysis** | ORA using herbs as functional categories; GO/KEGG compatible | `herb_enricher()` |
 | **PPI analysis** | Filtering, 15+ centrality metrics, community detection, and PPI robustness analysis | `ppi_subset()`, `compute_nodeinfo()`, `rank_ppi_nodes()` |

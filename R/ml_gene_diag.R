@@ -210,7 +210,7 @@ get_gene_auc <- function(genes,
 #' @inheritParams get_gene_auc
 #' @param combine Logical; if \code{TRUE} (default) all curves are overlaid on one panel.  If \code{FALSE} each gene gets its own facet.
 #' @param palette Character vector of colours (one per gene), or \code{NULL} for the built-in 12-colour publication palette.
-#' @param show_ci Logical; Whether to add a translucent 95 \% CI band around each curve. Default \code{FALSE}.  Requires \code{pROC::ci.se()}.
+#' @param show_ci Logical; Whether to add a translucent 95 percent CI band around each curve. Default \code{FALSE}.  Requires \code{pROC::ci.se()}.
 #' @param ncol Integer; number of columns when \code{combine = FALSE}. Default \code{NULL} (auto).
 #' @param label_size Legend text size. Default 9.
 #'
