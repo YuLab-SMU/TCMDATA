@@ -133,13 +133,13 @@ The function returns a tibble with columns `query_cid`, `query`, `hit_cid`, `hit
 
 ## Download molecular structures and format conversion
 
-To support downstream docking (such as AutoDock Vina) and structure-based analyses, `TCMDATA` also provides utilities for retrieving ligand and receptor structures and for converting molecular file formats. These functions are designed to streamline routine preprocessing steps and improve reproducibility in computational pharmacology workflows.
+To support downstream docking (such as AutoDock Vina, usually require ligand and receptor structures) and structure-based analyses, `TCMDATA` also provides utilities for retrieving ligand and receptor structures and for converting molecular file formats. These functions are designed to streamline routine preprocessing steps and improve reproducibility in computational pharmacology workflows.
 
 ### Downloading ligand structures from PubChem
 
 `download_ligand_structure()` retrieves SDF files for a given PubChem CID. By default (`type = "auto"`), the function prioritizes 3D conformers and automatically falls back to 2D records when 3D coordinates are unavailable.
 
-Here, we download the structure for CID 2244 (Quercetin). If a curated 3D structure exists in PubChem, it will be downloaded; otherwise, the function will retrieve the 2D structure.
+Here, we download the structure for CID 2244 (Quercetin) for demonstration. If a curated 3D structure exists in PubChem, it will be downloaded; otherwise, the function will retrieve the 2D structure.
 ```{r, eval=FALSE, collapse=FALSE}
 # Download ligand structure by CID (auto: 3D if available, otherwise 2D)
 lig_sdf <- download_ligand_structure(
@@ -149,11 +149,11 @@ lig_sdf <- download_ligand_structure(
   overwrite = FALSE)
 ```
 
-This behavior is particularly useful in high-throughput settings, where compounds may differ in the availability of curated 3D structures.
+Then, you can go to `structures/ligands` to check the downloaded SDF file. This behavior is particularly useful in high-throughput settings, where compounds may differ in the availability of curated 3D structures.
 
 ### Downloading receptor structures from the RCSB PDB
 
-`download_receptor_structure()` downloads macromolecular structures from the RCSB Protein Data Bank using a 4-character PDB identifier. The function supports both legacy PDB format (`format = "pdb"`) and PDBx/mmCIF format (`format = "cif"`).
+For receptor (protein), `download_receptor_structure()` downloads macromolecular structures from the RCSB Protein Data Bank using a 4-character PDB identifier. The function supports both legacy PDB format (`format = "pdb"`) and PDBx/mmCIF format (`format = "cif"`).
 
 Here, we download the structure for PDB ID 4hhb (human hemoglobin) in PDB format. 
 ```{r, eval=FALSE, collapse=FALSE}
@@ -167,10 +167,27 @@ rec_pdb <- download_receptor_structure(
 
 
 ### Converting structure file formats
+For molecular docking, different software may require specific structure formats (e.g., PDBQT for AutoDock Vina). It is neccessary to convert the downloaded structures into compatible formats.
+
+`Open Babel` is a widely used open-source toolkit for chemical informatics that supports interconversion between diverse molecular file formats <sup>[2]</sup>. To use `convert_structure()`, users must first install Open Babel and ensure that the `obabel` executable is available on the system `PATH`.
+
+On macOS, Open Babel can be installed with Homebrew (`brew install open-babel`). On Ubuntu/Debian systems, it can be installed with `sudo apt install openbabel`. For other platforms, please refer to the [official installation guide](https://openbabel.org/docs/current/Installation/install.html).
+
+After installation, verify that `obabel` is discoverable from the command line.
 
 `convert_structure()` performs general-purpose format conversion through Open Babel (`obabel`) and supports common structure formats including SDF, PDB, MOL2, XYZ, and SMILES. Optional arguments allow hydrogen addition and 3D coordinate generation during conversion.
 
-Here, we demonstrate converting a ligand SDF file to PDB format while adding hydrogens. The `gen3d = FALSE` argument preserves existing coordinates if available.
+Here, we demonstrate converting a ligand SDF file to PDB format while adding hydrogens. The `gen3d = FALSE` argument preserves existing coordinates if available. Before running this step, ensure you have installed Open Babel and that the `obabel` command is accessible in your system's PATH.
+```{bash, eval=FALSE}
+command -v obabel
+```
+
+```
+# Example output on macOS:
+/opt/homebrew/bin/obabel
+```
+
+Then, you can run the following code to convert the ligand structure. This step is essential for preparing ligand files for docking software that may require specific formats and explicit hydrogens.
 ```{r, eval=FALSE, collapse=FALSE}
 # Convert ligand SDF to PDB and add hydrogens
 lig_pdb <- convert_structure(
@@ -181,15 +198,12 @@ lig_pdb <- convert_structure(
   overwrite = TRUE)
 ```
 
-### Recommended workflow
-
-In a typical structure-preparation pipeline, users may: (i) obtain ligand CIDs via `resolve_cid()`/`getcid()`, (ii) download ligand SDF files from PubChem, (iii) download receptor structures from the RCSB PDB, and (iv) harmonize file formats for docking software using `convert_structure()`. This integrated workflow reduces manual preprocessing and promotes transparent, reproducible analyses.
-
 ---
 
 ## References
 
 1. Sayers EW, Bolton EE, Fine AM, et al. (2026). "Database resources of the National Center for Biotechnology Information in 2026." *Nucleic Acids Research*, **54**(D1), D20–D27. doi: [10.1093/nar/gkaf1060](https://doi.org/10.1093/nar/gkaf1060).
+2. https://github.com/openbabel/openbabel
 
 ---
 
