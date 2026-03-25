@@ -393,25 +393,19 @@ add_simscore <- function(df) {
 }
 
 
-#' Download compound/ligand structure (SDF) from PubChem
+#' Download ligand SDF from PubChem
 #'
-#' Download the 2D or 3D structure file (SDF format) for a given PubChem CID.
-#' By default the function attempts to download the 3D conformer first;
-#' if no 3D conformer is available it automatically falls back to 2D.
-#'
-#' @param cid Integer or character scalar. A single PubChem Compound ID.
-#' @param type Character. One of \code{"auto"}, \code{"3d"}, or \code{"2d"}. When \code{"auto"} (default), tries 3D first and falls back to 2D.
-#' @param destdir Character. Directory to save the file. Default \code{"."}.
-#' @param filename Character or \code{NULL}. Output file name. If \code{NULL} (default), named as \code{CID_<cid>_<type>.sdf}.
-#' @param overwrite Logical. Whether to overwrite existing file. Default \code{FALSE}.
-#' @param quiet Logical. Whether to suppress messages. Default \code{FALSE}.
-#'
-#' @return Character scalar (invisible): full path of the saved SDF file.
-#'
+#' @param cid PubChem Compound ID.
+#' @param type \code{"auto"} (default, 3D then 2D), \code{"3d"}, or \code{"2d"}.
+#' @param destdir Save directory. Default \code{"."}.
+#' @param filename Output name, or \code{NULL} for auto-naming.
+#' @param overwrite Overwrite existing file? Default \code{FALSE}.
+#' @param quiet Suppress messages? Default \code{FALSE}.
+#' @return File path (invisible).
 #' @examples
 #' \dontrun{
-#' path <- download_ligand_structure(2244)
-#' path_3d <- download_ligand_structure(2244, type = "3d", destdir = tempdir())
+#' download_ligand_structure(2244)
+#' download_ligand_structure(2244, type = "3d", destdir = tempdir())
 #' }
 #' @export
 download_ligand_structure <- function(cid,
@@ -483,27 +477,18 @@ download_ligand_structure <- function(cid,
 }
 
 
-#' Download receptor/protein structure from RCSB PDB
+#' Download receptor structure from RCSB PDB
 #'
-#' Download a macromolecular structure file from the RCSB Protein Data Bank
-#' (\url{https://www.rcsb.org}) given a 4-character PDB ID.
-#' Supports PDB (legacy) and PDBx/mmCIF formats.
-#'
-#' @param pdb_id Character scalar. A 4-character PDB identifier (e.g. \code{"4hhb"}, \code{"1A2B"}). Case-insensitive.
-#' @param format Character. One of \code{"pdb"} (legacy PDB format) or \code{"cif"} (PDBx/mmCIF format). Default \code{"pdb"}.
-#' @param destdir Character. Directory to save the file. Default \code{"."}.
-#' @param filename Character or \code{NULL}. Output file name. If \code{NULL} (default), named as \code{<pdb_id>.<format>}.
-#' @param overwrite Logical. Whether to overwrite an existing file. Default \code{FALSE}.
-#' @param quiet Logical. Whether to suppress progress messages. Default \code{FALSE}.
-#'
-#' @return Character scalar (invisible): full path of the saved file.
-#'
+#' @param pdb_id 4-character PDB ID (e.g. \code{"4hhb"}). Case-insensitive.
+#' @param format \code{"pdb"} (default) or \code{"cif"}.
+#' @param destdir Save directory. Default \code{"."}.
+#' @param filename Output name, or \code{NULL} for auto-naming.
+#' @param overwrite Overwrite existing file? Default \code{FALSE}.
+#' @param quiet Suppress messages? Default \code{FALSE}.
+#' @return File path (invisible).
 #' @examples
 #' \dontrun{
-#' # Download hemoglobin structure in PDB format
 #' download_receptor_structure("4hhb")
-#'
-#' # Download in mmCIF format
 #' download_receptor_structure("4hhb", format = "cif", destdir = tempdir())
 #' }
 #' @export
@@ -557,55 +542,26 @@ download_receptor_structure <- function(pdb_id,
 
 #' Convert molecular structure files between formats
 #'
-#' Convert a molecular structure file from one format to another using
-#' Open Babel (\command{obabel}). Supports 100+ formats including SDF, PDB,
-#' MOL2, MOL, XYZ, SMILES, and more. Commonly used to prepare ligand/receptor
-#' structures for molecular docking.
+#' Convert molecular structure format via Open Babel
 #'
-#' @param input_file Character scalar. Path to the input structure file.
-#' @param output_file Character scalar or \code{NULL}. Path for the output
-#'   file. If \code{NULL} (default), derived from \code{input_file} by
-#'   replacing the extension with \code{output_type}.
-#' @param input_type Character scalar or \code{NULL}. Input format code for
-#'   Open Babel (e.g. \code{"sdf"}, \code{"pdb"}, \code{"mol2"},
-#'   \code{"xyz"}, \code{"smi"}). If \code{NULL} (default), auto-detected
-#'   from the file extension.
-#' @param output_type Character scalar. Output format code for Open Babel.
-#'   Default \code{"pdb"}. Common values: \code{"pdb"}, \code{"sdf"},
-#'   \code{"mol2"}, \code{"xyz"}, \code{"smi"}, \code{"mol"}.
-#' @param add_hydrogens Logical. Whether to add hydrogen atoms
-#'   (\code{obabel -h}). Default \code{FALSE}.
-#' @param gen3d Logical. Whether to generate 3D coordinates if the input
-#'   is 2D (\code{obabel --gen3d}). Default \code{FALSE}.
-#' @param overwrite Logical. Whether to overwrite an existing output file.
-#'   Default \code{FALSE}.
-#' @param quiet Logical. Whether to suppress messages. Default \code{FALSE}.
+#' Requires \command{obabel} on PATH
+#' (\code{brew install open-babel} / \code{apt install openbabel}).
 #'
-#' @details
-#' This function requires \href{https://openbabel.org/}{Open Babel} to be
-#' installed and accessible as \command{obabel} on the system PATH.
-#' On macOS: \code{brew install open-babel};
-#' on Ubuntu/Debian: \code{sudo apt install openbabel}.
-#'
-#' To see all supported format codes, run \code{system("obabel -L formats")}
-#' in the terminal.
-#'
-#' @return Character scalar (invisible): full path of the output file.
-#'
+#' @param input_file Path to input structure file.
+#' @param output_file Output path, or \code{NULL} to auto-derive.
+#' @param input_type Input format (e.g. \code{"sdf"}), or \code{NULL}
+#'   to detect from extension.
+#' @param output_type Output format. Default \code{"pdb"}.
+#' @param add_hydrogens Add hydrogens? Default \code{FALSE}.
+#' @param gen3d Generate 3D coordinates? Default \code{FALSE}.
+#' @param overwrite Overwrite existing file? Default \code{FALSE}.
+#' @param quiet Suppress messages? Default \code{FALSE}.
+#' @return Output file path (invisible).
 #' @examples
 #' \dontrun{
-#' # SDF -> PDB (default)
 #' sdf <- download_ligand_structure(2244, destdir = tempdir())
-#' pdb <- convert_structure(sdf)
-#'
-#' # SDF -> MOL2
-#' mol2 <- convert_structure(sdf, output_type = "mol2")
-#'
-#' # PDB -> XYZ, explicit input type
-#' xyz <- convert_structure("receptor.pdb", output_type = "xyz", input_type = "pdb")
-#'
-#' # Add hydrogens and generate 3D coords
-#' pdb <- convert_structure(sdf, output_type = "pdb", add_hydrogens = TRUE, gen3d = TRUE)
+#' convert_structure(sdf)                          # SDF -> PDB
+#' convert_structure(sdf, output_type = "mol2")    # SDF -> MOL2
 #' }
 #' @export
 convert_structure <- function(input_file,
@@ -674,4 +630,41 @@ convert_structure <- function(input_file,
                     file.info(output_file)$size / 1024))
 
   invisible(output_file)
+}
+
+
+#' Convert SDF file to PDB format
+#'
+#' Backward-compatible wrapper around \code{\link{convert_structure}} for
+#' the common SDF-to-PDB conversion workflow.
+#'
+#' @param sdf_file Path to input SDF file.
+#' @param pdb_file Output PDB path, or \code{NULL} to auto-derive.
+#' @param add_hydrogens Add hydrogens? Default \code{TRUE}.
+#' @param gen3d Generate 3D coordinates? Default \code{FALSE}.
+#' @param overwrite Overwrite existing file? Default \code{FALSE}.
+#' @param quiet Suppress messages? Default \code{FALSE}.
+#' @return Output PDB file path (invisible).
+#' @examples
+#' \dontrun{
+#' sdf <- download_ligand_structure(2244, destdir = tempdir())
+#' pdb <- sdf_to_pdb(sdf)
+#' }
+#' @export
+sdf_to_pdb <- function(sdf_file,
+                       pdb_file = NULL,
+                       add_hydrogens = TRUE,
+                       gen3d = FALSE,
+                       overwrite = FALSE,
+                       quiet = FALSE) {
+  convert_structure(
+    input_file = sdf_file,
+    output_file = pdb_file,
+    input_type = "sdf",
+    output_type = "pdb",
+    add_hydrogens = add_hydrogens,
+    gen3d = gen3d,
+    overwrite = overwrite,
+    quiet = quiet
+  )
 }

@@ -14,36 +14,24 @@ sdf_to_pdb(
 )
 }
 \arguments{
-\item{sdf_file}{Character scalar. Path to the input SDF file.}
+\item{sdf_file}{Path to input SDF file.}
 
-\item{pdb_file}{Character scalar or \code{NULL}. Path for the output PDB
-file. If \code{NULL} (default), the output file name is derived from
-\code{sdf_file} by replacing the \code{.sdf} extension with \code{.pdb}.}
+\item{pdb_file}{Output PDB path, or \code{NULL} to auto-derive.}
 
-\item{add_hydrogens}{Logical. Whether to add hydrogen atoms
-(\code{obabel -h}). Default \code{TRUE}.}
+\item{add_hydrogens}{Add hydrogens? Default \code{TRUE}.}
 
-\item{gen3d}{Logical. Whether to generate 3D coordinates if the input is 2D
-(\code{obabel --gen3d}). Default \code{FALSE}.}
+\item{gen3d}{Generate 3D coordinates? Default \code{FALSE}.}
 
-\item{overwrite}{Logical. Whether to overwrite an existing output file.
-Default \code{FALSE}.}
+\item{overwrite}{Overwrite existing file? Default \code{FALSE}.}
 
-\item{quiet}{Logical. Whether to suppress messages. Default \code{FALSE}.}
+\item{quiet}{Suppress messages? Default \code{FALSE}.}
 }
 \value{
-Character scalar (invisible): full path of the output PDB file.
+Output PDB file path (invisible).
 }
 \description{
-Convert a molecular structure file from SDF (Structure Data Format) to PDB
-format using Open Babel (\command{obabel}). This is commonly used to prepare
-ligand structures downloaded from PubChem for molecular docking.
-}
-\details{
-This function requires \href{https://openbabel.org/}{Open Babel} to be
-installed and accessible as \command{obabel} on the system PATH.
-On macOS you can install it with \code{brew install open-babel};
-on Ubuntu/Debian with \code{sudo apt install openbabel}.
+Backward-compatible wrapper around \code{\link{convert_structure}} for
+the common SDF-to-PDB conversion workflow.
 }
 \examples{
 \dontrun{
