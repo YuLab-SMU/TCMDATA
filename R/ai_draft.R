@@ -78,13 +78,8 @@ draft_result_paragraph <- function(
     context, sep = "\n\n"
   )
 
-  result <- aisdk::generate_object(
-    model  = model,
-    prompt = prompt,
-    schema = .draft_schema(),
-    system = sys,
-    temperature = 0.4
-  )
+  result <- .call_generate_object(model, prompt, .draft_schema(), sys,
+                                   temperature = 0.4)
 
   extracted <- .extract_object(result, "draft")
   .new_tcm_ai_draft(

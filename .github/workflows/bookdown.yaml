@@ -8,6 +8,7 @@ on:
       - ml
       - docs_update
       - molecule
+      - aisdk
 
 permissions:
   contents: write

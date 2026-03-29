@@ -1,0 +1,478 @@
+---
+title: "AI-assisted interpretation of analysis results"
+author: "Nan He"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+# Introduction
+
+`TCMDATA` includes an AI interpretation module built on top of [aisdk](https://github.com/YuLab-SMU/aisdk). This module is designed to complement the deterministic analytical workflows provided by `TCMDATA`. In practice, the AI layer is used to interpret outputs, summarise findings, draft result paragraphs, and optionally return custom structured objects.
+
+In this chapter, we demonstrate both the basic and advanced usage of the AI module in `TCMDATA`, including free-text interpretation, direct interpretation of enrichment and PPI objects, reusable prompt wrappers, agent-based interfaces, and user-defined structured outputs.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Prerequisites
+
+## Installation
+
+The AI module requires both `TCMDATA` and `aisdk`. You can install by the following step firstly:
+
+```{r install, eval=FALSE}
+devtools::install_github("YuLab-SMU/aisdk")
+library(aisdk)
+library(TCMDATA)
+```
+
+## Model configuration
+
+Model configuration is handled through `tcm_setup()`. In a typical project, users only need to initialize the model once per session. The configuration can optionally be saved to a local `.env` file.
+
+```{r config, eval=FALSE, message=TRUE}
+tcm_setup(
+  provider = "openai",
+  api_key = "sk-xxx",
+  model = "gpt-5-minimal",   # replace with your model
+  base_url = "https://xxx/v1",  # replace or omit for official OpenAI
+  save = TRUE,
+  test = TRUE)             
+```
+
+The `test = TRUE` argument sends a minimal request to verify that the endpoint is reachable. The `force_json_schema = TRUE` argument (the default) ensures that structured output works correctly across all OpenAI-compatible endpoints, including third-party proxy APIs that may otherwise strip the system message.
+
+# Basic workflows
+
+For most users, the primary interface is `tcm_interpret()`. This single function supports both free-text inputs and analysis objects.
+
+## Free-text interpretation
+
+The simplest use case is to interpret a short textual query. This mode is particularly useful for obtaining a concise explanation of the pharmacological roles of a herb or compound.
+
+```{r text-demo, eval=FALSE}
+txt <- tcm_interpret(
+  "Please introduce the major pharmacological functions of Huangqi (Astragalus membranaceus), and briefly explain its potential roles in immunoregulation and disease treatment.",
+  verbose = FALSE,
+  language = "en")
+
+cat(txt)
+```
+
+
+```{}
+Here’s a concise overview of Huangqi (Astragalus membranaceus) and its pharmacological profile, with emphasis on immunoregulation and disease-related potential.
+
+Major pharmacological functions
+- Immunomodulatory: Enhances innate and adaptive immunity; modulates cytokines (e.g., IL-2, IL-6, TNF-α, IFN-γ), promotes macrophage, dendritic cell, NK, and T/B cell functions; can also downregulate excessive inflammatory responses.
+- Anti-inflammatory: Inhibits NF-κB, MAPK, and NLRP3 pathways; reduces proinflammatory mediators (COX-2, iNOS) and oxidative stress.
+- Antioxidant and cytoprotective: Increases SOD, CAT, GSH-Px; reduces ROS and lipid peroxidation; supports mitochondrial function.
+- Cardiovascular protection: Improves endothelial function (eNOS/NO), anti-atherosclerotic effects, anti-fibrotic remodeling, anti-ischemia/reperfusion injury, mild positive inotropy; may improve heart failure symptoms when combined with standard care (evidence mostly from small trials/meta-analyses).
+- Metabolic regulation: Improves insulin sensitivity, glucose uptake (AMPK/PI3K-Akt), lipid profiles; hepatoprotective and renoprotective effects in metabolic stress.
+- Antiviral/antibacterial adjunct: Modulates host response to infections; some direct antiviral/antimicrobial signals in vitro, but clinical evidence is limited.
+- Anti-fibrotic: Inhibits TGF-β/Smad signaling; reduces hepatic, renal, pulmonary, and cardiac fibrosis in preclinical models.
+- Neuroprotective: Anti-apoptotic, anti-oxidative, anti-inflammatory effects in models of stroke, neurodegeneration, and neuropathic pain.
+- Anti-tumor adjunct: Inhibits proliferation, angiogenesis, and EMT; enhances chemo- and radio-sensitivity; supports immune surveillance. Clinical evidence is preliminary and adjunctive.
+
+Key bioactive constituents
+- Polysaccharides (APS): Primary immunomodulators; antioxidant, anti-inflammatory.
+- Saponins (e.g., astragaloside IV): Cardioprotective, anti-fibrotic, neuroprotective, metabolic benefits.
+- Flavonoids (e.g., calycosin, formononetin, isoflavones): Antioxidant, anti-inflammatory, vascular protection.
+
+Immunoregulatory roles
+- Innate immunity: APS enhances macrophage phagocytosis, antigen presentation, and cytokine balance; promotes NK cell cytotoxicity; modulates pattern-recognition receptor signaling (TLR4/NF-κB) with a tendency toward balanced rather than overactive responses.
+- Adaptive immunity: Supports T-cell proliferation and Th1/Th2/Th17/Treg balance; can increase Treg numbers/function in inflammatory states; enhances B-cell antibody production. Context-dependent effects help strengthen defense while limiting excessive inflammation.
+- Mucosal immunity and barrier function: Improves gut barrier integrity (tight junction proteins), shapes microbiota composition, and reduces endotoxemia, indirectly modulating systemic immunity.
+
+Potential roles in disease treatment (evidence tiers noted)
+- Respiratory infections and recovery (adjunct; moderate preclinical/limited clinical): May reduce symptom duration and inflammatory markers; studied in viral URIs and pneumonia as supportive therapy.
+- Chronic inflammatory diseases (preclinical→early clinical): Asthma, COPD, allergic rhinitis—reduces airway inflammation and hyperreactivity; requires more robust trials.
+- Cardiovascular diseases (adjunct; some clinical support): Heart failure and ischemic heart disease—improved symptoms, NT-proBNP, and 6MWT in small RCTs/meta-analyses; benefits as add-on to guideline therapy.
+- Metabolic disorders (adjunct; mixed clinical data): Type 2 diabetes and NAFLD—improved glycemic indices, lipids, hepatic enzymes; renal protection in diabetic kidney disease in small trials.
+- Chronic kidney disease (adjunct; some clinical data): Reduced proteinuria and improved eGFR slope in early CKD/diabetic nephropathy when combined with RAAS blockade; quality of evidence varies.
+- Liver fibrosis and hepatitis (preclinical→early clinical): Anti-fibrotic and hepatoprotective effects; limited controlled trials.
+- Cancer care (adjunct; low–moderate evidence): May lessen chemo-induced myelosuppression, fatigue, and GI toxicity; potential immune and quality-of-life benefits; not a replacement for standard oncology care.
+- Autoimmune and inflammatory conditions (preclinical): Modulation toward Treg and anti-inflammatory profiles suggests potential in rheumatoid arthritis, IBD, MS models; human evidence is preliminary.
+
+Safety and usage notes
+- Generally well tolerated; possible GI upset, dizziness, or allergic reactions.
+- Immunostimulation may be undesirable in uncontrolled autoimmune disease or immediately post-transplant; interact with immunosuppressants.
+- May interact with anticoagulants/antiplatelets (theoretical bleeding risk), antihypertensives, and hypoglycemics (potentiation).
+- Pregnancy/lactation: insufficient data.
+- Quality varies by source; standardized extracts (e.g., APS or astragaloside IV content) improve consistency.
+
+Bottom line
+Huangqi exhibits broad immunomodulatory, anti-inflammatory, antioxidant, cardio-metabolic protective, and anti-fibrotic effects driven by polysaccharides, saponins, and flavonoids. Its most compelling roles are as an adjunctive agent to support immune balance, reduce inflammation, and protect cardiovascular, renal, and hepatic systems. Clinical evidence is promising but heterogeneous; it should complement, not replace, standard treatments, with attention to interactions and patient context.
+```
+
+
+The same interface can also be used to interpret candidate compounds identified in a network pharmacology workflow:
+
+```{r text-demo-compound, eval=FALSE}
+tcm_interpret(
+  "Kaempferol and genistein are two bioactive compounds identified in Lingzhi (Ganoderma lucidum). Please interpret their potential roles against sepsis, focusing on key molecular targets, inflammatory pathways, and possible pharmacological mechanisms within four sentences.",
+  language = "en")
+```
+
+
+```{}
+Kaempferol and genistein likely mitigate sepsis by modulating central inflammatory hubs such as NF-κB, MAPK (p38/JNK/ERK), and JAK/STAT, thereby reducing transcription of TNF-α, IL-1β, IL-6, COX-2, and iNOS. Both compounds can inhibit TLR4/MyD88 signaling and downregulate NLRP3 inflammasome activation, decreasing caspase-1–mediated IL-1β maturation and pyroptosis. They also enhance antioxidant defenses via Nrf2/HO-1 and preserve endothelial and mitochondrial function, limiting ROS generation, apoptosis, and vascular leakage characteristic of septic organ injury. Genistein’s tyrosine kinase/PI3K-Akt modulation and kaempferol’s AMPK activation further promote autophagy and immune homeostasis, collectively attenuating cytokine storm and improving microcirculatory stability in sepsis. 
+```
+
+## Interpretation of enrichment objects
+
+A common problem in practice is that enrichment results must first be manually reformatted into a model-readable representation before they can be interpreted by an LLM. In `TCMDATA`, this preprocessing step is handled automatically. The package can directly accept a `clusterProfiler` enrichment object, compress the relevant terms and associated genes into a compact textual context, and then send that representation to the model.
+
+The following example constructs a GO Biological Process enrichment result from Lingzhi targets and then submits it to the AI interpretation module:
+
+```{r enrich-object, eval=FALSE}
+library(clusterProfiler)
+library(org.Hs.eg.db)
+
+set.seed(2026)
+
+lz_targets <- search_herb("lingzhi", type = "Herb_pinyin_name")$target
+lz_targets <- sample(unique(na.omit(lz_targets)), 100)
+
+bp <- enrichGO(
+  gene = lz_targets,
+  ont = "BP",
+  OrgDb = org.Hs.eg.db,
+  keyType = "SYMBOL")
+
+tcm_interpret(
+  bp,
+  prompt = "This is a GO Biological Process enrichment result derived from potential targets of Lingzhi. Please briefly summarise its main biological implications.",
+  language = "en")
+```
+
+
+```{}
+=== TCM AI Analysis: enrichment ===
+  Model: openai:gpt-5-minimal | Language: en | Audience: researcher
+  Generated: 2026-03-29 22:40:10
+
+-- Summary --
+The enrichment profile indicates that Lingzhi’s putative targets cluster in innate immune and inflammatory signaling, particularly TLR/IL‑1/TNF–NF‑κB pathways, leukocyte adhesion, and matrix remodeling. Concurrent enrichment for stress, apoptotic, and oxidative response processes suggests modulation of cell survival and damage control. Nuclear receptor and APP/GSK3B-related nodes add metabolic and neuroinflammatory dimensions. These data support immunomodulatory and tissue-protective mechanisms aligned with Lingzhi’s reported anti-inflammatory benefits. 
+
+-- Key Findings --
+  *  Strong enrichment for cellular response to stress and external stimuli, including oxidative and apoptotic stress (TP53, CASP3, PIK3CA, PRKCB). 
+  *  Activation/modulation of innate immune and inflammatory pathways, notably TLR/IL‑1/TNF signaling and NF‑κB regulation (IRAK1, NFKBIA, TNF, ADAM17). 
+  *  Leukocyte adhesion and endothelial activation components (VCAM1) and matrix remodeling/protease activity (MMP9, MPO), implicating effects on inflammation and tissue remodeling. 
+  *  Regulation of programmed cell death and survival pathways (TP53, CASP3, TNFRSF10B) and ubiquitin/TRIM-mediated inflammatory control (TRIM38). 
+  *  Involvement of nuclear receptor signaling (AR, RARA, NR1H2/LXR) and metabolic transport (ABCC1), suggesting lipid/sterol and detoxification crosstalk. 
+  *  Neuroinflammation/APP processing and GSK3B-related signaling hint at potential relevance to neurodegenerative contexts. 
+
+-- Biological Interpretation --
+The targets implicated for Lingzhi converge on innate immune activation and inflammatory signaling—especially TLR/IL‑1/TNF-driven NF‑κB pathways, leukocyte adhesion/trafficking, and matrix remodeling—together with cellular stress responses (oxidative, ER, and apoptotic). Modulation of TP53-, caspase-, and PI3K/PKC-dependent nodes suggests effects on cell survival/death and damage control. Steroid/retinoid/nuclear receptor signaling and APP/GSK3B-related processes point to crosstalk with metabolic and neuroinflammatory axes. Overall, the profile supports anti-inflammatory, immunomodulatory, and tissue-protective actions consistent with Lingzhi’s traditional use for “clearing heat-toxin,” resolving phlegm, and supporting vitality. 
+
+-- TCM Relevance --
+Findings align with TCM uses of Lingzhi (Ganoderma lucidum) to tonify qi and calm shen while “clearing heat-toxin”: modulation of NF‑κB/TNF pathways corresponds to anti-inflammatory effects, and regulation of endothelial adhesion and proteases aligns with resolving “phlegm-stasis.” Potential synergy with herbs/formulas targeting heat-toxin and phlegm (e.g., Huangqin, Lianqiao; formulas like Huang-Lian-Jie-Du-Tang) via shared NF‑κB/TLR nodes. 
+
+-- Caveats --
+  !  GO terms are overlapping and non-independent; enrichment does not prove directionality or causality. 
+  !  Target list and gene–compound associations may include predictions; experimental validation is required. 
+  !  Tissue/cell-type and dose dependence are not captured by GO enrichment. 
+  !  APP/GSK3B links to neurobiology are suggestive but not disease-specific.
+```
+
+## Interpretation of PPI objects
+
+`TCMDATA` also supports direct interpretation of PPI network objects. After computing vertex-level topological attributes with `compute_nodeinfo()`, the enriched `igraph` object can be passed directly to the AI module for mechanistic summarization and hub-node prioritization.
+
+```{r ppi-object, eval=FALSE}
+data("demo_ppi")
+ppi_graph <- compute_nodeinfo(demo_ppi)
+
+ai_ppi <- tcm_interpret(
+  ppi_graph,
+  prompt = "This is a PPI igraph object with multiple topological metrics already computed. Please briefly characterise the network architecture and identify the most important nodes within four sentences.",
+  language = "en")
+
+print(ai_ppi)
+```
+
+```{}
+=== TCM AI Analysis: ppi ===
+  Model: openai:gpt-5-minimal | Language: en | Audience: researcher
+  Generated: 2026-03-29 22:41:32
+
+-- Summary --
+This PPI network exhibits a dense, small-world, high-coreness architecture dominated by a few hubs. IL6 is the top master hub and mediator, with IL1B and JUN as key co-hubs/bridges. PTGS2 and MYC act as important connectors from signaling to transcription. CXCL8, CCL2, CXCL1, ICAM1, and FOS form a cohesive inflammatory subnetwork linked to these hubs. 
+
+-- Key Findings --
+  *  The network is hub-centric with very short characteristic distances (eccentricity=2 for top nodes) and high coreness (16), consistent with a compact small-world inflammatory cluster. 
+  *  IL6 is the principal hub and broker (highest degree, eigenvector centrality, PageRank, stress; top betweenness), with IL1B and JUN as major co-hubs/bridges (high degree and betweenness). 
+  *  PTGS2 and MYC are influential connectors (high degree; MYC/JUN notable betweenness), linking signaling to transcriptional responses. 
+  *  Chemokines CXCL8, CCL2, CXCL1 and adhesion molecule ICAM1 form a tightly connected peripheral submodule (high clustering, strong eigenvector) anchored to the central cytokine/transcription hubs. 
+
+-- Biological Interpretation --
+The network is a dense, highly centralised inflammatory/immune PPI module with short paths (eccentricity=2, high radiality), high coreness (16), and moderate clustering, indicating a tightly knit yet hub-driven architecture. Cytokines/chemokines and immediate-early transcription factors dominate connectivity, suggesting coordinated control of inflammatory signaling and gene expression. 
+
+-- Caveats --
+  !  Only the top 10 nodes are shown; full-network structure and rankings may differ when including all nodes. 
+  !  Metric scales and weighting schemes (e.g., weighted betweenness/strength) influence centrality comparisons. 
+  !  PPI databases can be biased toward well-studied proteins (e.g., IL6, MYC). 
+```
+
+
+## Drafting a result paragraph
+
+Once an interpretation object has been created, `draft_result_paragraph()` can be used to transform it into a short paragraph suitable for the Results section of a manuscript.
+
+```{r draft-demo, eval=FALSE}
+draft <- draft_result_paragraph(
+  ai_ppi,
+  language = "en",
+  prompt = "Draft a concise Results-style paragraph describing this PPI network for a manuscript.")
+
+cat(as.character(draft))
+```
+
+```{}
+The PPI network was highly connected and centered on inflammatory mediators. Among the top 10 nodes by degree, IL6 ranked first (degree=47) and exhibited the highest eigenvector centrality (1.0) and PageRank, as well as maximal betweenness (96.6; weighted=248) and stress, indicating a dominant hub-bridge role. IL1B (degree=46) and JUN (degree=45) also showed high centrality and intermediary control, with JUN having the greatest unweighted betweenness (133). Additional hubs included PTGS2, MYC, CCL2, FOS, CXCL8, ICAM1, and CXCL1 (degrees=33–44), which collectively formed a dense k-core (coreness=16) with moderate local cohesion (clustering coefficients ~0.45–0.61) and uniformly short path lengths (eccentricity=2; high radiality). Consistent rankings across MCC, MNC, DMNC, and EPC further underscored IL6/IL1B/JUN as key control points, while chemokines (CCL2, CXCL8, CXCL1) and adhesion/signaling molecules (ICAM1, PTGS2, FOS, MYC) constituted a tightly interconnected pro-inflammatory module.
+```
+
+# Advanced workflows
+
+The basic interface is sufficient for most applications. However, the AI module also exposes several advanced controls for users who wish to refine the model persona, fix a reusable instruction set, or define their own output schema.
+
+## Controlling interpretation style
+
+`tcm_interpret()` supports four important control arguments:
+
+- `audience`: the intended audience, such as `researcher`, `wetlab`, or `paper`
+- `role`: a short description of the model persona
+- `prompt`: task-specific emphasis for the current call
+- `system`: a full system-prompt override
+
+In most cases, `prompt` and `role` are sufficient:
+
+```{r control-demo, eval=FALSE}
+tcm_interpret(
+  bp,
+  prompt = "Please focus on inflammation- and immunity-related terms, and keep the interpretation concise.",
+  role = "You are a TCM pharmacology expert specialising in herb-target-pathway interpretation.",
+  audience = "paper",
+  language = "en")
+```
+
+
+```{}
+=== TCM AI Analysis: enrichment ===
+  Model: openai:gpt-5-minimal | Language: en | Audience: paper
+  Generated: 2026-03-29 22:45:58
+
+-- Summary --
+Enrichment centers on innate immune activation via TLR/NF-κB, TNF/death receptor signaling, and cellular stress responses, with downstream effects on leukocyte adhesion, oxidative damage, and matrix remodeling. Key hubs (IRAK1, NFKBIA, ADAM17, MMP9, MPO, VCAM1, TP53) support an inflammatory, tissue-remodeling phenotype modulated by PI3K/PKC/GSK3B and nuclear receptors. 
+
+-- Key Findings --
+  *  Strong enrichment for responses to bacterial molecules/TLR signaling and NF-κB regulation (IRAK1, NFKBIA, CD14). 
+  *  Evidence of TNF/death receptor and stress-activated signaling affecting inflammation and apoptosis (TNF, TNFRSF10B, CASP3, TP53). 
+  *  Endothelial adhesion and leukocyte recruitment signals (VCAM1, ADAM17, MMP9). 
+  *  Oxidative/inflammatory effector activity and tissue remodeling (MPO, MMP9, ADAM17). 
+  *  Metabolic/hormonal regulators intersect immunity (PRKCB, PIK3CA, GSK3B, NR1H2/LXRβ, RARA, AR). 
+
+-- Biological Interpretation --
+The gene set indicates activation of innate immune and inflammatory stress programs, prominently involving NF-κB/TLR signaling (IRAK1, NFKBIA), oxidative and proteolytic inflammatory effectors (MPO, MMP9, ADAM17), endothelial-leukocyte interaction (VCAM1), and cell-death/repair pathways (CASP3, TP53). Steroid/nuclear receptor modulation (RARA, AR, NR1H2/LXRβ) and PI3K/PKC/GSK3B nodes suggest hormonal and metabolic control of inflammatory tone. TNF and death receptor signaling, together with unfolded protein/DNA damage stress, point to a milieu of inflammatory stress, immune activation, and tissue remodeling. 
+
+-- TCM Relevance --
+Implications for TCM anti-inflammatory herbs that modulate NF-κB/TLR and TNF pathways (e.g., Huangqin/Scutellaria baicalensis; Huanglian/Coptis chinensis; Jinyinhua/Lonicera japonica) and formulas like Huang-Lian-Jie-Du-Tang or Yin-Qiao-San, traditionally used to clear heat-toxin, reduce swelling, and protect endothelium; LXR/RXR-modulating botanicals (e.g., Shan Zha/Crataegus) may influence metabolic-inflammatory crosstalk. 
+
+-- Caveats --
+  !  GO terms are overlapping; enrichment does not prove pathway activation in specific cell types. 
+  !  Small gene counts in some terms (e.g., 6–8 genes) may inflate apparent specificity. 
+  !  Directionality (activation vs repression) cannot be inferred without expression fold-changes. 
+  !  Protein activity and post-translational regulation are not captured by gene lists.
+```
+
+
+## Reusable text functions
+
+When the same style of textual explanation is needed repeatedly, `make_tcm_function()` can be used to create a reusable wrapper with a fixed instruction.
+
+```{r fixed-function, eval=FALSE}
+compound_explainer <- make_tcm_function(
+  "You are a pharmacology assistant. Explain the input in English within three to four sentences, focusing on biological function and disease relevance.")
+
+compound_explainer(
+  "Quercetin is a flavonoid compound widely reported in TCM-related pharmacology studies.",
+  verbose = FALSE
+) |> cat()
+```
+
+
+```{}
+Quercetin is a plant-derived flavonoid (a polyphenolic compound) commonly found in many Traditional Chinese Medicine (TCM) herbs and widely studied for its pharmacological activities. Key points:
+
+- Sources in TCM: Frequently identified in herbs such as Ginkgo biloba (Yinxingye), Scutellaria baicalensis (Huangqin), Hypericum japonicum, Sophora japonica (Huaihua, especially flower buds), and Morus alba (Sangye). It also occurs in many foods (onions, capers, apples, berries, tea).
+
+- Reported pharmacological activities:
+  - Antioxidant and free-radical scavenging; Nrf2 pathway activation
+  - Anti-inflammatory; modulation of NF-κB, COX-2, iNOS
+  - Antiviral and antibacterial effects in vitro
+  - Anticancer properties in preclinical models (apoptosis induction, cell-cycle arrest, PI3K/Akt, MAPK modulation)
+  - Cardioprotective and vasodilatory effects; improvement of endothelial function
+  - Neuroprotective signals in models of neurodegeneration
+  - Anti-diabetic and metabolic benefits (AMPK activation, improved insulin sensitivity) in animal/early clinical data
+
+- Bioavailability considerations:
+  - Native quercetin aglycone has poor water solubility and limited oral bioavailability.
+  - Often present as glycosides in plants (e.g., rutin = quercetin-3-O-rutinoside); absorption and metabolism differ by glycoside type.
+  - Metabolized to glucuronides, sulfates, and methylated forms; these conjugates are likely the main circulating species.
+  - Formulation strategies (phytosomes, nanoparticles, co-administration with fats or vitamin C) can increase exposure.
+
+- Safety and interactions:
+  - Generally well tolerated at dietary intakes; supplemental doses up to ~1 g/day used short-term in studies.
+  - Possible GI upset, headache at higher doses.
+  - Potential interactions: may affect drug-metabolizing enzymes/transporters (CYP3A4, CYP2C9, OATP, P-gp); caution with narrow-therapeutic-index drugs (e.g., cyclosporine, warfarin), certain statins.
+  - Can chelate metals; separate from iron supplements.
+  - Pregnancy/lactation safety not well established.
+
+- Evidence quality:
+  - Strongest evidence is preclinical and small clinical trials; robust, large-scale RCT support for disease-specific outcomes is limited.
+  - In TCM research, quercetin often emerges as a “key active component” in network pharmacology analyses, but these methods are hypothesis-generating and should be validated experimentally.
+
+If you’d like, I can:
+- List quercetin-rich TCM herbs with typical content ranges.
+- Summarize human clinical trial findings for a specific condition.
+- Compare common supplement forms and dosing used in studies.
+```
+
+## Reusable agents
+
+For more persistent use cases, a reusable agent can be defined once and invoked repeatedly.
+
+```{r agent-demo, eval=FALSE}
+tcm_agent <- create_tcm_agent(
+  name = "TCMExpert",
+  description = "TCM pharmacology interpreter",
+  system_prompt = paste(
+    "You are a TCM pharmacology expert.",
+    "Respond in English.",
+    "Focus on herb-target-pathway relationships.",
+    "Do not invent statistics."
+  )
+)
+
+run_tcm_agent(
+  tcm_agent,
+  "Please explain how kaempferol and genistein from Lingzhi may contribute to the regulation of sepsis.",
+  verbose = FALSE
+) |> cat()
+```
+
+```{}
+Kaempferol and genistein are plant-derived flavonoids reported in Ganoderma lucidum (Lingzhi/Reishi) that can modulate key pathways implicated in sepsis. While most mechanistic data come from cell and animal models (and not Lingzhi-specific clinical trials), their known actions align with major drivers of sepsis pathobiology: dysregulated inflammation, endothelial and barrier injury, oxidative stress, immune dysfunction, and coagulation imbalance.
+
+How kaempferol may help regulate sepsis
+- TLR4–NF-κB/MAPK inhibition: Kaempferol suppresses LPS-induced activation of TLR4, NF-κB, and MAPKs (p38, JNK, ERK), reducing transcription of TNF-α, IL-1β, IL-6, COX-2, and iNOS.
+- NLRP3 inflammasome dampening: Inhibits NLRP3 activation and caspase-1 cleavage, lowering IL-1β/IL-18 maturation and pyroptosis.
+- Antioxidant/NRF2 activation: Enhances NRF2/HO-1 signaling and scavenges ROS, limiting oxidative damage that perpetuates inflammation and organ injury.
+- Endothelial and barrier protection: Preserves tight junction proteins (e.g., occludin/claudins) and reduces vascular hyperpermeability; improves microcirculatory function.
+- Anti-apoptotic and mitochondrial protection: Stabilizes mitochondrial membrane potential, reduces cytochrome c release and caspase activation in organs like liver, kidney, and heart.
+- Immunomodulation: Tends to rebalance hyperinflammatory states without causing profound immunosuppression; can promote macrophage M2 polarization in some models.
+- Anti-thromboinflammatory effects: Reduces tissue factor expression and platelet activation in preclinical studies, potentially mitigating disseminated coagulopathy.
+
+How genistein may help regulate sepsis
+- Tyrosine kinase inhibition: Genistein’s broad TK inhibitory activity can blunt upstream signaling from TLRs and cytokine receptors, reducing NF-κB and MAPK pathway activation and downstream cytokine release.
+- Estrogen receptor–mediated immunomodulation: As a phytoestrogen, genistein can signal via ERα/ERβ to temper inflammatory gene expression and enhance endothelial nitric oxide bioavailability.
+- NLRP3 and JAK/STAT modulation: Inhibits NLRP3 inflammasome activation; can attenuate JAK/STAT signaling (notably STAT3), decreasing IL-6–driven responses common in sepsis.
+- Antioxidant/NRF2 and mitochondrial benefits: Upregulates NRF2/HO-1, reduces ROS/RNS, protects mitochondrial function, and limits apoptosis in cardiomyocytes, hepatocytes, and renal tubular cells.
+- Endothelial protection and microcirculation: Preserves glycocalyx and tight junction integrity, reduces leukocyte–endothelium adhesion (e.g., downregulates ICAM-1/VCAM-1), and improves perfusion.
+- Gut barrier and microbiome: Helps maintain intestinal tight junctions and may favorably shift microbiota, potentially lowering endotoxin translocation—a key amplifier in sepsis.
+- Coagulation and platelet effects: Diminishes platelet aggregation and tissue factor–driven thrombin generation in models, potentially easing sepsis-associated coagulopathy.
+
+Potential synergy and relevance to Lingzhi
+- Lingzhi contains multiple bioactives (triterpenoids, polysaccharides, flavonoids). Kaempferol/genistein could complement Lingzhi polysaccharides (which often enhance host defense and modulate TLR signaling) and triterpenoids (noted NF-κB inhibitors), producing multi-target effects on inflammation, oxidative stress, endothelial injury, and coagulation.
+- Timing matters: In hyperinflammatory early sepsis, their anti-inflammatory and endothelial-protective effects may be beneficial; in late immunosuppressive phases, caution is warranted to avoid excessive dampening of host defense.
+
+Important caveats
+- Evidence base: Most data are from in vitro or animal sepsis/endotoxemia models using purified kaempferol or genistein. Direct clinical evidence in human sepsis, especially from Lingzhi-derived preparations, is limited.
+- Pharmacokinetics: Oral bioavailability of flavonoids is moderate and influenced by metabolism and gut microbiota; achieving effective plasma levels in sepsis is uncertain.
+- Safety/interactions: Genistein has estrogenic activity; both compounds can interact with anticoagulants, antiplatelets, and CYP-metabolized drugs—relevant in ICU settings.
+
+Bottom line
+Kaempferol and genistein found in Lingzhi plausibly contribute to sepsis regulation by inhibiting TLR4/NF-κB/MAPK and NLRP3 signaling, activating NRF2 antioxidative defenses, protecting endothelial and epithelial barriers, stabilizing mitochondria, modulating immune balance, and attenuating thromboinflammation. These mechanisms are consistent with preclinical benefits in sepsis models, but clinical validation, dosing, and safety in human sepsis remain to be established.
+```
+
+
+## User-defined structured output
+
+The most flexible interface in the module is `tcm_interpret_schema()`. Whereas `tcm_interpret()` returns a fixed output contract, `tcm_interpret_schema()` allows the user to define a custom schema and request exactly those fields from the model. This is particularly useful when the goal is to integrate AI output into a downstream analysis pipeline, a reporting template, or a manuscript-generation workflow. 
+
+### Defining a schema
+
+Define a schema by passing named field definitions to `tcm_schema()`:
+
+```{r custom-schema, eval=FALSE}
+my_schema <- tcm_schema(
+  summary     = tcm_field_string("A concise 2-3 sentence summary"),
+  mechanism   = tcm_field_string("Core mechanistic interpretation"),
+  key_targets = tcm_field_array("Most important gene or pathway targets"),
+  confidence  = tcm_field_enum(c("high", "medium", "low"),
+                               "Confidence level of the interpretation")
+)
+```
+
+Available field constructors:
+
+| Function | Type | Description |
+|---|---|---|
+| `tcm_field_string()` | `string` | Single text value |
+| `tcm_field_number()` | `number` | Numeric value |
+| `tcm_field_boolean()` | `boolean` | TRUE / FALSE flag |
+| `tcm_field_array()` | `array<string>` | List of strings |
+| `tcm_field_enum(choices)` | `enum` | One of a fixed set of values |
+
+### Running the interpretation
+
+Pass the schema to `tcm_interpret_schema()` along with any analysis object:
+
+```{r custom-schema-call, eval=FALSE}
+custom_res <- tcm_interpret_schema(
+  bp,
+  schema   = my_schema,
+  type     = "enrichment",
+  prompt   = "This is a GO Biological Process enrichment result from Lingzhi targets. Focus on inflammation-related processes.",
+  language = "en"
+)
+
+print(custom_res)
+```
+
+```
+=== TCM AI Custom: enrichment ===
+  Model: openai:gpt-5-minimal | Language: en | Audience: researcher
+  Generated: 2026-03-29 22:50:50
+
+Fields: confidence, key_targets, mechanism, summary
+
+-- confidence --
+high 
+
+-- key_targets --
+NF-κB pathway (NFKBIA, IRAK1, ADAM17, PRKCB, TRIM38) TLR signaling (CD14, IRAK1, MPO) Cytokine/TNF signaling and apoptosis (TNF, TNFRSF10B, CASP3, ADAM17) Leukocyte adhesion/migration (VCAM1, MMP9) ROS/oxidative stress response (MPO, AKR1B1, TP53) PI3K/AKT/GSK3B signaling crosstalk (PIK3CA, GSK3B) Nuclear receptor-mediated inflammation resolution (NR1H2/LXRβ, RARA, AR) APP/ABCC1-associated inflammatory modulation 
+
+-- mechanism --
+The enrichment points to Lingzhi targets converging on innate immune sensing (TLR–CD14–IRAK1) that activates NF‑κB, with multiple regulators (NFKBIA/IκBα, PRKCB, TRIM38) modulating pathway intensity. Downstream, ADAM17-driven ectodomain shedding, TNF/TNFRSF10B and CASP3 link inflammatory signaling with apoptosis. Leukocyte recruitment is supported by VCAM1 and matrix remodeling by MMP9. Oxidative stress and neutrophil activity (MPO) integrate with PI3K–GSK3B signaling, while nuclear receptors (NR1H2/LXRβ, RARA, AR) suggest pro‑resolving and lipid-inflammatory control. APP and ABCC1 imply additional regulation of inflammatory milieu and Aβ/transport processes that can affect neuroinflammation. 
+
+-- summary --
+Inflammation-related enrichment centers on NF‑κB and TLR/TNF signaling, leukocyte adhesion/migration, and oxidative stress, with strong representation of IRAK1, NFKBIA, ADAM17, VCAM1, MMP9, MPO, and CASP3. Lingzhi targets likely modulate innate immune activation and resolution by restraining NF‑κB, altering cytokine shedding (ADAM17), reducing leukocyte infiltration (VCAM1/MMP9), and influencing oxidative and metabolic inflammatory pathways (PI3K–GSK3B, LXRβ). 
+```
+
+# Session Info
+
+```{r session-info}
+sessionInfo()
+```

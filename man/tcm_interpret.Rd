@@ -30,6 +30,9 @@ enrichment table can be forced with \code{type = "enrichment"}.}
 \item{top_n}{Integer. Passed to the underlying interpret
 function (ignored for text).}
 
+\item{max_genes}{Integer. Max genes shown per term when
+\code{type = "enrichment"}. Ignored for text, PPI, and generic tables.}
+
 \item{audience}{Character. Preset: \code{"researcher"},
 \code{"wetlab"}, \code{"paper"}. Or any free-text description
 like \code{"clinical doctor, no bioinformatics background"}.}

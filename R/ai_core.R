@@ -1,6 +1,6 @@
 # ai_core.R
 # Internal helpers: aisdk dependency check, model resolution, result wrappers.
-# aisdk is an optional (Suggests) dependency — missing aisdk never breaks
+# aisdk is an optional (Suggests) dependency - missing aisdk never breaks
 # non-AI TCMDATA functions.
 
 #' Check whether aisdk is available
@@ -143,7 +143,7 @@
   )
 }
 
-# Hardcoded fallback list — used when aisdk is not yet installed
+# Hardcoded fallback list - used when aisdk is not yet installed
 # (e.g. during tcm_config() which does not require aisdk).
 # "custom" is intentionally excluded: aisdk provides create_custom_provider(),
 # not create_custom(), so advertising it causes misleading failures in tcm_setup().
@@ -249,6 +249,15 @@ tcm_config <- function(provider,
 #' @param test Logical. If TRUE, sends a minimal test request after setup to
 #'   verify the API key and endpoint are reachable. Warnings (not errors) are
 #'   issued on failure so the model is still registered. Default FALSE.
+#' @param force_json_schema Logical. Default \code{TRUE}. When \code{TRUE},
+#'   every \code{generate_object()} call internally re-passes the output schema
+#'   as \code{response_format}, which (a) enables native JSON schema output on
+#'   models that support the OpenAI structured-output API and (b) forces
+#'   OpenAI-compatible \strong{proxies} to preserve the system message that
+#'   contains the schema instruction (some 3rd-party relay APIs silently strip
+#'   the system message when \code{response_format} is absent).
+#'   Set \code{FALSE} only when targeting a provider whose API rejects an
+#'   unknown \code{response_format} field entirely.
 #'
 #' @return The model object, invisibly.
 #' @examples
@@ -267,13 +276,14 @@ tcm_config <- function(provider,
 #'   tcm_setup("deepseek", api_key = "sk-xxx", model = "deepseek-chat")
 #' }
 #' @export
-tcm_setup <- function(provider = NULL,
-                      api_key  = NULL,
-                      model    = NULL,
-                      base_url = NULL,
-                      .env     = TRUE,
-                      save     = FALSE,
-                      test     = FALSE) {
+tcm_setup <- function(provider         = NULL,
+                      api_key          = NULL,
+                      model            = NULL,
+                      base_url         = NULL,
+                      .env             = TRUE,
+                      save             = FALSE,
+                      test             = FALSE,
+                      force_json_schema = TRUE) {
   .check_aisdk()
 
   if (.env && requireNamespace("dotenv", quietly = TRUE)) {
@@ -290,10 +300,10 @@ tcm_setup <- function(provider = NULL,
     env_path <- file.path(getwd(), ".env")
     stop(
       "No API key found.\n",
-      "  Option A: pass it directly —\n",
+      "  Option A: pass it directly -\n",
       "    tcm_setup(provider=\"openai\", api_key=\"sk-...\",",
       " model=\"gpt-4o-mini\")\n",
-      "  Option B: save to .env first —\n",
+      "  Option B: save to .env first -\n",
       "    tcm_config(\"openai\", \"sk-...\", \"gpt-4o-mini\")",
       " then tcm_setup()\n",
       "  .env searched at: ", env_path, "\n",
@@ -340,12 +350,44 @@ tcm_setup <- function(provider = NULL,
     )
   }
 
+  options(tcm.force_json_schema = isTRUE(force_json_schema))
+
   message(sprintf("tcm_setup: %s / %s ready.", provider, model))
   invisible(model_obj)
 }
 
-# null-coalescing operator (NULL only — consistent with rlang::`%||%`)
+# null-coalescing operator (NULL only - consistent with rlang::`%||%`)
 `%||%` <- function(x, y) if (is.null(x)) y else x
+
+#' Wrapper around aisdk::generate_object() with proxy-model compatibility
+#'
+#' Some OpenAI-compatible proxies (e.g. 3rd-party relay APIs) strip the
+#' system message from requests that do not include a \code{response_format}
+#' parameter. When the system message is stripped, the JSON schema instruction
+#' that aisdk appends to the system prompt is lost and the model returns plain
+#' conversational text instead of structured output.
+#'
+#' When the \code{tcm.force_json_schema} option is \code{TRUE} (set by
+#' \code{tcm_setup(force_json_schema = TRUE)}), this helper re-passes the
+#' schema as \code{response_format} so the proxy preserves the system message.
+#' For native OpenAI endpoints this is harmless - the parameter is redundant
+#' but does not cause errors.
+#' @keywords internal
+#' @noRd
+.call_generate_object <- function(model, prompt, schema, system,
+                                  temperature = 0.3) {
+  args <- list(
+    model       = model,
+    prompt      = prompt,
+    schema      = schema,
+    system      = system,
+    temperature = temperature
+  )
+  if (isTRUE(getOption("tcm.force_json_schema", FALSE))) {
+    args$response_format <- schema
+  }
+  do.call(aisdk::generate_object, args)
+}
 
 # env-var helper: NULL *or* empty string falls back to default.
 # Used exclusively inside tcm_setup() for Sys.getenv() resolution.
@@ -394,7 +436,7 @@ tcm_setup <- function(provider = NULL,
     return(list(output = parsed, output_mode = "structured"))
   }
 
-  # Case 4: plain-text fallback — model ignored the schema
+  # Case 4: plain-text fallback - model ignored the schema
   list(output = .fallback_object(raw, type), output_mode = "fallback_text")
 }
 

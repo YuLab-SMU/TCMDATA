@@ -128,5 +128,5 @@ tcm_field_array <- function(description = "") {
 #' @export
 tcm_field_enum <- function(choices, description = "") {
   .check_aisdk()
-  aisdk::z_enum(choices)
+  aisdk::z_enum(choices, description)
 }

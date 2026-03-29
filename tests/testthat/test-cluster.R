@@ -1,13 +1,12 @@
 test_that("run_MCL works on Zachary graph", {
   skip_if_not_installed("igraph")
-  library(igraph)
-  
-  g <- make_graph("Zachary")
+
+  g <- igraph::make_graph("Zachary")
   g_mcl <- run_MCL(g, inflation = 2)
   
-  expect_true(is_igraph(g_mcl))
-  expect_true("MCL_cluster" %in% vertex_attr_names(g_mcl))
-  expect_type(V(g_mcl)$MCL_cluster, "integer")
+  expect_true(igraph::is_igraph(g_mcl))
+  expect_true("MCL_cluster" %in% igraph::vertex_attr_names(g_mcl))
+  expect_type(igraph::V(g_mcl)$MCL_cluster, "integer")
 })
 
 test_that("run_mcode works on demo_ppi", {

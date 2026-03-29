@@ -250,13 +250,8 @@ interpret_enrichment <- function(x,
     context, sep = "\n\n"
   )
 
-  result <- aisdk::generate_object(
-    model  = model,
-    prompt = prompt,
-    schema = .analysis_schema(),
-    system = system,
-    temperature = 0.3
-  )
+  result <- .call_generate_object(model, prompt, .analysis_schema(), system,
+                                   temperature = 0.3)
 
   input_class <- paste(class(x), collapse = "/")
   extracted   <- .extract_object(result, "analysis")
@@ -313,13 +308,8 @@ interpret_ppi <- function(x,
     context, sep = "\n\n"
   )
 
-  result <- aisdk::generate_object(
-    model  = model,
-    prompt = prompt,
-    schema = .analysis_schema(),
-    system = system,
-    temperature = 0.3
-  )
+  result <- .call_generate_object(model, prompt, .analysis_schema(), system,
+                                   temperature = 0.3)
 
   input_class <- paste(class(x), collapse = "/")
   extracted   <- .extract_object(result, "analysis")
@@ -375,13 +365,8 @@ interpret_table <- function(x,
     context, sep = "\n\n"
   )
 
-  result <- aisdk::generate_object(
-    model  = model,
-    prompt = prompt,
-    schema = .analysis_schema(),
-    system = system,
-    temperature = 0.3
-  )
+  result <- .call_generate_object(model, prompt, .analysis_schema(), system,
+                                   temperature = 0.3)
 
   input_class <- paste(class(x), collapse = "/")
   extracted   <- .extract_object(result, "analysis")
@@ -418,6 +403,8 @@ interpret_table <- function(x,
 #'   enrichment table can be forced with \code{type = "enrichment"}.
 #' @param top_n Integer. Passed to the underlying interpret
 #'   function (ignored for text).
+#' @param max_genes Integer. Max genes shown per term when
+#'   \code{type = "enrichment"}. Ignored for text, PPI, and generic tables.
 #' @param audience Character. Preset: \code{"researcher"},
 #'   \code{"wetlab"}, \code{"paper"}. Or any free-text description
 #'   like \code{"clinical doctor, no bioinformatics background"}.
@@ -627,12 +614,7 @@ tcm_interpret_schema <- function(x,
     sep = "\n\n"
   )
 
-  result <- aisdk::generate_object(
-    model  = model,
-    prompt = user_prompt,
-    schema = schema,
-    system = system
-  )
+  result <- .call_generate_object(model, user_prompt, schema, system)
 
   extracted <- .extract_custom_object(result)
   .new_tcm_ai_custom(

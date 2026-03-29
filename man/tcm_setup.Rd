@@ -11,7 +11,8 @@ tcm_setup(
   base_url = NULL,
   .env = TRUE,
   save = FALSE,
-  test = FALSE
+  test = FALSE,
+  force_json_schema = TRUE
 )
 }
 \arguments{
@@ -33,6 +34,16 @@ Default FALSE.}
 \item{test}{Logical. If TRUE, sends a minimal test request after setup to
 verify the API key and endpoint are reachable. Warnings (not errors) are
 issued on failure so the model is still registered. Default FALSE.}
+
+\item{force_json_schema}{Logical. Default \code{TRUE}. When \code{TRUE},
+every \code{generate_object()} call internally re-passes the output schema
+as \code{response_format}, which (a) enables native JSON schema output on
+models that support the OpenAI structured-output API and (b) forces
+OpenAI-compatible \strong{proxies} to preserve the system message that
+contains the schema instruction (some 3rd-party relay APIs silently strip
+the system message when \code{response_format} is absent).
+Set \code{FALSE} only when targeting a provider whose API rejects an
+unknown \code{response_format} field entirely.}
 }
 \value{
 The model object, invisibly.

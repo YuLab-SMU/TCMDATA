@@ -10,7 +10,7 @@ print.tcm_ai_analysis <- function(x, ...) {
 
   out <- x$output
   if (is.null(out)) {
-    cat("  (No output — generation may have failed)\n")
+    cat("  (No output - generation may have failed)\n")
     return(invisible(x))
   }
 
@@ -58,7 +58,7 @@ print.tcm_ai_draft <- function(x, ...) {
 
   draft <- x$draft
   if (is.null(draft)) {
-    cat("  (No draft — generation may have failed)\n")
+    cat("  (No draft - generation may have failed)\n")
     return(invisible(x))
   }
 
@@ -102,7 +102,7 @@ print.tcm_ai_custom <- function(x, ...) {
 
   out <- x$output
   if (is.null(out) || length(out) == 0L) {
-    cat("  (No output — generation may have failed)\n")
+    cat("  (No output - generation may have failed)\n")
     return(invisible(x))
   }
 

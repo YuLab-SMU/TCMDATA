@@ -26,54 +26,10 @@ publication-ready visualization.
 | **PPI analysis** | Filtering, 15+ centrality metrics, community detection, and PPI robustness analysis | `ppi_subset()`, `compute_nodeinfo()`, `rank_ppi_nodes()` |
 | **Clustering** | Louvain, MCL, and MCODE algorithms | `run_louvain()`, `run_MCL()`, `runMCODE()` |
 | **ML screening** | LASSO, Elastic Net, Ridge, Random Forest + Boruta, SVM-RFE, XGBoost; three validation modes (A/B/C) with consensus analysis | `run_ml_screening()`, `plot_ml_roc()`, `plot_ml_venn()` |
+| **Data interpretation** | AI-assisted interpretation for text, enrichment objects, PPI objects, tables, and result drafting | `tcm_interpret()`, `draft_result_paragraph()`, `tcm_interpret_schema()` |
 | **Visualization** | Sankey, docking heatmap, PPI heatmap, network plots | `tcm_sankey()`, `ggdock()`, `plot_node_heatmap()` |
 | **Other resources** | Supplementary datasets: gut microbiota–metabolite associations (gutMGene) and transcription factor–target regulation pairs | `gutMGene`, `tf_targets`, `dn_targets` |
 
-## AI Quick Start
-
-TCMDATA includes an AI interpretation module (requires the
-[aisdk](https://github.com/YuLab-SMU/aisdk) package).
-
-```r
-# Step 0 — install aisdk (one-time)
-devtools::install_github("YuLab-SMU/aisdk")
-
-# Step 1 — save credentials to .env (one-time per project)
-tcm_config("openai", api_key = "sk-...", model = "gpt-4o-mini")
-# Supported: openai, anthropic, gemini, deepseek, volcengine, openrouter, ...
-
-# Step 2 — initialise the model (every session)
-tcm_setup()
-```
-
-**Structured input** — returns a `tcm_ai_analysis` object with `print()` support:
-
-```r
-ai_res <- tcm_interpret(enrich_res)   # enrichResult from herb_enricher() / clusterProfiler
-ai_res <- tcm_interpret(ppi_graph)    # igraph from compute_nodeinfo()
-ai_res <- tcm_interpret(my_df)        # any data.frame
-
-print(ai_res)                         # summary / key findings / TCM relevance / caveats
-
-# Step 3 — draft a publication paragraph from the result
-draft <- draft_result_paragraph(ai_res, language = "zh")
-cat(as.character(draft))
-```
-
-**Free-text input** — returns a character vector:
-
-```r
-txt <- tcm_interpret("IL6 logFC=3.2, TNF logFC=2.8", verbose = FALSE)
-cat(txt)
-
-# Custom role and audience
-tcm_interpret("quercetin targets: AKT1, TNF, IL6",
-              role = "You are a TCM pharmacologist.",
-              audience = "wetlab")
-```
-
-> Advanced usage — custom agents, batch processing, and provider switching —
-> is covered in the full documentation.
 
 ## Installation
 
@@ -85,8 +41,76 @@ options(timeout = 600)
 devtools::install_github("YuLab-SMU/TCMDATA")
 ```
 
+## AI Quick Start
+
+`TCMDATA` includes an AI interpretation module built on top of
+[aisdk](https://github.com/YuLab-SMU/aisdk).
+
+```r
+# One-time install
+devtools::install_github("YuLab-SMU/aisdk")
+
+# Configure and initialise the model
+tcm_setup(
+  provider = "openai",
+  api_key = "sk-xxxx",
+  model = "gpt-5",
+  base_url= "xxx", # if neccessary
+  save = TRUE,
+  test = TRUE
+)
+```
+
+Object interpretation:
+
+```r
+library(clusterProfiler)
+
+# Example: build a GO enrichment result from Lingzhi targets
+lz_targets <- search_herb("lingzhi", "Herb_pinyin_name")$target
+lz_targets <- unique(na.omit(sample(lz_targets, 100)))
+
+enrich_res <- enrichGO(
+  gene = lz_targets,
+  OrgDb = 'org.Hs.eg.db',
+  keyType = "SYMBOL",
+  ont = "BP"
+)
+
+ai_res <- tcm_interpret(
+  enrich_res,
+  prompt = "This is a GO BP enrichment result derived from the potential targets of Lingzhi. Please briefly summarise its core biological significance.",
+  language = "en"
+)
+print(ai_res)
+
+draft <- draft_result_paragraph(ai_res, language = "en")
+cat(as.character(draft))
+```
+
+Free-text interpretation:
+
+```r
+txt <- tcm_interpret(
+  "Please introduce the major pharmacological functions of Huangqi (Astragalus membranaceus), and briefly explain its potential roles in immunoregulation and disease treatment.",
+  verbose = FALSE,
+  language = "en"
+)
+cat(txt)
+```
+
+Custom structured output:
+
+```r
+my_schema <- tcm_schema(
+  summary = tcm_field_string("Brief summary"),
+  key_targets = tcm_field_array("Top targets")
+)
+
+res <- tcm_interpret_schema(enrich_res, schema = my_schema, language = "en")
+print(res)
+```
+
 ## Documentation
 
 Full documentation with worked examples is available at **[here](https://hinna0818.github.io/TCMDATA/)**.
-
-
