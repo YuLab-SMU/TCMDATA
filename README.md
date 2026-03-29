@@ -29,12 +29,59 @@ publication-ready visualization.
 | **Visualization** | Sankey, docking heatmap, PPI heatmap, network plots | `tcm_sankey()`, `ggdock()`, `plot_node_heatmap()` |
 | **Other resources** | Supplementary datasets: gut microbiota–metabolite associations (gutMGene) and transcription factor–target regulation pairs | `gutMGene`, `tf_targets`, `dn_targets` |
 
+## AI Quick Start
+
+TCMDATA includes an AI interpretation module (requires the
+[aisdk](https://github.com/YuLab-SMU/aisdk) package).
+
+```r
+# Step 0 — install aisdk (one-time)
+devtools::install_github("YuLab-SMU/aisdk")
+
+# Step 1 — save credentials to .env (one-time per project)
+tcm_config("openai", api_key = "sk-...", model = "gpt-4o-mini")
+# Supported: openai, anthropic, gemini, deepseek, volcengine, openrouter, ...
+
+# Step 2 — initialise the model (every session)
+tcm_setup()
+```
+
+**Structured input** — returns a `tcm_ai_analysis` object with `print()` support:
+
+```r
+ai_res <- tcm_interpret(enrich_res)   # enrichResult from herb_enricher() / clusterProfiler
+ai_res <- tcm_interpret(ppi_graph)    # igraph from compute_nodeinfo()
+ai_res <- tcm_interpret(my_df)        # any data.frame
+
+print(ai_res)                         # summary / key findings / TCM relevance / caveats
+
+# Step 3 — draft a publication paragraph from the result
+draft <- draft_result_paragraph(ai_res, language = "zh")
+cat(as.character(draft))
+```
+
+**Free-text input** — returns a character vector:
+
+```r
+txt <- tcm_interpret("IL6 logFC=3.2, TNF logFC=2.8", verbose = FALSE)
+cat(txt)
+
+# Custom role and audience
+tcm_interpret("quercetin targets: AKT1, TNF, IL6",
+              role = "You are a TCM pharmacologist.",
+              audience = "wetlab")
+```
+
+> Advanced usage — custom agents, batch processing, and provider switching —
+> is covered in the full documentation.
+
 ## Installation
 
 Install the development version from GitHub:
 
 ```r
 # install.packages("devtools")
+options(timeout = 600)
 devtools::install_github("YuLab-SMU/TCMDATA")
 ```
 
