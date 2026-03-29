@@ -55,7 +55,7 @@ tcm_setup(
   provider = "openai",
   api_key = "sk-xxxx",
   model = "gpt-5",
-  base_url= "xxx", # if neccessary
+  base_url= "xxx", # if necessary
   save = TRUE,
   test = TRUE
 )
