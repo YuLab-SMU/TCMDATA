@@ -70,6 +70,12 @@ jobs:
             ))
           '
 
+      - name: Install GitHub dependencies
+        run: |
+          Rscript -e '
+            pak::pkg_install("YuLab-SMU/aisdk")
+          '
+
       - name: Install TCMDATA from source
         run: |
           set -o pipefail
@@ -88,7 +94,7 @@ jobs:
           } else {
             stop("DESCRIPTION not found in repo root")
           }
-          pak::local_install(".", dependencies = TRUE, upgrade = FALSE)
+          pak::local_install(".", dependencies = c("Depends", "Imports", "LinkingTo"), upgrade = FALSE)
           if (!requireNamespace("TCMDATA", quietly = TRUE)) {
             stop("TCMDATA not installed!")
           }
