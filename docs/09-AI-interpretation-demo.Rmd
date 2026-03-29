@@ -14,7 +14,7 @@ output:
 
 In this chapter, we demonstrate both the basic and advanced usage of the AI module in `TCMDATA`, including free-text interpretation, direct interpretation of enrichment and PPI objects, reusable prompt wrappers, agent-based interfaces, and user-defined structured outputs.
 
-```{r setup, include=FALSE}
+```{r ai-setup, include=FALSE}
 knitr::opts_chunk$set(
   echo = TRUE,
   message = FALSE,
@@ -473,6 +473,6 @@ Inflammation-related enrichment centers on NF‑κB and TLR/TNF signaling, leuko
 
 # Session Info
 
-```{r session-info}
+```{r ai-session-info}
 sessionInfo()
 ```
