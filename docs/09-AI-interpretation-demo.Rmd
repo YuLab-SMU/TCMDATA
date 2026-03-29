@@ -1,14 +1,4 @@
----
-title: "AI-assisted interpretation of analysis results"
-author: "Nan He"
-date: "`r Sys.Date()`"
-output:
-  html_document:
-    toc: true
-    toc_depth: 3
----
-
-# Introduction
+# AI-assisted interpretation {#ai-interpretation}
 
 `TCMDATA` includes an AI interpretation module built on top of [aisdk](https://github.com/YuLab-SMU/aisdk). This module is designed to complement the deterministic analytical workflows provided by `TCMDATA`. In practice, the AI layer is used to interpret outputs, summarise findings, draft result paragraphs, and optionally return custom structured objects.
 
@@ -24,11 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Prerequisites
+## Prerequisites
 
-## Installation
+### Installation
 
-The AI module requires both `TCMDATA` and `aisdk`. You can install by the following step firstly:
+The AI module requires both `TCMDATA` and `aisdk`. Install `aisdk` first, then load the required packages:
 
 ```{r install, eval=FALSE}
 devtools::install_github("YuLab-SMU/aisdk")
@@ -36,9 +26,9 @@ library(aisdk)
 library(TCMDATA)
 ```
 
-## Model configuration
+### Model configuration
 
-Model configuration is handled through `tcm_setup()`. In a typical project, users only need to initialize the model once per session. The configuration can optionally be saved to a local `.env` file.
+Model configuration is handled through `tcm_setup()`. In a typical project, the model only needs to be initialized once per session. The configuration can optionally be saved to a local `.env` file.
 
 ```{r config, eval=FALSE, message=TRUE}
 tcm_setup(
@@ -52,11 +42,11 @@ tcm_setup(
 
 The `test = TRUE` argument sends a minimal request to verify that the endpoint is reachable. The `force_json_schema = TRUE` argument (the default) ensures that structured output works correctly across all OpenAI-compatible endpoints, including third-party proxy APIs that may otherwise strip the system message.
 
-# Basic workflows
+## Basic workflows
 
 For most users, the primary interface is `tcm_interpret()`. This single function supports both free-text inputs and analysis objects.
 
-## Free-text interpretation
+### Free-text interpretation
 
 The simplest use case is to interpret a short textual query. This mode is particularly useful for obtaining a concise explanation of the pharmacological roles of a herb or compound.
 
@@ -129,7 +119,7 @@ tcm_interpret(
 Kaempferol and genistein likely mitigate sepsis by modulating central inflammatory hubs such as NF-κB, MAPK (p38/JNK/ERK), and JAK/STAT, thereby reducing transcription of TNF-α, IL-1β, IL-6, COX-2, and iNOS. Both compounds can inhibit TLR4/MyD88 signaling and downregulate NLRP3 inflammasome activation, decreasing caspase-1–mediated IL-1β maturation and pyroptosis. They also enhance antioxidant defenses via Nrf2/HO-1 and preserve endothelial and mitochondrial function, limiting ROS generation, apoptosis, and vascular leakage characteristic of septic organ injury. Genistein’s tyrosine kinase/PI3K-Akt modulation and kaempferol’s AMPK activation further promote autophagy and immune homeostasis, collectively attenuating cytokine storm and improving microcirculatory stability in sepsis. 
 ```
 
-## Interpretation of enrichment objects
+### Interpretation of enrichment objects
 
 A common problem in practice is that enrichment results must first be manually reformatted into a model-readable representation before they can be interpreted by an LLM. In `TCMDATA`, this preprocessing step is handled automatically. The package can directly accept a `clusterProfiler` enrichment object, compress the relevant terms and associated genes into a compact textual context, and then send that representation to the model.
 
@@ -186,7 +176,7 @@ Findings align with TCM uses of Lingzhi (Ganoderma lucidum) to tonify qi and cal
   !  APP/GSK3B links to neurobiology are suggestive but not disease-specific.
 ```
 
-## Interpretation of PPI objects
+### Interpretation of PPI objects
 
 `TCMDATA` also supports direct interpretation of PPI network objects. After computing vertex-level topological attributes with `compute_nodeinfo()`, the enriched `igraph` object can be passed directly to the AI module for mechanistic summarization and hub-node prioritization.
 
@@ -226,7 +216,7 @@ The network is a dense, highly centralised inflammatory/immune PPI module with s
 ```
 
 
-## Drafting a result paragraph
+### Drafting a result paragraph
 
 Once an interpretation object has been created, `draft_result_paragraph()` can be used to transform it into a short paragraph suitable for the Results section of a manuscript.
 
@@ -243,11 +233,11 @@ cat(as.character(draft))
 The PPI network was highly connected and centered on inflammatory mediators. Among the top 10 nodes by degree, IL6 ranked first (degree=47) and exhibited the highest eigenvector centrality (1.0) and PageRank, as well as maximal betweenness (96.6; weighted=248) and stress, indicating a dominant hub-bridge role. IL1B (degree=46) and JUN (degree=45) also showed high centrality and intermediary control, with JUN having the greatest unweighted betweenness (133). Additional hubs included PTGS2, MYC, CCL2, FOS, CXCL8, ICAM1, and CXCL1 (degrees=33–44), which collectively formed a dense k-core (coreness=16) with moderate local cohesion (clustering coefficients ~0.45–0.61) and uniformly short path lengths (eccentricity=2; high radiality). Consistent rankings across MCC, MNC, DMNC, and EPC further underscored IL6/IL1B/JUN as key control points, while chemokines (CCL2, CXCL8, CXCL1) and adhesion/signaling molecules (ICAM1, PTGS2, FOS, MYC) constituted a tightly interconnected pro-inflammatory module.
 ```
 
-# Advanced workflows
+## Advanced workflows
 
 The basic interface is sufficient for most applications. However, the AI module also exposes several advanced controls for users who wish to refine the model persona, fix a reusable instruction set, or define their own output schema.
 
-## Controlling interpretation style
+### Controlling interpretation style
 
 `tcm_interpret()` supports four important control arguments:
 
@@ -297,7 +287,7 @@ Implications for TCM anti-inflammatory herbs that modulate NF-κB/TLR and TNF pa
 ```
 
 
-## Reusable text functions
+### Reusable text functions
 
 When the same style of textual explanation is needed repeatedly, `make_tcm_function()` can be used to create a reusable wrapper with a fixed instruction.
 
@@ -349,7 +339,7 @@ If you’d like, I can:
 - Compare common supplement forms and dosing used in studies.
 ```
 
-## Reusable agents
+### Reusable agents
 
 For more persistent use cases, a reusable agent can be defined once and invoked repeatedly.
 
@@ -407,11 +397,11 @@ Kaempferol and genistein found in Lingzhi plausibly contribute to sepsis regulat
 ```
 
 
-## User-defined structured output
+### User-defined structured output
 
 The most flexible interface in the module is `tcm_interpret_schema()`. Whereas `tcm_interpret()` returns a fixed output contract, `tcm_interpret_schema()` allows the user to define a custom schema and request exactly those fields from the model. This is particularly useful when the goal is to integrate AI output into a downstream analysis pipeline, a reporting template, or a manuscript-generation workflow. 
 
-### Defining a schema
+#### Defining a schema
 
 Define a schema by passing named field definitions to `tcm_schema()`:
 
@@ -435,7 +425,7 @@ Available field constructors:
 | `tcm_field_array()` | `array<string>` | List of strings |
 | `tcm_field_enum(choices)` | `enum` | One of a fixed set of values |
 
-### Running the interpretation
+#### Running the interpretation
 
 Pass the schema to `tcm_interpret_schema()` along with any analysis object:
 
@@ -471,7 +461,7 @@ The enrichment points to Lingzhi targets converging on innate immune sensing (TL
 Inflammation-related enrichment centers on NF‑κB and TLR/TNF signaling, leukocyte adhesion/migration, and oxidative stress, with strong representation of IRAK1, NFKBIA, ADAM17, VCAM1, MMP9, MPO, and CASP3. Lingzhi targets likely modulate innate immune activation and resolution by restraining NF‑κB, altering cytokine shedding (ADAM17), reducing leukocyte infiltration (VCAM1/MMP9), and influencing oxidative and metabolic inflammatory pathways (PI3K–GSK3B, LXRβ). 
 ```
 
-# Session Info
+## Session information
 
 ```{r ai-session-info}
 sessionInfo()
