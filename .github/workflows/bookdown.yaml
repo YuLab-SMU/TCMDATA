@@ -8,6 +8,7 @@ on:
       - ml
       - docs_update
       - molecule
+      - aisdk
 
 permissions:
   contents: write
@@ -38,9 +39,10 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev libxml2-dev libssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev fonts-noto-cjk locales
+          sudo apt-get install -y libcurl4-openssl-dev libxml2-dev libssl-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev fonts-noto-cjk locales default-jdk
           sudo locale-gen en_US.UTF-8
           sudo update-locale LANG=en_US.UTF-8
+          sudo R CMD javareconf
           fc-cache -fv
 
       - name: Install pak
@@ -65,8 +67,27 @@ jobs:
               "aplot", "aplotExtra", "dplyr", "forcats", "ggfun", "ggplot2", "ggrepel",
               "igraph", "ivolcano", "magrittr", "Matrix", "paletteer", "purrr",
               "RColorBrewer", "rlang", "scales", "tibble", "tidyr", "yulab.utils",
-              "ggalluvial", "ggtangle", "ggvenn", "ggridges"
+              "ggalluvial", "ggtangle", "ggvenn", "ggridges",
+              "glmnet", "randomForest", "xgboost", "Boruta",
+              "caret", "kernlab", "pROC"
             ))
+          '
+
+      - name: Install GitHub dependencies
+        run: |
+          Rscript -e '
+            pak::pkg_install("YuLab-SMU/aisdk")
+          '
+
+      - name: Install all suggested packages from DESCRIPTION
+        run: |
+          Rscript -e '
+            d <- read.dcf("DESCRIPTION", all = TRUE)
+            suggests <- d[1, "Suggests"]
+            pkgs <- trimws(strsplit(suggests, ",")[[1]])
+            pkgs <- gsub("\\s*\\(.*\\)$", "", pkgs)
+            pkgs <- setdiff(pkgs, "aisdk")
+            pak::pkg_install(pkgs)
           '
 
       - name: Install TCMDATA from source
@@ -87,7 +108,7 @@ jobs:
           } else {
             stop("DESCRIPTION not found in repo root")
           }
-          pak::local_install(".", dependencies = TRUE, upgrade = FALSE)
+          pak::local_install(".", dependencies = c("Depends", "Imports", "LinkingTo"), upgrade = FALSE)
           if (!requireNamespace("TCMDATA", quietly = TRUE)) {
             stop("TCMDATA not installed!")
           }

@@ -6,9 +6,13 @@ Authors@R: c(
     person(given = "Guangchuang", family = "Yu", email = "guangchuangyu@gmail.com", role = c("aut", "ths"), comment = c(ORCID = "0000-0002-6485-8781")),
     person(given = "Shuangbin",   family = "Xu", email = "xshuangbin@163.com",      role = "ctb",           comment = c(ORCID = "0000-0003-3513-5362"))
   )
+Author: Nan He [aut, cre] (<https://orcid.org/0009-0008-6932-3867>),
+  Guangchuang Yu [aut, ths] (<https://orcid.org/0000-0002-6485-8781>),
+  Shuangbin Xu [ctb] (<https://orcid.org/0000-0003-3513-5362>)
+Maintainer: Nan He <nanh302311@gmail.com>
 Description: An integrated R package for Traditional Chinese Medicine (TCM) pharmacology data retrieval, network analysis, and visualization. It provides tools for fetching herb-molecule-target interactions, constructing pharmacological networks, performing enrichment analysis, and generating publication-ready visualizations like Sankey plots, Venn diagrams, and docking result heatmaps.
 Depends:
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 Imports:
     aplot,
     clusterProfiler,
@@ -20,6 +24,7 @@ Imports:
     ggrepel,
     grDevices,
     igraph,
+    jsonlite,
     magrittr,
     Matrix,
     methods,
@@ -34,13 +39,14 @@ Imports:
     utils,
     yulab.utils
 Suggests:
+    aisdk,
     Boruta,
     caret,
     circlize,
     ComplexHeatmap,
+    dotenv,
     glmnet,
     httr,
-    jsonlite,
     kernlab,
     pROC,
     randomForest,
@@ -55,8 +61,11 @@ Suggests:
     ggalluvial,
     ggvenn,
     ggthemes
+Remotes:
+    YuLab-SMU/aisdk
 License: Artistic-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 LazyData: true
+Config/testthat/edition: 3
