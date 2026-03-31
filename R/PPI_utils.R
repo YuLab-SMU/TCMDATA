@@ -333,7 +333,8 @@ compute_MCC <- function(graph) {
 
   for (clq in max_cliques_list) {
     size <- length(clq)
-    weight <- factorial(size - 1)
+    # factorial() overflows to Inf for size > 171; cap at .Machine$double.xmax
+    weight <- if (size - 1L <= 170L) factorial(size - 1L) else .Machine$double.xmax
     mcc[igraph::V(graph)[clq]$name] <- mcc[igraph::V(graph)[clq]$name] + weight
   }
 
@@ -467,7 +468,9 @@ compute_BN <- function(g) {
       }
     }
     thr <- nT / 4
-    candidates <- reachable_indices[subtree_size[reachable_indices] > thr]
+    # Exclude the root itself: being root of a tree is not a bottleneck
+    non_root <- reachable_indices[reachable_indices != s]
+    candidates <- non_root[subtree_size[non_root] > thr]
 
     if (length(candidates) > 0) {
       BN[candidates] <- BN[candidates] + 1
@@ -512,11 +515,8 @@ compute_radiality <- function(g) {
 
   dist_mat[!is.finite(dist_mat)] <- D + 1
 
-  # Calculate Radiality
-  # Numerator: Sum of (D + 1 - distance) for all other nodes
-  # We divide by (n - 1) to normalize the value (average closeness gain).
-  # This normalization does not change the ranking but makes values comparable.
-  numerator <- rowSums((D + 1) - dist_mat)
+  # Calculate Radiality: sum over u != v, so subtract the self-distance term (D+1 - 0 = D+1)
+  numerator <- rowSums((D + 1) - dist_mat) - (D + 1)
   radiality <- numerator / (n - 1)
 
   # Assign to graph
@@ -604,7 +604,9 @@ compute_Stress <- function(g) {
     }
   }
 
-  igraph::V(g)$Stress <- stress_score
+  # For undirected graphs each unordered pair (s,t) is visited twice (once as
+  # source s, once as source t), so divide by 2 to match the standard definition.
+  igraph::V(g)$Stress <- stress_score / 2
   return(g)
 }
 
