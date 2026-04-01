@@ -19,7 +19,6 @@
 #'
 #' @import ggplot2
 #' @importFrom ggrepel geom_text_repel
-#' @importFrom RColorBrewer brewer.pal.info brewer.pal
 #' @importFrom enrichplot dotplot
 #' @importFrom rlang .data
 #'
@@ -39,6 +38,10 @@ gglollipop <- function(enrich_obj,
                                plot_title = NULL,
                                show_count = TRUE,
                                ...) {
+
+  if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+    stop("Package 'RColorBrewer' is required for gglollipop(). Please install it with: install.packages('RColorBrewer')")
+  }
 
   if (is.null(orderBy)) {
     orderBy <- "x"

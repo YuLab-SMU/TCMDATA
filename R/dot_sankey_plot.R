@@ -160,8 +160,6 @@ make_colors <- function(items, colors, insert = NULL) {
 #' @importFrom dplyr filter mutate count arrange select distinct left_join case_when desc
 #' @importFrom tidyr separate_rows
 #' @importFrom ggfun get_legend
-#' @importFrom aplot plot_list
-#' @importFrom RColorBrewer brewer.pal
 #' @importFrom scales pretty_breaks
 #' @return a ggplot object containing dot plot and sankey plot.
 #' @export
@@ -193,6 +191,14 @@ ggdot_sankey <- function(
 
   if (!requireNamespace("ggalluvial", quietly = TRUE)) {
     stop("Package 'ggalluvial' is required for ggdot_sankey(). Please install it.")
+  }
+
+  if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+    stop("Package 'RColorBrewer' is required for ggdot_sankey(). Please install it with: install.packages('RColorBrewer')")
+  }
+
+  if (!requireNamespace("aplot", quietly = TRUE)) {
+    stop("Package 'aplot' is required for ggdot_sankey(). Please install it with: install.packages('aplot')")
   }
 
   dot_x_var <- match.arg(dot_x_var)
@@ -341,7 +347,7 @@ ggdot_sankey <- function(
 
 
   leg <- ggfun::get_legend(dotPlot)
-  combinedPlot <- plot_list(dotPlot + theme(legend.position = "none"), sankeyPlot,
+  combinedPlot <- aplot::plot_list(dotPlot + theme(legend.position = "none"), sankeyPlot,
                             ncol = 2, widths = c(dot_width, sankey_width))
 
   combinedPlot <- aplot::plot_list(leg, combinedPlot, ncol = 2, widths = c(1, 5))

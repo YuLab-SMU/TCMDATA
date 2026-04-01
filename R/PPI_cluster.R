@@ -14,7 +14,6 @@
 #' @param allow1 Logical. If TRUE, clusters with only 1 node are kept as unique clusters. If FALSE,
 #' cluster of size 1 are interpreted as background noise and grouped in one cluster. Default is FALSE.
 #' @importFrom igraph as_adjacency_matrix is_igraph V
-#' @importFrom Matrix Diagonal colSums drop0
 #' @importFrom stats setNames
 #' @return An igraph object containing MCL clustering labels.
 #'
@@ -36,6 +35,10 @@ run_MCL <- function(g,
                     max_iter = 100,
                     pruning = 1e-5,
                     allow1 = FALSE){
+
+  if (!requireNamespace("Matrix", quietly = TRUE)) {
+    stop("Package 'Matrix' is required for run_MCL(). Please install it with: install.packages('Matrix')")
+  }
 
   stopifnot(igraph::is_igraph(g))
 
