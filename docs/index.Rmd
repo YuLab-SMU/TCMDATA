@@ -18,7 +18,7 @@ TCMDATA is an integrated R package for TCM pharmacology data retrieval, network 
 This guide walks you through installation, core functionality, and advanced workflows.
 
 ```{r workflow-overview, echo=FALSE, out.width='100%'}
-knitr::include_graphics("images/tcmdata_workflow.png")
+knitr::include_graphics("images/workflow.png")
 ```
 
 ## Installation {-}
