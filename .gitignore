@@ -38,3 +38,7 @@ Rplots.pdf
 
 # example / test artefacts
 inst/examples/
+# Sensitive files
+.env
+*.env
+**/.env

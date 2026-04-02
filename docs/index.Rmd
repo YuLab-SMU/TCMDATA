@@ -1,6 +1,6 @@
 ---
 title: "TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization"
-author: "Yulab-SMU"
+author: "Nan He, Guangchuang Yu, Shuangbin Xu<br>Department of Bioinformatics, School of Basic Medical Sciences, Southern Medical University"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
@@ -18,7 +18,17 @@ TCMDATA is an integrated R package for TCM pharmacology data retrieval, network 
 This guide walks you through installation, core functionality, and advanced workflows.
 
 ```{r workflow-overview, echo=FALSE, out.width='100%'}
-knitr::include_graphics("images/tcmdata_workflow.png")
+knitr::include_graphics("images/workflow.png")
+```
+
+## Installation {-}
+
+Install the development version from GitHub:
+
+```r
+# install.packages("devtools")
+options(timeout = 600)
+devtools::install_github("YuLab-SMU/TCMDATA")
 ```
 
 ```{r setup, include=FALSE}

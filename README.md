@@ -1,116 +1,99 @@
-# TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization
+# TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization R Package
 
-<!-- badges: start -->
+<img src="man/figures/logo.png" height="200" align="right" />
+
 [![R-CMD-check](https://img.shields.io/badge/R--CMD--check-passing-brightgreen?logo=r)](https://github.com/Hinna0818/TCMDATA)
 [![bookdown](https://github.com/Hinna0818/TCMDATA/actions/workflows/bookdown.yaml/badge.svg)](https://github.com/Hinna0818/TCMDATA/actions/workflows/bookdown.yaml)
-[![License: Artistic-2.0](https://img.shields.io/badge/License-Artistic--2.0-blue.svg)](https://opensource.org/license/artistic-2-0)
-[![R version](https://img.shields.io/badge/R%20≥-3.5.0-276DC3?logo=r)](https://cran.r-project.org/)
+[![R version](https://img.shields.io/badge/R%20≥-4.1.0-276DC3?logo=r)](https://cran.r-project.org/)
 [![Platform](https://img.shields.io/badge/Platform-Linux%20|%20macOS%20|%20Windows-informational)](https://github.com/Hinna0818/TCMDATA)
 [![Documentation](https://img.shields.io/badge/docs-bookdown-orange?logo=bookstack)](https://hinna0818.github.io/TCMDATA/)
-<!-- badges: end -->
 
-**TCMDATA** is an integrated R package for Traditional Chinese Medicine (TCM)
-network pharmacology research. It provides a unified computational framework
-for herb–molecule–target data retrieval, pharmacological network construction,
-enrichment analysis, protein–protein interaction (PPI) analysis, and
-publication-ready visualization.
+- **TCMDATA** is a comprehensive R toolkit for **Traditional Chinese Medicine (TCM) network pharmacology** research.
+- It provides an end-to-end computational workflow—from herb–compound–target data retrieval and pharmacological network construction, through enrichment analysis and PPI mining, to machine-learning-based biomarker screening and AI-powered result interpretation.
+- Publication-ready visualizations including Sankey diagrams, docking heatmaps, lollipop plots, and more.
 
-## Features
+For details, please visit the [full documentation](https://hinna0818.github.io/TCMDATA/).
+
+---
+
+<img src="man/figures/workflow.png" width="100%" />
+
+## Highlights
+
+- 🌿 **Built-in TCM Database**: Manually curated herb–compound–target interaction data ready for analysis
+- 🔬 **PubChem Integration**: Compound identification, property retrieval, and structure download
+- 📊 **PPI Network Analysis**: 17+ centrality metrics with community detection and robustness evaluation
+- 🤖 **Machine Learning-based Feature Selection**: 6 algorithms (LASSO, Elastic Net, Ridge, RF+Boruta, SVM-RFE, XGBoost) with consensus scoring
+- 💡 **AI-LLM Interpretation**: LLM-powered automated result summarization
+- 📚 **Literature Mining**: PubMed search for TCM–disease association studies
+- 🔗 **Seamless Integration**: Works with clusterProfiler, enrichplot, and other Bioconductor tools for enrichment analysis
+
+## Feature Overview
 
 | Module | Description | Key Functions |
 |--------|-------------|---------------|
-| **Data retrieval** | Bidirectional query of 500+ herbs, 10 000+ compounds, and validated targets | `search_herb()`, `search_target()` |
-| **Molecule detection** | PubChem-based compound identifier resolution, property annotation, similarity search, structure download, and format conversion | `resolve_cid()`, `getprops()`, `compound_similarity()`, `download_ligand_structure()` |
-| **Network construction** | Build herb–molecule–target networks with topological metrics | `prepare_herb_graph()` |
-| **Enrichment analysis** | ORA using herbs as functional categories; GO/KEGG compatible | `herb_enricher()` |
-| **PPI analysis** | Filtering, 15+ centrality metrics, community detection, and PPI robustness analysis | `ppi_subset()`, `compute_nodeinfo()`, `rank_ppi_nodes()` |
-| **Clustering** | Louvain, MCL, and MCODE algorithms | `run_louvain()`, `run_MCL()`, `runMCODE()` |
-| **ML screening** | LASSO, Elastic Net, Ridge, Random Forest + Boruta, SVM-RFE, XGBoost; three validation modes (A/B/C) with consensus analysis | `run_ml_screening()`, `plot_ml_roc()`, `plot_ml_venn()` |
-| **Data interpretation** | AI-assisted interpretation for text, enrichment objects, PPI objects, tables, and result drafting | `tcm_interpret()`, `draft_result_paragraph()`, `tcm_interpret_schema()` |
-| **Visualization** | Sankey, docking heatmap, PPI heatmap, network plots | `tcm_sankey()`, `ggdock()`, `plot_node_heatmap()` |
-| **Other resources** | Supplementary datasets: gut microbiota–metabolite associations (gutMGene) and transcription factor–target regulation pairs | `gutMGene`, `tf_targets`, `dn_targets` |
-
+| **Data Retrieval** | Bidirectional query of herbs, compounds, and validated targets | `search_herb()`, `search_target()` |
+| **Molecule Detection** | PubChem-based CID resolution, property annotation, similarity search | `resolve_cid()`, `getprops()`, `compound_similarity()` |
+| **Network Construction** | Build herb–compound–target networks with topological metrics | `prepare_herb_graph()` |
+| **Enrichment Analysis** | Herb-based over-representation analysis; GO/KEGG compatible | `herb_enricher()` |
+| **PPI Analysis** | 15+ centrality metrics, community detection, robustness evaluation | `ppi_subset()`, `compute_nodeinfo()`, `ppi_knock()` |
+| **Clustering** | Louvain, MCL, and MCODE community detection | `run_louvain()`, `run_MCL()`, `run_mcode()` |
+| **ML Screening** | 6 algorithms × 3 validation modes with consensus analysis | `run_ml_screening()`, `plot_ml_roc()` |
+| **AI Interpretation** | LLM-powered interpretation for enrichment, PPI, tables | `tcm_interpret()`, `draft_result_paragraph()` |
+| **Visualization** | Sankey, docking heatmaps, lollipop plots, radar charts | `tcm_sankey()`, `ggdock()`, `gglollipop()` |
 
 ## Installation
-
-Install the development version from GitHub:
 
 ```r
 # install.packages("devtools")
 options(timeout = 600)
-devtools::install_github("YuLab-SMU/TCMDATA")
+devtools::install_github("Hinna0818/TCMDATA")
 ```
 
-## AI Quick Start
-
-`TCMDATA` includes an AI interpretation module built on top of
-[aisdk](https://github.com/YuLab-SMU/aisdk).
+## Quick Start
 
 ```r
-# One-time install
+library(TCMDATA)
+
+# Search by herb name (supports Chinese pinyin)
+huangqi <- search_herb("huangqi", "Herb_pinyin_name")
+head(huangqi)
+
+# Reverse lookup: find herbs targeting a specific gene
+il6_herbs <- search_target("IL6")
+head(il6_herbs)
+```
+
+## AI-Powered Interpretation
+
+TCMDATA integrates an AI module via [aisdk](https://github.com/YuLab-SMU/aisdk) for intelligent result interpretation.
+
+```r
+# One-time setup
 devtools::install_github("YuLab-SMU/aisdk")
 
-# Configure and initialise the model
 tcm_setup(
   provider = "openai",
-  api_key = "sk-xxxx",
-  model = "gpt-5",
-  base_url= "xxx", # if necessary
-  save = TRUE,
-  test = TRUE
-)
-```
-
-Object interpretation:
-
-```r
-library(clusterProfiler)
-
-# Example: build a GO enrichment result from Lingzhi targets
-lz_targets <- search_herb("lingzhi", "Herb_pinyin_name")$target
-lz_targets <- unique(na.omit(sample(lz_targets, 100)))
-
-enrich_res <- enrichGO(
-  gene = lz_targets,
-  OrgDb = 'org.Hs.eg.db',
-  keyType = "SYMBOL",
-  ont = "BP"
+  api_key  = "sk-xxxx",
+  model    = "gpt-4o",
+  save     = TRUE
 )
 
-ai_res <- tcm_interpret(
-  enrich_res,
-  prompt = "This is a GO BP enrichment result derived from the potential targets of Lingzhi. Please briefly summarise its core biological significance.",
-  language = "en"
-)
-print(ai_res)
+# Interpret enrichment results
+ai_res <- tcm_interpret(enrich_res, language = "en")
 
+# Generate manuscript-ready paragraph
 draft <- draft_result_paragraph(ai_res, language = "en")
-cat(as.character(draft))
-```
-
-Free-text interpretation:
-
-```r
-txt <- tcm_interpret(
-  "Please introduce the major pharmacological functions of Huangqi (Astragalus membranaceus), and briefly explain its potential roles in immunoregulation and disease treatment.",
-  verbose = FALSE,
-  language = "en"
-)
-cat(txt)
-```
-
-Custom structured output:
-
-```r
-my_schema <- tcm_schema(
-  summary = tcm_field_string("Brief summary"),
-  key_targets = tcm_field_array("Top targets")
-)
-
-res <- tcm_interpret_schema(enrich_res, schema = my_schema, language = "en")
-print(res)
 ```
 
 ## Documentation
 
-Full documentation with worked examples is available at **[here](https://hinna0818.github.io/TCMDATA/)**.
+Complete tutorials with worked examples can be found [here](<https://hinna0818.github.io/TCMDATA/>).
+
+## Citation
+
+If you use TCMDATA in your research, please cite:
+
+```
+DOI pending
+```

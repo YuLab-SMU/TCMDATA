@@ -9,6 +9,7 @@ on:
       - docs_update
       - molecule
       - aisdk
+      - ppi_metrics_fix
 
 permissions:
   contents: write

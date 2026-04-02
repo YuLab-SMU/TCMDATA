@@ -2,7 +2,7 @@
 % Please edit documentation in R/pubchem_utils.R
 \name{download_receptor_structure}
 \alias{download_receptor_structure}
-\title{Download receptor/protein structure from RCSB PDB}
+\title{Download receptor structure from RCSB PDB}
 \usage{
 download_receptor_structure(
   pdb_id,
@@ -14,37 +14,27 @@ download_receptor_structure(
 )
 }
 \arguments{
-\item{pdb_id}{Character scalar. A 4-character PDB identifier
-(e.g. \code{"4hhb"}, \code{"1A2B"}). Case-insensitive.}
+\item{pdb_id}{4-character PDB ID (e.g. \code{"4hhb"}). Case-insensitive.}
 
-\item{format}{Character. One of \code{"pdb"} (legacy PDB format) or
-\code{"cif"} (PDBx/mmCIF format). Default \code{"pdb"}.}
+\item{format}{\code{"pdb"} (default) or \code{"cif"}.}
 
-\item{destdir}{Character. Directory to save the file. Default \code{"."}.}
+\item{destdir}{Save directory. Default \code{"."}.}
 
-\item{filename}{Character or \code{NULL}. Output file name. If \code{NULL}
-(default), named as \code{<pdb_id>.<format>}.}
+\item{filename}{Output name, or \code{NULL} for auto-naming.}
 
-\item{overwrite}{Logical. Whether to overwrite an existing file.
-Default \code{FALSE}.}
+\item{overwrite}{Overwrite existing file? Default \code{FALSE}.}
 
-\item{quiet}{Logical. Whether to suppress progress messages.
-Default \code{FALSE}.}
+\item{quiet}{Suppress messages? Default \code{FALSE}.}
 }
 \value{
-Character scalar (invisible): full path of the saved file.
+File path (invisible).
 }
 \description{
-Download a macromolecular structure file from the RCSB Protein Data Bank
-(\url{https://www.rcsb.org}) given a 4-character PDB ID.
-Supports PDB (legacy) and PDBx/mmCIF formats.
+Download receptor structure from RCSB PDB
 }
 \examples{
 \dontrun{
-# Download hemoglobin structure in PDB format
 download_receptor_structure("4hhb")
-
-# Download in mmCIF format
 download_receptor_structure("4hhb", format = "cif", destdir = tempdir())
 }
 }

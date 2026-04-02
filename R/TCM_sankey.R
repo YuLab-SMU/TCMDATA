@@ -15,7 +15,6 @@
 #' @param ... Additional arguments passed to `tcm_sankey` when using the deprecated alias `TCM_sankey`.
 #' @import ggplot2
 #' @importFrom dplyr count mutate group_by ungroup arrange select filter lead case_when all_of desc
-#' @importFrom RColorBrewer brewer.pal
 #' @importFrom yulab.utils str_wrap
 #' @importFrom stats setNames
 #' @importFrom rlang .data
@@ -43,6 +42,10 @@ tcm_sankey <- function(
     stop("Package 'ggalluvial' is required for tcm_sankey(). Please install it.")
   }
 
+  if (!requireNamespace("RColorBrewer", quietly = TRUE)) {
+    stop("Package 'RColorBrewer' is required for tcm_sankey(). Please install it with: install.packages('RColorBrewer')")
+  }
+
   set.seed(2025)
 
   herb_y_high <- mol_y_high <- target_y_high <- 1
@@ -68,9 +71,9 @@ tcm_sankey <- function(
   sankeyData <- insert_spacer_nodes(sankeyData)
 
   ## make colors
-  herb_colors <- make_colors(items = dfForLodes$herb, colors = herb_cols, insert = brewer.pal(12, "Paired"))
-  mol_colors <- make_colors(items = dfForLodes$molecule, colors = mol_cols, insert = brewer.pal(8, "Set1"))
-  target_cols <- make_colors(items = dfForLodes$target,colors = target_cols, insert = brewer.pal(8, "Set2"))
+  herb_colors <- make_colors(items = dfForLodes$herb, colors = herb_cols, insert = RColorBrewer::brewer.pal(12, "Paired"))
+  mol_colors <- make_colors(items = dfForLodes$molecule, colors = mol_cols, insert = RColorBrewer::brewer.pal(8, "Set1"))
+  target_cols <- make_colors(items = dfForLodes$target,colors = target_cols, insert = RColorBrewer::brewer.pal(8, "Set2"))
   spacer_strata <- grep("spacer_", unique(sankeyData$stratum), value = TRUE)
   spacer_colors <- stats::setNames(rep("transparent", length(spacer_strata)), spacer_strata)
   nodeColors <- c(herb_colors, mol_colors, target_cols, spacer_colors)

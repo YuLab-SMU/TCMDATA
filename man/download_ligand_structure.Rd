@@ -2,7 +2,7 @@
 % Please edit documentation in R/pubchem_utils.R
 \name{download_ligand_structure}
 \alias{download_ligand_structure}
-\title{Download compound/ligand structure (SDF) from PubChem}
+\title{Download ligand SDF from PubChem}
 \usage{
 download_ligand_structure(
   cid,
@@ -14,29 +14,27 @@ download_ligand_structure(
 )
 }
 \arguments{
-\item{cid}{Integer or character scalar. A single PubChem Compound ID.}
+\item{cid}{PubChem Compound ID.}
 
-\item{type}{Character. One of \code{"auto"}, \code{"3d"}, or \code{"2d"}. When \code{"auto"} (default), tries 3D first and falls back to 2D.}
+\item{type}{\code{"auto"} (default, 3D then 2D), \code{"3d"}, or \code{"2d"}.}
 
-\item{destdir}{Character. Directory to save the file. Default \code{"."}.}
+\item{destdir}{Save directory. Default \code{"."}.}
 
-\item{filename}{Character or \code{NULL}. Output file name. If \code{NULL} (default), named as \code{CID_<cid>_<type>.sdf}.}
+\item{filename}{Output name, or \code{NULL} for auto-naming.}
 
-\item{overwrite}{Logical. Whether to overwrite existing file. Default \code{FALSE}.}
+\item{overwrite}{Overwrite existing file? Default \code{FALSE}.}
 
-\item{quiet}{Logical. Whether to suppress messages. Default \code{FALSE}.}
+\item{quiet}{Suppress messages? Default \code{FALSE}.}
 }
 \value{
-Character scalar (invisible): full path of the saved SDF file.
+File path (invisible).
 }
 \description{
-Download the 2D or 3D structure file (SDF format) for a given PubChem CID.
-By default the function attempts to download the 3D conformer first;
-if no 3D conformer is available it automatically falls back to 2D.
+Download ligand SDF from PubChem
 }
 \examples{
 \dontrun{
-path <- download_ligand_structure(2244)
-path_3d <- download_ligand_structure(2244, type = "3d", destdir = tempdir())
+download_ligand_structure(2244)
+download_ligand_structure(2244, type = "3d", destdir = tempdir())
 }
 }

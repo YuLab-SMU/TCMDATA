@@ -19,10 +19,8 @@
 #' @return A `ggplot` object.
 #'
 #' @import ggplot2
-#' @importFrom paletteer scale_color_paletteer_c scale_fill_paletteer_c
 #' @importFrom tibble rownames_to_column
 #' @importFrom tidyr pivot_longer
-#' @importFrom forcats fct_reorder
 #' @importFrom dplyr mutate all_of
 #' @importFrom stats median
 #' @importFrom rlang .data
@@ -47,6 +45,13 @@ ggdock <- function(
     label_family = "sans",
     label_fontface = "plain",
     ...){
+
+  if (!requireNamespace("paletteer", quietly = TRUE)) {
+    stop("Package 'paletteer' is required for ggdock(). Please install it with: install.packages('paletteer')")
+  }
+  if (!requireNamespace("forcats", quietly = TRUE)) {
+    stop("Package 'forcats' is required for ggdock(). Please install it with: install.packages('forcats')")
+  }
 
   type <- match.arg(type, c("dot", "tile"))
 
