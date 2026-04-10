@@ -23,8 +23,17 @@ docs/images/*_cache.rds
 docs/images/ppi-net-*.png
 
 # skill / dev notes
-skill.md
 inst/ml_skill.md
+
+# design documents and dev notes (local only)
+dev/
+
+# agent test output
+tcm_output/
+
+# bookdown intermediate libs
+docs/libs/
+docs/cache/
 
 # R CMD check output
 *.Rcheck/

@@ -17,7 +17,8 @@
 #'   default \emph{"Draft a result paragraph from this \{type\} data:"}
 #'   opening; the compressed data context is always appended regardless.
 #'   Use this to steer tone, focus, or word count, e.g.
-#'   \code{"用不超过3句话总结以下富集分析，聚焦免疫相关通路："}.
+#'   \code{"Summarise the following enrichment in no more than 3 sentences,
+#'   focusing on immune-related pathways:"}.
 #' @param model Model identifier or NULL.
 #'
 #' @return A \code{tcm_ai_draft} object.
@@ -64,12 +65,17 @@ draft_result_paragraph <- function(
   }
 
   sys <- paste(
-    "You are a scientific writing assistant.",
+    "<identity>",
+    "You are a scientific writing assistant specializing in bioinformatics and network pharmacology manuscripts.",
+    "</identity>",
+    "",
+    "<task>",
     lang_inst,
-    "Write a concise result paragraph (3-6 sentences).",
-    "Cite specific numbers from the data.",
-    "Do not invent statistics.",
-    "Respond with a single valid JSON object only.",
+    "Draft a concise result paragraph (3-6 sentences) suitable for the Results section of a research article.",
+    "Cite specific numbers, gene counts, p-values, and fold changes from the data.",
+    "Use formal scientific prose. Avoid bullet points.",
+    "Respond with a single valid JSON object matching the provided schema.",
+    "</task>",
     sep = "\n"
   )
 

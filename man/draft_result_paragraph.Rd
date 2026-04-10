@@ -26,7 +26,8 @@ Default \code{"zh"}.}
 default \emph{"Draft a result paragraph from this \{type\} data:"}
 opening; the compressed data context is always appended regardless.
 Use this to steer tone, focus, or word count, e.g.
-\code{"用不超过3句话总结以下富集分析，聚焦免疫相关通路："}.}
+\code{"Summarise the following enrichment in no more than 3 sentences,
+  focusing on immune-related pathways:"}.}
 
 \item{model}{Model identifier or NULL.}
 }

@@ -26,5 +26,5 @@ A \code{ggplot} object.
 Convenience wrapper: calls \code{\link[=get_ml_gene_sets]{get_ml_gene_sets()}} to extract gene sets,
 then draws a Venn diagram via \code{\link[=getvenndata]{getvenndata()}} + \code{\link[=ggvenn_plot]{ggvenn_plot()}}.
 Accepts the same flexible inputs as \code{\link[=get_ml_gene_sets]{get_ml_gene_sets()}}.
-For > 4 sets consider using \code{aplotExtra::upset_plot(get_ml_gene_sets(...))}.
+For > 4 sets consider using \code{upsetplot(get_ml_gene_sets(...))}.
 }

@@ -40,6 +40,7 @@ Imports:
     yulab.utils
 Suggests:
     aplot,
+    aplotExtra,
     forcats,
     Matrix,
     paletteer,
@@ -65,9 +66,13 @@ Suggests:
     testthat (>= 3.0.0),
     ggalluvial,
     ggvenn,
-    ggthemes
+    ggthemes,
+    AnnotationDbi,
+    org.Hs.eg.db,
+    DOSE
 Remotes:
-    YuLab-SMU/aisdk
+    YuLab-SMU/aisdk,
+    YuLab-SMU/aplotExtra
 License: Artistic-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

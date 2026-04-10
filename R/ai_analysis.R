@@ -175,13 +175,21 @@
   }
 
   paste(
+    "<identity>",
     role_inst,
+    "</identity>",
+    "",
+    "<audience>",
     audience_inst,
+    "</audience>",
+    "",
+    "<constraints>",
     lang_inst,
-    "Separate data-supported findings from hypotheses.",
-    "Never invent statistics not present in the input.",
-    "Be concise and precise.",
-    "Respond with a single valid JSON object only.",
+    "Clearly separate data-supported findings from speculative hypotheses.",
+    "Ground every claim in numbers or identifiers from the input data.",
+    "Be concise: prioritize the most biologically meaningful findings.",
+    "Respond with a single valid JSON object matching the provided schema.",
+    "</constraints>",
     sep = "\n"
   )
 }
@@ -551,7 +559,7 @@ tcm_interpret <- function(x,
 #'     enrich_res,
 #'     schema   = my_schema,
 #'     language = "zh",
-#'     prompt   = "请重点关注抗炎通路："
+#'     prompt   = "Focus on anti-inflammatory pathways:"
 #'   )
 #'
 #'   # Access fields by name
@@ -665,11 +673,19 @@ tcm_interpret_schema <- function(x,
   }
 
   system <- system %||% paste(
+    "<identity>",
     role_inst,
+    "</identity>",
+    "",
+    "<audience>",
     audience_inst,
+    "</audience>",
+    "",
+    "<constraints>",
     lang_inst,
-    "Explain results clearly and concisely.",
-    "Do not invent statistics not in the input.",
+    "Explain results clearly and concisely, focusing on biological significance.",
+    "Ground every claim in the data provided. Cite specific numbers where available.",
+    "</constraints>",
     sep = "\n"
   )
 

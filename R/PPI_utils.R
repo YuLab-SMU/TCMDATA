@@ -1,3 +1,41 @@
+#' Retrieve a STRING PPI network
+#'
+#' Thin wrapper around \code{clusterProfiler::getPPI()} so the function is
+#' available directly from TCMDATA.
+#'
+#' @param x An \code{enrichResult} object or a character vector of proteins.
+#' @param taxID NCBI taxonomy identifier. Use \code{"auto"} to let
+#'   \code{clusterProfiler::getPPI()} infer it from an \code{enrichResult}
+#'   when possible.
+#' @param ... Additional arguments passed to \code{clusterProfiler::getPPI()},
+#'   such as \code{ID}, \code{required_score}, \code{network_type},
+#'   \code{add_nodes}, \code{show_query_node_labels}, and \code{output}.
+#'
+#' @return An \code{igraph} object or a \code{data.frame}, depending on the
+#'   arguments passed through \code{...}.
+#'
+#' @examples
+#' \dontrun{
+#'   genes <- c("TP53", "BRCA1", "AKT1", "EGFR")
+#'   g <- get_ppi(genes, taxID = 9606)
+#' }
+#'
+#' @export
+get_ppi <- function(x, taxID = "auto", ...) {
+  if (!requireNamespace("clusterProfiler", quietly = TRUE)) {
+    stop("Package 'clusterProfiler' is required for get_ppi().", call. = FALSE)
+  }
+
+  if (!exists("getPPI", envir = asNamespace("clusterProfiler"), inherits = FALSE)) {
+    stop(
+      "clusterProfiler::getPPI() is not available in the installed clusterProfiler version.",
+      call. = FALSE
+    )
+  }
+
+  get("getPPI", envir = asNamespace("clusterProfiler"))(x = x, taxID = taxID, ...)
+}
+
 #' Subset PPI network by edge score and top-n node degree
 #'
 #' This function filters a PPI network in two steps:
@@ -64,7 +102,7 @@ ppi_subset <- function(ppi_obj,
   if (!is.null(n)) {
     deg <- igraph::degree(ppi_filtered, mode = "all")
     deg_sorted <- sort(deg, decreasing = TRUE)
-    top_nodes <- names(deg_sorted)[1:min(n, length(deg_sorted))]
+    top_nodes <- names(deg_sorted)[seq_len(min(n, length(deg_sorted)))]
 
     ppi_filtered <- igraph::induced_subgraph(ppi_filtered, vids = top_nodes)
   }
@@ -588,7 +626,7 @@ compute_Stress <- function(g) {
 
     gamma <- numeric(n)
 
-    for (i in length(S):1) {
+    for (i in rev(seq_along(S))) {
       w <- S[i]
       total_paths_from_w <- 1 + gamma[w]
       for (v in P[[w]]) {
