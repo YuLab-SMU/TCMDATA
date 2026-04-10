@@ -33,7 +33,6 @@ tcm_output/
 
 # bookdown intermediate libs
 docs/libs/
-docs/cache/
 
 # R CMD check output
 *.Rcheck/
