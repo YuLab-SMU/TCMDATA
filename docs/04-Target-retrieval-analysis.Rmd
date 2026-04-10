@@ -4,6 +4,81 @@ In network pharmacology analysis, disease target retrieval and differential gene
 
 ---
 
+## Programmatic disease target retrieval with TCMDATA {#disease-target-tcmdata}
+
+Before manually browsing individual databases, it is worth noting that `TCMDATA` provides two convenient functions for **programmatic** disease–gene association retrieval, powered by the [DisGeNET](https://www.disgenet.org/) dataset bundled in the [`DOSE`](https://bioconductor.org/packages/DOSE/) Bioconductor package. This approach allows you to query disease targets directly from R without visiting any web interface.
+
+### `search_disease()`: disease → genes
+
+`search_disease()` accepts a disease name (fuzzy matching supported) or a UMLS CUI identifier, and returns all associated genes with their Entrez IDs and gene symbols:
+
+```{r search-disease-demo, eval=FALSE, collapse=FALSE}
+library(TCMDATA)
+
+## search by disease name
+dn_targets <- search_disease("diabetic nephropathy")
+head(dn_targets)
+```
+
+```
+  disease_id   gene_id         disease_name     symbol
+1   C0011881        10 Diabetic Nephropathy       NAT2
+2   C0011881      1000 Diabetic Nephropathy       CDH2
+3   C0011881 100033819 Diabetic Nephropathy     MIR675
+4   C0011881 100048912 Diabetic Nephropathy CDKN2B-AS1
+5   C0011881 100124700 Diabetic Nephropathy     HOTAIR
+6   C0011881 100125288 Diabetic Nephropathy      ZGLP1
+```
+
+You can also query by **UMLS CUI** for precise matching, or search multiple diseases at once:
+
+```{r search-disease-cui, eval=FALSE, collapse=FALSE}
+## exact match by CUI
+sepsis <- search_disease("C0243026")
+
+## multiple diseases
+multi <- search_disease(c("sepsis", "asthma"))
+```
+
+### `search_gene_disease()`: gene → diseases
+
+The reverse lookup function `search_gene_disease()` finds all diseases associated with a given gene, which is useful for validating whether hub genes from network analysis have known disease relevance:
+
+```{r search-gene-disease-demo, eval=FALSE, collapse=FALSE}
+## which diseases are associated with TNF?
+tnf_diseases <- search_gene_disease("TNF")
+cat("TNF is associated with", length(unique(tnf_diseases$disease_name)), "diseases\n")
+head(tnf_diseases[, c("disease_name", "gene_id", "symbol")])
+```
+
+```
+TNF is associated with 2724 diseases
+                        disease_name gene_id symbol
+1 (non-specific) purulent meningitis    7124    TNF
+2                     AA amyloidosis    7124    TNF
+3                  Abdominal Abscess    7124    TNF
+4                     Abdominal Pain    7124    TNF
+5                  Abdominal symptom    7124    TNF
+6    ABLEPHARON-MACROSTOMIA SYNDROME    7124    TNF
+```
+
+```{r search-gene-multi, eval=FALSE, collapse=FALSE}
+## query multiple genes
+hub_diseases <- search_gene_disease(c("IL6", "TNF", "PPARG"))
+## top diseases shared by all three genes
+shared <- Reduce(intersect, split(hub_diseases$disease_name, hub_diseases$symbol))
+cat("Diseases shared by IL6, TNF, PPARG:", length(shared), "\n")
+head(shared)
+```
+
+```
+Diseases shared by IL6, TNF, PPARG: 516
+[1] "Abnormal behavior"    "Acanthosis Nigricans" "Acne"
+[4] "Acne Vulgaris"        "Acute Chest Syndrome" "Acute colitis"
+```
+
+---
+
 ## Disease target databases {#disease-db}
 
 Multiple public databases catalogue gene–disease associations with varying evidence levels. In practice, combining targets from multiple sources (often intersection) improves both coverage and reliability. Here, we introduce some **commonly used and user-friendly** databases for disease target retrieval in TCM network pharmacology research.
@@ -301,18 +376,16 @@ aplot::plot_list(venn1, venn2, ncol = 1)
 
 ### UpSet plot
 
-When comparing 4 or more sets, an UpSet plot provides a clearer intersection overview than a Venn diagram. The function `upset_plot()` from [`aplotExtra`](https://github.com/YuLab-SMU/aplotExtra) package takes a **named list** of character vectors and renders an UpSet-style visualization:
+When comparing 4 or more sets, an UpSet plot provides a clearer intersection overview than a Venn diagram. `TCMDATA` provides an `upsetplot()` function (a convenience wrapper around `aplotExtra::upset_plot()`) that takes a **named list** of character vectors and renders an UpSet-style visualization:
 
-```{r upset-plot, fig.width=10, fig.height=8, fig.align='center', out.width='90%', collapse=FALSE}
-library(aplotExtra)
-
+```{r upset-plot, collapse=FALSE, eval=FALSE}
 gene_list <- list(
-  DEGs       = degs,
+  DEGs = degs,
   GeneCards  = dn_gcds,
   OpenTargets = dn_otp
 )
 
-upset_plot(gene_list, color.intersect.by = "Set2", color.set.by = "Dark2")
+upsetplot(gene_list, color.intersect.by = "Set2", color.set.by = "Dark2")
 ```
 
 ### Extract intersection results

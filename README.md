@@ -24,8 +24,8 @@ For details, please visit the [full documentation](https://hinna0818.github.io/T
 - 🔬 **PubChem Integration**: Compound identification, property retrieval, and structure download
 - 📊 **PPI Network Analysis**: 17+ centrality metrics with community detection and robustness evaluation
 - 🤖 **Machine Learning-based Feature Selection**: 6 algorithms (LASSO, Elastic Net, Ridge, RF+Boruta, SVM-RFE, XGBoost) with consensus scoring
-- 💡 **AI-LLM Interpretation**: LLM-powered automated result summarization
-- 📚 **Literature Mining**: PubMed search for TCM–disease association studies
+- 🧠 **AI Agent System**: LLM-powered agent with natural language task routing, skill-based workflow, and interactive chat (`tcm_agent()`, `tcm_chat()`)
+- 📚 **Literature & Data Mining**: PubMed search and GEO dataset discovery for TCM–disease studies
 - 🔗 **Seamless Integration**: Works with clusterProfiler, enrichplot, and other Bioconductor tools for enrichment analysis
 
 ## Feature Overview
@@ -33,14 +33,16 @@ For details, please visit the [full documentation](https://hinna0818.github.io/T
 | Module | Description | Key Functions |
 |--------|-------------|---------------|
 | **Data Retrieval** | Bidirectional query of herbs, compounds, and validated targets | `search_herb()`, `search_target()` |
+| **Disease Targets** | DisGeNET-based disease–gene queries and GEO dataset discovery | `search_disease()`, `search_gene_disease()`, `search_geo_datasets()` |
 | **Molecule Detection** | PubChem-based CID resolution, property annotation, similarity search | `resolve_cid()`, `getprops()`, `compound_similarity()` |
 | **Network Construction** | Build herb–compound–target networks with topological metrics | `prepare_herb_graph()` |
 | **Enrichment Analysis** | Herb-based over-representation analysis; GO/KEGG compatible | `herb_enricher()` |
-| **PPI Analysis** | 15+ centrality metrics, community detection, robustness evaluation | `ppi_subset()`, `compute_nodeinfo()`, `ppi_knock()` |
+| **PPI Analysis** | STRING retrieval, 17+ centrality metrics, community detection, robustness | `get_ppi()`, `compute_nodeinfo()`, `ppi_knock()` |
 | **Clustering** | Louvain, MCL, and MCODE community detection | `run_louvain()`, `run_MCL()`, `run_mcode()` |
 | **ML Screening** | 6 algorithms × 3 validation modes with consensus analysis | `run_ml_screening()`, `plot_ml_roc()` |
+| **AI Agent** | Natural language task routing, skill-based workflow, interactive chat | `tcm_agent()`, `tcm_chat()`, `tcm_interpret()` |
 | **AI Interpretation** | LLM-powered interpretation for enrichment, PPI, tables | `tcm_interpret()`, `draft_result_paragraph()` |
-| **Visualization** | Sankey, docking heatmaps, lollipop plots, radar charts | `tcm_sankey()`, `ggdock()`, `gglollipop()` |
+| **Visualization** | Sankey, docking heatmaps, lollipop, UpSet, radar charts | `tcm_sankey()`, `ggdock()`, `gglollipop()`, `upsetplot()` |
 
 ## Installation
 
@@ -64,9 +66,9 @@ il6_herbs <- search_target("IL6")
 head(il6_herbs)
 ```
 
-## AI-Powered Interpretation
+## AI Agent System
 
-TCMDATA integrates an AI module via [aisdk](https://github.com/YuLab-SMU/aisdk) for intelligent result interpretation.
+TCMDATA integrates an AI agent layer via [aisdk](https://github.com/YuLab-SMU/aisdk), featuring natural language task routing, a skill-based workflow engine, and 36 registered tools.
 
 ```r
 # One-time setup
@@ -75,16 +77,22 @@ devtools::install_github("YuLab-SMU/aisdk")
 tcm_setup(
   provider = "openai",
   api_key  = "sk-xxxx",
-  model    = "gpt-4o",
+  model    = "gpt-5-mini",
   save     = TRUE
 )
 
-# Interpret enrichment results
-ai_res <- tcm_interpret(enrich_res, language = "en")
+# One-shot agent: auto-routes task to appropriate tools
+result <- tcm_agent("Query the targets of Astragalus and list the top 10 most frequently occurring ones.")
 
-# Generate manuscript-ready paragraph
-draft <- draft_result_paragraph(ai_res, language = "en")
+# Interactive multi-turn chat session
+tcm_chat()
+
+# AI-powered result interpretation
+ai_res <- tcm_interpret(enrich_res, language = "en")
+draft  <- draft_result_paragraph(ai_res, language = "en")
 ```
+
+The agent supports 11 task types including herb/disease/target lookup, enrichment, PPI analysis, ML screening, PubMed search, GEO dataset discovery, and more. Skills can be customized via `tcm_init_skills()`.
 
 ## Documentation
 
