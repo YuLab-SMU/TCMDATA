@@ -10,6 +10,7 @@ on:
       - molecule
       - aisdk
       - ppi_metrics_fix
+      - skills
 
 permissions:
   contents: write
