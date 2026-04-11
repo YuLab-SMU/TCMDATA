@@ -4,7 +4,7 @@
 \alias{tcm_chat}
 \title{Interactive TCM analysis chat}
 \usage{
-tcm_chat(model = NULL, verbose = TRUE, stream = TRUE)
+tcm_chat(model = NULL, verbose = TRUE, stream = TRUE, skills = NULL)
 }
 \arguments{
 \item{model}{Model object or NULL.}
@@ -13,6 +13,12 @@ tcm_chat(model = NULL, verbose = TRUE, stream = TRUE)
 
 \item{stream}{Logical. Enable streaming output (default TRUE). Toggle
 at runtime with the \code{/stream} command.}
+
+\item{skills}{Character vector of skill directories to load for the chat
+session. Default \code{NULL} uses the active TCMDATA skill directory
+(scanning all skills under it) plus aisdk's \code{skill-creator} skill
+if available. Use \code{character(0)} to disable skills, or pass an
+explicit vector to override the default.}
 }
 \value{
 Invisibly returns a list with \code{history} (each turn's task and
@@ -45,7 +51,10 @@ Built-in commands (type directly at the prompt):
 }
 \examples{
 \dontrun{
-  tcm_chat()#'   # With streaming disabled
-  tcm_chat(stream = FALSE)#'   # Then type tasks interactively
+  tcm_chat()
+  # With streaming disabled
+  tcm_chat(stream = FALSE)
+  # Add aisdk's skill-creator alongside TCMDATA skills
+  tcm_chat(skills = c(tcm_skill_dir(), tcm_aisdk_skill()))
 }
 }

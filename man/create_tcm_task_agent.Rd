@@ -12,8 +12,10 @@ create_tcm_task_agent(tools = NULL, system_prompt = NULL, skills = NULL)
 
 \item{system_prompt}{Character. Custom system prompt. If NULL, uses default.}
 
-\item{skills}{Character vector of skill directories, or "auto" to scan
-default paths, or NULL to disable skills.}
+\item{skills}{Character vector of skill directories. If \code{NULL}, uses
+the active TCMDATA skill directory plus aisdk's
+\code{skill-creator} skill (if available). Use \code{character(0)} to
+disable skills entirely.}
 }
 \value{
 An aisdk Agent object.

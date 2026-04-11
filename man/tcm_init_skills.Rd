@@ -27,6 +27,7 @@ package defaults, allowing full customization.
   # Then edit the preferences:
   # file.edit("tcm_skills/analysis-preferences/SKILL.md")
 
-  # Or place new skills created by skill-creator here
+  # Or place new custom skills under tcm_skills/
+  # aisdk's skill-creator remains available by default
 }
 }

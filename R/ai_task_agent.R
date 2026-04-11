@@ -10,8 +10,10 @@
 #' @param tools List of Tool objects. If NULL, uses default tools from
 #'   \code{\link{create_tcm_tools}}.
 #' @param system_prompt Character. Custom system prompt. If NULL, uses default.
-#' @param skills Character vector of skill directories, or "auto" to scan
-#'   default paths, or NULL to disable skills.
+#' @param skills Character vector of skill directories. If \code{NULL}, uses
+#'   the active TCMDATA skill directory plus aisdk's
+#'   \code{skill-creator} skill (if available). Use \code{character(0)} to
+#'   disable skills entirely.
 #'
 #' @return An aisdk Agent object.
 #'
@@ -38,7 +40,8 @@ create_tcm_task_agent <- function(tools = NULL, system_prompt = NULL,
   if (!is.null(skills)) {
     skill_paths <- skills
   } else {
-    skill_paths <- tcm_skill_dir()
+    creator_skill <- tryCatch(tcm_aisdk_skill(), error = function(e) NULL)
+    skill_paths <- unique(c(tcm_skill_dir(), creator_skill))
   }
 
   aisdk::create_agent(
@@ -199,6 +202,11 @@ tcm_agent <- function(task,
 #' @param verbose Logical. Print agent responses (default TRUE).
 #' @param stream Logical. Enable streaming output (default TRUE). Toggle
 #'   at runtime with the \code{/stream} command.
+#' @param skills Character vector of skill directories to load for the chat
+#'   session. Default \code{NULL} uses the active TCMDATA skill directory
+#'   (scanning all skills under it) plus aisdk's \code{skill-creator} skill
+#'   if available. Use \code{character(0)} to disable skills, or pass an
+#'   explicit vector to override the default.
 #'
 #' @return Invisibly returns a list with \code{history} (each turn's task and
 #'   reply) and \code{artifacts} (a data.frame snapshot from
@@ -207,11 +215,15 @@ tcm_agent <- function(task,
 #'
 #' @examples
 #' \dontrun{
-#'   tcm_chat()#'   # With streaming disabled
-#'   tcm_chat(stream = FALSE)#'   # Then type tasks interactively
+#'   tcm_chat()
+#'   # With streaming disabled
+#'   tcm_chat(stream = FALSE)
+#'   # Add aisdk's skill-creator alongside TCMDATA skills
+#'   tcm_chat(skills = c(tcm_skill_dir(), tcm_aisdk_skill()))
 #' }
 #' @export
-tcm_chat <- function(model = NULL, verbose = TRUE, stream = TRUE) {
+tcm_chat <- function(model = NULL, verbose = TRUE, stream = TRUE,
+                     skills = NULL) {
   .check_aisdk()
   model <- .resolve_model(model)
 
@@ -251,7 +263,7 @@ tcm_chat <- function(model = NULL, verbose = TRUE, stream = TRUE) {
   n_all_tools <- length(all_tools)
 
   # -- Create persistent chat session --
-  session_agent <- create_tcm_task_agent(tools = all_tools)
+  session_agent <- create_tcm_task_agent(tools = all_tools, skills = skills)
   chat_session <- aisdk::create_chat_session(agent = session_agent, model = model)
 
   cat("\n")

@@ -7,6 +7,37 @@
 #' @rdname skill-management
 NULL
 
+#' Get path to a bundled aisdk skill
+#'
+#' Returns the absolute path to a skill bundled with the \code{aisdk}
+#' package, such as \code{"skill-creator"}. This is useful when combining
+#' TCMDATA's own skills with upstream aisdk skills without copying them into
+#' the TCMDATA package.
+#'
+#' @param name Character. Skill name in \code{aisdk/inst/skills}.
+#'   Default \code{"skill-creator"}.
+#'
+#' @return The absolute path to the aisdk skill directory.
+#'
+#' @examples
+#' \dontrun{
+#'   skill_creator <- tcm_aisdk_skill()
+#'   agent <- create_tcm_task_agent(
+#'     skills = c(tcm_skill_dir(), skill_creator)
+#'   )
+#' }
+#' @export
+tcm_aisdk_skill <- function(name = "skill-creator") {
+  .check_aisdk()
+
+  path <- system.file(file.path("skills", name), package = "aisdk")
+  if (!nzchar(path) || !dir.exists(path)) {
+    stop("Cannot find aisdk skill: ", name, call. = FALSE)
+  }
+
+  normalizePath(path, mustWork = TRUE)
+}
+
 #' Initialize a local skills directory
 #'
 #' Copies all bundled skills from the TCMDATA package to a local directory.
@@ -26,7 +57,8 @@ NULL
 #'   # Then edit the preferences:
 #'   # file.edit("tcm_skills/analysis-preferences/SKILL.md")
 #'
-#'   # Or place new skills created by skill-creator here
+#'   # Or place new custom skills under tcm_skills/
+#'   # aisdk's skill-creator remains available by default
 #' }
 #' @export
 tcm_init_skills <- function(path = "tcm_skills", overwrite = FALSE) {

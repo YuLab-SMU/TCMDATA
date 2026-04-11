@@ -238,13 +238,13 @@ Skills are domain-knowledge packages that guide the agent through complex multi-
 
 ### Built-in skills
 
-TCMDATA ships with three skills:
+TCMDATA ships with two package skills, and also loads aisdk's `skill-creator` by default:
 
 | Skill | Purpose |
 |-------|---------|
 | `tcm-network-pharmacology` | Guides the full network pharmacology workflow (target retrieval → intersection → PPI → enrichment → validation → report). Only activates when user explicitly requests systematic analysis |
 | `analysis-preferences` | Background constraint layer. Sets default parameters (e.g., p-value cutoffs, PPI score thresholds, visualization defaults) and quality standards. Active on every turn |
-| `skill-creator` | Meta-skill for creating new custom skills |
+| `skill-creator` | Meta-skill from aisdk for creating new custom skills |
 
 ### How skills work
 
@@ -272,14 +272,14 @@ A skill directory can optionally contain `references/` (detailed documentation),
 
 ### Managing skills
 
-By default, the agent uses skills bundled with the package. To customize preferences or add new skills, initialize a local skills directory:
+By default, the agent uses the TCMDATA skill directory plus aisdk's `skill-creator`. To customize preferences or add new skills, initialize a local skills directory:
 
 ```{r skill-init, eval=FALSE}
 # Copy all bundled skills to ./tcm_skills/ for customization
 tcm_init_skills()
 ```
 
-This creates a local `tcm_skills/` directory containing all three built-in skills. You can then:
+This creates a local `tcm_skills/` directory containing the TCMDATA package skills. You can then:
 
 ```{r skill-edit, eval=FALSE}
 # Edit analysis preferences (e.g., change default p-value cutoff)
