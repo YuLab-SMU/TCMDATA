@@ -395,7 +395,7 @@ plot_ml_roc <- function(ml_list) {
 #'   \itemize{
 #'     \item \code{do.call(getvenndata, c(gene_sets, list(set_names = names(gene_sets))))}
 #'       then \code{ggvenn_plot()} (\eqn{\le 4} sets).
-#'     \item \code{aplotExtra::upset_plot(gene_sets)} (\eqn{> 4} sets).
+#'     \item \code{upsetplot(gene_sets)} (\eqn{> 4} sets).
 #'   }
 #'
 #' @examples
@@ -412,7 +412,7 @@ plot_ml_roc <- function(ml_list) {
 #'   ggvenn_plot(venn_df)
 #'
 #'   ## UpSet plot (usually more than 4 sets)
-#'   aplotExtra::upset_plot(gene_sets)
+#'   upsetplot(gene_sets)
 #' }
 #' @export
 get_ml_gene_sets <- function(..., set_names = NULL) {
@@ -462,12 +462,13 @@ get_ml_gene_sets <- function(..., set_names = NULL) {
 }
 
 
+
 #' Venn diagram of selected genes
 #'
 #' Convenience wrapper: calls [get_ml_gene_sets()] to extract gene sets,
 #' then draws a Venn diagram via [getvenndata()] + [ggvenn_plot()].
 #' Accepts the same flexible inputs as [get_ml_gene_sets()].
-#' For > 4 sets consider using \code{aplotExtra::upset_plot(get_ml_gene_sets(...))}.
+#' For > 4 sets consider using \code{upsetplot(get_ml_gene_sets(...))}.
 #'
 #' @inheritParams get_ml_gene_sets
 #' @return A \code{ggplot} object.
@@ -478,7 +479,7 @@ plot_ml_venn <- function(..., set_names = NULL) {
 
   if (length(gene_sets) > 4) {
     message("ggvenn_plot supports at most 4 sets; using the first 4.\n",
-            "Tip: for all sets use aplotExtra::upset_plot(get_ml_gene_sets(...))")
+            "Tip: for all sets use upsetplot(get_ml_gene_sets(...))")
     gene_sets <- gene_sets[seq_len(4)]
   }
 

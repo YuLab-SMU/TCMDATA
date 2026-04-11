@@ -132,3 +132,164 @@ search_target <- function(gene_list){
 }
 
 
+
+# Disease-target search (DisGeNET via DOSE)
+# Package-level cache
+.disease_env <- new.env(parent = emptyenv())
+
+#' @keywords internal
+#' @noRd
+.check_dose <- function() {
+  if (!requireNamespace("DOSE", quietly = TRUE))
+    stop("Package 'DOSE' is required. Install: BiocManager::install('DOSE')", call. = FALSE)
+}
+
+#' @keywords internal
+#' @noRd
+.get_disease_data <- function() {
+  if (!is.null(.disease_env$df)) return(.disease_env$df)
+  .check_dose()
+
+  env <- new.env(parent = emptyenv())
+  utils::data("DGN_PATHID2EXTID", package = "DOSE", envir = env)
+  utils::data("DGN_PATHID2NAME", package = "DOSE", envir = env)
+
+  id2gene <- env$DGN_PATHID2EXTID
+  id2name <- env$DGN_PATHID2NAME
+
+  df <- data.frame(
+    disease_id = rep(names(id2gene), lengths(id2gene)),
+    gene_id = as.character(unlist(id2gene, use.names = FALSE)),
+    stringsAsFactors = FALSE
+  )
+  df$disease_name <- id2name[df$disease_id]
+
+  .disease_env$df <- df
+  .disease_env$id2name <- id2name
+  df
+}
+
+#' @keywords internal
+#' @noRd
+.add_gene_symbol <- function(df) {
+  if (!requireNamespace("org.Hs.eg.db", quietly = TRUE))
+    stop("Package 'org.Hs.eg.db' required. Install: BiocManager::install('org.Hs.eg.db')", call. = FALSE)
+  mapping <- suppressMessages(
+    AnnotationDbi::select(org.Hs.eg.db::org.Hs.eg.db,
+                          keys = unique(df$gene_id),
+                          columns = "SYMBOL", keytype = "ENTREZID")
+  )
+  sym_map <- stats::setNames(mapping$SYMBOL, mapping$ENTREZID)
+  df$symbol <- sym_map[df$gene_id]
+  df
+}
+
+#' @keywords internal
+#' @noRd
+.symbol_to_entrez <- function(symbols) {
+  if (!requireNamespace("org.Hs.eg.db", quietly = TRUE))
+    stop("Package 'org.Hs.eg.db' required. Install: BiocManager::install('org.Hs.eg.db')", call. = FALSE)
+  suppressMessages(
+    AnnotationDbi::select(org.Hs.eg.db::org.Hs.eg.db,
+                          keys = symbols, columns = "ENTREZID", keytype = "SYMBOL")
+  )
+}
+
+#' Search disease targets (disease -> genes)
+#'
+#' Query DisGeNET (via DOSE) to find genes associated with a disease.
+#' Supports UMLS CUI IDs, exact name match, or fuzzy name search.
+#'
+#' @param disease Character. Disease name or UMLS CUI (e.g. "sepsis" or
+#'   "C0243026"). Supports a vector for multiple diseases.
+#' @param readable Logical. Convert Entrez IDs to gene symbols (default TRUE).
+#'
+#' @return A \code{data.frame} with columns \code{disease_id}, \code{disease_name},
+#'   \code{gene_id}, and optionally \code{symbol}. Returns NULL if no match.
+#'
+#' @examples
+#' \dontrun{
+#'   search_disease("sepsis")
+#'   search_disease(c("sepsis", "asthma"))
+#'   search_disease("C0243026")
+#' }
+#' @export
+search_disease <- function(disease, readable = TRUE) {
+  df <- .get_disease_data()
+  id2name <- .disease_env$id2name
+
+  # Match: exact ID -> exact name (case-insensitive) -> grep
+  all_matched_ids <- character(0)
+  for (q in disease) {
+    if (q %in% names(id2name)) {
+      all_matched_ids <- c(all_matched_ids, q)
+    } else {
+      exact <- names(id2name)[tolower(id2name) == tolower(q)]
+      if (length(exact) > 0) {
+        all_matched_ids <- c(all_matched_ids, exact)
+      } else {
+        fuzzy <- names(id2name)[grepl(q, id2name, ignore.case = TRUE)]
+        if (length(fuzzy) > 0) {
+          all_matched_ids <- c(all_matched_ids, fuzzy)
+        } else {
+          message("No disease found for: ", q)
+        }
+      }
+    }
+  }
+
+  if (length(all_matched_ids) == 0) return(NULL)
+
+  res <- df[df$disease_id %in% all_matched_ids, , drop = FALSE]
+  if (readable) res <- .add_gene_symbol(res)
+  res <- res[order(res$disease_name, res$gene_id), , drop = FALSE]
+  rownames(res) <- NULL
+  res
+}
+
+
+#' Search gene-associated diseases (gene -> diseases)
+#'
+#' Reverse lookup: given gene symbols or Entrez IDs, find associated diseases
+#' from DisGeNET (via DOSE).
+#'
+#' @param gene Character. Gene symbols (e.g. "TNF") or Entrez IDs.
+#'   Supports a vector for multiple genes.
+#' @param readable Logical. Attach gene symbol column (default TRUE).
+#'
+#' @return A \code{data.frame} with columns \code{disease_id}, \code{disease_name},
+#'   \code{gene_id}, and optionally \code{symbol}. Returns NULL if no match.
+#'
+#' @examples
+#' \dontrun{
+#'   search_gene_disease("TNF")
+#'   search_gene_disease(c("IL6", "TNF", "PPARG"))
+#'   search_gene_disease("7124")
+#' }
+#' @export
+search_gene_disease <- function(gene, readable = TRUE) {
+  df <- .get_disease_data()
+
+  # Try as Entrez ID first
+  hits <- df[df$gene_id %in% gene, , drop = FALSE]
+
+  # If no hits, try Symbol -> Entrez conversion
+  if (nrow(hits) == 0) {
+    gene_map <- .symbol_to_entrez(gene)
+    entrez_ids <- gene_map$ENTREZID[!is.na(gene_map$ENTREZID)]
+    if (length(entrez_ids) > 0) {
+      hits <- df[df$gene_id %in% entrez_ids, , drop = FALSE]
+    }
+  }
+
+  if (nrow(hits) == 0) {
+    message("No diseases found for: ", paste(gene, collapse = ", "))
+    return(NULL)
+  }
+
+  if (readable) hits <- .add_gene_symbol(hits)
+  hits <- hits[order(hits$gene_id, hits$disease_name), , drop = FALSE]
+  rownames(hits) <- NULL
+  hits
+}
+

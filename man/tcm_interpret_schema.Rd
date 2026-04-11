@@ -83,7 +83,7 @@ so you always get a named list.
     enrich_res,
     schema   = my_schema,
     language = "zh",
-    prompt   = "请重点关注抗炎通路："
+    prompt   = "Focus on anti-inflammatory pathways:"
   )
 
   # Access fields by name

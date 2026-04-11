@@ -25,7 +25,7 @@ Can be passed directly to:
 \itemize{
 \item \code{do.call(getvenndata, c(gene_sets, list(set_names = names(gene_sets))))}
 then \code{ggvenn_plot()} (\eqn{\le 4} sets).
-\item \code{aplotExtra::upset_plot(gene_sets)} (\eqn{> 4} sets).
+\item \code{upsetplot(gene_sets)} (\eqn{> 4} sets).
 }
 }
 \description{
@@ -47,6 +47,6 @@ of character vectors ready for downstream plotting.
   ggvenn_plot(venn_df)
 
   ## UpSet plot (usually more than 4 sets)
-  aplotExtra::upset_plot(gene_sets)
+  upsetplot(gene_sets)
 }
 }

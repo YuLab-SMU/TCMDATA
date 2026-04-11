@@ -1,0 +1,309 @@
+# AI Module {#ai-module}
+
+`TCMDATA` includes an AI module built on top of [aisdk](https://github.com/YuLab-SMU/aisdk), providing three layers of AI capability: **interpretation** (one-shot analysis of R objects), **agent** (multi-turn interactive analysis with tool use), and **skill** (domain-specific workflow knowledge). This chapter demonstrates the key features of each layer.
+
+```{r ai-setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Prerequisites
+
+The AI module requires both `TCMDATA` and `aisdk`:
+
+```{r install, eval=FALSE}
+devtools::install_github("YuLab-SMU/aisdk")
+library(aisdk)
+library(TCMDATA)
+```
+
+Model configuration is handled through `tcm_setup()` and only needs to be called once per session. User must set their own API key and provider to use AI module in this package.
+
+```{r config, eval=FALSE}
+tcm_setup(
+  provider = "openai",
+  api_key  = "sk-xxx",
+  model    = "gpt-4o", 
+  base_url = "https://xxx/v1", # if necessary 
+  save     = TRUE,
+  test     = TRUE)
+```
+
+## Interpretation layer
+
+The interpretation layer provides one-shot AI analysis of R objects and free-text queries, with no tool use or multi-turn conversation. The primary interface is `tcm_interpret()`.
+
+### Free-text interpretation
+
+```{r text-demo, eval=FALSE}
+txt <- tcm_interpret(
+  "Please introduce the major pharmacological functions of Huangqi (Astragalus membranaceus), focusing on immunoregulation.",
+  language = "en")
+cat(txt)
+```
+
+
+### Interpreting enrichment objects
+
+`tcm_interpret()` can directly accept a `clusterProfiler` enrichment object. The package automatically compresses the relevant terms and genes into a compact representation before sending to the model:
+
+```{r enrich-object, eval=FALSE}
+library(clusterProfiler)
+library(org.Hs.eg.db)
+
+lz_targets <- search_herb("lingzhi", type = "Herb_pinyin_name")$target
+lz_targets <- sample(unique(na.omit(lz_targets)), 100)
+
+bp <- enrichGO(
+  gene    = lz_targets,
+  ont     = "BP",
+  OrgDb   = org.Hs.eg.db,
+  keyType = "SYMBOL")
+
+tcm_interpret(
+  bp,
+  prompt   = "Summarise the main biological implications of this Lingzhi GO enrichment.",
+  language = "en")
+```
+
+
+```{}
+=== TCM AI Analysis: enrichment ===
+  Model: openai:gpt-4o | Language: en | Audience: researcher
+
+-- Summary --
+The enrichment profile indicates that Lingzhi's putative targets cluster in innate
+immune and inflammatory signaling, particularly TLR/IL-1/TNF-NF-κB pathways,
+leukocyte adhesion, and matrix remodeling...
+
+-- Key Findings --
+  * Strong enrichment for cellular response to stress and external stimuli
+  * Activation of innate immune and inflammatory pathways (IRAK1, NFKBIA, TNF, ADAM17)
+  * Leukocyte adhesion and endothelial activation (VCAM1, MMP9)
+  ...
+```
+
+### Interpreting PPI objects
+
+PPI network objects with topological metrics computed by `compute_nodeinfo()` can also be directly interpreted:
+
+```{r ppi-object, eval=FALSE}
+data("demo_ppi")
+ppi_graph <- compute_nodeinfo(demo_ppi)
+
+tcm_interpret(
+  ppi_graph,
+  prompt   = "Characterise the network architecture and identify the most important hub nodes.",
+  language = "en")
+```
+
+### Drafting result paragraphs
+
+`draft_result_paragraph()` transforms an interpretation object into a publication-ready paragraph:
+
+```{r draft-demo, eval=FALSE}
+ai_res <- tcm_interpret(bp, language = "en")
+draft  <- draft_result_paragraph(ai_res, language = "en")
+cat(as.character(draft))
+```
+
+
+### Custom structured output
+
+`tcm_interpret_schema()` allows user-defined output schemas for integration into downstream pipelines:
+
+```{r custom-schema, eval=FALSE}
+my_schema <- tcm_schema(
+  summary     = tcm_field_string("A concise 2-3 sentence summary"),
+  mechanism   = tcm_field_string("Core mechanistic interpretation"),
+  key_targets = tcm_field_array("Most important targets"),
+  confidence  = tcm_field_enum(c("high", "medium", "low"),
+                               "Confidence level")
+)
+
+custom_res <- tcm_interpret_schema(
+  bp,
+  schema = my_schema,
+  type   = "enrichment",
+  prompt = "Focus on inflammation-related processes.")
+
+print(custom_res)
+```
+
+Available field types: `tcm_field_string()`, `tcm_field_number()`, `tcm_field_boolean()`, `tcm_field_array()`, `tcm_field_enum()`.
+
+
+## Agent layer
+
+The agent layer adds **tool use** and **multi-turn conversation** on top of the interpretation engine. TCMDATA provides 30+ analysis tools (target search, enrichment, PPI, ML screening, compound lookup, visualization, etc.) that the agent can call autonomously.
+
+### One-shot task: `tcm_agent()`
+
+For a single analysis request, `tcm_agent()` automatically routes the query to the appropriate tools and returns the result:
+
+```{r agent-oneshot, eval=FALSE}
+# Simple herb target lookup — agent selects the right tool automatically
+result <- tcm_agent("Search the targets of Huangqi (Astragalus)")
+cat(result$text)
+
+# The result also contains any generated artifacts
+result$artifacts
+```
+
+The built-in **router** matches user queries to relevant tools using keyword patterns. For example, "enrichment" routes to GO/KEGG tools, "ppi" routes to network tools, and "machine learning" routes to ML screening tools. When multiple patterns match, tools are merged.
+
+### Interactive session: `tcm_chat()`
+
+`tcm_chat()` opens an interactive REPL for multi-turn exploratory analysis:
+
+```{r agent-chat, eval=FALSE}
+tcm_chat()
+```
+
+```
+╔══════════════════════════════════════════════════╗
+║  TCM-Pharmacist · Interactive Session            ║
+║  Type /help for commands · /quit to exit         ║
+╚══════════════════════════════════════════════════╝
+
+[1] You > Search targets of Huangqi and sepsis, then compute intersection
+ ✓ Route: target_lookup + disease_lookup (high)
+ ✓ Tools called: search_herb_records → search_disease_targets → compute_target_intersection
+ ✓ New artifacts: intersect_001
+
+ Agent > Found 121 intersection targets between Huangqi and sepsis...
+
+[2] You > Run GO and KEGG enrichment on the intersection
+ ✓ Route: enrichment (high)
+ ✓ Tools called: run_go_enrichment → run_kegg_enrichment
+ ✓ New artifacts: enrich_001, enrich_002
+
+ Agent > GO enrichment identified 245 significant BP terms...
+
+[3] You > /artifacts
+  intersect_001  gene_list    character[121]  2026-04-10 14:32:01
+  enrich_001     enrichment   enrichResult    2026-04-10 14:32:15
+  enrich_002     enrichment   enrichResult    2026-04-10 14:32:16
+
+[4] You > /save 10x8
+  ✓ Exported 3 artifacts to tcm_output/
+
+[5] You > /quit
+```
+
+Key commands: `/help`, `/artifacts`, `/save [WxH]`, `/history`, `/stats`, `/quit`.
+
+The session returns a list with `history` and `artifacts` for programmatic access:
+
+```{r chat-capture, eval=FALSE}
+res <- tcm_chat()
+# After /quit:
+res$artifacts  # all generated artifacts
+res$history    # full conversation history
+```
+
+### Programmatic agent: `create_tcm_task_agent()`
+
+For scripted workflows, create a reusable agent and execute tasks programmatically:
+
+```{r agent-programmatic, eval=FALSE}
+agent <- create_tcm_task_agent()
+
+r1 <- run_tcm_task(agent, "Search Huangqi targets and sepsis targets, compute intersection")
+r2 <- run_tcm_task(agent, "Run GO enrichment on the intersection genes")
+r3 <- run_tcm_task(agent, "Build PPI network and rank hub genes")
+
+# Each result contains: $text, $artifacts, $tool_calls
+r3$text
+```
+
+### Artifact management
+
+All analysis results are automatically stored as **artifacts** with generated IDs (e.g., `enrich_001`, `ppi_002`). The agent can reference artifacts in subsequent turns, and artifacts can be managed via dedicated functions:
+
+```{r artifacts-demo, eval=FALSE}
+list_tcm_artifacts()     # list all artifacts
+load_tcm_artifact("enrich_001")  # retrieve the R object
+clear_tcm_artifacts()    # clear all
+```
+
+## Skill layer
+
+Skills are domain-knowledge packages that guide the agent through complex multi-step workflows. Unlike tools (which perform specific operations), skills provide **strategic context** — what to do, in what order, and what to watch out for.
+
+### Built-in skills
+
+TCMDATA ships with two package skills, and also loads aisdk's `skill-creator` by default:
+
+| Skill | Purpose |
+|-------|---------|
+| `tcm-network-pharmacology` | Guides the full network pharmacology workflow (target retrieval → intersection → PPI → enrichment → validation → report). Only activates when user explicitly requests systematic analysis |
+| `analysis-preferences` | Background constraint layer. Sets default parameters (e.g., p-value cutoffs, PPI score thresholds, visualization defaults) and quality standards. Active on every turn |
+| `skill-creator` | Meta-skill from aisdk for creating new custom skills |
+
+### How skills work
+
+When the agent detects a request that matches a skill's trigger condition, the skill's instructions are injected into the conversation context. For example, asking "Help me do a network pharmacology analysis of Huangqi treating sepsis" activates the `tcm-network-pharmacology` skill, which guides the agent through:
+
+- **Phase 1**: Target collection (herb targets + disease targets → intersection)
+- **Phase 2**: Network & enrichment (PPI construction, GO/KEGG analysis, hub gene ranking)
+- **Phase 3**: Expression validation (WGCNA, ML screening, DEG integration — if data available)
+- **Phase 4**: Single-cell validation (if scRNA-seq data available)
+- **Phase 5**: Literature validation, cross-database verification, and report generation
+
+Importantly, the skill is scope-aware: asking "Just search the targets of Huangqi" will only run the relevant step, not the full pipeline.
+
+### Creating custom skills
+
+Use the `skill-creator` skill to define new skills. A minimal skill only needs a `SKILL.md` file with YAML frontmatter:
+
+```{r custom-skill, eval=FALSE}
+# Example: ask the agent to create a new skill
+tcm_chat()
+# > Help me create a skill for molecular docking analysis
+```
+
+A skill directory can optionally contain `references/` (detailed documentation), `scripts/` (executable scripts), and `assets/` (templates).
+
+### Managing skills
+
+By default, the agent uses the TCMDATA skill directory plus aisdk's `skill-creator`. To customize preferences or add new skills, initialize a local skills directory:
+
+```{r skill-init, eval=FALSE}
+# Copy all bundled skills to ./tcm_skills/ for customization
+tcm_init_skills()
+```
+
+This creates a local `tcm_skills/` directory containing the TCMDATA package skills. You can then:
+
+```{r skill-edit, eval=FALSE}
+# Edit analysis preferences (e.g., change default p-value cutoff)
+file.edit("tcm_skills/analysis-preferences/SKILL.md")
+
+# Add a new skill created by skill-creator
+# Just place the skill directory under tcm_skills/:
+#   tcm_skills/my-new-skill/SKILL.md
+
+# Check which skills directory is currently active
+tcm_skill_dir()
+
+# Switch to a different skills directory
+tcm_use_skills("path/to/other/skills")
+
+# Reset to package defaults
+tcm_reset_skills()
+```
+
+Once a local skills directory is active, all agent functions (`tcm_agent()`, `tcm_chat()`, `create_tcm_task_agent()`) will automatically use it.
+
+
+## Session information
+
+```{r ai-session-info}
+sessionInfo()
+```
