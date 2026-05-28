@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Pre-analysis | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</title>
+  <meta name="description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Pre-analysis | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="github-repo" content="YuLab-SMU/TCMDATA" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Pre-analysis | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  
+  <meta name="twitter:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  
+
+<meta name="author" content="Nan He, Guangchuang Yu, Shuangbin Xu Department of Bioinformatics, School of Basic Medical Sciences, Southern Medical University" />
+
+
+<meta name="date" content="2026-05-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="load-data.html"/>
+<link rel="next" href="molecule-detection.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/ggiraphjs-0.9.4/girafe.css" rel="stylesheet" />
+<script src="libs/ggiraphjs-0.9.4/girafe.js"></script>
+<script src="libs/girafe-binding-0.9.6/girafe.js"></script>
+<link href="libs/liberation-sans-0.5.1/css/liberation-sans.css" rel="stylesheet" />
+<link href="libs/liberation-serif-0.5.1/css/liberation-serif.css" rel="stylesheet" />
+<link href="libs/liberation-mono-0.5.1/css/liberation-mono.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">TCMDATA User Guide</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i>Installation</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="load-data.html"><a href="load-data.html"><i class="fa fa-check"></i><b>1</b> Load TCM Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="load-data.html"><a href="load-data.html#search-by-herb-name"><i class="fa fa-check"></i><b>1.1</b> Search by herb name</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="load-data.html"><a href="load-data.html#using-pinyin-format"><i class="fa fa-check"></i><b>1.1.1</b> Using Pinyin format</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="load-data.html"><a href="load-data.html#search-by-target-gene"><i class="fa fa-check"></i><b>1.2</b> Search by target gene</a></li>
+<li class="chapter" data-level="1.3" data-path="load-data.html"><a href="load-data.html#session-information"><i class="fa fa-check"></i><b>1.3</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="pre-analysis.html"><a href="pre-analysis.html"><i class="fa fa-check"></i><b>2</b> Pre-analysis</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#pubmed-literature-mining"><i class="fa fa-check"></i><b>2.1</b> PubMed literature mining</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="pre-analysis.html"><a href="pre-analysis.html#visualization"><i class="fa fa-check"></i><b>2.1.1</b> Visualization</a></li>
+<li class="chapter" data-level="2.1.2" data-path="pre-analysis.html"><a href="pre-analysis.html#exporting-results"><i class="fa fa-check"></i><b>2.1.2</b> Exporting results</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="pre-analysis.html"><a href="pre-analysis.html#herb-ora"><i class="fa fa-check"></i><b>2.2</b> Herb enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#example-diabetic-nephropathy"><i class="fa fa-check"></i><b>2.2.1</b> Example: Diabetic Nephropathy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="pre-analysis.html"><a href="pre-analysis.html#references"><i class="fa fa-check"></i><b>2.3</b> References</a></li>
+<li class="chapter" data-level="2.4" data-path="pre-analysis.html"><a href="pre-analysis.html#session-information-1"><i class="fa fa-check"></i><b>2.4</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="molecule-detection.html"><a href="molecule-detection.html"><i class="fa fa-check"></i><b>3</b> Molecule annotation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="molecule-detection.html"><a href="molecule-detection.html#resolving-compound-identifiers"><i class="fa fa-check"></i><b>3.1</b> Resolving compound identifiers</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="molecule-detection.html"><a href="molecule-detection.html#using-resolve_cid"><i class="fa fa-check"></i><b>3.1.1</b> Using <code>resolve_cid()</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="molecule-detection.html"><a href="molecule-detection.html#using-getcid"><i class="fa fa-check"></i><b>3.1.2</b> Using <code>getcid()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="molecule-detection.html"><a href="molecule-detection.html#retrieving-chemical-properties"><i class="fa fa-check"></i><b>3.2</b> Retrieving chemical properties</a></li>
+<li class="chapter" data-level="3.3" data-path="molecule-detection.html"><a href="molecule-detection.html#similarity-searching"><i class="fa fa-check"></i><b>3.3</b> Similarity searching</a></li>
+<li class="chapter" data-level="3.4" data-path="molecule-detection.html"><a href="molecule-detection.html#download-molecular-structures-and-format-conversion"><i class="fa fa-check"></i><b>3.4</b> Download molecular structures and format conversion</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="molecule-detection.html"><a href="molecule-detection.html#downloading-ligand-structures-from-pubchem"><i class="fa fa-check"></i><b>3.4.1</b> Downloading ligand structures from PubChem</a></li>
+<li class="chapter" data-level="3.4.2" data-path="molecule-detection.html"><a href="molecule-detection.html#downloading-receptor-structures-from-the-rcsb-pdb"><i class="fa fa-check"></i><b>3.4.2</b> Downloading receptor structures from the RCSB PDB</a></li>
+<li class="chapter" data-level="3.4.3" data-path="molecule-detection.html"><a href="molecule-detection.html#converting-structure-file-formats"><i class="fa fa-check"></i><b>3.4.3</b> Converting structure file formats</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="molecule-detection.html"><a href="molecule-detection.html#references-1"><i class="fa fa-check"></i><b>3.5</b> References</a></li>
+<li class="chapter" data-level="3.6" data-path="molecule-detection.html"><a href="molecule-detection.html#session-information-2"><i class="fa fa-check"></i><b>3.6</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="target-retrieval.html"><a href="target-retrieval.html"><i class="fa fa-check"></i><b>4</b> Target retrieval and DEG analysis</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="target-retrieval.html"><a href="target-retrieval.html#disease-target-tcmdata"><i class="fa fa-check"></i><b>4.1</b> Programmatic disease target retrieval with TCMDATA</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="target-retrieval.html"><a href="target-retrieval.html#search_disease-disease-genes"><i class="fa fa-check"></i><b>4.1.1</b> <code>search_disease()</code>: disease → genes</a></li>
+<li class="chapter" data-level="4.1.2" data-path="target-retrieval.html"><a href="target-retrieval.html#search_gene_disease-gene-diseases"><i class="fa fa-check"></i><b>4.1.2</b> <code>search_gene_disease()</code>: gene → diseases</a></li>
+<li class="chapter" data-level="4.1.3" data-path="target-retrieval.html"><a href="target-retrieval.html#open-targets-api-disease-scored-targets"><i class="fa fa-check"></i><b>4.1.3</b> Open Targets API: disease → scored targets</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="target-retrieval.html"><a href="target-retrieval.html#disease-db"><i class="fa fa-check"></i><b>4.2</b> Disease target databases</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="target-retrieval.html"><a href="target-retrieval.html#genecards"><i class="fa fa-check"></i><b>4.2.1</b> GeneCards</a></li>
+<li class="chapter" data-level="4.2.2" data-path="target-retrieval.html"><a href="target-retrieval.html#open-targets-platform"><i class="fa fa-check"></i><b>4.2.2</b> Open Targets Platform</a></li>
+<li class="chapter" data-level="4.2.3" data-path="target-retrieval.html"><a href="target-retrieval.html#ctd-comparative-toxicogenomics-database"><i class="fa fa-check"></i><b>4.2.3</b> CTD (Comparative Toxicogenomics Database)</a></li>
+<li class="chapter" data-level="4.2.4" data-path="target-retrieval.html"><a href="target-retrieval.html#other-databases"><i class="fa fa-check"></i><b>4.2.4</b> Other databases</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="target-retrieval.html"><a href="target-retrieval.html#compound-target"><i class="fa fa-check"></i><b>4.3</b> Compound target prediction</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="target-retrieval.html"><a href="target-retrieval.html#compound-target-swisstarget"><i class="fa fa-check"></i><b>4.3.1</b> SwissTargetPrediction</a></li>
+<li class="chapter" data-level="4.3.2" data-path="target-retrieval.html"><a href="target-retrieval.html#similarity-ensemble-approach-sea"><i class="fa fa-check"></i><b>4.3.2</b> Similarity Ensemble Approach (SEA)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano"><i class="fa fa-check"></i><b>4.4</b> DEG visualization</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="target-retrieval.html"><a href="target-retrieval.html#load-and-inspect-data"><i class="fa fa-check"></i><b>4.4.1</b> Load and inspect data</a></li>
+<li class="chapter" data-level="4.4.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano-plot-with-ivolcano"><i class="fa fa-check"></i><b>4.4.2</b> Volcano plot with <code>ivolcano</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="target-retrieval.html"><a href="target-retrieval.html#intersection"><i class="fa fa-check"></i><b>4.5</b> Intersection analysis</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="target-retrieval.html"><a href="target-retrieval.html#prepare-gene-sets"><i class="fa fa-check"></i><b>4.5.1</b> Prepare gene sets</a></li>
+<li class="chapter" data-level="4.5.2" data-path="target-retrieval.html"><a href="target-retrieval.html#venn-diagram"><i class="fa fa-check"></i><b>4.5.2</b> Venn diagram</a></li>
+<li class="chapter" data-level="4.5.3" data-path="target-retrieval.html"><a href="target-retrieval.html#upset-plot"><i class="fa fa-check"></i><b>4.5.3</b> UpSet plot</a></li>
+<li class="chapter" data-level="4.5.4" data-path="target-retrieval.html"><a href="target-retrieval.html#extract-intersection-results"><i class="fa fa-check"></i><b>4.5.4</b> Extract intersection results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="target-retrieval.html"><a href="target-retrieval.html#ppi-weighted-target-ranking"><i class="fa fa-check"></i><b>4.6</b> PPI-weighted target ranking</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="target-retrieval.html"><a href="target-retrieval.html#example-lingzhi-targets-against-dn-disease-module"><i class="fa fa-check"></i><b>4.6.1</b> Example: Lingzhi targets against DN disease module</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="target-retrieval.html"><a href="target-retrieval.html#references-2"><i class="fa fa-check"></i><b>4.7</b> References</a></li>
+<li class="chapter" data-level="4.8" data-path="target-retrieval.html"><a href="target-retrieval.html#session-information-3"><i class="fa fa-check"></i><b>4.8</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="network-construction.html"><a href="network-construction.html"><i class="fa fa-check"></i><b>5</b> TCM network construction</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="network-construction.html"><a href="network-construction.html#preparing-the-data"><i class="fa fa-check"></i><b>5.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="5.2" data-path="network-construction.html"><a href="network-construction.html#sankey-diagram-visualization"><i class="fa fa-check"></i><b>5.2</b> Sankey diagram visualization</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="network-construction.html"><a href="network-construction.html#basic-usage"><i class="fa fa-check"></i><b>5.2.1</b> Basic usage</a></li>
+<li class="chapter" data-level="5.2.2" data-path="network-construction.html"><a href="network-construction.html#customizing-colors-and-appearance"><i class="fa fa-check"></i><b>5.2.2</b> Customizing colors and appearance</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="network-construction.html"><a href="network-construction.html#network-graph-with-ggtangle"><i class="fa fa-check"></i><b>5.3</b> Network graph with <code>ggtangle</code></a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="network-construction.html"><a href="network-construction.html#building-the-graph"><i class="fa fa-check"></i><b>5.3.1</b> Building the graph</a></li>
+<li class="chapter" data-level="5.3.2" data-path="network-construction.html"><a href="network-construction.html#basic-network-visualization"><i class="fa fa-check"></i><b>5.3.2</b> Basic network visualization</a></li>
+<li class="chapter" data-level="5.3.3" data-path="network-construction.html"><a href="network-construction.html#adding-node-labels"><i class="fa fa-check"></i><b>5.3.3</b> Adding node labels</a></li>
+<li class="chapter" data-level="5.3.4" data-path="network-construction.html"><a href="network-construction.html#alternative-layouts"><i class="fa fa-check"></i><b>5.3.4</b> Alternative layouts</a></li>
+<li class="chapter" data-level="5.3.5" data-path="network-construction.html"><a href="network-construction.html#enriching-the-network-with-external-data"><i class="fa fa-check"></i><b>5.3.5</b> Enriching the network with external data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="network-construction.html"><a href="network-construction.html#references-3"><i class="fa fa-check"></i><b>5.4</b> References</a></li>
+<li class="chapter" data-level="5.5" data-path="network-construction.html"><a href="network-construction.html#session-information-4"><i class="fa fa-check"></i><b>5.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="enrichment.html"><a href="enrichment.html"><i class="fa fa-check"></i><b>6</b> Enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="enrichment.html"><a href="enrichment.html#over-representation-analysis-ora"><i class="fa fa-check"></i><b>6.1</b> Over Representation Analysis (ORA)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="enrichment.html"><a href="enrichment.html#kegg-enrichment-analysis"><i class="fa fa-check"></i><b>6.1.1</b> KEGG enrichment analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="enrichment.html"><a href="enrichment.html#go-enrichment-analysis"><i class="fa fa-check"></i><b>6.2</b> GO enrichment analysis</a></li>
+<li class="chapter" data-level="6.3" data-path="enrichment.html"><a href="enrichment.html#advanced-visualization"><i class="fa fa-check"></i><b>6.3</b> Advanced visualization</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="enrichment.html"><a href="enrichment.html#lollipop-plot"><i class="fa fa-check"></i><b>6.3.1</b> Lollipop plot</a></li>
+<li class="chapter" data-level="6.3.2" data-path="enrichment.html"><a href="enrichment.html#dot-sankey-plot"><i class="fa fa-check"></i><b>6.3.2</b> Dot-sankey plot</a></li>
+<li class="chapter" data-level="6.3.3" data-path="enrichment.html"><a href="enrichment.html#go-bar-plot"><i class="fa fa-check"></i><b>6.3.3</b> GO bar plot</a></li>
+<li class="chapter" data-level="6.3.4" data-path="enrichment.html"><a href="enrichment.html#go-circle-plot"><i class="fa fa-check"></i><b>6.3.4</b> GO circle plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="enrichment.html"><a href="enrichment.html#gene-set-enrichment-analysis-gsea"><i class="fa fa-check"></i><b>6.4</b> Gene Set Enrichment Analysis (GSEA)</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="enrichment.html"><a href="enrichment.html#prepare-ranked-gene-list"><i class="fa fa-check"></i><b>6.4.1</b> Prepare ranked gene list</a></li>
+<li class="chapter" data-level="6.4.2" data-path="enrichment.html"><a href="enrichment.html#kegg-gsea-analysis"><i class="fa fa-check"></i><b>6.4.2</b> KEGG GSEA analysis</a></li>
+<li class="chapter" data-level="6.4.3" data-path="enrichment.html"><a href="enrichment.html#go-gsea-analysis"><i class="fa fa-check"></i><b>6.4.3</b> GO GSEA analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="enrichment.html"><a href="enrichment.html#session-information-5"><i class="fa fa-check"></i><b>6.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ppi-analysis.html"><a href="ppi-analysis.html"><i class="fa fa-check"></i><b>7</b> PPI network analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#retrieving-ppi-data-from-string"><i class="fa fa-check"></i><b>7.1</b> Retrieving PPI data from STRING</a></li>
+<li class="chapter" data-level="7.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#network-filtering"><i class="fa fa-check"></i><b>7.2</b> Network filtering</a></li>
+<li class="chapter" data-level="7.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#ppi-target-set-proximity"><i class="fa fa-check"></i><b>7.3</b> Target-set proximity to a disease PPI module</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#example-evaluating-lingzhi-target-set-against-dn"><i class="fa fa-check"></i><b>7.3.1</b> Example: evaluating Lingzhi target set against DN</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#topology"><i class="fa fa-check"></i><b>7.4</b> Topological metrics</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#integrated-ranking"><i class="fa fa-check"></i><b>7.4.1</b> Integrated ranking</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#radar-plot-of-topological-metrics"><i class="fa fa-check"></i><b>7.4.2</b> Radar plot of topological metrics</a></li>
+<li class="chapter" data-level="7.4.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#heatmap-of-topological-metrics"><i class="fa fa-check"></i><b>7.4.3</b> Heatmap of topological metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="ppi-analysis.html"><a href="ppi-analysis.html#clustering"><i class="fa fa-check"></i><b>7.5</b> Community detection</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#louvain-modularity-optimization"><i class="fa fa-check"></i><b>7.5.1</b> Louvain modularity optimization</a></li>
+<li class="chapter" data-level="7.5.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcode-molecular-complex-detection"><i class="fa fa-check"></i><b>7.5.2</b> MCODE (Molecular Complex Detection)</a></li>
+<li class="chapter" data-level="7.5.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcl-markov-clustering"><i class="fa fa-check"></i><b>7.5.3</b> MCL (Markov Clustering)</a></li>
+<li class="chapter" data-level="7.5.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#fast-greedy-modularity-optimization"><i class="fa fa-check"></i><b>7.5.4</b> Fast greedy modularity optimization</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="ppi-analysis.html"><a href="ppi-analysis.html#robustness"><i class="fa fa-check"></i><b>7.6</b> PPI network robustness analysis</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#algorithm-overview"><i class="fa fa-check"></i><b>7.6.1</b> Algorithm overview</a></li>
+<li class="chapter" data-level="7.6.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#example-knocking-out-il6"><i class="fa fa-check"></i><b>7.6.2</b> Example: knocking out IL6</a></li>
+<li class="chapter" data-level="7.6.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#visualization-before-vs.-after-knockout"><i class="fa fa-check"></i><b>7.6.3</b> Visualization: before vs. after knockout</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="ppi-analysis.html"><a href="ppi-analysis.html#ppi-vis"><i class="fa fa-check"></i><b>7.7</b> PPI network visualization</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#basic-network-with-topological-mapping"><i class="fa fa-check"></i><b>7.7.1</b> Basic network with topological mapping</a></li>
+<li class="chapter" data-level="7.7.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#community-colored-network"><i class="fa fa-check"></i><b>7.7.2</b> Community-colored network</a></li>
+<li class="chapter" data-level="7.7.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#hub-centric-star-layout"><i class="fa fa-check"></i><b>7.7.3</b> Hub-centric star layout</a></li>
+<li class="chapter" data-level="7.7.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#layout-algorithm-comparison"><i class="fa fa-check"></i><b>7.7.4</b> Layout algorithm comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="ppi-analysis.html"><a href="ppi-analysis.html#references-4"><i class="fa fa-check"></i><b>7.8</b> References</a></li>
+<li class="chapter" data-level="7.9" data-path="ppi-analysis.html"><a href="ppi-analysis.html#session-information-6"><i class="fa fa-check"></i><b>7.9</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ml-analysis.html"><a href="ml-analysis.html"><i class="fa fa-check"></i><b>8</b> Machine learning–based key target screening</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ml-analysis.html"><a href="ml-analysis.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-data"><i class="fa fa-check"></i><b>8.1.1</b> Example dataset</a></li>
+<li class="chapter" data-level="8.1.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-prepare"><i class="fa fa-check"></i><b>8.1.2</b> Data preparation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-a"><i class="fa fa-check"></i><b>8.2</b> Mode A: full cross-validation</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-lasso"><i class="fa fa-check"></i><b>8.2.1</b> LASSO regression</a></li>
+<li class="chapter" data-level="8.2.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-rf"><i class="fa fa-check"></i><b>8.2.2</b> Random Forest and Boruta</a></li>
+<li class="chapter" data-level="8.2.3" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-svm-rfe"><i class="fa fa-check"></i><b>8.2.3</b> SVM-RFE</a></li>
+<li class="chapter" data-level="8.2.4" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-xgboost"><i class="fa fa-check"></i><b>8.2.4</b> XGBoost</a></li>
+<li class="chapter" data-level="8.2.5" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-consensus"><i class="fa fa-check"></i><b>8.2.5</b> Consensus analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-b"><i class="fa fa-check"></i><b>8.3</b> Mode B: internal train/test split</a></li>
+<li class="chapter" data-level="8.4" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-c"><i class="fa fa-check"></i><b>8.4</b> Mode C: external validation</a></li>
+<li class="chapter" data-level="8.5" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-select"><i class="fa fa-check"></i><b>8.5</b> Post-hoc feature trimming</a></li>
+<li class="chapter" data-level="8.6" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-manual-list"><i class="fa fa-check"></i><b>8.6</b> Assembling models manually</a></li>
+<li class="chapter" data-level="8.7" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-gene-diag"><i class="fa fa-check"></i><b>8.7</b> Single-gene diagnostic analysis</a>
+<ul>
+<li class="chapter" data-level="8.7.1" data-path="ml-analysis.html"><a href="ml-analysis.html#auc-summary-table"><i class="fa fa-check"></i><b>8.7.1</b> AUC summary table</a></li>
+<li class="chapter" data-level="8.7.2" data-path="ml-analysis.html"><a href="ml-analysis.html#single-gene-roc-curves"><i class="fa fa-check"></i><b>8.7.2</b> Single-gene ROC curves</a></li>
+<li class="chapter" data-level="8.7.3" data-path="ml-analysis.html"><a href="ml-analysis.html#two-group-expression-boxplot"><i class="fa fa-check"></i><b>8.7.3</b> Two-group expression boxplot</a></li>
+</ul></li>
+<li class="chapter" data-level="8.8" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-summary"><i class="fa fa-check"></i><b>8.8</b> Summary</a></li>
+<li class="chapter" data-level="8.9" data-path="ml-analysis.html"><a href="ml-analysis.html#references-5"><i class="fa fa-check"></i><b>8.9</b> References</a></li>
+<li class="chapter" data-level="8.10" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-session-info"><i class="fa fa-check"></i><b>8.10</b> Session Information</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ai-module.html"><a href="ai-module.html"><i class="fa fa-check"></i><b>9</b> AI Module</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ai-module.html"><a href="ai-module.html#prerequisites"><i class="fa fa-check"></i><b>9.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="9.2" data-path="ai-module.html"><a href="ai-module.html#interpretation-layer"><i class="fa fa-check"></i><b>9.2</b> Interpretation layer</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ai-module.html"><a href="ai-module.html#free-text-interpretation"><i class="fa fa-check"></i><b>9.2.1</b> Free-text interpretation</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ai-module.html"><a href="ai-module.html#interpreting-enrichment-objects"><i class="fa fa-check"></i><b>9.2.2</b> Interpreting enrichment objects</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ai-module.html"><a href="ai-module.html#interpreting-ppi-objects"><i class="fa fa-check"></i><b>9.2.3</b> Interpreting PPI objects</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ai-module.html"><a href="ai-module.html#drafting-result-paragraphs"><i class="fa fa-check"></i><b>9.2.4</b> Drafting result paragraphs</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ai-module.html"><a href="ai-module.html#custom-structured-output"><i class="fa fa-check"></i><b>9.2.5</b> Custom structured output</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ai-module.html"><a href="ai-module.html#agent-layer"><i class="fa fa-check"></i><b>9.3</b> Agent layer</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="ai-module.html"><a href="ai-module.html#one-shot-task-tcm_agent"><i class="fa fa-check"></i><b>9.3.1</b> One-shot task: <code>tcm_agent()</code></a></li>
+<li class="chapter" data-level="9.3.2" data-path="ai-module.html"><a href="ai-module.html#interactive-session-tcm_chat"><i class="fa fa-check"></i><b>9.3.2</b> Interactive session: <code>tcm_chat()</code></a></li>
+<li class="chapter" data-level="9.3.3" data-path="ai-module.html"><a href="ai-module.html#programmatic-agent-create_tcm_task_agent"><i class="fa fa-check"></i><b>9.3.3</b> Programmatic agent: <code>create_tcm_task_agent()</code></a></li>
+<li class="chapter" data-level="9.3.4" data-path="ai-module.html"><a href="ai-module.html#artifact-management"><i class="fa fa-check"></i><b>9.3.4</b> Artifact management</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="ai-module.html"><a href="ai-module.html#skill-layer"><i class="fa fa-check"></i><b>9.4</b> Skill layer</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="ai-module.html"><a href="ai-module.html#built-in-skills"><i class="fa fa-check"></i><b>9.4.1</b> Built-in skills</a></li>
+<li class="chapter" data-level="9.4.2" data-path="ai-module.html"><a href="ai-module.html#how-skills-work"><i class="fa fa-check"></i><b>9.4.2</b> How skills work</a></li>
+<li class="chapter" data-level="9.4.3" data-path="ai-module.html"><a href="ai-module.html#creating-custom-skills"><i class="fa fa-check"></i><b>9.4.3</b> Creating custom skills</a></li>
+<li class="chapter" data-level="9.4.4" data-path="ai-module.html"><a href="ai-module.html#managing-skills"><i class="fa fa-check"></i><b>9.4.4</b> Managing skills</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="ai-module.html"><a href="ai-module.html#session-information-7"><i class="fa fa-check"></i><b>9.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>10</b> Other resources</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="other-resources.html"><a href="other-resources.html#additional-databases"><i class="fa fa-check"></i><b>10.1</b> Additional databases</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="other-resources.html"><a href="other-resources.html#tfgene-interactions-dorothea"><i class="fa fa-check"></i><b>10.1.1</b> TF–gene interactions (DoRothEA)</a></li>
+<li class="chapter" data-level="10.1.2" data-path="other-resources.html"><a href="other-resources.html#gut-microbiotahost-interactions-gutmgene"><i class="fa fa-check"></i><b>10.1.2</b> Gut microbiota–host interactions (GutMGene)</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="other-resources.html"><a href="other-resources.html#additional-visualization"><i class="fa fa-check"></i><b>10.2</b> Additional visualization</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="other-resources.html"><a href="other-resources.html#heatmap-for-molecular-docking-results"><i class="fa fa-check"></i><b>10.2.1</b> Heatmap for molecular docking results</a></li>
+<li class="chapter" data-level="10.2.2" data-path="other-resources.html"><a href="other-resources.html#to-be-continued"><i class="fa fa-check"></i><b>10.2.2</b> To be continued</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="other-resources.html"><a href="other-resources.html#references-6"><i class="fa fa-check"></i><b>10.3</b> References</a></li>
+<li class="chapter" data-level="10.4" data-path="other-resources.html"><a href="other-resources.html#session-information-8"><i class="fa fa-check"></i><b>10.4</b> Session information</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="pre-analysis" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Pre-analysis<a href="pre-analysis.html#pre-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Prior to constructing pharmacological networks, a preliminary literature survey and target-level screening are often necessary to define the research scope. <code>TCMDATA</code> offers two utilities for this purpose: <code>get_pubmed_data()</code> for mining PubMed literature, and <code>herb_enricher()</code> for identifying candidate herbs through over-representation analysis.</p>
+<hr />
+<div id="pubmed-literature-mining" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> PubMed literature mining<a href="pre-analysis.html#pubmed-literature-mining" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>get_pubmed_data()</code> queries the NCBI PubMed database via E-utilities<sup>[1]</sup> and retrieves publications matching a given TCM–disease keyword pair within a specified time frame. The function returns an S3 object of class <code>tcm_pubmed</code>, containing the literature records, annual publication counts, and the query string.</p>
+<p>A valid email address is required by NCBI for API access.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="pre-analysis.html#cb11-1" tabindex="-1"></a><span class="fu">library</span>(TCMDATA)</span>
+<span id="cb11-2"><a href="pre-analysis.html#cb11-2" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="pre-analysis.html#cb11-3" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">get_pubmed_data</span>(</span>
+<span id="cb11-4"><a href="pre-analysis.html#cb11-4" tabindex="-1"></a>  <span class="at">tcm_name     =</span> <span class="st">&quot;Artemisinin&quot;</span>,</span>
+<span id="cb11-5"><a href="pre-analysis.html#cb11-5" tabindex="-1"></a>  <span class="at">disease_name =</span> <span class="st">&quot;Malaria&quot;</span>,</span>
+<span id="cb11-6"><a href="pre-analysis.html#cb11-6" tabindex="-1"></a>  <span class="at">year_range   =</span> <span class="fu">c</span>(<span class="dv">2020</span>, <span class="dv">2025</span>),</span>
+<span id="cb11-7"><a href="pre-analysis.html#cb11-7" tabindex="-1"></a>  <span class="at">retmax       =</span> <span class="dv">2000</span>,</span>
+<span id="cb11-8"><a href="pre-analysis.html#cb11-8" tabindex="-1"></a>  <span class="at">email        =</span> <span class="st">&quot;your_email@example.com&quot;</span></span>
+<span id="cb11-9"><a href="pre-analysis.html#cb11-9" tabindex="-1"></a>)</span></code></pre></div>
+<p>If <code>year_range</code> is not specified, the function defaults to the most recent 10 years. The <code>retmax</code> argument controls the maximum number of records retrieved; setting <code>retmax = "all"</code> fetches all matching records, which is recommended when accurate annual trend statistics are needed.</p>
+<div id="visualization" class="section level3 hasAnchor" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Visualization<a href="pre-analysis.html#visualization" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>plot()</code> method provides two chart types. <code>type = "trend"</code> produces an annual publication count line chart, while <code>type = "journal"</code> shows a bar chart of the top <em>N</em> journals ranked by article count.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="pre-analysis.html#cb12-1" tabindex="-1"></a><span class="fu">library</span>(aplot)</span>
+<span id="cb12-2"><a href="pre-analysis.html#cb12-2" tabindex="-1"></a>p_trend   <span class="ot">&lt;-</span> <span class="fu">plot</span>(result, <span class="at">type =</span> <span class="st">&quot;trend&quot;</span>)</span>
+<span id="cb12-3"><a href="pre-analysis.html#cb12-3" tabindex="-1"></a>p_journal <span class="ot">&lt;-</span> <span class="fu">plot</span>(result, <span class="at">type =</span> <span class="st">&quot;journal&quot;</span>, <span class="at">N =</span> <span class="dv">10</span>)</span>
+<span id="cb12-4"><a href="pre-analysis.html#cb12-4" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="pre-analysis.html#cb12-5" tabindex="-1"></a><span class="fu">plot_list</span>(p_trend, p_journal, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="images/pubmed-plots-1.png" alt="" width="95%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="exporting-results" class="section level3 hasAnchor" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Exporting results<a href="pre-analysis.html#exporting-results" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>get_pubmed_table()</code> extracts the literature records sorted by publication year in descending order. An optional <code>file</code> argument writes the table directly to a CSV file.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="pre-analysis.html#cb13-1" tabindex="-1"></a>lit_table <span class="ot">&lt;-</span> <span class="fu">get_pubmed_table</span>(result, <span class="at">n =</span> <span class="dv">20</span>, <span class="at">file =</span> <span class="st">&quot;pubmed_results.csv&quot;</span>)</span>
+<span id="cb13-2"><a href="pre-analysis.html#cb13-2" tabindex="-1"></a><span class="fu">head</span>(lit_table)</span></code></pre></div>
+<pre><code>      PMID                                              Title Year                   Journal
+1 41625564 Plasmodium vivax elimination from India may need t 2026              IJID regions
+2 41531728 HMOX1 drives dihydroartemisinin-sensitized ferropt 2026                  iScience
+3 41476774 Heme as activator and target for artemisinin: Towa 2026 Biochemistry and biophysi...
+4 41453501 Recrudescence of Plasmodium falciparum malaria imp 2026 Travel medicine and infec...
+5 41447926 Three new single nucleotide polymorphisms identifi 2026 Diagnostic microbiology a...
+6 41416883 Highlights of Medicinal Chemistry Optimization Str 2026 Journal of medicinal chem...</code></pre>
+<hr />
+</div>
+</div>
+<div id="herb-ora" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Herb enrichment analysis<a href="pre-analysis.html#herb-ora" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A central question in TCM network pharmacology is which herbs possess targets that significantly overlap with a given disease gene set. <code>herb_enricher()</code> addresses this through Over-Representation Analysis (ORA), using the herb–target relationships curated in TCMDATA as the annotation background. Internally, it wraps <code>clusterProfiler::enricher()</code><sup>[2]</sup>.</p>
+<p>The logic is analogous to conventional GO or KEGG enrichment: each herb defines a gene set composed of its known targets, and a Fisher’s exact test evaluates whether the overlap between the query genes and each herb’s targets exceeds what is expected by chance.</p>
+<div id="example-diabetic-nephropathy" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Example: Diabetic Nephropathy<a href="pre-analysis.html#example-diabetic-nephropathy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>TCMDATA</code> includes <code>dn_gcds</code>, a character vector of Diabetic Nephropathy (DN)-associated genes sourced from GeneCards. We use these as the query gene set to identify enriched herbs.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="pre-analysis.html#cb15-1" tabindex="-1"></a><span class="fu">library</span>(TCMDATA)</span>
+<span id="cb15-2"><a href="pre-analysis.html#cb15-2" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span>
+<span id="cb15-3"><a href="pre-analysis.html#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="pre-analysis.html#cb15-4" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;dn_gcds&quot;</span>)</span>
+<span id="cb15-5"><a href="pre-analysis.html#cb15-5" tabindex="-1"></a><span class="fu">head</span>(dn_gcds)</span></code></pre></div>
+<pre><code>#&gt; [1] &quot;INS&quot;    &quot;ACE&quot;    &quot;GCK&quot;    &quot;HNF1A&quot;  &quot;HNF1B&quot;  &quot;KCNJ11&quot;</code></pre>
+<p>Then, we can perform ORA analysis using <code>herb_enricher()</code>:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="pre-analysis.html#cb17-1" tabindex="-1"></a>enrich_res <span class="ot">&lt;-</span> <span class="fu">herb_enricher</span>(<span class="at">genes =</span> dn_gcds, <span class="at">type =</span> <span class="st">&quot;Herb_pinyin_name&quot;</span>)</span>
+<span id="cb17-2"><a href="pre-analysis.html#cb17-2" tabindex="-1"></a><span class="fu">head</span>(enrich_res)</span></code></pre></div>
+<pre><code>#&gt;                          ID   Description GeneRatio   BgRatio RichFactor
+#&gt; tufuling           tufuling      tufuling  499/3832 664/15889  0.7515060
+#&gt; dazao                 dazao         dazao  562/3832 812/15889  0.6921182
+#&gt; renshen             renshen       renshen  537/3832 760/15889  0.7065789
+#&gt; huzhang             huzhang       huzhang  483/3832 665/15889  0.7263158
+#&gt; gouguye             gouguye       gouguye  540/3832 795/15889  0.6792453
+#&gt; gaoliangjiang gaoliangjiang gaoliangjiang  505/3832 726/15889  0.6955923
+#&gt;               FoldEnrichment   zScore        pvalue      p.adjust        qvalue
+#&gt; tufuling            3.116044 31.40203 1.449334e-177 2.198640e-174 1.246533e-176
+#&gt; dazao               2.869798 30.83493 2.427516e-172 1.841271e-169 1.043920e-171
+#&gt; renshen             2.929758 30.73493 7.461554e-171 3.773059e-168 2.139160e-170
+#&gt; huzhang             3.011595 29.87547 4.752576e-161 1.802415e-158 1.021890e-160
+#&gt; gouguye             2.816422 29.62278 2.190176e-159 6.644994e-157 3.767421e-159
+#&gt; gaoliangjiang       2.884203 29.29754 1.747032e-155 4.417080e-153 2.504291e-155
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         geneID
+#&gt; tufuling                                                                                                                                                                                                                                                                                                                                            PTPN1/UHRF1/CCK/BIRC5/BCL2L1/POMC/SULT1A1/HSD11B1/SIRT3/LPCAT2/IFNG/CYCS/KDM1A/HSP90AA1/PRKAB1/LALBA/MIR15A/PFN1/CDH5/ERBB3/PPARG/SIRT1/EGR1/GSTP1/GAA/CRK/ELANE/STAT6/BRCA1/FABP5/AKT2/PCNA/HSPA5/FAS/NFATC1/MIR196B/PRSS1/IDH1/AQP1/CYP3A4/TRAF6/SIRT6/XBP1/SMAD3/ITGAV/FABP1/SIGMAR1/YWHAZ/HSPA1B/TRAF2/MIRLET7I/ABCC2/SLC5A2/CYBB/HNRNPA1/SKP2/JUN/EIF2S1/PLA2G7/SLC2A1/SLC5A1/CSF2/CTSD/SLPI/MME/BACE1/IL1B/GCLC/BECN1/AGTR1/MMP3/UCP2/GSR/MALAT1/LTC4S/PTPN11/ABCA1/RAF1/GADD45A/OGG1/CS/ENO2/AKT1/FOSB/PON1/LAMP1/COL11A2/PRKCB/IL10/GCLM/PRKACA/KEAP1/ABCC1/STAT1/PTGS1/HDAC6/BAX/GLI1/MITF/STAT3/SUCNR1/CDK7/BIRC2/IL1A/THBS1/NPY/MAPK14/CCNA2/TNF/NOX1/NOS2/IRF1/CYP19A1/CDH1/VAV1/ESR1/CYP2C19/MAPK1/NOX4/SNAI2/SMAD4/FASLG/PKD1/CTBP1/SRC/SQSTM1/EDN1/HMGCR/CES1/TIGAR/CCR6/HSPB1/HMGB1/NR1H4/PSEN1/SPARC/NPC1/CREB1/UTRN/PPARA/EGF/EIF2AK3/PIK3CA/CDK6/GSTM1/INS/COL1A1/ODC1/GPX4/SOD1/MAP2K2/ZEB1/PTEN/CAMP/JAK2/KLF4/PIK3CB/NCF1/G6PD/MTTP/ELK1/MIR371A/MPO/KHK/MAPK8/CD40LG/LEP/PECAM1/MLXIPL/SYK/PIK3CD/UCP1/S1PR1/KL/MIR183/IL2/ZMPSTE24/CCND2/LCN2/SMAD2/TTR/CAV1/STAT5A/NR1H3/ACTG2/APP/LDHA/CDK5/PIK3R1/TGFB1/ABL1/VEGFA/IL6/KCNMA1/CTNNB1/HMOX1/BCL2A1/APOE/KNG1/HNF4G/APOB/ALPL/CASP3/PTGS2/MAP2K1/PRDX1/CYP2C9/AGT/SPHK1/MMP9/BAD/ERBB2/ABCB1/BGLAP/ATG5/CCND1/PKD2/SIRT5/VIM/CHUK/CEBPA/TXN2/CRP/CYP2E1/PDX1/RUNX2/DES/APOM/NQO1/PRKCD/CYP7A1/PRKAA2/RB1/GSK3B/YARS2/RELA/UCP3/GLP1R/TWIST1/PNPLA2/TYR/TOP2A/MMP10/PDLIM3/NDUFV2/F2/KCNQ1/FOXO1/CXCL8/NPPB/BRCA2/FOXD3/RASA1/PLAU/ITGA5/SNAI1/ESR2/MAPK3/BMP2/ADIPOQ/NFE2L2/NPHS1/PIK3CG/HIF1A/RYR1/APEX1/SELP/PPARD/ADRB2/SNCA/PCSK9/LMNA/AR/VCAM1/PARP1/FASN/H2AX/VDR/OLR1/PEA15/COMT/GJA1/CASP8/TP53/ELN/NUP62/TCF4/ADIPOR1/MTOR/RPS6KB1/DNAH8/DNM1L/GCG/LDLR/ATF4/PRKCA/TGFB2/CYP21A2/IGFBP3/CYP1B1/TBK1/IGF1/ACHE/NOS3/MYC/NPHS2/SERPINE1/CDKN1A/GAP43/PLA2G1B/CDK4/CTSK/CYP2C8/MIR34A/KIT/SOD2/PLAT/PLG/TXNIP/PTGDS/ABCG5/CD80/MMP2/TNFSF10/BDNF/NR1I2/KDR/CCL3/SOAT1/STAT5B/HOTAIR/CD28/JAK1/ALPP/MCL1/SREBF1/EGFR/HSD11B2/NR1I3/ICAM1/ENTPD5/NPPA/BCL2/P2RX4/GDNF/BTRC/LCP1/CDKN2A/UBE3A/PDCD1/ABCG1/GLUL/ORAI1/PTK2B/FLT1/GSS/CD274/CX3CL1/TNFRSF11B/HAMP/KCNN4/DDIT3/CD36/CDKN1B/FOS/SELE/SAA1/NFKBIA/PRKD1/SFN/DNAJC5/GLO1/AQP3/ALB/BSG/E2F1/IDO1/CDC42/SLC2A2/PTX3/LGALS1/FXN/LYN/INSR/NR3C2/MAP1LC3A/TNFSF11/SCN5A/CD38/GPX1/TNFRSF1A/LRP5/RYR2/CSF3/BMAL1/CCL5/XIAP/MYD88/MIR21/SHH/GCK/CDK2/IL17A/MIR200A/CFLAR/ACE2/MIR155/PPARGC1A/RHO/CD86/XDH/NGF/SPP1/VTN/ADIPOR2/ESRRA/PLA2G4A/SLC16A1/TXN/NTRK2/CXCL10/SMAD1/MAP3K5/HSPA4/CCL2/FOSL1/AQP5/DNMT1/CAT/FOXC2/TLR2/CETP/CYP1A2/CASP9/SGK1/APAF1/CDH2/SIRT7/MAPK9/MIR18A/IL5/ATM/BCHE/TJP1/IRS1/HSF1/CYBA/MIR145/AKT3/ACTA2/CYP1A1/MIR148A/NLRP3/F3/SRD5A1/CCNB1/CCL20/MECP2/NR1H2/PKM/TFAM/MMP1/ABCG2/LTA4H/NFKB1/LOX/SLC2A4/FOXO3/MDM2/NOTCH1/CALCA/ABCG8/BMI1/PARK7/FGF2/CEBPB/CCR2/CDK1/TLR4/PTK2/BTK/TNFRSF10B/ATF6/AHR/EIF4EBP1/SCARB1/ITGB1/CD33/TRPA1/HDAC9/KCNJ11/NOS1/TGM2/ACE/HGF/CUL5/CPT1A/WNT1/IL4
+#&gt; dazao         CXCL1/PTPN1/PRKCZ/CCK/BIRC5/BCL2L1/POMC/CSF1R/HSD11B1/SCNN1G/LPCAT2/PTPN6/IFNG/CYCS/IL15/KDM1A/HSP90AA1/PRKAB1/LALBA/IL18/NARS2/MIR15A/TNFRSF10A/CATSPER1/IKBKB/ERBB3/PPARG/SIRT1/EGR1/GSTP1/IGF1R/GAA/WT1/VASP/GLRA3/SOX9/STAT6/BRCA1/FABP5/SERPINA1/LRRK2/PCNA/HSPA5/FAS/PDGFRB/NFATC1/CCND3/ADA/PRSS1/IDH1/JAK3/CYP3A4/GAST/XBP1/SMAD3/SPI1/FABP1/MVP/SIGMAR1/YWHAZ/ABCC2/TNFRSF11A/CYBB/TLR9/HP/EZH2/HNRNPA1/JUN/EIF2S1/AXL/PLA2G7/GHR/SLC2A1/SLC5A1/CSF2/CTSD/SLPI/MAPK10/DARS2/IL13/BACE1/SP1/IL1B/BECN1/MMP3/UCP2/GSK3A/DAO/PTPN11/ABCA1/RAF1/GADD45A/AKT1/PLA2G2A/PON1/LAMP1/COL11A2/PRKCB/IL10/CDH11/SLC22A3/HTR2A/ABCC1/STAT1/PTGS1/HDAC6/PDK4/BAX/ECE1/CAMKK2/DDR2/GLI1/CTSB/STAT4/ILK/LTF/STAT3/BIRC2/IL1A/THBS1/FUS/SMO/MAPK14/ALAS1/CCN2/TNF/DDR1/NOS2/IRF1/SST/CYP19A1/CDH1/ESR1/CYP2C19/PRDX6/FGF7/GOT2/MIR22/MAPK1/NOX4/SNAI2/ATP6AP2/SOX2/FASLG/SRC/SQSTM1/EDN1/NEU1/AREG/HMGCR/BAP1/TKT/CCR6/HSPB1/HMGB1/CCNE1/POLG/NR1H4/MB/MIR330/FN1/CD44/RHOA/YY1/CREB1/PPARA/EGF/ACTA1/HAVCR1/PRKN/FTH1/TG/EIF2AK3/PIK3CA/CDK6/SMAD7/ULK1/GSTM1/MT2A/INS/P4HB/COL1A1/ODC1/SOD1/MAP2K2/PTEN/CAMP/AGXT/JAK2/PIK3CB/NCF1/MTTP/DRD3/ELK1/TFEB/MPO/C8G/KHK/IL21/MAPK8/GM2A/CD40LG/LEP/TRIM63/PECAM1/PRL/RET/MLXIPL/ADH4/CD34/SYK/CYP24A1/PIK3CD/UCP1/LPL/HDAC1/NR2C2/MIR203A/MFGE8/IL2/MET/IL2RA/IGFBP1/HSD3B1/DRD2/CCND2/AKR1B1/LCN2/BCL2L11/ALAS2/HNF4A/SMAD2/TTR/CAV1/STAT5A/PTH/NR1H3/GATM/APP/TCF7L2/TGFB1/ABL1/VEGFA/IGHE/IL6/CTNNB1/HMOX1/MSTN/APOE/IL7/KNG1/HNF4G/APOB/NANOG/CASP3/PTGS2/BCR/MAP2K1/CYP2C9/PLK1/AGT/MMP9/BAD/ERBB2/ABCB1/GSTA1/EFNB2/TRPV1/PROCR/CCND1/CYP11A1/DYSF/VIM/DNMT3B/FBXW7/CHUK/CEBPA/CRP/SLC19A3/CYP2E1/IL9/PDX1/RUNX2/APOM/NQO1/PRKCD/APOA1/PRKAA2/FLT3/RB1/CD40/GSK3B/GBA2/RELA/UCP3/GLP1R/TWIST1/AGTR2/ADAM17/TYR/TOP2A/ATP1A1/MMP10/RAD51/EPHX2/NDUFV2/F2/CALR/FOXO1/CXCL8/NPPB/PLAU/ALDH2/ESR2/MAPK3/VWF/UCHL1/BMP2/ADIPOQ/NFE2L2/PIK3CG/HIF1A/RIPK3/SELP/PPARD/SNCA/HPRT1/AR/MGAM/VCAM1/AOX1/FDXR/POU2F2/MKI67/PARP1/FASN/FOXP3/H2AX/TERT/VDR/OLR1/RICTOR/KRAS/COMT/HSD3B2/GJA1/VARS1/CD55/CASP8/TP53/SLC15A1/PRF1/TCF4/PMAIP1/MTOR/S100A8/DNM1L/AGER/GCG/CTLA4/LDLR/PI4KB/ATF4/PRKCA/TGFB2/CYP21A2/IGFBP3/CYP1B1/ANGPTL4/CYP27B1/TBK1/IGF1/ACHE/NOS3/DRD1/MYC/ITGAM/SERPINE1/EZR/CDKN1A/GAP43/MIR93/CDK4/CYP2C8/ASS1/KIT/SOD2/DUOX2/PLAT/PLG/ANGPT1/TXNIP/ABCG5/CD80/MMP2/CYP2J2/BBC3/BDNF/NR1I2/KDR/ETS1/SOAT1/STAT5B/CD28/MIR373/ATF2/JAK1/REN/MCL1/SREBF1/EGFR/NR1I3/GFAP/ICAM1/CLU/NPPA/BCL2/P2RX4/CDKN2A/CD9/PIAS1/BARD1/ABCG1/CYP2D6/PTK2B/GSS/EP300/CD274/DLK1/TNFRSF11B/DDIT3/CD36/CDKN1B/FOS/DHCR7/SELE/NFKBIA/SFN/DNAJC5/AQP3/ALB/E2F1/SLC2A2/PTX3/LGALS1/CCR7/LYN/INSR/TNFSF11/CASP7/CA3/MIR16-1/TGFB3/GNMT/FZD1/CSF3/CHAT/ANXA5/XIAP/SLC22A1/MYD88/PTCH1/SLC9A3/MIR21/FCER2/GCK/VLDLR/TIMP1/CDK2/IL17A/CFLAR/SLC22A2/ACE2/CXCR4/MIR155/PPARGC1A/RIPK1/CD14/LYZ/RHO/BRAF/RIT1/CD86/KLK3/XDH/ID1/NGF/SPP1/VTN/IMPDH1/HULC/SLC16A1/TXN/NTRK2/CXCL10/MAP3K5/HSPA4/CCL2/FOSL1/DNMT1/NR3C1/DRD4/ALPI/CAT/CD68/NTRK1/CX3CR1/TLR2/CETP/CYP1A2/CASP9/JAM3/SGK1/MAPK9/DHFR/IL5/BCHE/PPIA/TJP1/IRS1/HSF1/CASR/ACTA2/CYP1A1/NLRP3/F3/TGFBR1/MMP14/CCNB1/MECP2/NR1H2/TFAM/MMP1/ABCG2/NFKB1/SLC2A4/TNFSF13B/RXRA/FOXO3/CASP1/MDM2/NOTCH1/CALCA/ABCG8/RBP4/FGF2/CEBPB/CDK1/TLR4/PTK2/TNFRSF10B/AHR/SCARB1/CD33/ERN1/S100A1/PCK1/ACE/HGF/CPT1A/ARG1/IL4
+#&gt; renshen                                                                                                                                  PTPN1/UHRF1/CCK/BIRC5/BCL2L1/POMC/HSD11B1/SIRT3/IFNG/RNASE3/HSP90AA1/PRKAB1/LALBA/TPO/MIR15A/PFN1/CDH5/IKBKB/IL12B/PPARG/P2RX7/SIRT1/EGR1/IGF1R/GAA/RPS6KA3/REG1A/STAT6/BRCA1/CA4/FABP5/AKT2/GAPDH/SFTPB/SLC5A6/SERPINF1/HSPA5/FAS/MIR196B/ADA/PRSS1/IDH1/CYP3A4/XBP1/ITGAV/FABP1/SIGMAR1/YWHAZ/PKLR/TRAF2/ABCC2/CYBB/TLR9/HP/MIR125B1/JUN/EIF2S1/PLA2G7/TYMP/SLC2A1/SLC5A1/SMN2/BACE1/IL1B/GCLC/AGTR1/MMP3/UCP2/GSK3A/MALAT1/LTC4S/PTPN11/ABCA1/GADD45A/OGG1/CS/AKT1/FOSB/PON1/LAMP1/CXCR1/TNFRSF1B/FGF23/PRKCB/IL10/PRKACA/HTR2A/KEAP1/ABCC1/STAT1/PTGS1/HDAC6/BAX/CAMKK2/MAPT/ITIH4/GLI1/STAT3/SUCNR1/CDK7/IFNB1/BIRC2/TEK/COL1A2/IGF2/IL1A/THBS1/ACACA/NPY/SMO/MAPK14/CCNA2/TNF/NOS2/PPP2CA/CYP19A1/MIRLET7B/CDH1/VAV1/ESR1/HPSE/GUSB/PC/MAPK1/FOLH1/NOX4/SNAI2/SMAD4/CTBP1/SRC/SQSTM1/IRAK1/EDN1/TLR3/HMGCR/CES1/CCR6/HSPB1/HMGB1/NR1H4/PSEN1/SPARC/FN1/APOD/NPC1/SOCS3/UTRN/PPARA/ACTA1/FTH1/TG/TYMS/EIF2AK3/PIK3CA/CDK6/GSTM1/INS/COL1A1/RETN/ODC1/GPX4/SOD1/ZEB1/PTEN/CAMP/JAK2/KLF4/PIK3CB/G6PD/DRD3/MPO/C8G/MAPK8/CD209/LEP/PLEK/PECAM1/PRL/CXADR/SYK/CYP24A1/PIK3CD/UCP1/ITPR3/FH/S1PR1/LPL/KL/MIR203A/MIR183/MUC1/IL2/ZMPSTE24/IL2RA/HLA-G/ADORA1/CA2/DRD2/CCND2/PINK1/AKR1B1/LCN2/MIR30A/SMAD2/TTR/STAT5A/PTH/NR1H3/ACTG2/APP/CDK5/FOLR1/PIK3R1/TGFB1/ABL1/VEGFA/IL6/KCNMA1/CTNNB1/HMOX1/BCL2A1/APOE/KNG1/HNF4G/APOB/CASP3/PTGS2/MAP2K1/CYP2C9/AGT/SPHK1/MMP9/BAD/ERBB2/ABCB1/MIR663A/ATG5/TRPV1/CCND1/CYP11A1/DYSF/VIM/DNMT3B/TNFRSF13B/CEBPA/TXN2/CRP/CYP2E1/ALOX5/PDX1/RUNX2/DES/APOM/NQO1/PRKCD/APOA1/CYP7A1/PRKAA2/CLDN1/CD40/GSK3B/GLB1/YARS2/RELA/UCP3/GLP1R/TWIST1/PGR/TYR/TOP2A/MMP10/CALR/KCNQ1/FOXO1/F2RL1/CXCL8/NPPB/BRCA2/RASA1/TLR8/ALDH2/SNAI1/ESR2/TRPV4/MAPK3/VWF/ACP1/BMP2/ADIPOQ/NFE2L2/NPHS1/PIK3CG/HIF1A/RYR1/RIPK3/ACACB/APEX1/SELP/PPARD/ADRB2/SNCA/LMNA/AR/VCAM1/ADRA2A/PARP1/BAK1/FASN/FOXP3/H2AX/VDR/OLR1/COMT/GJA1/CD55/CASP8/TP53/ELN/NUP62/TCF4/ADIPOR1/MTOR/RPS6KB1/GLA/DNAH8/DNM1L/CNR1/TNNI3/GCG/BMP4/PRKCA/TGFB2/CYP21A2/IGFBP3/CYP1B1/CYP27B1/PTPN2/IGF1/ACHE/NOS3/DRD1/MYC/NPHS2/SERPINE1/CDKN1A/GAP43/PLA2G1B/CDK4/CYP2C8/KIT/SOD2/PLG/TXNIP/ABCG5/CD80/MMP2/BMPR2/TNFSF10/BDNF/NR1I2/KDR/CCL3/SOAT1/STAT5B/TH/CD28/JAK1/ALPP/REN/MCL1/MBD2/SREBF1/EGFR/HSD11B2/NR1I3/ICAM1/ENTPD5/NPPA/BCL2/P2RX4/GDNF/BTRC/SLC12A2/ABCG1/GLUL/ORAI1/FLT1/GSS/TNFRSF4/GPER1/CX3CL1/TNFRSF11B/SESN2/HAMP/KCNN4/DDIT3/CD36/FOS/DHCR7/CKM/SELE/SAA1/NFKBIA/PRKD1/GLO1/AQP3/ALB/BSG/APRT/IDO1/CDC42/SLC2A2/SLC2A3/FXN/CCR7/LYN/AIFM1/ITGAL/TNFSF11/SCN5A/NPR3/GPX1/TNFRSF1A/NDUFS3/BMAL1/CCL5/XIAP/MIR21/SHH/MLKL/CDK2/IL17A/CFLAR/ACE2/CXCR4/MIR155/PPARGC1A/CD14/LYZ/RHO/RIT1/CD86/ADORA2B/XDH/HSP90AB1/NGF/SPP1/ADIPOR2/BIRC3/ESRRA/MCCC2/HULC/PLA2G4A/SLC16A1/TXN/BID/NTRK2/CXCL10/MAP3K5/HSPA4/CCL2/TJP2/DNMT1/NR3C1/CAT/FOXC2/TLR2/CETP/CYP1A2/CASP9/SGK1/APAF1/CDH2/SIRT7/MIR18A/IL5/ATM/BCHE/TJP1/IRS1/HSF1/CASR/ACTA2/CYP1A1/SCNN1A/NLRP3/F3/SRD5A1/CCL20/NR1H2/PKM/TRPC6/TFAM/MMP1/ABCG2/LTA4H/NFKB1/LOX/GLIPR2/SLC2A4/RXRA/FOXO3/EPHA2/MDM2/NOTCH1/CALCA/ABCG8/CNR2/RBP4/BMI1/PARK7/FGF2/CCR2/CDK1/TLR4/PTK2/BTK/ATF6/AHR/POLI/EIF4EBP1/SCARB1/ITGB1/CD33/VEGFC/HDAC9/SMN1/KCNJ11/NOS1/ACE/PLD1/HGF/CUL5/CPT1A/ARG1/WNT1/IL4
+#&gt; huzhang                                                                                                                                                                                                                                                                                                                                                                                                                                                                 CXCL1/PTPN1/UHRF1/BIRC5/BCL2L1/EDNRA/SULT1A1/HSD11B1/SIRT3/LPCAT2/RAC1/IFNG/RNASE3/CYCS/KDM1A/HSP90AA1/PRKAB1/MIR15A/PFN1/CDH5/IKBKB/ERBB3/XPO1/DNMT3A/PPARG/P2RX7/SIRT1/VRK1/EGR1/GSTP1/GAA/RPS6KA3/ELANE/STAT6/BRCA1/CA4/AKT2/HSPA5/FAS/NFATC1/MIR196B/ADA/AQP1/CYP3A4/CDK9/XBP1/SMAD3/ITGAV/FABP1/FTO/TRAF2/ABCC2/SLC5A2/CYBB/EZH2/HNRNPA1/MIR132/JUN/PTN/EIF2S1/PLA2G7/SLC2A1/SLC5A1/CSF2/CTSD/SLPI/BACE1/SP1/IL1B/GCLC/AGTR1/UCP2/MALAT1/LTC4S/PTPN11/ABCA1/RAF1/GADD45A/OGG1/CS/AKT1/GAK/FOSB/PON1/LAMP1/PRKCB/IL10/PRKACA/KEAP1/STAT1/PTGS1/BAX/MAPT/GLI1/STAT4/MITF/STAT3/CDK7/BIRC2/IL1A/THBS1/NPY/MAPK14/CCNA2/TNF/NOS2/IRF1/CYP19A1/CDH1/VAV1/ESR1/CYP2C19/MAPK1/NOX4/SNAI2/ZHX2/SMAD4/FASLG/SRC/SQSTM1/EDN1/YAP1/HMGCR/CCR6/HSPB1/EHMT2/HMGB1/NR1H4/PSEN1/SPARC/FN1/NPC1/CREB1/UTRN/PPARA/EGF/ACTA1/EIF2AK3/PIK3CA/CDK6/GSTM1/KDM4D/SP3/INS/P4HB/COL1A1/ODC1/GPX4/SOD1/PTEN/CAMP/JAK2/KLF4/PIK3CB/NCF1/G6PD/ELK1/MIR371A/MPO/C8G/KHK/MAPK8/CD40LG/LEP/PECAM1/MLXIPL/SYK/PIK3CD/UCP1/FH/S1PR1/KL/MIR203A/MIR183/IL2/MET/ZMPSTE24/ADORA1/CA2/CCND2/AKR1B1/SMAD2/TTR/CAV1/STAT5A/LCK/NR1H3/ACTG2/GSTK1/CDK5/PIK3R1/TGFB1/VEGFA/IL6/KCNMA1/CTNNB1/HMOX1/BCL2A1/APOE/APOB/ALPL/CASP3/RELB/PTGS2/WARS2/MAP2K1/AGT/SPHK1/MMP9/EPO/BAD/ERBB2/ABCB1/BGLAP/ATG5/PDCD4/PROCR/FUCA1/CCND1/VIM/CHUK/CEBPA/TXN2/CRP/CYP2E1/RUNX2/DES/APOM/NQO1/PRKCD/APOA1/CYP7A1/PRKAA2/FLT3/RB1/GSK3B/YARS2/RELA/GLP1R/DPP4/TWIST1/TYR/TOP2A/MMP10/PDLIM3/EPHX2/NDUFV2/F2/KCNQ1/FOXO1/CXCL8/BRCA2/FOXD3/RASA1/PLAU/SNAI1/ESR2/MAPK3/UCHL1/BMP2/ADIPOQ/NFE2L2/NPHS1/PIK3CG/HIF1A/TYK2/APEX1/SELP/ADRB2/SNCA/PCSK9/LMNA/HPRT1/AR/MGAM/VCAM1/PARP1/FASN/H2AX/TERT/VDR/OLR1/KRAS/COMT/GJA1/CASP8/TP53/ELN/NUP62/TCF4/ADIPOR1/MTOR/RPS6KB1/GLA/DNAH8/S100A8/DNM1L/LDLR/FDPS/ATF4/PRKCA/TGFB2/CYP21A2/IGFBP3/CYP1B1/CRHR1/TBK1/IGF1/ACHE/NOS3/MYC/NPHS2/MAN2B1/SERPINE1/CDKN1A/CDK4/CYP2C8/KIT/SOD2/PLAT/TXNIP/CD80/MMP2/TNFSF10/BDNF/NR1I2/KDR/CCL3/CD28/JAK1/ALPP/MCL1/SREBF1/EGFR/NR1I3/ICAM1/ENTPD5/BCL2/P2RX4/GDNF/BTRC/CDKN2A/ABCG1/GLUL/ORAI1/PTK2B/FLT1/CD274/CX3CL1/SESN2/HAMP/KCNN4/DDIT3/FOS/DHCR7/SELE/SAA1/NFKBIA/PRKD1/DNAJC5/GLO1/ALB/BSG/E2F1/APRT/IDO1/CDC42/PTX3/LGALS1/FXN/LYN/INSR/AIFM1/TNFSF11/SCN5A/GPX1/TNFRSF1A/RYR2/CSF3/BMAL1/CCL5/XIAP/MYD88/MIR21/SHH/GCK/TIMP1/CDK2/IL17A/MIR200A/CFLAR/ACE2/CXCR4/MIR155/CTSG/PPARGC1A/CD86/XDH/NGF/SPP1/VTN/ADIPOR2/ESRRA/PLA2G4A/SLC16A1/TXN/BID/NTRK2/CXCL10/MAP3K5/HSPA4/CCL2/FOSL1/AQP5/DNMT1/ALPI/CAT/FOXC2/CYP1A2/CASP9/SGK1/APAF1/CDH2/SIRT7/MIR18A/DHFR/IL5/ATM/BCHE/TJP1/IRS1/HSF1/MIR145/ACTA2/CYP1A1/NLRP3/F3/CCNB1/CCL20/MECP2/PKM/TFAM/MMP1/ABCG2/LTA4H/NFKB1/LOX/SLC2A4/FOXO3/CASP1/MDM2/NOTCH1/CALCA/BMI1/PARK7/FGF2/CEBPB/CCR2/CDK1/CYP2A6/TLR4/PTK2/BTK/TNFRSF10B/ATF6/AHR/EIF4EBP1/SCARB1/ITGB1/CD33/TXNRD1/MIR27A/HDAC9/KCNJ11/MSR1/NOS1/ACE/HGF/CUL5/CPT1A/WNT1/IL33/IL4
+#&gt; gouguye                                                                                                       PTPN1/UHRF1/CCK/BIRC5/BCL2L1/SULT1A1/HSD11B1/SIRT3/LPCAT2/RAC1/IFNG/RNASE3/CYCS/KDM1A/HSP90AA1/PRKAB1/LALBA/PNLIP/MIR15A/PFN1/CATSPER1/CDH5/IKBKB/ERBB3/DNMT3A/PPARG/P2RX7/SIRT1/EGR1/PRKDC/GSTP1/GAA/RPS6KA3/ELANE/STAT6/BRCA1/CA4/FABP5/AKT2/LRRK2/HSPA5/FAS/NFATC1/MIR196B/GABRR1/ADA/PRSS1/AQP1/CYP3A4/RASGRF1/XBP1/SMAD3/ITGAV/FABP1/FTO/TRAF2/SLC5A2/CYBB/EZH2/HNRNPA1/ABCB6/JUN/EIF2S1/PLA2G7/SLC2A1/SLC5A1/CSF2/CTSD/SLPI/PTH1R/BACE1/SP1/IL1B/GCLC/AGTR1/MMP3/UCP2/GSK3A/MALAT1/LTC4S/PTPN11/ABCA1/RAF1/GADD45A/OGG1/CS/AKT1/PLA2G2A/FOSB/PON1/LAMP1/COL11A2/PRKCB/IL10/PRKACA/KEAP1/ABCC1/STAT1/PTGS1/BAX/NEU2/MAPT/GLI1/SLC47A1/LTF/STAT3/CDK7/BIRC2/IL1A/THBS1/NPY/MAPK14/CCNA2/TNF/DMP1/NOS2/IRF1/CYP19A1/CDH1/VAV1/ESR1/CYP2C19/MAPK1/NOX4/SNAI2/SMAD4/ITGB3/FASLG/SRC/SQSTM1/EDN1/NEU1/HMGCR/CCR6/HSPB1/EHMT2/ITGA2B/HMGB1/PSEN1/SPARC/NPC1/CREB1/UTRN/PPARA/EGF/ACTA1/PDE8B/EIF2AK3/PIK3CA/CDK6/GSTM1/KDM4D/SP3/INS/P4HB/COL1A1/ODC1/GPX4/SOD1/MAP2K2/ZEB1/PTEN/CAMP/JAK2/KLF4/PIK3CB/NCF1/G6PD/ELK1/MIR371A/MPO/C8G/KHK/MAPK8/GM2A/CD40LG/LEP/PLEK/TRIM63/PECAM1/MLXIPL/SYK/PIK3CD/UCP1/ITPR3/FH/S1PR1/KL/MIR183/IL2/ZMPSTE24/IGFBP1/ADORA1/CA2/DRD2/CCND2/AKR1B1/BCL2L11/HNF4A/SMAD2/TTR/CAV1/STAT5A/LCK/NR1H3/ACTG2/CDK5/PIK3R1/TGFB1/VEGFA/IL6/KCNMA1/CTNNB1/HMOX1/MSTN/BCL2A1/APOE/APOB/ALPL/CASP3/PTGS2/WARS2/MAP2K1/PLK1/AGT/SPHK1/MMP9/EPO/BAD/ERBB2/ABCB1/BGLAP/ATG5/TRPV1/PDCD4/FUCA1/CCND1/PDE5A/CYP11A1/VIM/FBXW7/CHUK/CEBPA/TXN2/CRP/CYP2E1/PDE11A/PDX1/RUNX2/FGFR2/DES/APOM/NQO1/PRKCD/CYP7A1/PRKAA2/RB1/GSK3B/YARS2/RELA/UCP3/GLP1R/DPP4/TWIST1/TYR/TOP2A/MMP10/PDLIM3/EPHX2/NDUFV2/F2/KCNQ1/FOXO1/CXCL8/BRCA2/FOXD3/RASA1/PLAU/SNAI1/ESR2/MAPK3/UCHL1/BMP2/ADIPOQ/NFE2L2/NPHS1/PIK3CG/HIF1A/RYR1/APEX1/SELP/PPARD/ADRB2/SNCA/PCSK9/LMNA/AR/MGAM/VCAM1/PARP1/ATR/FASN/FOXP3/H2AX/VDR/OLR1/KRAS/COMT/GJA1/CASP8/TP53/PRF1/ELN/NUP62/TCF4/ADIPOR1/FSHB/PMAIP1/MTOR/RPS6KB1/GLA/DNAH8/DNM1L/CNR1/GCG/LDLR/ATF4/PRKCA/TGFB2/CYP21A2/IGFBP3/CYP1B1/TBK1/IGF1/ACHE/NOS3/MYC/NPHS2/MAN2B1/SERPINE1/EZR/CDKN1A/GAP43/CDK4/CTSK/CYP2C8/KIT/SOD2/PLAT/PLG/TXNIP/CD80/MMP2/BMPR2/PDE6A/TNFSF10/BBC3/BDNF/NR1I2/KDR/CCL3/SOAT1/STAT5B/CD28/JAK1/ALPP/MCL1/CACNA1D/SREBF1/EGFR/HSD11B2/NR1I3/ICAM1/ENTPD5/BCL2/P2RX4/GDNF/BTRC/PDE6C/CDKN2A/CACNA1C/ABCG1/GLUL/ORAI1/PTK2B/FLT1/EP300/GPER1/CD274/CX3CL1/SESN2/HAMP/KCNN4/DDIT3/PDE4C/FOS/SELE/SAA1/NFKBIA/PRKD1/SFN/DNAJC5/GLO1/AQP3/ALB/BSG/E2F1/APRT/IDO1/CDC42/SLC2A2/PTX3/LGALS1/ITPR1/FXN/LYN/INSR/AIFM1/TNFSF11/SCN5A/GPX1/TNFRSF1A/NDUFS3/RYR2/CSF3/BMAL1/CCL5/XIAP/MYD88/MIR21/SHH/GCK/VLDLR/CDK2/IL17A/MIR200A/CFLAR/ACP5/ACE2/CXCR4/MIR155/CTSG/PPARGC1A/BRAF/CD86/ADORA2B/KLK3/XDH/NGF/SPP1/VTN/ADIPOR2/BIRC3/ESRRA/SLC16A1/TXN/BID/NTRK2/CXCL10/MAP3K5/HSPA4/CCL2/FOSL1/AQP5/DNMT1/NR3C1/CAT/FOXC2/CETP/CYP1A2/CASP9/SGK1/APAF1/CDH2/SIRT7/MAPK9/MIR18A/DHFR/IL5/ATM/TJP1/IRS1/HSF1/MIR145/ACTA2/CGA/CYP1A1/SCNN1A/NLRP3/F3/CCNB1/CCL20/MECP2/PKM/TFAM/MMP1/ABCG2/LTA4H/NFKB1/LOX/SLC2A4/FOXO3/CASP1/MDM2/NOTCH1/CALCA/LHB/BMI1/KCNH2/PARK7/FGF2/CEBPB/CCR2/CDK1/TLR4/PTK2/BTK/GFER/TNFRSF10B/ATF6/AHR/POLI/EIF4EBP1/SCARB1/ITGB1/CD33/TXNRD1/MIR27A/HDAC9/KCNJ11/MSR1/NOS1/WEE1/ACE/HGF/CUL5/CPT1A/WNT1/IL33/IL4
+#&gt; gaoliangjiang                                                                                                                                                                                                                                                                                                            CXCL1/PTPN1/CCK/BIRC5/BCL2L1/HSD11B1/SCNN1G/LPCAT2/IFNG/CYCS/IL15/KDM1A/HSP90AA1/PRKAB1/LALBA/IL18/MIR15A/TNFRSF10A/IKBKB/ERBB3/PPARG/SIRT1/EGR1/PRKDC/GSTP1/IGF1R/CD19/GAA/RPS6KA3/WT1/ELANE/SOX9/STAT6/BRCA1/FABP5/ALOX12/AKT2/SERPINA1/LRRK2/PCNA/HSPA5/FAS/PDGFRB/NFATC1/CCND3/ADA/PRSS1/AQP1/CYP3A4/RASGRF1/GAST/TRAF6/CDK9/XBP1/RECQL/SMAD3/SPI1/FABP1/MVP/SIGMAR1/YWHAZ/ABCC2/TNFRSF11A/CYBB/TLR9/EZH2/HNRNPA1/JUN/EIF2S1/SLC2A1/CSF2/CTSD/SLPI/MAPK10/IL13/SP1/IL1B/GCLC/BECN1/AGTR1/MMP3/UCP2/TF/GSK3A/PTPN11/ABCA1/RAF1/AKT1/PON1/COL11A2/PRKCB/IL10/CDH11/GCLM/ABCC1/STAT1/PTGS1/HDAC6/PDK4/BAX/NEU2/MAPT/GLI1/SLC47A1/ILK/STAT3/BIRC2/IGF2/IL1A/THBS1/MAPK14/CCN2/TNF/NOS2/IRF1/SST/CYP19A1/CDH1/ESR1/CYP2C19/PRDX6/GUSB/MIR22/MAPK1/NOX4/SNAI2/FASLG/GLS2/SRC/SQSTM1/EDN1/NEU1/AREG/YAP1/HMGCR/CCR6/HSPB1/HMGB1/CCNE1/POLG/PTPN13/NR1H4/PSEN1/MIR7-1/FN1/CD44/APOD/CREB1/SOCS3/PPARA/EGF/PRKN/FTH1/MIR206/EIF2AK3/PIK3CA/SMAD7/ULK1/GSTM1/KDM4D/INS/COL1A1/ODC1/SOD1/MAP2K2/PTEN/CAMP/JAK2/PIK3CB/NCF1/ELK1/MIR371A/TFEB/TSHR/MPO/KHK/ATXN2/IL21/MAPK8/PMP22/CD40LG/LEP/PLEK/TRIM63/PECAM1/CXADR/RET/MLXIPL/CD34/SYK/PIK3CD/ITPR3/HSP90B1/HDAC1/NR2C2/MFGE8/IL2/MET/IL2RA/IGFBP1/HSD3B1/DRD2/AKR1B1/BCL2L11/SMAD2/TTR/CAV1/STAT5A/NR1H3/APP/TCF7L2/TGFB1/VEGFA/IL6/CTNNB1/HMOX1/MSTN/VDAC1/APOE/IL7/HNF4G/ALPL/NANOG/CASP3/PTGS2/MAP2K1/AGT/MMP9/BAD/ERBB2/ABCB1/BGLAP/MEN1/GSTA1/TRPV1/CCND1/CYP11A1/VIM/FBXW7/CHUK/CEBPA/MIR130A/CRP/CYP2E1/IL9/PDX1/RUNX2/APOM/SLC25A21/NQO1/PRKCD/PRKAA2/FLT3/RB1/CLDN1/GSK3B/RELA/UCP3/GLP1R/TWIST1/ADAM17/TYR/TOP2A/PDLIM3/NDUFV2/F2/FOXO1/CXCL8/FOXD3/PLAU/WNT3A/SNAI1/ESR2/MAPK3/RARB/BMP2/ADIPOQ/NFE2L2/PIK3CG/HIF1A/APEX1/SELP/PPARD/FSCN1/ADRB2/SNCA/AR/MGAM/VCAM1/FDXR/ADRA2A/PARP1/THBS4/FASN/FOXP3/H2AX/TERT/VDR/OLR1/RICTOR/KRAS/COMT/CASP8/TP53/TCF4/PMAIP1/MTOR/S100A8/AGER/GCG/CTLA4/LDLR/PI4KB/ATF4/PRKCA/TGFB2/IGFBP3/CYP1B1/ANGPTL4/TBK1/IGF1/ACHE/NOS3/DRD1/MYC/ITGAM/SERPINE1/EZR/CDKN1A/GAP43/CDK4/CTSK/CYP2C8/KIT/SOD2/DUOX2/PLAT/PLG/ANGPT1/PEG10/TXNIP/CD80/MMP2/BMPR2/TNFSF10/BBC3/KLF15/BDNF/NR1I2/KDR/ETS1/SOAT1/STAT5B/CD28/JAK1/ALPP/MCL1/CACNA1D/SREBF1/EGFR/NR1I3/ICAM1/CLU/BCL2/P2RX4/CDKN2A/CD9/CACNA1C/PIAS1/PTK2B/FLT1/NOX5/EP300/GPER1/CD274/DLK1/RACGAP1/DDIT3/CD36/CDKN1B/FOS/SELE/NFKBIA/DNAJC5/GLO1/AQP3/ALB/BSG/E2F1/IDO1/SLC2A2/PTX3/LGALS1/LYN/INSR/WRN/TNFSF11/CASP7/MIR16-1/FZD1/CSF3/CHAT/XIAP/MYD88/TCF21/PTCH1/MIR21/GCK/TIMP1/CDK2/IL17A/DLC1/CFLAR/ACE2/MIR155/RHO/BRAF/CD86/XDH/ID1/NGF/SPP1/VTN/BIRC3/ESRRA/IMPDH1/HULC/TSC2/SLC16A1/TXN/BID/NTRK2/CXCL10/MAP3K5/HSPA4/CCL2/FOSL1/AQP5/DNMT1/NR3C1/CAT/CD68/CX3CR1/TLR2/CETP/CYP1A2/CASP9/JAM3/APAF1/MAPK9/IL5/BCHE/TJP1/IRS1/HSF1/MIR145/AKT3/ACTA2/CYP1A1/CISD2/NLRP3/F3/TGFBR1/RECK/MMP14/CCNB1/MECP2/MMP1/ABCG2/PLAGL1/NFKB1/HTT/SLC2A4/TNFSF13B/IFI27/FOXO3/CASP1/MDM2/NOTCH1/CALCA/BMI1/PARK7/FGF2/CEBPB/CDK1/TLR4/PTK2/BTK/TNFRSF10B/AHR/POLI/CD33/TRPA1/TXNRD1/HDAC9/CHRM2/NOS1/WEE1/ERN1/PCK1/HGF/CPT1A/ARG1/MIR29B1/IL4
+#&gt;               Count
+#&gt; tufuling        499
+#&gt; dazao           562
+#&gt; renshen         537
+#&gt; huzhang         483
+#&gt; gouguye         540
+#&gt; gaoliangjiang   505</code></pre>
+<p>The returned <code>enrichResult</code> object is compatible with all <code>enrichplot</code> visualization functions. Below we show a dot plot highlighting the top 15 enriched herbs:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="pre-analysis.html#cb19-1" tabindex="-1"></a><span class="fu">dotplot</span>(enrich_res, <span class="at">showCategory =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/herb-dotplot-1.png" alt="" width="90%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="pre-analysis.html#cb20-1" tabindex="-1"></a><span class="fu">barplot</span>(enrich_res, <span class="at">showCategory =</span> <span class="dv">15</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/herb-barplot-1.png" alt="" width="90%" style="display: block; margin: auto;" /></p>
+<p>In the output, <code>GeneRatio</code> indicates the fraction of query genes present in each herb’s target set, <code>p.adjust</code> gives the Benjamini–Hochberg corrected p-value, and <code>geneID</code> lists the overlapping gene symbols. Herbs with lower adjusted p-values and higher gene ratios are stronger candidates for subsequent network analysis.</p>
+<hr />
+</div>
+</div>
+<div id="references" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> References<a href="pre-analysis.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Sayers EW, Bolton EE, Fine AM, et al. (2026). “Database resources of the National Center for Biotechnology Information in 2026.” <em>Nucleic Acids Research</em>, <strong>54</strong>(D1), D20–D27. doi: <a href="https://doi.org/10.1093/nar/gkaf1060">10.1093/nar/gkaf1060</a>.</p></li>
+<li><p>Xu S, Hu E, Cai Y, et al. (2024). “Using clusterProfiler to characterize multiomics data.” <em>Nature Protocols</em>. doi: <a href="https://doi.org/10.1038/s41596-024-01020-z">10.1038/s41596-024-01020-z</a>.</p></li>
+</ol>
+<hr />
+</div>
+<div id="session-information-1" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> Session information<a href="pre-analysis.html#session-information-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="pre-analysis.html#cb21-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<pre><code>#&gt; R version 4.6.0 (2026-04-24)
+#&gt; Platform: x86_64-pc-linux-gnu
+#&gt; Running under: Ubuntu 24.04.4 LTS
+#&gt; 
+#&gt; Matrix products: default
+#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0
+#&gt; 
+#&gt; locale:
+#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+#&gt; 
+#&gt; time zone: UTC
+#&gt; tzcode source: system (glibc)
+#&gt; 
+#&gt; attached base packages:
+#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     
+#&gt; 
+#&gt; other attached packages:
+#&gt; [1] enrichplot_1.32.0 TCMDATA_0.1.0    
+#&gt; 
+#&gt; loaded via a namespace (and not attached):
+#&gt;   [1] DBI_1.3.0               gson_0.1.0              httr2_1.2.2            
+#&gt;   [4] rlang_1.2.0             magrittr_2.0.5          DOSE_4.6.0             
+#&gt;   [7] compiler_4.6.0          RSQLite_3.53.1          png_0.1-9              
+#&gt;  [10] systemfonts_1.3.2       callr_3.7.6             vctrs_0.7.3            
+#&gt;  [13] reshape2_1.4.5          stringr_1.6.0           pkgconfig_2.0.3        
+#&gt;  [16] crayon_1.5.3            fastmap_1.2.0           XVector_0.52.0         
+#&gt;  [19] labeling_0.4.3          rmarkdown_2.31          ps_1.9.3               
+#&gt;  [22] purrr_1.2.2             bit_4.6.0               xfun_0.57              
+#&gt;  [25] cachem_1.1.0            aplot_0.2.9             jsonlite_2.0.0         
+#&gt;  [28] blob_1.3.0              tidydr_0.0.6            tweenr_2.0.3           
+#&gt;  [31] parallel_4.6.0          cluster_2.1.8.2         R6_2.6.1               
+#&gt;  [34] bslib_0.11.0            stringi_1.8.7           RColorBrewer_1.1-3     
+#&gt;  [37] enrichit_0.1.4          jquerylib_0.1.4         GOSemSim_2.38.0        
+#&gt;  [40] Rcpp_1.1.1-1.1          Seqinfo_1.2.0           bookdown_0.46          
+#&gt;  [43] knitr_1.51              ggtangle_0.1.2          IRanges_2.46.0         
+#&gt;  [46] splines_4.6.0           igraph_2.3.1            aisdk_1.4.8            
+#&gt;  [49] tidyselect_1.2.1        qvalue_2.44.0           rstudioapi_0.18.0      
+#&gt;  [52] yaml_2.3.12             processx_3.9.0          lattice_0.22-9         
+#&gt;  [55] tibble_3.3.1            plyr_1.8.9              Biobase_2.72.0         
+#&gt;  [58] treeio_1.36.1           withr_3.0.2             KEGGREST_1.52.0        
+#&gt;  [61] S7_0.2.2                evaluate_1.0.5          gridGraphics_0.5-1     
+#&gt;  [64] scatterpie_0.2.6        polyclip_1.10-7         Biostrings_2.80.1      
+#&gt;  [67] pillar_1.11.1           ggtree_4.2.0            stats4_4.6.0           
+#&gt;  [70] clusterProfiler_4.20.0  ggfun_0.2.0             generics_0.1.4         
+#&gt;  [73] S4Vectors_0.50.1        ggplot2_4.0.3           scales_1.4.0           
+#&gt;  [76] tidytree_0.4.7          glue_1.8.1              gdtools_0.5.1          
+#&gt;  [79] lazyeval_0.2.3          tools_4.6.0             ggnewscale_0.5.2       
+#&gt;  [82] ggiraph_0.9.6           fs_2.1.0                grid_4.6.0             
+#&gt;  [85] tidyr_1.3.2             ape_5.8-1               AnnotationDbi_1.74.0   
+#&gt;  [88] nlme_3.1-169            patchwork_1.3.2         ggforce_0.5.0          
+#&gt;  [91] cli_3.6.6               rappdirs_0.3.4          fontBitstreamVera_0.1.1
+#&gt;  [94] dplyr_1.2.1             gtable_0.3.6            yulab.utils_0.2.4      
+#&gt;  [97] sass_0.4.10             digest_0.6.39           fontquiver_0.2.1       
+#&gt; [100] BiocGenerics_0.58.1     ggrepel_0.9.8           ggplotify_0.1.3        
+#&gt; [103] htmlwidgets_1.6.4       farver_2.1.2            memoise_2.0.1          
+#&gt; [106] htmltools_0.5.9         lifecycle_1.0.5         httr_1.4.8             
+#&gt; [109] GO.db_3.23.1            fontLiberation_0.1.0    bit64_4.8.2            
+#&gt; [112] MASS_7.3-65</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="load-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="molecule-detection.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": true,
+    "facebook": false,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

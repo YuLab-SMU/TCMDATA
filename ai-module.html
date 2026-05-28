@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 AI Module | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</title>
+  <meta name="description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 AI Module | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="github-repo" content="YuLab-SMU/TCMDATA" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 AI Module | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  
+  <meta name="twitter:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  
+
+<meta name="author" content="Nan He, Guangchuang Yu, Shuangbin Xu Department of Bioinformatics, School of Basic Medical Sciences, Southern Medical University" />
+
+
+<meta name="date" content="2026-05-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ml-analysis.html"/>
+<link rel="next" href="other-resources.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/ggiraphjs-0.9.4/girafe.css" rel="stylesheet" />
+<script src="libs/ggiraphjs-0.9.4/girafe.js"></script>
+<script src="libs/girafe-binding-0.9.6/girafe.js"></script>
+<link href="libs/liberation-sans-0.5.1/css/liberation-sans.css" rel="stylesheet" />
+<link href="libs/liberation-serif-0.5.1/css/liberation-serif.css" rel="stylesheet" />
+<link href="libs/liberation-mono-0.5.1/css/liberation-mono.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">TCMDATA User Guide</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i>Installation</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="load-data.html"><a href="load-data.html"><i class="fa fa-check"></i><b>1</b> Load TCM Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="load-data.html"><a href="load-data.html#search-by-herb-name"><i class="fa fa-check"></i><b>1.1</b> Search by herb name</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="load-data.html"><a href="load-data.html#using-pinyin-format"><i class="fa fa-check"></i><b>1.1.1</b> Using Pinyin format</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="load-data.html"><a href="load-data.html#search-by-target-gene"><i class="fa fa-check"></i><b>1.2</b> Search by target gene</a></li>
+<li class="chapter" data-level="1.3" data-path="load-data.html"><a href="load-data.html#session-information"><i class="fa fa-check"></i><b>1.3</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="pre-analysis.html"><a href="pre-analysis.html"><i class="fa fa-check"></i><b>2</b> Pre-analysis</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#pubmed-literature-mining"><i class="fa fa-check"></i><b>2.1</b> PubMed literature mining</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="pre-analysis.html"><a href="pre-analysis.html#visualization"><i class="fa fa-check"></i><b>2.1.1</b> Visualization</a></li>
+<li class="chapter" data-level="2.1.2" data-path="pre-analysis.html"><a href="pre-analysis.html#exporting-results"><i class="fa fa-check"></i><b>2.1.2</b> Exporting results</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="pre-analysis.html"><a href="pre-analysis.html#herb-ora"><i class="fa fa-check"></i><b>2.2</b> Herb enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#example-diabetic-nephropathy"><i class="fa fa-check"></i><b>2.2.1</b> Example: Diabetic Nephropathy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="pre-analysis.html"><a href="pre-analysis.html#references"><i class="fa fa-check"></i><b>2.3</b> References</a></li>
+<li class="chapter" data-level="2.4" data-path="pre-analysis.html"><a href="pre-analysis.html#session-information-1"><i class="fa fa-check"></i><b>2.4</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="molecule-detection.html"><a href="molecule-detection.html"><i class="fa fa-check"></i><b>3</b> Molecule annotation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="molecule-detection.html"><a href="molecule-detection.html#resolving-compound-identifiers"><i class="fa fa-check"></i><b>3.1</b> Resolving compound identifiers</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="molecule-detection.html"><a href="molecule-detection.html#using-resolve_cid"><i class="fa fa-check"></i><b>3.1.1</b> Using <code>resolve_cid()</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="molecule-detection.html"><a href="molecule-detection.html#using-getcid"><i class="fa fa-check"></i><b>3.1.2</b> Using <code>getcid()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="molecule-detection.html"><a href="molecule-detection.html#retrieving-chemical-properties"><i class="fa fa-check"></i><b>3.2</b> Retrieving chemical properties</a></li>
+<li class="chapter" data-level="3.3" data-path="molecule-detection.html"><a href="molecule-detection.html#similarity-searching"><i class="fa fa-check"></i><b>3.3</b> Similarity searching</a></li>
+<li class="chapter" data-level="3.4" data-path="molecule-detection.html"><a href="molecule-detection.html#download-molecular-structures-and-format-conversion"><i class="fa fa-check"></i><b>3.4</b> Download molecular structures and format conversion</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="molecule-detection.html"><a href="molecule-detection.html#downloading-ligand-structures-from-pubchem"><i class="fa fa-check"></i><b>3.4.1</b> Downloading ligand structures from PubChem</a></li>
+<li class="chapter" data-level="3.4.2" data-path="molecule-detection.html"><a href="molecule-detection.html#downloading-receptor-structures-from-the-rcsb-pdb"><i class="fa fa-check"></i><b>3.4.2</b> Downloading receptor structures from the RCSB PDB</a></li>
+<li class="chapter" data-level="3.4.3" data-path="molecule-detection.html"><a href="molecule-detection.html#converting-structure-file-formats"><i class="fa fa-check"></i><b>3.4.3</b> Converting structure file formats</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="molecule-detection.html"><a href="molecule-detection.html#references-1"><i class="fa fa-check"></i><b>3.5</b> References</a></li>
+<li class="chapter" data-level="3.6" data-path="molecule-detection.html"><a href="molecule-detection.html#session-information-2"><i class="fa fa-check"></i><b>3.6</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="target-retrieval.html"><a href="target-retrieval.html"><i class="fa fa-check"></i><b>4</b> Target retrieval and DEG analysis</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="target-retrieval.html"><a href="target-retrieval.html#disease-target-tcmdata"><i class="fa fa-check"></i><b>4.1</b> Programmatic disease target retrieval with TCMDATA</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="target-retrieval.html"><a href="target-retrieval.html#search_disease-disease-genes"><i class="fa fa-check"></i><b>4.1.1</b> <code>search_disease()</code>: disease → genes</a></li>
+<li class="chapter" data-level="4.1.2" data-path="target-retrieval.html"><a href="target-retrieval.html#search_gene_disease-gene-diseases"><i class="fa fa-check"></i><b>4.1.2</b> <code>search_gene_disease()</code>: gene → diseases</a></li>
+<li class="chapter" data-level="4.1.3" data-path="target-retrieval.html"><a href="target-retrieval.html#open-targets-api-disease-scored-targets"><i class="fa fa-check"></i><b>4.1.3</b> Open Targets API: disease → scored targets</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="target-retrieval.html"><a href="target-retrieval.html#disease-db"><i class="fa fa-check"></i><b>4.2</b> Disease target databases</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="target-retrieval.html"><a href="target-retrieval.html#genecards"><i class="fa fa-check"></i><b>4.2.1</b> GeneCards</a></li>
+<li class="chapter" data-level="4.2.2" data-path="target-retrieval.html"><a href="target-retrieval.html#open-targets-platform"><i class="fa fa-check"></i><b>4.2.2</b> Open Targets Platform</a></li>
+<li class="chapter" data-level="4.2.3" data-path="target-retrieval.html"><a href="target-retrieval.html#ctd-comparative-toxicogenomics-database"><i class="fa fa-check"></i><b>4.2.3</b> CTD (Comparative Toxicogenomics Database)</a></li>
+<li class="chapter" data-level="4.2.4" data-path="target-retrieval.html"><a href="target-retrieval.html#other-databases"><i class="fa fa-check"></i><b>4.2.4</b> Other databases</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="target-retrieval.html"><a href="target-retrieval.html#compound-target"><i class="fa fa-check"></i><b>4.3</b> Compound target prediction</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="target-retrieval.html"><a href="target-retrieval.html#compound-target-swisstarget"><i class="fa fa-check"></i><b>4.3.1</b> SwissTargetPrediction</a></li>
+<li class="chapter" data-level="4.3.2" data-path="target-retrieval.html"><a href="target-retrieval.html#similarity-ensemble-approach-sea"><i class="fa fa-check"></i><b>4.3.2</b> Similarity Ensemble Approach (SEA)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano"><i class="fa fa-check"></i><b>4.4</b> DEG visualization</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="target-retrieval.html"><a href="target-retrieval.html#load-and-inspect-data"><i class="fa fa-check"></i><b>4.4.1</b> Load and inspect data</a></li>
+<li class="chapter" data-level="4.4.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano-plot-with-ivolcano"><i class="fa fa-check"></i><b>4.4.2</b> Volcano plot with <code>ivolcano</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="target-retrieval.html"><a href="target-retrieval.html#intersection"><i class="fa fa-check"></i><b>4.5</b> Intersection analysis</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="target-retrieval.html"><a href="target-retrieval.html#prepare-gene-sets"><i class="fa fa-check"></i><b>4.5.1</b> Prepare gene sets</a></li>
+<li class="chapter" data-level="4.5.2" data-path="target-retrieval.html"><a href="target-retrieval.html#venn-diagram"><i class="fa fa-check"></i><b>4.5.2</b> Venn diagram</a></li>
+<li class="chapter" data-level="4.5.3" data-path="target-retrieval.html"><a href="target-retrieval.html#upset-plot"><i class="fa fa-check"></i><b>4.5.3</b> UpSet plot</a></li>
+<li class="chapter" data-level="4.5.4" data-path="target-retrieval.html"><a href="target-retrieval.html#extract-intersection-results"><i class="fa fa-check"></i><b>4.5.4</b> Extract intersection results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="target-retrieval.html"><a href="target-retrieval.html#ppi-weighted-target-ranking"><i class="fa fa-check"></i><b>4.6</b> PPI-weighted target ranking</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="target-retrieval.html"><a href="target-retrieval.html#example-lingzhi-targets-against-dn-disease-module"><i class="fa fa-check"></i><b>4.6.1</b> Example: Lingzhi targets against DN disease module</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="target-retrieval.html"><a href="target-retrieval.html#references-2"><i class="fa fa-check"></i><b>4.7</b> References</a></li>
+<li class="chapter" data-level="4.8" data-path="target-retrieval.html"><a href="target-retrieval.html#session-information-3"><i class="fa fa-check"></i><b>4.8</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="network-construction.html"><a href="network-construction.html"><i class="fa fa-check"></i><b>5</b> TCM network construction</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="network-construction.html"><a href="network-construction.html#preparing-the-data"><i class="fa fa-check"></i><b>5.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="5.2" data-path="network-construction.html"><a href="network-construction.html#sankey-diagram-visualization"><i class="fa fa-check"></i><b>5.2</b> Sankey diagram visualization</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="network-construction.html"><a href="network-construction.html#basic-usage"><i class="fa fa-check"></i><b>5.2.1</b> Basic usage</a></li>
+<li class="chapter" data-level="5.2.2" data-path="network-construction.html"><a href="network-construction.html#customizing-colors-and-appearance"><i class="fa fa-check"></i><b>5.2.2</b> Customizing colors and appearance</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="network-construction.html"><a href="network-construction.html#network-graph-with-ggtangle"><i class="fa fa-check"></i><b>5.3</b> Network graph with <code>ggtangle</code></a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="network-construction.html"><a href="network-construction.html#building-the-graph"><i class="fa fa-check"></i><b>5.3.1</b> Building the graph</a></li>
+<li class="chapter" data-level="5.3.2" data-path="network-construction.html"><a href="network-construction.html#basic-network-visualization"><i class="fa fa-check"></i><b>5.3.2</b> Basic network visualization</a></li>
+<li class="chapter" data-level="5.3.3" data-path="network-construction.html"><a href="network-construction.html#adding-node-labels"><i class="fa fa-check"></i><b>5.3.3</b> Adding node labels</a></li>
+<li class="chapter" data-level="5.3.4" data-path="network-construction.html"><a href="network-construction.html#alternative-layouts"><i class="fa fa-check"></i><b>5.3.4</b> Alternative layouts</a></li>
+<li class="chapter" data-level="5.3.5" data-path="network-construction.html"><a href="network-construction.html#enriching-the-network-with-external-data"><i class="fa fa-check"></i><b>5.3.5</b> Enriching the network with external data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="network-construction.html"><a href="network-construction.html#references-3"><i class="fa fa-check"></i><b>5.4</b> References</a></li>
+<li class="chapter" data-level="5.5" data-path="network-construction.html"><a href="network-construction.html#session-information-4"><i class="fa fa-check"></i><b>5.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="enrichment.html"><a href="enrichment.html"><i class="fa fa-check"></i><b>6</b> Enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="enrichment.html"><a href="enrichment.html#over-representation-analysis-ora"><i class="fa fa-check"></i><b>6.1</b> Over Representation Analysis (ORA)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="enrichment.html"><a href="enrichment.html#kegg-enrichment-analysis"><i class="fa fa-check"></i><b>6.1.1</b> KEGG enrichment analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="enrichment.html"><a href="enrichment.html#go-enrichment-analysis"><i class="fa fa-check"></i><b>6.2</b> GO enrichment analysis</a></li>
+<li class="chapter" data-level="6.3" data-path="enrichment.html"><a href="enrichment.html#advanced-visualization"><i class="fa fa-check"></i><b>6.3</b> Advanced visualization</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="enrichment.html"><a href="enrichment.html#lollipop-plot"><i class="fa fa-check"></i><b>6.3.1</b> Lollipop plot</a></li>
+<li class="chapter" data-level="6.3.2" data-path="enrichment.html"><a href="enrichment.html#dot-sankey-plot"><i class="fa fa-check"></i><b>6.3.2</b> Dot-sankey plot</a></li>
+<li class="chapter" data-level="6.3.3" data-path="enrichment.html"><a href="enrichment.html#go-bar-plot"><i class="fa fa-check"></i><b>6.3.3</b> GO bar plot</a></li>
+<li class="chapter" data-level="6.3.4" data-path="enrichment.html"><a href="enrichment.html#go-circle-plot"><i class="fa fa-check"></i><b>6.3.4</b> GO circle plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="enrichment.html"><a href="enrichment.html#gene-set-enrichment-analysis-gsea"><i class="fa fa-check"></i><b>6.4</b> Gene Set Enrichment Analysis (GSEA)</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="enrichment.html"><a href="enrichment.html#prepare-ranked-gene-list"><i class="fa fa-check"></i><b>6.4.1</b> Prepare ranked gene list</a></li>
+<li class="chapter" data-level="6.4.2" data-path="enrichment.html"><a href="enrichment.html#kegg-gsea-analysis"><i class="fa fa-check"></i><b>6.4.2</b> KEGG GSEA analysis</a></li>
+<li class="chapter" data-level="6.4.3" data-path="enrichment.html"><a href="enrichment.html#go-gsea-analysis"><i class="fa fa-check"></i><b>6.4.3</b> GO GSEA analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="enrichment.html"><a href="enrichment.html#session-information-5"><i class="fa fa-check"></i><b>6.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ppi-analysis.html"><a href="ppi-analysis.html"><i class="fa fa-check"></i><b>7</b> PPI network analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#retrieving-ppi-data-from-string"><i class="fa fa-check"></i><b>7.1</b> Retrieving PPI data from STRING</a></li>
+<li class="chapter" data-level="7.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#network-filtering"><i class="fa fa-check"></i><b>7.2</b> Network filtering</a></li>
+<li class="chapter" data-level="7.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#ppi-target-set-proximity"><i class="fa fa-check"></i><b>7.3</b> Target-set proximity to a disease PPI module</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#example-evaluating-lingzhi-target-set-against-dn"><i class="fa fa-check"></i><b>7.3.1</b> Example: evaluating Lingzhi target set against DN</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#topology"><i class="fa fa-check"></i><b>7.4</b> Topological metrics</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#integrated-ranking"><i class="fa fa-check"></i><b>7.4.1</b> Integrated ranking</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#radar-plot-of-topological-metrics"><i class="fa fa-check"></i><b>7.4.2</b> Radar plot of topological metrics</a></li>
+<li class="chapter" data-level="7.4.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#heatmap-of-topological-metrics"><i class="fa fa-check"></i><b>7.4.3</b> Heatmap of topological metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="ppi-analysis.html"><a href="ppi-analysis.html#clustering"><i class="fa fa-check"></i><b>7.5</b> Community detection</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#louvain-modularity-optimization"><i class="fa fa-check"></i><b>7.5.1</b> Louvain modularity optimization</a></li>
+<li class="chapter" data-level="7.5.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcode-molecular-complex-detection"><i class="fa fa-check"></i><b>7.5.2</b> MCODE (Molecular Complex Detection)</a></li>
+<li class="chapter" data-level="7.5.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcl-markov-clustering"><i class="fa fa-check"></i><b>7.5.3</b> MCL (Markov Clustering)</a></li>
+<li class="chapter" data-level="7.5.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#fast-greedy-modularity-optimization"><i class="fa fa-check"></i><b>7.5.4</b> Fast greedy modularity optimization</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="ppi-analysis.html"><a href="ppi-analysis.html#robustness"><i class="fa fa-check"></i><b>7.6</b> PPI network robustness analysis</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#algorithm-overview"><i class="fa fa-check"></i><b>7.6.1</b> Algorithm overview</a></li>
+<li class="chapter" data-level="7.6.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#example-knocking-out-il6"><i class="fa fa-check"></i><b>7.6.2</b> Example: knocking out IL6</a></li>
+<li class="chapter" data-level="7.6.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#visualization-before-vs.-after-knockout"><i class="fa fa-check"></i><b>7.6.3</b> Visualization: before vs. after knockout</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="ppi-analysis.html"><a href="ppi-analysis.html#ppi-vis"><i class="fa fa-check"></i><b>7.7</b> PPI network visualization</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#basic-network-with-topological-mapping"><i class="fa fa-check"></i><b>7.7.1</b> Basic network with topological mapping</a></li>
+<li class="chapter" data-level="7.7.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#community-colored-network"><i class="fa fa-check"></i><b>7.7.2</b> Community-colored network</a></li>
+<li class="chapter" data-level="7.7.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#hub-centric-star-layout"><i class="fa fa-check"></i><b>7.7.3</b> Hub-centric star layout</a></li>
+<li class="chapter" data-level="7.7.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#layout-algorithm-comparison"><i class="fa fa-check"></i><b>7.7.4</b> Layout algorithm comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="ppi-analysis.html"><a href="ppi-analysis.html#references-4"><i class="fa fa-check"></i><b>7.8</b> References</a></li>
+<li class="chapter" data-level="7.9" data-path="ppi-analysis.html"><a href="ppi-analysis.html#session-information-6"><i class="fa fa-check"></i><b>7.9</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ml-analysis.html"><a href="ml-analysis.html"><i class="fa fa-check"></i><b>8</b> Machine learning–based key target screening</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ml-analysis.html"><a href="ml-analysis.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-data"><i class="fa fa-check"></i><b>8.1.1</b> Example dataset</a></li>
+<li class="chapter" data-level="8.1.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-prepare"><i class="fa fa-check"></i><b>8.1.2</b> Data preparation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-a"><i class="fa fa-check"></i><b>8.2</b> Mode A: full cross-validation</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-lasso"><i class="fa fa-check"></i><b>8.2.1</b> LASSO regression</a></li>
+<li class="chapter" data-level="8.2.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-rf"><i class="fa fa-check"></i><b>8.2.2</b> Random Forest and Boruta</a></li>
+<li class="chapter" data-level="8.2.3" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-svm-rfe"><i class="fa fa-check"></i><b>8.2.3</b> SVM-RFE</a></li>
+<li class="chapter" data-level="8.2.4" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-xgboost"><i class="fa fa-check"></i><b>8.2.4</b> XGBoost</a></li>
+<li class="chapter" data-level="8.2.5" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-consensus"><i class="fa fa-check"></i><b>8.2.5</b> Consensus analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-b"><i class="fa fa-check"></i><b>8.3</b> Mode B: internal train/test split</a></li>
+<li class="chapter" data-level="8.4" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-c"><i class="fa fa-check"></i><b>8.4</b> Mode C: external validation</a></li>
+<li class="chapter" data-level="8.5" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-select"><i class="fa fa-check"></i><b>8.5</b> Post-hoc feature trimming</a></li>
+<li class="chapter" data-level="8.6" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-manual-list"><i class="fa fa-check"></i><b>8.6</b> Assembling models manually</a></li>
+<li class="chapter" data-level="8.7" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-gene-diag"><i class="fa fa-check"></i><b>8.7</b> Single-gene diagnostic analysis</a>
+<ul>
+<li class="chapter" data-level="8.7.1" data-path="ml-analysis.html"><a href="ml-analysis.html#auc-summary-table"><i class="fa fa-check"></i><b>8.7.1</b> AUC summary table</a></li>
+<li class="chapter" data-level="8.7.2" data-path="ml-analysis.html"><a href="ml-analysis.html#single-gene-roc-curves"><i class="fa fa-check"></i><b>8.7.2</b> Single-gene ROC curves</a></li>
+<li class="chapter" data-level="8.7.3" data-path="ml-analysis.html"><a href="ml-analysis.html#two-group-expression-boxplot"><i class="fa fa-check"></i><b>8.7.3</b> Two-group expression boxplot</a></li>
+</ul></li>
+<li class="chapter" data-level="8.8" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-summary"><i class="fa fa-check"></i><b>8.8</b> Summary</a></li>
+<li class="chapter" data-level="8.9" data-path="ml-analysis.html"><a href="ml-analysis.html#references-5"><i class="fa fa-check"></i><b>8.9</b> References</a></li>
+<li class="chapter" data-level="8.10" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-session-info"><i class="fa fa-check"></i><b>8.10</b> Session Information</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ai-module.html"><a href="ai-module.html"><i class="fa fa-check"></i><b>9</b> AI Module</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ai-module.html"><a href="ai-module.html#prerequisites"><i class="fa fa-check"></i><b>9.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="9.2" data-path="ai-module.html"><a href="ai-module.html#interpretation-layer"><i class="fa fa-check"></i><b>9.2</b> Interpretation layer</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ai-module.html"><a href="ai-module.html#free-text-interpretation"><i class="fa fa-check"></i><b>9.2.1</b> Free-text interpretation</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ai-module.html"><a href="ai-module.html#interpreting-enrichment-objects"><i class="fa fa-check"></i><b>9.2.2</b> Interpreting enrichment objects</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ai-module.html"><a href="ai-module.html#interpreting-ppi-objects"><i class="fa fa-check"></i><b>9.2.3</b> Interpreting PPI objects</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ai-module.html"><a href="ai-module.html#drafting-result-paragraphs"><i class="fa fa-check"></i><b>9.2.4</b> Drafting result paragraphs</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ai-module.html"><a href="ai-module.html#custom-structured-output"><i class="fa fa-check"></i><b>9.2.5</b> Custom structured output</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ai-module.html"><a href="ai-module.html#agent-layer"><i class="fa fa-check"></i><b>9.3</b> Agent layer</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="ai-module.html"><a href="ai-module.html#one-shot-task-tcm_agent"><i class="fa fa-check"></i><b>9.3.1</b> One-shot task: <code>tcm_agent()</code></a></li>
+<li class="chapter" data-level="9.3.2" data-path="ai-module.html"><a href="ai-module.html#interactive-session-tcm_chat"><i class="fa fa-check"></i><b>9.3.2</b> Interactive session: <code>tcm_chat()</code></a></li>
+<li class="chapter" data-level="9.3.3" data-path="ai-module.html"><a href="ai-module.html#programmatic-agent-create_tcm_task_agent"><i class="fa fa-check"></i><b>9.3.3</b> Programmatic agent: <code>create_tcm_task_agent()</code></a></li>
+<li class="chapter" data-level="9.3.4" data-path="ai-module.html"><a href="ai-module.html#artifact-management"><i class="fa fa-check"></i><b>9.3.4</b> Artifact management</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="ai-module.html"><a href="ai-module.html#skill-layer"><i class="fa fa-check"></i><b>9.4</b> Skill layer</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="ai-module.html"><a href="ai-module.html#built-in-skills"><i class="fa fa-check"></i><b>9.4.1</b> Built-in skills</a></li>
+<li class="chapter" data-level="9.4.2" data-path="ai-module.html"><a href="ai-module.html#how-skills-work"><i class="fa fa-check"></i><b>9.4.2</b> How skills work</a></li>
+<li class="chapter" data-level="9.4.3" data-path="ai-module.html"><a href="ai-module.html#creating-custom-skills"><i class="fa fa-check"></i><b>9.4.3</b> Creating custom skills</a></li>
+<li class="chapter" data-level="9.4.4" data-path="ai-module.html"><a href="ai-module.html#managing-skills"><i class="fa fa-check"></i><b>9.4.4</b> Managing skills</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="ai-module.html"><a href="ai-module.html#session-information-7"><i class="fa fa-check"></i><b>9.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>10</b> Other resources</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="other-resources.html"><a href="other-resources.html#additional-databases"><i class="fa fa-check"></i><b>10.1</b> Additional databases</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="other-resources.html"><a href="other-resources.html#tfgene-interactions-dorothea"><i class="fa fa-check"></i><b>10.1.1</b> TF–gene interactions (DoRothEA)</a></li>
+<li class="chapter" data-level="10.1.2" data-path="other-resources.html"><a href="other-resources.html#gut-microbiotahost-interactions-gutmgene"><i class="fa fa-check"></i><b>10.1.2</b> Gut microbiota–host interactions (GutMGene)</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="other-resources.html"><a href="other-resources.html#additional-visualization"><i class="fa fa-check"></i><b>10.2</b> Additional visualization</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="other-resources.html"><a href="other-resources.html#heatmap-for-molecular-docking-results"><i class="fa fa-check"></i><b>10.2.1</b> Heatmap for molecular docking results</a></li>
+<li class="chapter" data-level="10.2.2" data-path="other-resources.html"><a href="other-resources.html#to-be-continued"><i class="fa fa-check"></i><b>10.2.2</b> To be continued</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="other-resources.html"><a href="other-resources.html#references-6"><i class="fa fa-check"></i><b>10.3</b> References</a></li>
+<li class="chapter" data-level="10.4" data-path="other-resources.html"><a href="other-resources.html#session-information-8"><i class="fa fa-check"></i><b>10.4</b> Session information</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ai-module" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">Chapter 9</span> AI Module<a href="ai-module.html#ai-module" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><code>TCMDATA</code> includes an AI module built on top of <a href="https://github.com/YuLab-SMU/aisdk">aisdk</a>, providing three layers of AI capability: <strong>interpretation</strong> (one-shot analysis of R objects), <strong>agent</strong> (multi-turn interactive analysis with tool use), and <strong>skill</strong> (domain-specific workflow knowledge). This chapter demonstrates the key features of each layer.</p>
+<div id="prerequisites" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Prerequisites<a href="ai-module.html#prerequisites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The AI module requires both <code>TCMDATA</code> and <code>aisdk</code>:</p>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="ai-module.html#cb230-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;aisdk&quot;</span>)</span>
+<span id="cb230-2"><a href="ai-module.html#cb230-2" tabindex="-1"></a><span class="fu">library</span>(aisdk)</span>
+<span id="cb230-3"><a href="ai-module.html#cb230-3" tabindex="-1"></a><span class="fu">library</span>(TCMDATA)</span></code></pre></div>
+<p>Model configuration is handled through <code>tcm_setup()</code> and only needs to be called once per session. User must set their own API key and provider to use AI module in this package.</p>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="ai-module.html#cb231-1" tabindex="-1"></a><span class="fu">tcm_setup</span>(</span>
+<span id="cb231-2"><a href="ai-module.html#cb231-2" tabindex="-1"></a>  <span class="at">provider =</span> <span class="st">&quot;openai&quot;</span>,</span>
+<span id="cb231-3"><a href="ai-module.html#cb231-3" tabindex="-1"></a>  <span class="at">api_key  =</span> <span class="st">&quot;sk-xxx&quot;</span>,</span>
+<span id="cb231-4"><a href="ai-module.html#cb231-4" tabindex="-1"></a>  <span class="at">model    =</span> <span class="st">&quot;gpt-4o&quot;</span>, </span>
+<span id="cb231-5"><a href="ai-module.html#cb231-5" tabindex="-1"></a>  <span class="at">base_url =</span> <span class="st">&quot;https://xxx/v1&quot;</span>, <span class="co"># if necessary </span></span>
+<span id="cb231-6"><a href="ai-module.html#cb231-6" tabindex="-1"></a>  <span class="at">save     =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb231-7"><a href="ai-module.html#cb231-7" tabindex="-1"></a>  <span class="at">test     =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+<div id="interpretation-layer" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Interpretation layer<a href="ai-module.html#interpretation-layer" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The interpretation layer provides one-shot AI analysis of R objects and free-text queries, with no tool use or multi-turn conversation. The primary interface is <code>tcm_interpret()</code>.</p>
+<div id="free-text-interpretation" class="section level3 hasAnchor" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> Free-text interpretation<a href="ai-module.html#free-text-interpretation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="ai-module.html#cb232-1" tabindex="-1"></a>txt <span class="ot">&lt;-</span> <span class="fu">tcm_interpret</span>(</span>
+<span id="cb232-2"><a href="ai-module.html#cb232-2" tabindex="-1"></a>  <span class="st">&quot;Please introduce the major pharmacological functions of Huangqi (Astragalus membranaceus), focusing on immunoregulation.&quot;</span>,</span>
+<span id="cb232-3"><a href="ai-module.html#cb232-3" tabindex="-1"></a>  <span class="at">language =</span> <span class="st">&quot;en&quot;</span>)</span>
+<span id="cb232-4"><a href="ai-module.html#cb232-4" tabindex="-1"></a><span class="fu">cat</span>(txt)</span></code></pre></div>
+</div>
+<div id="interpreting-enrichment-objects" class="section level3 hasAnchor" number="9.2.2">
+<h3><span class="header-section-number">9.2.2</span> Interpreting enrichment objects<a href="ai-module.html#interpreting-enrichment-objects" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>tcm_interpret()</code> can directly accept a <code>clusterProfiler</code> enrichment object. The package automatically compresses the relevant terms and genes into a compact representation before sending to the model:</p>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="ai-module.html#cb233-1" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
+<span id="cb233-2"><a href="ai-module.html#cb233-2" tabindex="-1"></a><span class="fu">library</span>(org.Hs.eg.db)</span>
+<span id="cb233-3"><a href="ai-module.html#cb233-3" tabindex="-1"></a></span>
+<span id="cb233-4"><a href="ai-module.html#cb233-4" tabindex="-1"></a>lz_targets <span class="ot">&lt;-</span> <span class="fu">search_herb</span>(<span class="st">&quot;lingzhi&quot;</span>, <span class="at">type =</span> <span class="st">&quot;Herb_pinyin_name&quot;</span>)<span class="sc">$</span>target</span>
+<span id="cb233-5"><a href="ai-module.html#cb233-5" tabindex="-1"></a>lz_targets <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">unique</span>(<span class="fu">na.omit</span>(lz_targets)), <span class="dv">100</span>)</span>
+<span id="cb233-6"><a href="ai-module.html#cb233-6" tabindex="-1"></a></span>
+<span id="cb233-7"><a href="ai-module.html#cb233-7" tabindex="-1"></a>bp <span class="ot">&lt;-</span> <span class="fu">enrichGO</span>(</span>
+<span id="cb233-8"><a href="ai-module.html#cb233-8" tabindex="-1"></a>  <span class="at">gene    =</span> lz_targets,</span>
+<span id="cb233-9"><a href="ai-module.html#cb233-9" tabindex="-1"></a>  <span class="at">ont     =</span> <span class="st">&quot;BP&quot;</span>,</span>
+<span id="cb233-10"><a href="ai-module.html#cb233-10" tabindex="-1"></a>  <span class="at">OrgDb   =</span> org.Hs.eg.db,</span>
+<span id="cb233-11"><a href="ai-module.html#cb233-11" tabindex="-1"></a>  <span class="at">keyType =</span> <span class="st">&quot;SYMBOL&quot;</span>)</span>
+<span id="cb233-12"><a href="ai-module.html#cb233-12" tabindex="-1"></a></span>
+<span id="cb233-13"><a href="ai-module.html#cb233-13" tabindex="-1"></a><span class="fu">tcm_interpret</span>(</span>
+<span id="cb233-14"><a href="ai-module.html#cb233-14" tabindex="-1"></a>  bp,</span>
+<span id="cb233-15"><a href="ai-module.html#cb233-15" tabindex="-1"></a>  <span class="at">prompt   =</span> <span class="st">&quot;Summarise the main biological implications of this Lingzhi GO enrichment.&quot;</span>,</span>
+<span id="cb233-16"><a href="ai-module.html#cb233-16" tabindex="-1"></a>  <span class="at">language =</span> <span class="st">&quot;en&quot;</span>)</span></code></pre></div>
+<pre><code>=== TCM AI Analysis: enrichment ===
+  Model: openai:gpt-4o | Language: en | Audience: researcher
+
+-- Summary --
+The enrichment profile indicates that Lingzhi&#39;s putative targets cluster in innate
+immune and inflammatory signaling, particularly TLR/IL-1/TNF-NF-κB pathways,
+leukocyte adhesion, and matrix remodeling...
+
+-- Key Findings --
+  * Strong enrichment for cellular response to stress and external stimuli
+  * Activation of innate immune and inflammatory pathways (IRAK1, NFKBIA, TNF, ADAM17)
+  * Leukocyte adhesion and endothelial activation (VCAM1, MMP9)
+  ...</code></pre>
+</div>
+<div id="interpreting-ppi-objects" class="section level3 hasAnchor" number="9.2.3">
+<h3><span class="header-section-number">9.2.3</span> Interpreting PPI objects<a href="ai-module.html#interpreting-ppi-objects" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>PPI network objects with topological metrics computed by <code>compute_nodeinfo()</code> can also be directly interpreted:</p>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="ai-module.html#cb235-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;demo_ppi&quot;</span>)</span>
+<span id="cb235-2"><a href="ai-module.html#cb235-2" tabindex="-1"></a>ppi_graph <span class="ot">&lt;-</span> <span class="fu">compute_nodeinfo</span>(demo_ppi)</span>
+<span id="cb235-3"><a href="ai-module.html#cb235-3" tabindex="-1"></a></span>
+<span id="cb235-4"><a href="ai-module.html#cb235-4" tabindex="-1"></a><span class="fu">tcm_interpret</span>(</span>
+<span id="cb235-5"><a href="ai-module.html#cb235-5" tabindex="-1"></a>  ppi_graph,</span>
+<span id="cb235-6"><a href="ai-module.html#cb235-6" tabindex="-1"></a>  <span class="at">prompt   =</span> <span class="st">&quot;Characterise the network architecture and identify the most important hub nodes.&quot;</span>,</span>
+<span id="cb235-7"><a href="ai-module.html#cb235-7" tabindex="-1"></a>  <span class="at">language =</span> <span class="st">&quot;en&quot;</span>)</span></code></pre></div>
+</div>
+<div id="drafting-result-paragraphs" class="section level3 hasAnchor" number="9.2.4">
+<h3><span class="header-section-number">9.2.4</span> Drafting result paragraphs<a href="ai-module.html#drafting-result-paragraphs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>draft_result_paragraph()</code> transforms an interpretation object into a publication-ready paragraph:</p>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="ai-module.html#cb236-1" tabindex="-1"></a>ai_res <span class="ot">&lt;-</span> <span class="fu">tcm_interpret</span>(bp, <span class="at">language =</span> <span class="st">&quot;en&quot;</span>)</span>
+<span id="cb236-2"><a href="ai-module.html#cb236-2" tabindex="-1"></a>draft  <span class="ot">&lt;-</span> <span class="fu">draft_result_paragraph</span>(ai_res, <span class="at">language =</span> <span class="st">&quot;en&quot;</span>)</span>
+<span id="cb236-3"><a href="ai-module.html#cb236-3" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">as.character</span>(draft))</span></code></pre></div>
+</div>
+<div id="custom-structured-output" class="section level3 hasAnchor" number="9.2.5">
+<h3><span class="header-section-number">9.2.5</span> Custom structured output<a href="ai-module.html#custom-structured-output" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>tcm_interpret_schema()</code> allows user-defined output schemas for integration into downstream pipelines:</p>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="ai-module.html#cb237-1" tabindex="-1"></a>my_schema <span class="ot">&lt;-</span> <span class="fu">tcm_schema</span>(</span>
+<span id="cb237-2"><a href="ai-module.html#cb237-2" tabindex="-1"></a>  <span class="at">summary     =</span> <span class="fu">tcm_field_string</span>(<span class="st">&quot;A concise 2-3 sentence summary&quot;</span>),</span>
+<span id="cb237-3"><a href="ai-module.html#cb237-3" tabindex="-1"></a>  <span class="at">mechanism   =</span> <span class="fu">tcm_field_string</span>(<span class="st">&quot;Core mechanistic interpretation&quot;</span>),</span>
+<span id="cb237-4"><a href="ai-module.html#cb237-4" tabindex="-1"></a>  <span class="at">key_targets =</span> <span class="fu">tcm_field_array</span>(<span class="st">&quot;Most important targets&quot;</span>),</span>
+<span id="cb237-5"><a href="ai-module.html#cb237-5" tabindex="-1"></a>  <span class="at">confidence  =</span> <span class="fu">tcm_field_enum</span>(<span class="fu">c</span>(<span class="st">&quot;high&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;low&quot;</span>),</span>
+<span id="cb237-6"><a href="ai-module.html#cb237-6" tabindex="-1"></a>                               <span class="st">&quot;Confidence level&quot;</span>)</span>
+<span id="cb237-7"><a href="ai-module.html#cb237-7" tabindex="-1"></a>)</span>
+<span id="cb237-8"><a href="ai-module.html#cb237-8" tabindex="-1"></a></span>
+<span id="cb237-9"><a href="ai-module.html#cb237-9" tabindex="-1"></a>custom_res <span class="ot">&lt;-</span> <span class="fu">tcm_interpret_schema</span>(</span>
+<span id="cb237-10"><a href="ai-module.html#cb237-10" tabindex="-1"></a>  bp,</span>
+<span id="cb237-11"><a href="ai-module.html#cb237-11" tabindex="-1"></a>  <span class="at">schema =</span> my_schema,</span>
+<span id="cb237-12"><a href="ai-module.html#cb237-12" tabindex="-1"></a>  <span class="at">type   =</span> <span class="st">&quot;enrichment&quot;</span>,</span>
+<span id="cb237-13"><a href="ai-module.html#cb237-13" tabindex="-1"></a>  <span class="at">prompt =</span> <span class="st">&quot;Focus on inflammation-related processes.&quot;</span>)</span>
+<span id="cb237-14"><a href="ai-module.html#cb237-14" tabindex="-1"></a></span>
+<span id="cb237-15"><a href="ai-module.html#cb237-15" tabindex="-1"></a><span class="fu">print</span>(custom_res)</span></code></pre></div>
+<p>Available field types: <code>tcm_field_string()</code>, <code>tcm_field_number()</code>, <code>tcm_field_boolean()</code>, <code>tcm_field_array()</code>, <code>tcm_field_enum()</code>.</p>
+</div>
+</div>
+<div id="agent-layer" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> Agent layer<a href="ai-module.html#agent-layer" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The agent layer adds <strong>tool use</strong> and <strong>multi-turn conversation</strong> on top of the interpretation engine. TCMDATA provides 30+ analysis tools (target search, enrichment, PPI, ML screening, compound lookup, visualization, etc.) that the agent can call autonomously.</p>
+<div id="one-shot-task-tcm_agent" class="section level3 hasAnchor" number="9.3.1">
+<h3><span class="header-section-number">9.3.1</span> One-shot task: <code>tcm_agent()</code><a href="ai-module.html#one-shot-task-tcm_agent" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For a single analysis request, <code>tcm_agent()</code> automatically routes the query to the appropriate tools and returns the result:</p>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="ai-module.html#cb238-1" tabindex="-1"></a><span class="co"># Simple herb target lookup — agent selects the right tool automatically</span></span>
+<span id="cb238-2"><a href="ai-module.html#cb238-2" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">tcm_agent</span>(<span class="st">&quot;Search the targets of Huangqi (Astragalus)&quot;</span>)</span>
+<span id="cb238-3"><a href="ai-module.html#cb238-3" tabindex="-1"></a><span class="fu">cat</span>(result<span class="sc">$</span>text)</span>
+<span id="cb238-4"><a href="ai-module.html#cb238-4" tabindex="-1"></a></span>
+<span id="cb238-5"><a href="ai-module.html#cb238-5" tabindex="-1"></a><span class="co"># The result also contains any generated artifacts</span></span>
+<span id="cb238-6"><a href="ai-module.html#cb238-6" tabindex="-1"></a>result<span class="sc">$</span>artifacts</span></code></pre></div>
+<p>The built-in <strong>router</strong> matches user queries to relevant tools using keyword patterns. For example, “enrichment” routes to GO/KEGG tools, “ppi” routes to network tools, and “machine learning” routes to ML screening tools. When multiple patterns match, tools are merged.</p>
+</div>
+<div id="interactive-session-tcm_chat" class="section level3 hasAnchor" number="9.3.2">
+<h3><span class="header-section-number">9.3.2</span> Interactive session: <code>tcm_chat()</code><a href="ai-module.html#interactive-session-tcm_chat" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>tcm_chat()</code> opens an interactive REPL for multi-turn exploratory analysis:</p>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="ai-module.html#cb239-1" tabindex="-1"></a><span class="fu">tcm_chat</span>()</span></code></pre></div>
+<pre><code>╔══════════════════════════════════════════════════╗
+║  TCM-Pharmacist · Interactive Session            ║
+║  Type /help for commands · /quit to exit         ║
+╚══════════════════════════════════════════════════╝
+
+[1] You &gt; Search targets of Huangqi and sepsis, then compute intersection
+ ✓ Route: target_lookup + disease_lookup (high)
+ ✓ Tools called: search_herb_records → search_disease_targets → compute_target_intersection
+ ✓ New artifacts: intersect_001
+
+ Agent &gt; Found 121 intersection targets between Huangqi and sepsis...
+
+[2] You &gt; Run GO and KEGG enrichment on the intersection
+ ✓ Route: enrichment (high)
+ ✓ Tools called: run_go_enrichment → run_kegg_enrichment
+ ✓ New artifacts: enrich_001, enrich_002
+
+ Agent &gt; GO enrichment identified 245 significant BP terms...
+
+[3] You &gt; /artifacts
+  intersect_001  gene_list    character[121]  2026-04-10 14:32:01
+  enrich_001     enrichment   enrichResult    2026-04-10 14:32:15
+  enrich_002     enrichment   enrichResult    2026-04-10 14:32:16
+
+[4] You &gt; /save 10x8
+  ✓ Exported 3 artifacts to tcm_output/
+
+[5] You &gt; /quit</code></pre>
+<p>Key commands: <code>/help</code>, <code>/artifacts</code>, <code>/save [WxH]</code>, <code>/history</code>, <code>/stats</code>, <code>/quit</code>.</p>
+<p>The session returns a list with <code>history</code> and <code>artifacts</code> for programmatic access:</p>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="ai-module.html#cb241-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">tcm_chat</span>()</span>
+<span id="cb241-2"><a href="ai-module.html#cb241-2" tabindex="-1"></a><span class="co"># After /quit:</span></span>
+<span id="cb241-3"><a href="ai-module.html#cb241-3" tabindex="-1"></a>res<span class="sc">$</span>artifacts  <span class="co"># all generated artifacts</span></span>
+<span id="cb241-4"><a href="ai-module.html#cb241-4" tabindex="-1"></a>res<span class="sc">$</span>history    <span class="co"># full conversation history</span></span></code></pre></div>
+</div>
+<div id="programmatic-agent-create_tcm_task_agent" class="section level3 hasAnchor" number="9.3.3">
+<h3><span class="header-section-number">9.3.3</span> Programmatic agent: <code>create_tcm_task_agent()</code><a href="ai-module.html#programmatic-agent-create_tcm_task_agent" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For scripted workflows, create a reusable agent and execute tasks programmatically:</p>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="ai-module.html#cb242-1" tabindex="-1"></a>agent <span class="ot">&lt;-</span> <span class="fu">create_tcm_task_agent</span>()</span>
+<span id="cb242-2"><a href="ai-module.html#cb242-2" tabindex="-1"></a></span>
+<span id="cb242-3"><a href="ai-module.html#cb242-3" tabindex="-1"></a>r1 <span class="ot">&lt;-</span> <span class="fu">run_tcm_task</span>(agent, <span class="st">&quot;Search Huangqi targets and sepsis targets, compute intersection&quot;</span>)</span>
+<span id="cb242-4"><a href="ai-module.html#cb242-4" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">run_tcm_task</span>(agent, <span class="st">&quot;Run GO enrichment on the intersection genes&quot;</span>)</span>
+<span id="cb242-5"><a href="ai-module.html#cb242-5" tabindex="-1"></a>r3 <span class="ot">&lt;-</span> <span class="fu">run_tcm_task</span>(agent, <span class="st">&quot;Build PPI network and rank hub genes&quot;</span>)</span>
+<span id="cb242-6"><a href="ai-module.html#cb242-6" tabindex="-1"></a></span>
+<span id="cb242-7"><a href="ai-module.html#cb242-7" tabindex="-1"></a><span class="co"># Each result contains: $text, $artifacts, $tool_calls</span></span>
+<span id="cb242-8"><a href="ai-module.html#cb242-8" tabindex="-1"></a>r3<span class="sc">$</span>text</span></code></pre></div>
+</div>
+<div id="artifact-management" class="section level3 hasAnchor" number="9.3.4">
+<h3><span class="header-section-number">9.3.4</span> Artifact management<a href="ai-module.html#artifact-management" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>All analysis results are automatically stored as <strong>artifacts</strong> with generated IDs (e.g., <code>enrich_001</code>, <code>ppi_002</code>). The agent can reference artifacts in subsequent turns, and artifacts can be managed via dedicated functions:</p>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="ai-module.html#cb243-1" tabindex="-1"></a><span class="fu">list_tcm_artifacts</span>()     <span class="co"># list all artifacts</span></span>
+<span id="cb243-2"><a href="ai-module.html#cb243-2" tabindex="-1"></a><span class="fu">load_tcm_artifact</span>(<span class="st">&quot;enrich_001&quot;</span>)  <span class="co"># retrieve the R object</span></span>
+<span id="cb243-3"><a href="ai-module.html#cb243-3" tabindex="-1"></a><span class="fu">clear_tcm_artifacts</span>()    <span class="co"># clear all</span></span></code></pre></div>
+</div>
+</div>
+<div id="skill-layer" class="section level2 hasAnchor" number="9.4">
+<h2><span class="header-section-number">9.4</span> Skill layer<a href="ai-module.html#skill-layer" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Skills are domain-knowledge packages that guide the agent through complex multi-step workflows. Unlike tools (which perform specific operations), skills provide <strong>strategic context</strong> — what to do, in what order, and what to watch out for.</p>
+<div id="built-in-skills" class="section level3 hasAnchor" number="9.4.1">
+<h3><span class="header-section-number">9.4.1</span> Built-in skills<a href="ai-module.html#built-in-skills" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>TCMDATA ships with two package skills, and also loads aisdk’s <code>skill-creator</code> by default:</p>
+<table>
+<colgroup>
+<col width="43%" />
+<col width="56%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Skill</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tcm-network-pharmacology</code></td>
+<td>Guides the full network pharmacology workflow (target retrieval → intersection → PPI → enrichment → validation → report). Only activates when user explicitly requests systematic analysis</td>
+</tr>
+<tr class="even">
+<td><code>analysis-preferences</code></td>
+<td>Background constraint layer. Sets default parameters (e.g., p-value cutoffs, PPI score thresholds, visualization defaults) and quality standards. Active on every turn</td>
+</tr>
+<tr class="odd">
+<td><code>skill-creator</code></td>
+<td>Meta-skill from aisdk for creating new custom skills</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="how-skills-work" class="section level3 hasAnchor" number="9.4.2">
+<h3><span class="header-section-number">9.4.2</span> How skills work<a href="ai-module.html#how-skills-work" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>When the agent detects a request that matches a skill’s trigger condition, the skill’s instructions are injected into the conversation context. For example, asking “Help me do a network pharmacology analysis of Huangqi treating sepsis” activates the <code>tcm-network-pharmacology</code> skill, which guides the agent through:</p>
+<ul>
+<li><strong>Phase 1</strong>: Target collection (herb targets + disease targets → intersection)</li>
+<li><strong>Phase 2</strong>: Network &amp; enrichment (PPI construction, GO/KEGG analysis, hub gene ranking)</li>
+<li><strong>Phase 3</strong>: Expression validation (WGCNA, ML screening, DEG integration — if data available)</li>
+<li><strong>Phase 4</strong>: Single-cell validation (if scRNA-seq data available)</li>
+<li><strong>Phase 5</strong>: Literature validation, cross-database verification, and report generation</li>
+</ul>
+<p>Importantly, the skill is scope-aware: asking “Just search the targets of Huangqi” will only run the relevant step, not the full pipeline.</p>
+</div>
+<div id="creating-custom-skills" class="section level3 hasAnchor" number="9.4.3">
+<h3><span class="header-section-number">9.4.3</span> Creating custom skills<a href="ai-module.html#creating-custom-skills" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Use the <code>skill-creator</code> skill to define new skills. A minimal skill only needs a <code>SKILL.md</code> file with YAML frontmatter:</p>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="ai-module.html#cb244-1" tabindex="-1"></a><span class="co"># Example: ask the agent to create a new skill</span></span>
+<span id="cb244-2"><a href="ai-module.html#cb244-2" tabindex="-1"></a><span class="fu">tcm_chat</span>()</span>
+<span id="cb244-3"><a href="ai-module.html#cb244-3" tabindex="-1"></a><span class="co"># &gt; Help me create a skill for molecular docking analysis</span></span></code></pre></div>
+<p>A skill directory can optionally contain <code>references/</code> (detailed documentation), <code>scripts/</code> (executable scripts), and <code>assets/</code> (templates).</p>
+</div>
+<div id="managing-skills" class="section level3 hasAnchor" number="9.4.4">
+<h3><span class="header-section-number">9.4.4</span> Managing skills<a href="ai-module.html#managing-skills" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>By default, the agent uses the TCMDATA skill directory plus aisdk’s <code>skill-creator</code>. To customize preferences or add new skills, initialize a local skills directory:</p>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="ai-module.html#cb245-1" tabindex="-1"></a><span class="co"># Copy all bundled skills to ./tcm_skills/ for customization</span></span>
+<span id="cb245-2"><a href="ai-module.html#cb245-2" tabindex="-1"></a><span class="fu">tcm_init_skills</span>()</span></code></pre></div>
+<p>This creates a local <code>tcm_skills/</code> directory containing the TCMDATA package skills. You can then:</p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="ai-module.html#cb246-1" tabindex="-1"></a><span class="co"># Edit analysis preferences (e.g., change default p-value cutoff)</span></span>
+<span id="cb246-2"><a href="ai-module.html#cb246-2" tabindex="-1"></a><span class="fu">file.edit</span>(<span class="st">&quot;tcm_skills/analysis-preferences/SKILL.md&quot;</span>)</span>
+<span id="cb246-3"><a href="ai-module.html#cb246-3" tabindex="-1"></a></span>
+<span id="cb246-4"><a href="ai-module.html#cb246-4" tabindex="-1"></a><span class="co"># Add a new skill created by skill-creator</span></span>
+<span id="cb246-5"><a href="ai-module.html#cb246-5" tabindex="-1"></a><span class="co"># Just place the skill directory under tcm_skills/:</span></span>
+<span id="cb246-6"><a href="ai-module.html#cb246-6" tabindex="-1"></a><span class="co">#   tcm_skills/my-new-skill/SKILL.md</span></span>
+<span id="cb246-7"><a href="ai-module.html#cb246-7" tabindex="-1"></a></span>
+<span id="cb246-8"><a href="ai-module.html#cb246-8" tabindex="-1"></a><span class="co"># Check which skills directory is currently active</span></span>
+<span id="cb246-9"><a href="ai-module.html#cb246-9" tabindex="-1"></a><span class="fu">tcm_skill_dir</span>()</span>
+<span id="cb246-10"><a href="ai-module.html#cb246-10" tabindex="-1"></a></span>
+<span id="cb246-11"><a href="ai-module.html#cb246-11" tabindex="-1"></a><span class="co"># Switch to a different skills directory</span></span>
+<span id="cb246-12"><a href="ai-module.html#cb246-12" tabindex="-1"></a><span class="fu">tcm_use_skills</span>(<span class="st">&quot;path/to/other/skills&quot;</span>)</span>
+<span id="cb246-13"><a href="ai-module.html#cb246-13" tabindex="-1"></a></span>
+<span id="cb246-14"><a href="ai-module.html#cb246-14" tabindex="-1"></a><span class="co"># Reset to package defaults</span></span>
+<span id="cb246-15"><a href="ai-module.html#cb246-15" tabindex="-1"></a><span class="fu">tcm_reset_skills</span>()</span></code></pre></div>
+<p>Once a local skills directory is active, all agent functions (<code>tcm_agent()</code>, <code>tcm_chat()</code>, <code>create_tcm_task_agent()</code>) will automatically use it.</p>
+</div>
+</div>
+<div id="session-information-7" class="section level2 hasAnchor" number="9.5">
+<h2><span class="header-section-number">9.5</span> Session information<a href="ai-module.html#session-information-7" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="ai-module.html#cb247-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb247-2"><a href="ai-module.html#cb247-2" tabindex="-1"></a><span class="co">#&gt; R version 4.6.0 (2026-04-24)</span></span>
+<span id="cb247-3"><a href="ai-module.html#cb247-3" tabindex="-1"></a><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
+<span id="cb247-4"><a href="ai-module.html#cb247-4" tabindex="-1"></a><span class="co">#&gt; Running under: Ubuntu 24.04.4 LTS</span></span>
+<span id="cb247-5"><a href="ai-module.html#cb247-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb247-6"><a href="ai-module.html#cb247-6" tabindex="-1"></a><span class="co">#&gt; Matrix products: default</span></span>
+<span id="cb247-7"><a href="ai-module.html#cb247-7" tabindex="-1"></a><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span id="cb247-8"><a href="ai-module.html#cb247-8" tabindex="-1"></a><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0</span></span>
+<span id="cb247-9"><a href="ai-module.html#cb247-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb247-10"><a href="ai-module.html#cb247-10" tabindex="-1"></a><span class="co">#&gt; locale:</span></span>
+<span id="cb247-11"><a href="ai-module.html#cb247-11" tabindex="-1"></a><span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
+<span id="cb247-12"><a href="ai-module.html#cb247-12" tabindex="-1"></a><span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
+<span id="cb247-13"><a href="ai-module.html#cb247-13" tabindex="-1"></a><span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
+<span id="cb247-14"><a href="ai-module.html#cb247-14" tabindex="-1"></a><span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
+<span id="cb247-15"><a href="ai-module.html#cb247-15" tabindex="-1"></a><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
+<span id="cb247-16"><a href="ai-module.html#cb247-16" tabindex="-1"></a><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
+<span id="cb247-17"><a href="ai-module.html#cb247-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb247-18"><a href="ai-module.html#cb247-18" tabindex="-1"></a><span class="co">#&gt; time zone: UTC</span></span>
+<span id="cb247-19"><a href="ai-module.html#cb247-19" tabindex="-1"></a><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span id="cb247-20"><a href="ai-module.html#cb247-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb247-21"><a href="ai-module.html#cb247-21" tabindex="-1"></a><span class="co">#&gt; attached base packages:</span></span>
+<span id="cb247-22"><a href="ai-module.html#cb247-22" tabindex="-1"></a><span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
+<span id="cb247-23"><a href="ai-module.html#cb247-23" tabindex="-1"></a><span class="co">#&gt; [8] base     </span></span>
+<span id="cb247-24"><a href="ai-module.html#cb247-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb247-25"><a href="ai-module.html#cb247-25" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
+<span id="cb247-26"><a href="ai-module.html#cb247-26" tabindex="-1"></a><span class="co">#&gt;  [1] caret_7.0-1            lattice_0.22-9         org.Hs.eg.db_3.23.1   </span></span>
+<span id="cb247-27"><a href="ai-module.html#cb247-27" tabindex="-1"></a><span class="co">#&gt;  [4] AnnotationDbi_1.74.0   IRanges_2.46.0         S4Vectors_0.50.1      </span></span>
+<span id="cb247-28"><a href="ai-module.html#cb247-28" tabindex="-1"></a><span class="co">#&gt;  [7] Biobase_2.72.0         BiocGenerics_0.58.1    generics_0.1.4        </span></span>
+<span id="cb247-29"><a href="ai-module.html#cb247-29" tabindex="-1"></a><span class="co">#&gt; [10] clusterProfiler_4.20.0 aplot_0.2.9            ggrepel_0.9.8         </span></span>
+<span id="cb247-30"><a href="ai-module.html#cb247-30" tabindex="-1"></a><span class="co">#&gt; [13] ggtangle_0.1.2         igraph_2.3.1           ggplot2_4.0.3         </span></span>
+<span id="cb247-31"><a href="ai-module.html#cb247-31" tabindex="-1"></a><span class="co">#&gt; [16] dplyr_1.2.1            ivolcano_0.0.5         enrichplot_1.32.0     </span></span>
+<span id="cb247-32"><a href="ai-module.html#cb247-32" tabindex="-1"></a><span class="co">#&gt; [19] TCMDATA_0.1.0         </span></span>
+<span id="cb247-33"><a href="ai-module.html#cb247-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb247-34"><a href="ai-module.html#cb247-34" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span id="cb247-35"><a href="ai-module.html#cb247-35" tabindex="-1"></a><span class="co">#&gt;   [1] splines_4.6.0           ggplotify_0.1.3         tibble_3.3.1           </span></span>
+<span id="cb247-36"><a href="ai-module.html#cb247-36" tabindex="-1"></a><span class="co">#&gt;   [4] polyclip_1.10-7         hardhat_1.4.3           enrichit_0.1.4         </span></span>
+<span id="cb247-37"><a href="ai-module.html#cb247-37" tabindex="-1"></a><span class="co">#&gt;   [7] pROC_1.19.0.1           rpart_4.1.27            lifecycle_1.0.5        </span></span>
+<span id="cb247-38"><a href="ai-module.html#cb247-38" tabindex="-1"></a><span class="co">#&gt;  [10] httr2_1.2.2             doParallel_1.0.17       globals_0.19.1         </span></span>
+<span id="cb247-39"><a href="ai-module.html#cb247-39" tabindex="-1"></a><span class="co">#&gt;  [13] processx_3.9.0          MASS_7.3-65             magrittr_2.0.5         </span></span>
+<span id="cb247-40"><a href="ai-module.html#cb247-40" tabindex="-1"></a><span class="co">#&gt;  [16] sass_0.4.10             rmarkdown_2.31          jquerylib_0.1.4        </span></span>
+<span id="cb247-41"><a href="ai-module.html#cb247-41" tabindex="-1"></a><span class="co">#&gt;  [19] yaml_2.3.12             ggvenn_0.1.19           DBI_1.3.0              </span></span>
+<span id="cb247-42"><a href="ai-module.html#cb247-42" tabindex="-1"></a><span class="co">#&gt;  [22] RColorBrewer_1.1-3      lubridate_1.9.5         purrr_1.2.2            </span></span>
+<span id="cb247-43"><a href="ai-module.html#cb247-43" tabindex="-1"></a><span class="co">#&gt;  [25] yulab.utils_0.2.4       nnet_7.3-20             tweenr_2.0.3           </span></span>
+<span id="cb247-44"><a href="ai-module.html#cb247-44" tabindex="-1"></a><span class="co">#&gt;  [28] rappdirs_0.3.4          ipred_0.9-15            aisdk_1.4.8            </span></span>
+<span id="cb247-45"><a href="ai-module.html#cb247-45" tabindex="-1"></a><span class="co">#&gt;  [31] gdtools_0.5.1           circlize_0.4.18         lava_1.9.1             </span></span>
+<span id="cb247-46"><a href="ai-module.html#cb247-46" tabindex="-1"></a><span class="co">#&gt;  [34] listenv_0.10.1          tidytree_0.4.7          fru_0.0.7              </span></span>
+<span id="cb247-47"><a href="ai-module.html#cb247-47" tabindex="-1"></a><span class="co">#&gt;  [37] parallelly_1.47.0       codetools_0.2-20        DOSE_4.6.0             </span></span>
+<span id="cb247-48"><a href="ai-module.html#cb247-48" tabindex="-1"></a><span class="co">#&gt;  [40] ggforce_0.5.0           tidyselect_1.2.1        shape_1.4.6.1          </span></span>
+<span id="cb247-49"><a href="ai-module.html#cb247-49" tabindex="-1"></a><span class="co">#&gt;  [43] farver_2.1.2            matrixStats_1.5.0       Seqinfo_1.2.0          </span></span>
+<span id="cb247-50"><a href="ai-module.html#cb247-50" tabindex="-1"></a><span class="co">#&gt;  [46] jsonlite_2.0.0          GetoptLong_1.1.1        e1071_1.7-17           </span></span>
+<span id="cb247-51"><a href="ai-module.html#cb247-51" tabindex="-1"></a><span class="co">#&gt;  [49] ggridges_0.5.7          ggalluvial_0.12.6       survival_3.8-6         </span></span>
+<span id="cb247-52"><a href="ai-module.html#cb247-52" tabindex="-1"></a><span class="co">#&gt;  [52] iterators_1.0.14        systemfonts_1.3.2       foreach_1.5.2          </span></span>
+<span id="cb247-53"><a href="ai-module.html#cb247-53" tabindex="-1"></a><span class="co">#&gt;  [55] tools_4.6.0             ggnewscale_0.5.2        treeio_1.36.1          </span></span>
+<span id="cb247-54"><a href="ai-module.html#cb247-54" tabindex="-1"></a><span class="co">#&gt;  [58] Rcpp_1.1.1-1.1          glue_1.8.1              prodlim_2026.03.11     </span></span>
+<span id="cb247-55"><a href="ai-module.html#cb247-55" tabindex="-1"></a><span class="co">#&gt;  [61] gridExtra_2.3           xfun_0.57               qvalue_2.44.0          </span></span>
+<span id="cb247-56"><a href="ai-module.html#cb247-56" tabindex="-1"></a><span class="co">#&gt;  [64] withr_3.0.2             fastmap_1.2.0           callr_3.7.6            </span></span>
+<span id="cb247-57"><a href="ai-module.html#cb247-57" tabindex="-1"></a><span class="co">#&gt;  [67] digest_0.6.39           timechange_0.4.0        R6_2.6.1               </span></span>
+<span id="cb247-58"><a href="ai-module.html#cb247-58" tabindex="-1"></a><span class="co">#&gt;  [70] gridGraphics_0.5-1      colorspace_2.1-2        GO.db_3.23.1           </span></span>
+<span id="cb247-59"><a href="ai-module.html#cb247-59" tabindex="-1"></a><span class="co">#&gt;  [73] RSQLite_3.53.1          tidyr_1.3.2             fontLiberation_0.1.0   </span></span>
+<span id="cb247-60"><a href="ai-module.html#cb247-60" tabindex="-1"></a><span class="co">#&gt;  [76] data.table_1.18.4       recipes_1.3.2           class_7.3-23           </span></span>
+<span id="cb247-61"><a href="ai-module.html#cb247-61" tabindex="-1"></a><span class="co">#&gt;  [79] httr_1.4.8              htmlwidgets_1.6.4       scatterpie_0.2.6       </span></span>
+<span id="cb247-62"><a href="ai-module.html#cb247-62" tabindex="-1"></a><span class="co">#&gt;  [82] ModelMetrics_1.2.2.2    pkgconfig_2.0.3         gtable_0.3.6           </span></span>
+<span id="cb247-63"><a href="ai-module.html#cb247-63" tabindex="-1"></a><span class="co">#&gt;  [85] timeDate_4052.112       blob_1.3.0              ComplexHeatmap_2.28.0  </span></span>
+<span id="cb247-64"><a href="ai-module.html#cb247-64" tabindex="-1"></a><span class="co">#&gt;  [88] S7_0.2.2                XVector_0.52.0          htmltools_0.5.9        </span></span>
+<span id="cb247-65"><a href="ai-module.html#cb247-65" tabindex="-1"></a><span class="co">#&gt;  [91] fontBitstreamVera_0.1.1 bookdown_0.46           clue_0.3-68            </span></span>
+<span id="cb247-66"><a href="ai-module.html#cb247-66" tabindex="-1"></a><span class="co">#&gt;  [94] scales_1.4.0            png_0.1-9               gower_1.0.2            </span></span>
+<span id="cb247-67"><a href="ai-module.html#cb247-67" tabindex="-1"></a><span class="co">#&gt;  [97] Boruta_10.0.0           ggfun_0.2.0             knitr_1.51             </span></span>
+<span id="cb247-68"><a href="ai-module.html#cb247-68" tabindex="-1"></a><span class="co">#&gt; [100] rstudioapi_0.18.0       reshape2_1.4.5          rjson_0.2.23           </span></span>
+<span id="cb247-69"><a href="ai-module.html#cb247-69" tabindex="-1"></a><span class="co">#&gt; [103] nlme_3.1-169            proxy_0.4-29            cachem_1.1.0           </span></span>
+<span id="cb247-70"><a href="ai-module.html#cb247-70" tabindex="-1"></a><span class="co">#&gt; [106] GlobalOptions_0.1.4     stringr_1.6.0           parallel_4.6.0         </span></span>
+<span id="cb247-71"><a href="ai-module.html#cb247-71" tabindex="-1"></a><span class="co">#&gt; [109] pillar_1.11.1           grid_4.6.0              vctrs_0.7.3            </span></span>
+<span id="cb247-72"><a href="ai-module.html#cb247-72" tabindex="-1"></a><span class="co">#&gt; [112] randomForest_4.7-1.2    tidydr_0.0.6            cluster_2.1.8.2        </span></span>
+<span id="cb247-73"><a href="ai-module.html#cb247-73" tabindex="-1"></a><span class="co">#&gt; [115] evaluate_1.0.5          cli_3.6.6               compiler_4.6.0         </span></span>
+<span id="cb247-74"><a href="ai-module.html#cb247-74" tabindex="-1"></a><span class="co">#&gt; [118] rlang_1.2.0             crayon_1.5.3            future.apply_1.20.2    </span></span>
+<span id="cb247-75"><a href="ai-module.html#cb247-75" tabindex="-1"></a><span class="co">#&gt; [121] labeling_0.4.3          ps_1.9.3                plyr_1.8.9             </span></span>
+<span id="cb247-76"><a href="ai-module.html#cb247-76" tabindex="-1"></a><span class="co">#&gt; [124] fs_2.1.0                ggiraph_0.9.6           stringi_1.8.7          </span></span>
+<span id="cb247-77"><a href="ai-module.html#cb247-77" tabindex="-1"></a><span class="co">#&gt; [127] viridisLite_0.4.3       Biostrings_2.80.1       lazyeval_0.2.3         </span></span>
+<span id="cb247-78"><a href="ai-module.html#cb247-78" tabindex="-1"></a><span class="co">#&gt; [130] glmnet_5.0              GOSemSim_2.38.0         fontquiver_0.2.1       </span></span>
+<span id="cb247-79"><a href="ai-module.html#cb247-79" tabindex="-1"></a><span class="co">#&gt; [133] Matrix_1.7-5            patchwork_1.3.2         bit64_4.8.2            </span></span>
+<span id="cb247-80"><a href="ai-module.html#cb247-80" tabindex="-1"></a><span class="co">#&gt; [136] future_1.70.0           KEGGREST_1.52.0         kernlab_0.9-33         </span></span>
+<span id="cb247-81"><a href="ai-module.html#cb247-81" tabindex="-1"></a><span class="co">#&gt; [139] memoise_2.0.1           bslib_0.11.0            ggtree_4.2.0           </span></span>
+<span id="cb247-82"><a href="ai-module.html#cb247-82" tabindex="-1"></a><span class="co">#&gt; [142] bit_4.6.0               xgboost_3.2.1.1         ape_5.8-1              </span></span>
+<span id="cb247-83"><a href="ai-module.html#cb247-83" tabindex="-1"></a><span class="co">#&gt; [145] gson_0.1.0</span></span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ml-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="other-resources.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": true,
+    "facebook": false,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

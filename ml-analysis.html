@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Machine learning–based key target screening | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</title>
+  <meta name="description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Machine learning–based key target screening | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  <meta name="github-repo" content="YuLab-SMU/TCMDATA" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Machine learning–based key target screening | TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization" />
+  
+  <meta name="twitter:description" content="TCMDATA user guide. Covers installation, core features, and common workflows." />
+  
+
+<meta name="author" content="Nan He, Guangchuang Yu, Shuangbin Xu Department of Bioinformatics, School of Basic Medical Sciences, Southern Medical University" />
+
+
+<meta name="date" content="2026-05-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ppi-analysis.html"/>
+<link rel="next" href="ai-module.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/ggiraphjs-0.9.4/girafe.css" rel="stylesheet" />
+<script src="libs/ggiraphjs-0.9.4/girafe.js"></script>
+<script src="libs/girafe-binding-0.9.6/girafe.js"></script>
+<link href="libs/liberation-sans-0.5.1/css/liberation-sans.css" rel="stylesheet" />
+<link href="libs/liberation-serif-0.5.1/css/liberation-serif.css" rel="stylesheet" />
+<link href="libs/liberation-mono-0.5.1/css/liberation-mono.css" rel="stylesheet" />
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">TCMDATA User Guide</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i>Installation</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="load-data.html"><a href="load-data.html"><i class="fa fa-check"></i><b>1</b> Load TCM Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="load-data.html"><a href="load-data.html#search-by-herb-name"><i class="fa fa-check"></i><b>1.1</b> Search by herb name</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="load-data.html"><a href="load-data.html#using-pinyin-format"><i class="fa fa-check"></i><b>1.1.1</b> Using Pinyin format</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="load-data.html"><a href="load-data.html#search-by-target-gene"><i class="fa fa-check"></i><b>1.2</b> Search by target gene</a></li>
+<li class="chapter" data-level="1.3" data-path="load-data.html"><a href="load-data.html#session-information"><i class="fa fa-check"></i><b>1.3</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="pre-analysis.html"><a href="pre-analysis.html"><i class="fa fa-check"></i><b>2</b> Pre-analysis</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#pubmed-literature-mining"><i class="fa fa-check"></i><b>2.1</b> PubMed literature mining</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="pre-analysis.html"><a href="pre-analysis.html#visualization"><i class="fa fa-check"></i><b>2.1.1</b> Visualization</a></li>
+<li class="chapter" data-level="2.1.2" data-path="pre-analysis.html"><a href="pre-analysis.html#exporting-results"><i class="fa fa-check"></i><b>2.1.2</b> Exporting results</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="pre-analysis.html"><a href="pre-analysis.html#herb-ora"><i class="fa fa-check"></i><b>2.2</b> Herb enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="pre-analysis.html"><a href="pre-analysis.html#example-diabetic-nephropathy"><i class="fa fa-check"></i><b>2.2.1</b> Example: Diabetic Nephropathy</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="pre-analysis.html"><a href="pre-analysis.html#references"><i class="fa fa-check"></i><b>2.3</b> References</a></li>
+<li class="chapter" data-level="2.4" data-path="pre-analysis.html"><a href="pre-analysis.html#session-information-1"><i class="fa fa-check"></i><b>2.4</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="molecule-detection.html"><a href="molecule-detection.html"><i class="fa fa-check"></i><b>3</b> Molecule annotation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="molecule-detection.html"><a href="molecule-detection.html#resolving-compound-identifiers"><i class="fa fa-check"></i><b>3.1</b> Resolving compound identifiers</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="molecule-detection.html"><a href="molecule-detection.html#using-resolve_cid"><i class="fa fa-check"></i><b>3.1.1</b> Using <code>resolve_cid()</code></a></li>
+<li class="chapter" data-level="3.1.2" data-path="molecule-detection.html"><a href="molecule-detection.html#using-getcid"><i class="fa fa-check"></i><b>3.1.2</b> Using <code>getcid()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="molecule-detection.html"><a href="molecule-detection.html#retrieving-chemical-properties"><i class="fa fa-check"></i><b>3.2</b> Retrieving chemical properties</a></li>
+<li class="chapter" data-level="3.3" data-path="molecule-detection.html"><a href="molecule-detection.html#similarity-searching"><i class="fa fa-check"></i><b>3.3</b> Similarity searching</a></li>
+<li class="chapter" data-level="3.4" data-path="molecule-detection.html"><a href="molecule-detection.html#download-molecular-structures-and-format-conversion"><i class="fa fa-check"></i><b>3.4</b> Download molecular structures and format conversion</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="molecule-detection.html"><a href="molecule-detection.html#downloading-ligand-structures-from-pubchem"><i class="fa fa-check"></i><b>3.4.1</b> Downloading ligand structures from PubChem</a></li>
+<li class="chapter" data-level="3.4.2" data-path="molecule-detection.html"><a href="molecule-detection.html#downloading-receptor-structures-from-the-rcsb-pdb"><i class="fa fa-check"></i><b>3.4.2</b> Downloading receptor structures from the RCSB PDB</a></li>
+<li class="chapter" data-level="3.4.3" data-path="molecule-detection.html"><a href="molecule-detection.html#converting-structure-file-formats"><i class="fa fa-check"></i><b>3.4.3</b> Converting structure file formats</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="molecule-detection.html"><a href="molecule-detection.html#references-1"><i class="fa fa-check"></i><b>3.5</b> References</a></li>
+<li class="chapter" data-level="3.6" data-path="molecule-detection.html"><a href="molecule-detection.html#session-information-2"><i class="fa fa-check"></i><b>3.6</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="target-retrieval.html"><a href="target-retrieval.html"><i class="fa fa-check"></i><b>4</b> Target retrieval and DEG analysis</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="target-retrieval.html"><a href="target-retrieval.html#disease-target-tcmdata"><i class="fa fa-check"></i><b>4.1</b> Programmatic disease target retrieval with TCMDATA</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="target-retrieval.html"><a href="target-retrieval.html#search_disease-disease-genes"><i class="fa fa-check"></i><b>4.1.1</b> <code>search_disease()</code>: disease → genes</a></li>
+<li class="chapter" data-level="4.1.2" data-path="target-retrieval.html"><a href="target-retrieval.html#search_gene_disease-gene-diseases"><i class="fa fa-check"></i><b>4.1.2</b> <code>search_gene_disease()</code>: gene → diseases</a></li>
+<li class="chapter" data-level="4.1.3" data-path="target-retrieval.html"><a href="target-retrieval.html#open-targets-api-disease-scored-targets"><i class="fa fa-check"></i><b>4.1.3</b> Open Targets API: disease → scored targets</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="target-retrieval.html"><a href="target-retrieval.html#disease-db"><i class="fa fa-check"></i><b>4.2</b> Disease target databases</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="target-retrieval.html"><a href="target-retrieval.html#genecards"><i class="fa fa-check"></i><b>4.2.1</b> GeneCards</a></li>
+<li class="chapter" data-level="4.2.2" data-path="target-retrieval.html"><a href="target-retrieval.html#open-targets-platform"><i class="fa fa-check"></i><b>4.2.2</b> Open Targets Platform</a></li>
+<li class="chapter" data-level="4.2.3" data-path="target-retrieval.html"><a href="target-retrieval.html#ctd-comparative-toxicogenomics-database"><i class="fa fa-check"></i><b>4.2.3</b> CTD (Comparative Toxicogenomics Database)</a></li>
+<li class="chapter" data-level="4.2.4" data-path="target-retrieval.html"><a href="target-retrieval.html#other-databases"><i class="fa fa-check"></i><b>4.2.4</b> Other databases</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="target-retrieval.html"><a href="target-retrieval.html#compound-target"><i class="fa fa-check"></i><b>4.3</b> Compound target prediction</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="target-retrieval.html"><a href="target-retrieval.html#compound-target-swisstarget"><i class="fa fa-check"></i><b>4.3.1</b> SwissTargetPrediction</a></li>
+<li class="chapter" data-level="4.3.2" data-path="target-retrieval.html"><a href="target-retrieval.html#similarity-ensemble-approach-sea"><i class="fa fa-check"></i><b>4.3.2</b> Similarity Ensemble Approach (SEA)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano"><i class="fa fa-check"></i><b>4.4</b> DEG visualization</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="target-retrieval.html"><a href="target-retrieval.html#load-and-inspect-data"><i class="fa fa-check"></i><b>4.4.1</b> Load and inspect data</a></li>
+<li class="chapter" data-level="4.4.2" data-path="target-retrieval.html"><a href="target-retrieval.html#volcano-plot-with-ivolcano"><i class="fa fa-check"></i><b>4.4.2</b> Volcano plot with <code>ivolcano</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="target-retrieval.html"><a href="target-retrieval.html#intersection"><i class="fa fa-check"></i><b>4.5</b> Intersection analysis</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="target-retrieval.html"><a href="target-retrieval.html#prepare-gene-sets"><i class="fa fa-check"></i><b>4.5.1</b> Prepare gene sets</a></li>
+<li class="chapter" data-level="4.5.2" data-path="target-retrieval.html"><a href="target-retrieval.html#venn-diagram"><i class="fa fa-check"></i><b>4.5.2</b> Venn diagram</a></li>
+<li class="chapter" data-level="4.5.3" data-path="target-retrieval.html"><a href="target-retrieval.html#upset-plot"><i class="fa fa-check"></i><b>4.5.3</b> UpSet plot</a></li>
+<li class="chapter" data-level="4.5.4" data-path="target-retrieval.html"><a href="target-retrieval.html#extract-intersection-results"><i class="fa fa-check"></i><b>4.5.4</b> Extract intersection results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="target-retrieval.html"><a href="target-retrieval.html#ppi-weighted-target-ranking"><i class="fa fa-check"></i><b>4.6</b> PPI-weighted target ranking</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="target-retrieval.html"><a href="target-retrieval.html#example-lingzhi-targets-against-dn-disease-module"><i class="fa fa-check"></i><b>4.6.1</b> Example: Lingzhi targets against DN disease module</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="target-retrieval.html"><a href="target-retrieval.html#references-2"><i class="fa fa-check"></i><b>4.7</b> References</a></li>
+<li class="chapter" data-level="4.8" data-path="target-retrieval.html"><a href="target-retrieval.html#session-information-3"><i class="fa fa-check"></i><b>4.8</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="network-construction.html"><a href="network-construction.html"><i class="fa fa-check"></i><b>5</b> TCM network construction</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="network-construction.html"><a href="network-construction.html#preparing-the-data"><i class="fa fa-check"></i><b>5.1</b> Preparing the data</a></li>
+<li class="chapter" data-level="5.2" data-path="network-construction.html"><a href="network-construction.html#sankey-diagram-visualization"><i class="fa fa-check"></i><b>5.2</b> Sankey diagram visualization</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="network-construction.html"><a href="network-construction.html#basic-usage"><i class="fa fa-check"></i><b>5.2.1</b> Basic usage</a></li>
+<li class="chapter" data-level="5.2.2" data-path="network-construction.html"><a href="network-construction.html#customizing-colors-and-appearance"><i class="fa fa-check"></i><b>5.2.2</b> Customizing colors and appearance</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="network-construction.html"><a href="network-construction.html#network-graph-with-ggtangle"><i class="fa fa-check"></i><b>5.3</b> Network graph with <code>ggtangle</code></a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="network-construction.html"><a href="network-construction.html#building-the-graph"><i class="fa fa-check"></i><b>5.3.1</b> Building the graph</a></li>
+<li class="chapter" data-level="5.3.2" data-path="network-construction.html"><a href="network-construction.html#basic-network-visualization"><i class="fa fa-check"></i><b>5.3.2</b> Basic network visualization</a></li>
+<li class="chapter" data-level="5.3.3" data-path="network-construction.html"><a href="network-construction.html#adding-node-labels"><i class="fa fa-check"></i><b>5.3.3</b> Adding node labels</a></li>
+<li class="chapter" data-level="5.3.4" data-path="network-construction.html"><a href="network-construction.html#alternative-layouts"><i class="fa fa-check"></i><b>5.3.4</b> Alternative layouts</a></li>
+<li class="chapter" data-level="5.3.5" data-path="network-construction.html"><a href="network-construction.html#enriching-the-network-with-external-data"><i class="fa fa-check"></i><b>5.3.5</b> Enriching the network with external data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="network-construction.html"><a href="network-construction.html#references-3"><i class="fa fa-check"></i><b>5.4</b> References</a></li>
+<li class="chapter" data-level="5.5" data-path="network-construction.html"><a href="network-construction.html#session-information-4"><i class="fa fa-check"></i><b>5.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="enrichment.html"><a href="enrichment.html"><i class="fa fa-check"></i><b>6</b> Enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="enrichment.html"><a href="enrichment.html#over-representation-analysis-ora"><i class="fa fa-check"></i><b>6.1</b> Over Representation Analysis (ORA)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="enrichment.html"><a href="enrichment.html#kegg-enrichment-analysis"><i class="fa fa-check"></i><b>6.1.1</b> KEGG enrichment analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="enrichment.html"><a href="enrichment.html#go-enrichment-analysis"><i class="fa fa-check"></i><b>6.2</b> GO enrichment analysis</a></li>
+<li class="chapter" data-level="6.3" data-path="enrichment.html"><a href="enrichment.html#advanced-visualization"><i class="fa fa-check"></i><b>6.3</b> Advanced visualization</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="enrichment.html"><a href="enrichment.html#lollipop-plot"><i class="fa fa-check"></i><b>6.3.1</b> Lollipop plot</a></li>
+<li class="chapter" data-level="6.3.2" data-path="enrichment.html"><a href="enrichment.html#dot-sankey-plot"><i class="fa fa-check"></i><b>6.3.2</b> Dot-sankey plot</a></li>
+<li class="chapter" data-level="6.3.3" data-path="enrichment.html"><a href="enrichment.html#go-bar-plot"><i class="fa fa-check"></i><b>6.3.3</b> GO bar plot</a></li>
+<li class="chapter" data-level="6.3.4" data-path="enrichment.html"><a href="enrichment.html#go-circle-plot"><i class="fa fa-check"></i><b>6.3.4</b> GO circle plot</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="enrichment.html"><a href="enrichment.html#gene-set-enrichment-analysis-gsea"><i class="fa fa-check"></i><b>6.4</b> Gene Set Enrichment Analysis (GSEA)</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="enrichment.html"><a href="enrichment.html#prepare-ranked-gene-list"><i class="fa fa-check"></i><b>6.4.1</b> Prepare ranked gene list</a></li>
+<li class="chapter" data-level="6.4.2" data-path="enrichment.html"><a href="enrichment.html#kegg-gsea-analysis"><i class="fa fa-check"></i><b>6.4.2</b> KEGG GSEA analysis</a></li>
+<li class="chapter" data-level="6.4.3" data-path="enrichment.html"><a href="enrichment.html#go-gsea-analysis"><i class="fa fa-check"></i><b>6.4.3</b> GO GSEA analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="enrichment.html"><a href="enrichment.html#session-information-5"><i class="fa fa-check"></i><b>6.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ppi-analysis.html"><a href="ppi-analysis.html"><i class="fa fa-check"></i><b>7</b> PPI network analysis</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#retrieving-ppi-data-from-string"><i class="fa fa-check"></i><b>7.1</b> Retrieving PPI data from STRING</a></li>
+<li class="chapter" data-level="7.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#network-filtering"><i class="fa fa-check"></i><b>7.2</b> Network filtering</a></li>
+<li class="chapter" data-level="7.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#ppi-target-set-proximity"><i class="fa fa-check"></i><b>7.3</b> Target-set proximity to a disease PPI module</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#example-evaluating-lingzhi-target-set-against-dn"><i class="fa fa-check"></i><b>7.3.1</b> Example: evaluating Lingzhi target set against DN</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#topology"><i class="fa fa-check"></i><b>7.4</b> Topological metrics</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#integrated-ranking"><i class="fa fa-check"></i><b>7.4.1</b> Integrated ranking</a></li>
+<li class="chapter" data-level="7.4.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#radar-plot-of-topological-metrics"><i class="fa fa-check"></i><b>7.4.2</b> Radar plot of topological metrics</a></li>
+<li class="chapter" data-level="7.4.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#heatmap-of-topological-metrics"><i class="fa fa-check"></i><b>7.4.3</b> Heatmap of topological metrics</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="ppi-analysis.html"><a href="ppi-analysis.html#clustering"><i class="fa fa-check"></i><b>7.5</b> Community detection</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#louvain-modularity-optimization"><i class="fa fa-check"></i><b>7.5.1</b> Louvain modularity optimization</a></li>
+<li class="chapter" data-level="7.5.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcode-molecular-complex-detection"><i class="fa fa-check"></i><b>7.5.2</b> MCODE (Molecular Complex Detection)</a></li>
+<li class="chapter" data-level="7.5.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#mcl-markov-clustering"><i class="fa fa-check"></i><b>7.5.3</b> MCL (Markov Clustering)</a></li>
+<li class="chapter" data-level="7.5.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#fast-greedy-modularity-optimization"><i class="fa fa-check"></i><b>7.5.4</b> Fast greedy modularity optimization</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="ppi-analysis.html"><a href="ppi-analysis.html#robustness"><i class="fa fa-check"></i><b>7.6</b> PPI network robustness analysis</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#algorithm-overview"><i class="fa fa-check"></i><b>7.6.1</b> Algorithm overview</a></li>
+<li class="chapter" data-level="7.6.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#example-knocking-out-il6"><i class="fa fa-check"></i><b>7.6.2</b> Example: knocking out IL6</a></li>
+<li class="chapter" data-level="7.6.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#visualization-before-vs.-after-knockout"><i class="fa fa-check"></i><b>7.6.3</b> Visualization: before vs. after knockout</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="ppi-analysis.html"><a href="ppi-analysis.html#ppi-vis"><i class="fa fa-check"></i><b>7.7</b> PPI network visualization</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="ppi-analysis.html"><a href="ppi-analysis.html#basic-network-with-topological-mapping"><i class="fa fa-check"></i><b>7.7.1</b> Basic network with topological mapping</a></li>
+<li class="chapter" data-level="7.7.2" data-path="ppi-analysis.html"><a href="ppi-analysis.html#community-colored-network"><i class="fa fa-check"></i><b>7.7.2</b> Community-colored network</a></li>
+<li class="chapter" data-level="7.7.3" data-path="ppi-analysis.html"><a href="ppi-analysis.html#hub-centric-star-layout"><i class="fa fa-check"></i><b>7.7.3</b> Hub-centric star layout</a></li>
+<li class="chapter" data-level="7.7.4" data-path="ppi-analysis.html"><a href="ppi-analysis.html#layout-algorithm-comparison"><i class="fa fa-check"></i><b>7.7.4</b> Layout algorithm comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="ppi-analysis.html"><a href="ppi-analysis.html#references-4"><i class="fa fa-check"></i><b>7.8</b> References</a></li>
+<li class="chapter" data-level="7.9" data-path="ppi-analysis.html"><a href="ppi-analysis.html#session-information-6"><i class="fa fa-check"></i><b>7.9</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ml-analysis.html"><a href="ml-analysis.html"><i class="fa fa-check"></i><b>8</b> Machine learning–based key target screening</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ml-analysis.html"><a href="ml-analysis.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-data"><i class="fa fa-check"></i><b>8.1.1</b> Example dataset</a></li>
+<li class="chapter" data-level="8.1.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-prepare"><i class="fa fa-check"></i><b>8.1.2</b> Data preparation</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-a"><i class="fa fa-check"></i><b>8.2</b> Mode A: full cross-validation</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-lasso"><i class="fa fa-check"></i><b>8.2.1</b> LASSO regression</a></li>
+<li class="chapter" data-level="8.2.2" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-rf"><i class="fa fa-check"></i><b>8.2.2</b> Random Forest and Boruta</a></li>
+<li class="chapter" data-level="8.2.3" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-svm-rfe"><i class="fa fa-check"></i><b>8.2.3</b> SVM-RFE</a></li>
+<li class="chapter" data-level="8.2.4" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-xgboost"><i class="fa fa-check"></i><b>8.2.4</b> XGBoost</a></li>
+<li class="chapter" data-level="8.2.5" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-consensus"><i class="fa fa-check"></i><b>8.2.5</b> Consensus analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-b"><i class="fa fa-check"></i><b>8.3</b> Mode B: internal train/test split</a></li>
+<li class="chapter" data-level="8.4" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-mode-c"><i class="fa fa-check"></i><b>8.4</b> Mode C: external validation</a></li>
+<li class="chapter" data-level="8.5" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-select"><i class="fa fa-check"></i><b>8.5</b> Post-hoc feature trimming</a></li>
+<li class="chapter" data-level="8.6" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-manual-list"><i class="fa fa-check"></i><b>8.6</b> Assembling models manually</a></li>
+<li class="chapter" data-level="8.7" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-gene-diag"><i class="fa fa-check"></i><b>8.7</b> Single-gene diagnostic analysis</a>
+<ul>
+<li class="chapter" data-level="8.7.1" data-path="ml-analysis.html"><a href="ml-analysis.html#auc-summary-table"><i class="fa fa-check"></i><b>8.7.1</b> AUC summary table</a></li>
+<li class="chapter" data-level="8.7.2" data-path="ml-analysis.html"><a href="ml-analysis.html#single-gene-roc-curves"><i class="fa fa-check"></i><b>8.7.2</b> Single-gene ROC curves</a></li>
+<li class="chapter" data-level="8.7.3" data-path="ml-analysis.html"><a href="ml-analysis.html#two-group-expression-boxplot"><i class="fa fa-check"></i><b>8.7.3</b> Two-group expression boxplot</a></li>
+</ul></li>
+<li class="chapter" data-level="8.8" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-summary"><i class="fa fa-check"></i><b>8.8</b> Summary</a></li>
+<li class="chapter" data-level="8.9" data-path="ml-analysis.html"><a href="ml-analysis.html#references-5"><i class="fa fa-check"></i><b>8.9</b> References</a></li>
+<li class="chapter" data-level="8.10" data-path="ml-analysis.html"><a href="ml-analysis.html#ml-session-info"><i class="fa fa-check"></i><b>8.10</b> Session Information</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ai-module.html"><a href="ai-module.html"><i class="fa fa-check"></i><b>9</b> AI Module</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="ai-module.html"><a href="ai-module.html#prerequisites"><i class="fa fa-check"></i><b>9.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="9.2" data-path="ai-module.html"><a href="ai-module.html#interpretation-layer"><i class="fa fa-check"></i><b>9.2</b> Interpretation layer</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="ai-module.html"><a href="ai-module.html#free-text-interpretation"><i class="fa fa-check"></i><b>9.2.1</b> Free-text interpretation</a></li>
+<li class="chapter" data-level="9.2.2" data-path="ai-module.html"><a href="ai-module.html#interpreting-enrichment-objects"><i class="fa fa-check"></i><b>9.2.2</b> Interpreting enrichment objects</a></li>
+<li class="chapter" data-level="9.2.3" data-path="ai-module.html"><a href="ai-module.html#interpreting-ppi-objects"><i class="fa fa-check"></i><b>9.2.3</b> Interpreting PPI objects</a></li>
+<li class="chapter" data-level="9.2.4" data-path="ai-module.html"><a href="ai-module.html#drafting-result-paragraphs"><i class="fa fa-check"></i><b>9.2.4</b> Drafting result paragraphs</a></li>
+<li class="chapter" data-level="9.2.5" data-path="ai-module.html"><a href="ai-module.html#custom-structured-output"><i class="fa fa-check"></i><b>9.2.5</b> Custom structured output</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="ai-module.html"><a href="ai-module.html#agent-layer"><i class="fa fa-check"></i><b>9.3</b> Agent layer</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="ai-module.html"><a href="ai-module.html#one-shot-task-tcm_agent"><i class="fa fa-check"></i><b>9.3.1</b> One-shot task: <code>tcm_agent()</code></a></li>
+<li class="chapter" data-level="9.3.2" data-path="ai-module.html"><a href="ai-module.html#interactive-session-tcm_chat"><i class="fa fa-check"></i><b>9.3.2</b> Interactive session: <code>tcm_chat()</code></a></li>
+<li class="chapter" data-level="9.3.3" data-path="ai-module.html"><a href="ai-module.html#programmatic-agent-create_tcm_task_agent"><i class="fa fa-check"></i><b>9.3.3</b> Programmatic agent: <code>create_tcm_task_agent()</code></a></li>
+<li class="chapter" data-level="9.3.4" data-path="ai-module.html"><a href="ai-module.html#artifact-management"><i class="fa fa-check"></i><b>9.3.4</b> Artifact management</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="ai-module.html"><a href="ai-module.html#skill-layer"><i class="fa fa-check"></i><b>9.4</b> Skill layer</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="ai-module.html"><a href="ai-module.html#built-in-skills"><i class="fa fa-check"></i><b>9.4.1</b> Built-in skills</a></li>
+<li class="chapter" data-level="9.4.2" data-path="ai-module.html"><a href="ai-module.html#how-skills-work"><i class="fa fa-check"></i><b>9.4.2</b> How skills work</a></li>
+<li class="chapter" data-level="9.4.3" data-path="ai-module.html"><a href="ai-module.html#creating-custom-skills"><i class="fa fa-check"></i><b>9.4.3</b> Creating custom skills</a></li>
+<li class="chapter" data-level="9.4.4" data-path="ai-module.html"><a href="ai-module.html#managing-skills"><i class="fa fa-check"></i><b>9.4.4</b> Managing skills</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="ai-module.html"><a href="ai-module.html#session-information-7"><i class="fa fa-check"></i><b>9.5</b> Session information</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="other-resources.html"><a href="other-resources.html"><i class="fa fa-check"></i><b>10</b> Other resources</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="other-resources.html"><a href="other-resources.html#additional-databases"><i class="fa fa-check"></i><b>10.1</b> Additional databases</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="other-resources.html"><a href="other-resources.html#tfgene-interactions-dorothea"><i class="fa fa-check"></i><b>10.1.1</b> TF–gene interactions (DoRothEA)</a></li>
+<li class="chapter" data-level="10.1.2" data-path="other-resources.html"><a href="other-resources.html#gut-microbiotahost-interactions-gutmgene"><i class="fa fa-check"></i><b>10.1.2</b> Gut microbiota–host interactions (GutMGene)</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="other-resources.html"><a href="other-resources.html#additional-visualization"><i class="fa fa-check"></i><b>10.2</b> Additional visualization</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="other-resources.html"><a href="other-resources.html#heatmap-for-molecular-docking-results"><i class="fa fa-check"></i><b>10.2.1</b> Heatmap for molecular docking results</a></li>
+<li class="chapter" data-level="10.2.2" data-path="other-resources.html"><a href="other-resources.html#to-be-continued"><i class="fa fa-check"></i><b>10.2.2</b> To be continued</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="other-resources.html"><a href="other-resources.html#references-6"><i class="fa fa-check"></i><b>10.3</b> References</a></li>
+<li class="chapter" data-level="10.4" data-path="other-resources.html"><a href="other-resources.html#session-information-8"><i class="fa fa-check"></i><b>10.4</b> Session information</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/YuLab-SMU/TCMDATA" target="_blank">GitHub</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">TCMDATA: Traditional Chinese Medicine Data Analysis and Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ml-analysis" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Machine learning–based key target screening<a href="ml-analysis.html#ml-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In network pharmacology, candidate targets derived from compound–target mapping and PPI network analysis often number in the dozens to hundreds. Identifying a concise set of <strong>key targets</strong>, which are the most predictive of the disease phenotype, is essential for downstream experimental validation and mechanistic interpretation. <strong>Machine learning (ML)</strong> offers a data-driven, unbiased approach to this task: by training classifiers on transcriptomic profiles and evaluating feature importance, ML methods can distill large candidate pools into biologically meaningful gene signatures.</p>
+<p>A growing number of publications employ a <strong>multi-algorithm consensus</strong> strategy, in which several complementary ML methods (e.g., LASSO, Random Forest, SVM-RFE, XGBoost) are applied in parallel; genes consistently selected across methods are reported as the final key targets. This consensus approach mitigates algorithm-specific biases and enhances the robustness of the selected biomarkers.</p>
+<p><code>TCMDATA</code> provides an <strong>ML module</strong> that implements this workflow end-to-end: from data preparation and model fitting through consensus extraction and publication-ready visualization. Three evaluation modes are supported:</p>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="44%" />
+<col width="34%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Mode</th>
+<th>Description</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>A</strong></td>
+<td>All samples used for training; performance assessed via out-of-fold (OOF) or out-of-bag (OOB) predictions</td>
+<td>Single dataset; most common in network pharmacology studies</td>
+</tr>
+<tr class="even">
+<td><strong>B</strong></td>
+<td>Internal random train/test split</td>
+<td>When an independent cohort is unavailable but held-out validation is desired</td>
+</tr>
+<tr class="odd">
+<td><strong>C</strong></td>
+<td>External validation on an independent test set</td>
+<td>When a separate cohort (e.g., different GEO series) is available</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<div id="introduction" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Introduction<a href="ml-analysis.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="ml-data" class="section level3 hasAnchor" number="8.1.1">
+<h3><span class="header-section-number">8.1.1</span> Example dataset<a href="ml-analysis.html#ml-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Throughout this chapter we use the built-in <code>covid19</code> dataset, which contains RNA-seq expression profiles from 100 COVID-19 patients (GSE157103). Samples are labelled as ICU (intensive care unit) or NonICU, providing a clinically relevant binary classification task.</p>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="ml-analysis.html#cb175-1" tabindex="-1"></a><span class="fu">library</span>(TCMDATA)</span>
+<span id="cb175-2"><a href="ml-analysis.html#cb175-2" tabindex="-1"></a></span>
+<span id="cb175-3"><a href="ml-analysis.html#cb175-3" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;covid19&quot;</span>)</span>
+<span id="cb175-4"><a href="ml-analysis.html#cb175-4" tabindex="-1"></a><span class="fu">str</span>(covid19, <span class="at">max.level =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>#&gt; List of 3
+#&gt;  $ expr      :&#39;data.frame&#39;:  5000 obs. of  100 variables:
+#&gt;  $ group_info:&#39;data.frame&#39;:  100 obs. of  2 variables:
+#&gt;  $ info      :List of 7</code></pre>
+<p>We extract the expression matrix (genes × samples) and the group labels. To simulate a realistic candidate gene list, we select the <strong>top 50 most variable genes</strong> by inter-sample variance — in practice these would be the candidate targets obtained from upstream PPI / compound–target analysis:</p>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="ml-analysis.html#cb177-1" tabindex="-1"></a>expr_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(covid19<span class="sc">$</span>expr)</span>
+<span id="cb177-2"><a href="ml-analysis.html#cb177-2" tabindex="-1"></a>group <span class="ot">&lt;-</span> covid19<span class="sc">$</span>group_info<span class="sc">$</span>group</span>
+<span id="cb177-3"><a href="ml-analysis.html#cb177-3" tabindex="-1"></a></span>
+<span id="cb177-4"><a href="ml-analysis.html#cb177-4" tabindex="-1"></a><span class="do">## Select top 50 most variable genes by row variance</span></span>
+<span id="cb177-5"><a href="ml-analysis.html#cb177-5" tabindex="-1"></a>gene_var <span class="ot">&lt;-</span> <span class="fu">apply</span>(expr_mat, <span class="dv">1</span>, var)</span>
+<span id="cb177-6"><a href="ml-analysis.html#cb177-6" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">sort</span>(gene_var, <span class="at">decreasing =</span> <span class="cn">TRUE</span>))[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>]</span>
+<span id="cb177-7"><a href="ml-analysis.html#cb177-7" tabindex="-1"></a></span>
+<span id="cb177-8"><a href="ml-analysis.html#cb177-8" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Expression matrix:&quot;</span>, <span class="fu">nrow</span>(expr_mat), <span class="st">&quot;genes ×&quot;</span>, <span class="fu">ncol</span>(expr_mat), <span class="st">&quot;samples</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Expression matrix: 5000 genes × 100 samples</code></pre>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="ml-analysis.html#cb179-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Group levels:&quot;</span>, <span class="fu">levels</span>(group), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Group levels: NonICU ICU</code></pre>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="ml-analysis.html#cb181-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Top 50 high-variance genes selected:&quot;</span>, <span class="fu">length</span>(genes), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Top 50 high-variance genes selected: 50</code></pre>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="ml-analysis.html#cb183-1" tabindex="-1"></a><span class="fu">cat</span>(genes, <span class="at">sep =</span> <span class="st">&quot;, &quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; RPS4Y1, EIF1AY, HLA-DRB4, DEFA3, IFI27, IGHG1, HLA-DRB3, IGLC2, IGHA1, OLAH, DEFA1, IGLC3, DDX3Y, DEFA1B, IGLC1, JCHAIN, IGHG3, LGALS2, IGKC, CD177, OLFM4, HLA-DRB5, RSAD2, DEFA4, IGHG2, GSTM1, MMP8, IFI44L, HBG2, ISG15, TMEM176B, ARG1, CTSG, LTF, HBA2, HBG1, IFIT1, IL1R2, IGHM, CXCL8, SIGLEC1, IGHG4, IGLL5, LCN2, MZB1, DAAM2, HBA1, PI3, HBD, IGHA2</code></pre>
+<hr />
+</div>
+<div id="ml-prepare" class="section level3 hasAnchor" number="8.1.2">
+<h3><span class="header-section-number">8.1.2</span> Data preparation<a href="ml-analysis.html#ml-prepare" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>prepare_ml_data()</code> converts a gene × sample expression matrix into a structured <code>tcm_ml_data</code> object that all downstream modelling functions accept. It handles level reordering (so that the positive class is always <code>levels[1]</code>), zero-variance gene removal, and syntactic name cleaning.</p>
+<p>For Mode A (full cross-validation, no hold-out), simply pass the matrix, group labels, and the desired positive class:</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="ml-analysis.html#cb185-1" tabindex="-1"></a>ml_data <span class="ot">&lt;-</span> <span class="fu">prepare_ml_data</span>(</span>
+<span id="cb185-2"><a href="ml-analysis.html#cb185-2" tabindex="-1"></a>  expr_mat,</span>
+<span id="cb185-3"><a href="ml-analysis.html#cb185-3" tabindex="-1"></a>  group,</span>
+<span id="cb185-4"><a href="ml-analysis.html#cb185-4" tabindex="-1"></a>  <span class="at">positive_class =</span> <span class="st">&quot;ICU&quot;</span>,</span>
+<span id="cb185-5"><a href="ml-analysis.html#cb185-5" tabindex="-1"></a>  <span class="at">genes =</span> genes)</span></code></pre></div>
+<table>
+<colgroup>
+<col width="33%" />
+<col width="39%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>expr_mat</code></td>
+<td>Numeric matrix (genes × samples)</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td><code>group</code></td>
+<td>Factor or character vector of class labels (length = <code>ncol(expr_mat)</code>)</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td><code>positive_class</code></td>
+<td>Which level to treat as the positive class</td>
+<td><code>NULL</code> (alphabetical)</td>
+</tr>
+<tr class="even">
+<td><code>genes</code></td>
+<td>Character vector of candidate genes to retain</td>
+<td><code>NULL</code> (all genes)</td>
+</tr>
+<tr class="odd">
+<td><code>split</code></td>
+<td>Logical; <code>TRUE</code> activates Mode B (internal split)</td>
+<td><code>FALSE</code></td>
+</tr>
+<tr class="even">
+<td><code>train_ratio</code></td>
+<td>Training fraction for Mode B</td>
+<td>0.7</td>
+</tr>
+<tr class="odd">
+<td><code>test_expr</code> / <code>test_group</code></td>
+<td>External test data for Mode C</td>
+<td><code>NULL</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+</div>
+<div id="ml-mode-a" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Mode A: full cross-validation<a href="ml-analysis.html#ml-mode-a" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In Mode A, <strong>all samples</strong> participate in model training. Model performance is assessed using out-of-fold (OOF) predictions from cross-validation (LASSO, SVM-RFE, XGBoost) or out-of-bag (OOB) estimates (Random Forest). This is the most widely used setup in network pharmacology ML screening, as it maximises the training data and avoids random split bias.</p>
+<div id="ml-lasso" class="section level3 hasAnchor" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> LASSO regression<a href="ml-analysis.html#ml-lasso" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The Least Absolute Shrinkage and Selection Operator (LASSO)<sup>[2]</sup> applies an <span class="math inline">\(L_1\)</span> penalty to logistic regression, driving irrelevant coefficients exactly to zero and thereby performing automatic feature selection. The penalty strength <span class="math inline">\(\lambda\)</span> is selected via cross-validation; <code>ml_lasso()</code> supports both <code>lambda.min</code> (lowest CV error) and <code>lambda.1se</code> (most parsimonious model within one standard error), with the latter being the default.</p>
+<p><span class="math display">\[\min_{\beta} \left\{ -\frac{1}{n} \sum_{i=1}^{n} \ell(y_i, \beta_0 + x_i^T \beta) + \lambda \|\beta\|_1 \right\}\]</span></p>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="ml-analysis.html#cb186-1" tabindex="-1"></a>res_lasso <span class="ot">&lt;-</span> <span class="fu">ml_lasso</span>(ml_data, <span class="at">cv_folds =</span> <span class="dv">10</span>, <span class="at">seed =</span> <span class="dv">2025</span>)</span>
+<span id="cb186-2"><a href="ml-analysis.html#cb186-2" tabindex="-1"></a>res_lasso</span></code></pre></div>
+<pre><code>#&gt; === tcm_ml: LASSO ===
+#&gt;   Features: 6 | CV AUC: 0.8829 | Sens: 0.7600 | Spec: 0.8200</code></pre>
+<div id="cv-error-curve" class="section level4 hasAnchor" number="8.2.1.1">
+<h4><span class="header-section-number">8.2.1.1</span> CV error curve<a href="ml-analysis.html#cv-error-curve" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The cross-validation curve shows the AUC (or deviance) as a function of <span class="math inline">\(\log(\lambda)\)</span>. The two vertical dashed lines mark <code>lambda.min</code> and <code>lambda.1se</code>:</p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="ml-analysis.html#cb188-1" tabindex="-1"></a><span class="fu">plot_enet_cv</span>(res_lasso)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-lasso-cv-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="coefficient-path" class="section level4 hasAnchor" number="8.2.1.2">
+<h4><span class="header-section-number">8.2.1.2</span> Coefficient path<a href="ml-analysis.html#coefficient-path" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The coefficient path traces how each gene’s coefficient evolves along the regularisation path. Setting <code>top_n = 20</code> restricts the display to the 20 features with the largest absolute coefficients:</p>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="ml-analysis.html#cb189-1" tabindex="-1"></a><span class="fu">plot_enet_path</span>(res_lasso, <span class="at">top_n =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-lasso-path-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="coefficient-bar-chart" class="section level4 hasAnchor" number="8.2.1.3">
+<h4><span class="header-section-number">8.2.1.3</span> Coefficient bar chart<a href="ml-analysis.html#coefficient-bar-chart" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A horizontal bar chart coloured by sign provides an intuitive summary of the selected features and their directional effects:</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="ml-analysis.html#cb190-1" tabindex="-1"></a><span class="fu">plot_enet_coefs</span>(res_lasso)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-lasso-coefs-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="ml-rf" class="section level3 hasAnchor" number="8.2.2">
+<h3><span class="header-section-number">8.2.2</span> Random Forest and Boruta<a href="ml-analysis.html#ml-rf" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Random Forest (RF)<sup>[3]</sup> constructs an ensemble of decision trees, each trained on a bootstrap sample of the data. Feature importance is quantified by the mean decrease in Gini impurity (or accuracy) across all trees. To move from importance ranking to formal feature <em>selection</em>, <code>ml_rf()</code> employs the <strong>Boruta</strong> algorithm<sup>[4]</sup>, which compares each real feature’s importance against that of randomly shuffled “shadow” copies; only features that consistently outperform their shadows are confirmed as relevant.</p>
+<p>The pipeline proceeds in three phases:</p>
+<ol style="list-style-type: decimal">
+<li>Train an RF on <strong>all</strong> candidate genes to obtain importance scores.</li>
+<li>Run Boruta all-relevant feature selection (tentative features resolved via <code>TentativeRoughFix</code>).</li>
+<li><em>(Optional, default)</em> Re-fit an RF on the <strong>selected</strong> genes only, so that OOB metrics honestly reflect the chosen subset.</li>
+</ol>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="ml-analysis.html#cb191-1" tabindex="-1"></a>res_rf <span class="ot">&lt;-</span> <span class="fu">ml_rf</span>(ml_data, <span class="at">n_trees =</span> <span class="dv">500</span>, <span class="at">seed =</span> <span class="dv">2025</span>)</span>
+<span id="cb191-2"><a href="ml-analysis.html#cb191-2" tabindex="-1"></a>res_rf</span></code></pre></div>
+<pre><code>#&gt; === tcm_ml: RF ===
+#&gt;   Features: 20 | CV AUC: 0.9164 | Sens: 0.8400 | Spec: 0.8200</code></pre>
+<div id="boruta-importance-plot" class="section level4 hasAnchor" number="8.2.2.1">
+<h4><span class="header-section-number">8.2.2.1</span> Boruta importance plot<a href="ml-analysis.html#boruta-importance-plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The Boruta plot shows the median importance of each feature, coloured by selection decision (Confirmed / Tentative / Rejected). The dashed vertical line marks the shadow maximum threshold:</p>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="ml-analysis.html#cb193-1" tabindex="-1"></a><span class="fu">plot_rf_boruta</span>(res_rf, <span class="at">top_n =</span> <span class="dv">25</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-rf-boruta-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="variable-importance-gini" class="section level4 hasAnchor" number="8.2.2.2">
+<h4><span class="header-section-number">8.2.2.2</span> Variable importance (Gini)<a href="ml-analysis.html#variable-importance-gini" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A standard bar chart of Mean Decrease Gini for the top features in the refitted model:</p>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="ml-analysis.html#cb194-1" tabindex="-1"></a><span class="fu">plot_rf_importance</span>(res_rf, <span class="at">top_n =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-rf-importance-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="ml-svm-rfe" class="section level3 hasAnchor" number="8.2.3">
+<h3><span class="header-section-number">8.2.3</span> SVM-RFE<a href="ml-analysis.html#ml-svm-rfe" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Support Vector Machine–Recursive Feature Elimination (SVM-RFE) iteratively trains a linear SVM and removes the feature(s) with the smallest weight magnitude <span class="math inline">\(|w_j|^2\)</span> at each step, following the backward elimination framework of Guyon et al.<sup>[1]</sup>. The optimal feature-subset size is determined by the cross-validated ROC (or accuracy) profile across a grid of subset sizes. <code>ml_svm_rfe()</code> wraps <code>caret::rfe()</code> with sensible defaults tailored for gene expression data.</p>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="ml-analysis.html#cb195-1" tabindex="-1"></a>res_svm <span class="ot">&lt;-</span> <span class="fu">ml_svm_rfe</span>(ml_data, <span class="at">cv_folds =</span> <span class="dv">5</span>, <span class="at">cv_repeats =</span> <span class="dv">3</span>, <span class="at">seed =</span> <span class="dv">2025</span>)</span>
+<span id="cb195-2"><a href="ml-analysis.html#cb195-2" tabindex="-1"></a>res_svm</span></code></pre></div>
+<pre><code>#&gt; === tcm_ml: SVM_RFE ===
+#&gt;   Features: 8 | CV AUC: 0.8807 | Sens: 0.8133 | Spec: 0.8067</code></pre>
+<div id="rfe-accuracy-profile" class="section level4 hasAnchor" number="8.2.3.1">
+<h4><span class="header-section-number">8.2.3.1</span> RFE accuracy profile<a href="ml-analysis.html#rfe-accuracy-profile" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The profile plot visualises the CV metric (ROC or Accuracy) as a function of the number of features retained. The dashed red line indicates the selected optimal subset size:</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="ml-analysis.html#cb197-1" tabindex="-1"></a><span class="fu">plot_svm_rfe_curve</span>(res_svm)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-svm-curve-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="ml-xgboost" class="section level3 hasAnchor" number="8.2.4">
+<h3><span class="header-section-number">8.2.4</span> XGBoost<a href="ml-analysis.html#ml-xgboost" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>eXtreme Gradient Boosting (XGBoost)<sup>[5]</sup> builds an ensemble of shallow decision trees sequentially, with each new tree correcting the residual errors of its predecessors. An internal <span class="math inline">\(k\)</span>-fold CV with early stopping determines the optimal number of boosting rounds, preventing overfitting. Features are ranked by their cumulative information <strong>Gain</strong> across all trees.</p>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="ml-analysis.html#cb198-1" tabindex="-1"></a>res_xgb <span class="ot">&lt;-</span> <span class="fu">ml_xgboost</span>(ml_data, <span class="at">cv_folds =</span> <span class="dv">5</span>, <span class="at">seed =</span> <span class="dv">2025</span>)</span>
+<span id="cb198-2"><a href="ml-analysis.html#cb198-2" tabindex="-1"></a>res_xgb</span></code></pre></div>
+<pre><code>#&gt; === tcm_ml: XGBOOST ===
+#&gt;   Features: 23 | CV AUC: 0.9077 | Sens: 0.7800 | Spec: 0.8400</code></pre>
+<div id="feature-importance-gain" class="section level4 hasAnchor" number="8.2.4.1">
+<h4><span class="header-section-number">8.2.4.1</span> Feature importance (Gain)<a href="ml-analysis.html#feature-importance-gain" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="ml-analysis.html#cb200-1" tabindex="-1"></a><span class="fu">plot_xgb_importance</span>(res_xgb, <span class="at">top_n =</span> <span class="dv">20</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-xgb-importance-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="ml-consensus" class="section level3 hasAnchor" number="8.2.5">
+<h3><span class="header-section-number">8.2.5</span> Consensus analysis<a href="ml-analysis.html#ml-consensus" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The multi-algorithm consensus strategy identifies genes that are selected by at least <code>min_methods</code> models, thereby filtering out method-specific noise and retaining only robust biomarker candidates.</p>
+<div id="running-all-methods-together" class="section level4 hasAnchor" number="8.2.5.1">
+<h4><span class="header-section-number">8.2.5.1</span> Running all methods together<a href="ml-analysis.html#running-all-methods-together" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>run_ml_screening()</code> provides a convenient one-call interface:</p>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="ml-analysis.html#cb201-1" tabindex="-1"></a>ml_list <span class="ot">&lt;-</span> <span class="fu">run_ml_screening</span>(</span>
+<span id="cb201-2"><a href="ml-analysis.html#cb201-2" tabindex="-1"></a>  ml_data,</span>
+<span id="cb201-3"><a href="ml-analysis.html#cb201-3" tabindex="-1"></a>  <span class="at">methods =</span> <span class="fu">c</span>(<span class="st">&quot;lasso&quot;</span>, <span class="st">&quot;rf&quot;</span>, <span class="st">&quot;svm_rfe&quot;</span>, <span class="st">&quot;xgboost&quot;</span>),</span>
+<span id="cb201-4"><a href="ml-analysis.html#cb201-4" tabindex="-1"></a>  <span class="at">cv_folds =</span> <span class="dv">5</span>,</span>
+<span id="cb201-5"><a href="ml-analysis.html#cb201-5" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">2025</span></span>
+<span id="cb201-6"><a href="ml-analysis.html#cb201-6" tabindex="-1"></a>)</span>
+<span id="cb201-7"><a href="ml-analysis.html#cb201-7" tabindex="-1"></a><span class="fu">summary</span>(ml_list)</span></code></pre></div>
+<pre><code>#&gt;          method n_features auc_type       auc     auc_sd sensitivity
+#&gt; lasso     lasso          3       CV 0.8527778 0.04083461        0.74
+#&gt; rf           rf         20       CV 0.9164000         NA        0.84
+#&gt; svm_rfe svm_rfe         12       CV 0.8812000 0.06489222        0.84
+#&gt; xgboost xgboost         23       CV 0.9076970 0.02819658        0.78
+#&gt;         specificity
+#&gt; lasso         0.780
+#&gt; rf            0.820
+#&gt; svm_rfe       0.796
+#&gt; xgboost       0.840</code></pre>
+</div>
+<div id="venn-diagram-1" class="section level4 hasAnchor" number="8.2.5.2">
+<h4><span class="header-section-number">8.2.5.2</span> Venn diagram<a href="ml-analysis.html#venn-diagram-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="ml-analysis.html#cb203-1" tabindex="-1"></a><span class="fu">plot_ml_venn</span>(ml_list)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-venn-1.png" alt="" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="extracting-consensus-genes" class="section level4 hasAnchor" number="8.2.5.3">
+<h4><span class="header-section-number">8.2.5.3</span> Extracting consensus genes<a href="ml-analysis.html#extracting-consensus-genes" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="ml-analysis.html#cb204-1" tabindex="-1"></a>consensus <span class="ot">&lt;-</span> <span class="fu">get_ml_consensus</span>(ml_list, <span class="at">min_methods =</span> <span class="dv">2</span>)</span>
+<span id="cb204-2"><a href="ml-analysis.html#cb204-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Consensus genes (≥ 2 methods):</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Consensus genes (≥ 2 methods):</code></pre>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="ml-analysis.html#cb206-1" tabindex="-1"></a><span class="fu">cat</span>(consensus, <span class="at">sep =</span> <span class="st">&quot;, &quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; ARG1, IL1R2, OLAH, CD177, HLA.DRB3, IFI44L, ISG15, SIGLEC1, CTSG, DAAM2, DEFA3, LCN2, LGALS2, OLFM4, PI3, RSAD2</code></pre>
+</div>
+<div id="roc-curves" class="section level4 hasAnchor" number="8.2.5.4">
+<h4><span class="header-section-number">8.2.5.4</span> ROC curves<a href="ml-analysis.html#roc-curves" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The ROC curves visualise discrimination performance for each method. In Mode A, curves are derived from out-of-fold / out-of-bag predictions, providing an honest assessment without data leakage:</p>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="ml-analysis.html#cb208-1" tabindex="-1"></a><span class="fu">plot_ml_roc</span>(ml_list)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-roc-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+</div>
+<div id="ml-mode-b" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Mode B: internal train/test split<a href="ml-analysis.html#ml-mode-b" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>When a single dataset is available but held-out validation is desired, Mode B randomly partitions samples into training and test sets. This avoids the optimistic bias of purely cross-validated metrics while still operating within a single cohort.</p>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="ml-analysis.html#cb209-1" tabindex="-1"></a>ml_data_B <span class="ot">&lt;-</span> <span class="fu">prepare_ml_data</span>(</span>
+<span id="cb209-2"><a href="ml-analysis.html#cb209-2" tabindex="-1"></a>  expr_mat, group,</span>
+<span id="cb209-3"><a href="ml-analysis.html#cb209-3" tabindex="-1"></a>  <span class="at">positive_class =</span> <span class="st">&quot;ICU&quot;</span>,</span>
+<span id="cb209-4"><a href="ml-analysis.html#cb209-4" tabindex="-1"></a>  <span class="at">genes =</span> genes,</span>
+<span id="cb209-5"><a href="ml-analysis.html#cb209-5" tabindex="-1"></a>  <span class="at">split =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb209-6"><a href="ml-analysis.html#cb209-6" tabindex="-1"></a>  <span class="at">train_ratio =</span> <span class="fl">0.7</span>,</span>
+<span id="cb209-7"><a href="ml-analysis.html#cb209-7" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">2025</span></span>
+<span id="cb209-8"><a href="ml-analysis.html#cb209-8" tabindex="-1"></a>)</span>
+<span id="cb209-9"><a href="ml-analysis.html#cb209-9" tabindex="-1"></a></span>
+<span id="cb209-10"><a href="ml-analysis.html#cb209-10" tabindex="-1"></a>ml_list_B <span class="ot">&lt;-</span> <span class="fu">run_ml_screening</span>(</span>
+<span id="cb209-11"><a href="ml-analysis.html#cb209-11" tabindex="-1"></a>  ml_data_B,</span>
+<span id="cb209-12"><a href="ml-analysis.html#cb209-12" tabindex="-1"></a>  <span class="at">methods =</span> <span class="fu">c</span>(<span class="st">&quot;lasso&quot;</span>, <span class="st">&quot;rf&quot;</span>, <span class="st">&quot;svm_rfe&quot;</span>, <span class="st">&quot;xgboost&quot;</span>),</span>
+<span id="cb209-13"><a href="ml-analysis.html#cb209-13" tabindex="-1"></a>  <span class="at">cv_folds =</span> <span class="dv">5</span>,</span>
+<span id="cb209-14"><a href="ml-analysis.html#cb209-14" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">2025</span></span>
+<span id="cb209-15"><a href="ml-analysis.html#cb209-15" tabindex="-1"></a>)</span></code></pre></div>
+<p>The ROC curves are now evaluated on the held-out <strong>test set</strong>, yielding an independent estimate of classifier performance:</p>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="ml-analysis.html#cb210-1" tabindex="-1"></a><span class="fu">plot_ml_roc</span>(ml_list_B)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-mode-b-roc-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="ml-analysis.html#cb211-1" tabindex="-1"></a><span class="fu">plot_ml_venn</span>(ml_list_B)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-mode-b-venn-1.png" alt="" width="70%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="ml-mode-c" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Mode C: external validation<a href="ml-analysis.html#ml-mode-c" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Mode C mirrors the most rigorous study design: the model is trained on one cohort and validated on an entirely independent dataset. <code>prepare_ml_data()</code> automatically intersects the gene spaces of the two matrices to ensure compatibility.</p>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="ml-analysis.html#cb212-1" tabindex="-1"></a><span class="do">## Example (not run): two separate GEO datasets</span></span>
+<span id="cb212-2"><a href="ml-analysis.html#cb212-2" tabindex="-1"></a>ml_data_C <span class="ot">&lt;-</span> <span class="fu">prepare_ml_data</span>(</span>
+<span id="cb212-3"><a href="ml-analysis.html#cb212-3" tabindex="-1"></a>  train_expr, train_group,</span>
+<span id="cb212-4"><a href="ml-analysis.html#cb212-4" tabindex="-1"></a>  <span class="at">test_expr  =</span> external_expr,</span>
+<span id="cb212-5"><a href="ml-analysis.html#cb212-5" tabindex="-1"></a>  <span class="at">test_group =</span> external_group,</span>
+<span id="cb212-6"><a href="ml-analysis.html#cb212-6" tabindex="-1"></a>  <span class="at">positive_class =</span> <span class="st">&quot;Disease&quot;</span>,</span>
+<span id="cb212-7"><a href="ml-analysis.html#cb212-7" tabindex="-1"></a>  <span class="at">genes =</span> candidate_genes</span>
+<span id="cb212-8"><a href="ml-analysis.html#cb212-8" tabindex="-1"></a>)</span>
+<span id="cb212-9"><a href="ml-analysis.html#cb212-9" tabindex="-1"></a></span>
+<span id="cb212-10"><a href="ml-analysis.html#cb212-10" tabindex="-1"></a>ml_list_C <span class="ot">&lt;-</span> <span class="fu">run_ml_screening</span>(ml_data_C)</span>
+<span id="cb212-11"><a href="ml-analysis.html#cb212-11" tabindex="-1"></a><span class="fu">plot_ml_roc</span>(ml_list_C)    <span class="co"># ROC on external test set</span></span>
+<span id="cb212-12"><a href="ml-analysis.html#cb212-12" tabindex="-1"></a><span class="fu">plot_ml_venn</span>(ml_list_C)</span></code></pre></div>
+<p>Because external validation is dataset-dependent, we illustrate it here with a simulated split from the same cohort:</p>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="ml-analysis.html#cb213-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb213-2"><a href="ml-analysis.html#cb213-2" tabindex="-1"></a>idx <span class="ot">&lt;-</span> caret<span class="sc">::</span><span class="fu">createDataPartition</span>(group, <span class="at">p =</span> <span class="fl">0.7</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)[, <span class="dv">1</span>]</span>
+<span id="cb213-3"><a href="ml-analysis.html#cb213-3" tabindex="-1"></a></span>
+<span id="cb213-4"><a href="ml-analysis.html#cb213-4" tabindex="-1"></a>ml_data_C <span class="ot">&lt;-</span> <span class="fu">prepare_ml_data</span>(</span>
+<span id="cb213-5"><a href="ml-analysis.html#cb213-5" tabindex="-1"></a>  expr_mat[, idx], group[idx],</span>
+<span id="cb213-6"><a href="ml-analysis.html#cb213-6" tabindex="-1"></a>  <span class="at">test_expr  =</span> expr_mat[, <span class="sc">-</span>idx],</span>
+<span id="cb213-7"><a href="ml-analysis.html#cb213-7" tabindex="-1"></a>  <span class="at">test_group =</span> group[<span class="sc">-</span>idx],</span>
+<span id="cb213-8"><a href="ml-analysis.html#cb213-8" tabindex="-1"></a>  <span class="at">positive_class =</span> <span class="st">&quot;ICU&quot;</span>,</span>
+<span id="cb213-9"><a href="ml-analysis.html#cb213-9" tabindex="-1"></a>  <span class="at">genes =</span> genes</span>
+<span id="cb213-10"><a href="ml-analysis.html#cb213-10" tabindex="-1"></a>)</span>
+<span id="cb213-11"><a href="ml-analysis.html#cb213-11" tabindex="-1"></a></span>
+<span id="cb213-12"><a href="ml-analysis.html#cb213-12" tabindex="-1"></a>ml_list_C <span class="ot">&lt;-</span> <span class="fu">run_ml_screening</span>(</span>
+<span id="cb213-13"><a href="ml-analysis.html#cb213-13" tabindex="-1"></a>  ml_data_C,</span>
+<span id="cb213-14"><a href="ml-analysis.html#cb213-14" tabindex="-1"></a>  <span class="at">methods =</span> <span class="fu">c</span>(<span class="st">&quot;lasso&quot;</span>, <span class="st">&quot;rf&quot;</span>, <span class="st">&quot;svm_rfe&quot;</span>, <span class="st">&quot;xgboost&quot;</span>),</span>
+<span id="cb213-15"><a href="ml-analysis.html#cb213-15" tabindex="-1"></a>  <span class="at">cv_folds =</span> <span class="dv">5</span>,</span>
+<span id="cb213-16"><a href="ml-analysis.html#cb213-16" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">2025</span></span>
+<span id="cb213-17"><a href="ml-analysis.html#cb213-17" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="ml-analysis.html#cb214-1" tabindex="-1"></a><span class="fu">plot_ml_roc</span>(ml_list_C)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-mode-c-roc-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="ml-select" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> Post-hoc feature trimming<a href="ml-analysis.html#ml-select" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After initial model fitting, <code>select_features()</code> allows fine-grained control over the number of retained genes without re-training the full model. This is particularly useful for Ridge regression and XGBoost, which do not inherently perform variable selection:</p>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="ml-analysis.html#cb215-1" tabindex="-1"></a>res_xgb_top10 <span class="ot">&lt;-</span> <span class="fu">select_features</span>(res_xgb, <span class="at">top_n =</span> <span class="dv">10</span>)</span>
+<span id="cb215-2"><a href="ml-analysis.html#cb215-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Original features:&quot;</span>, <span class="fu">length</span>(res_xgb<span class="sc">$</span>genes), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Original features: 23</code></pre>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="ml-analysis.html#cb217-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;After trimming:  &quot;</span>, <span class="fu">length</span>(res_xgb_top10<span class="sc">$</span>genes), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; After trimming:   10</code></pre>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="ml-analysis.html#cb219-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Top 10 genes:&quot;</span>, <span class="fu">paste</span>(res_xgb_top10<span class="sc">$</span>genes, <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>#&gt; Top 10 genes: IL1R2, CTSG, ARG1, PI3, OLAH, SIGLEC1, LCN2, DEFA3, IGHG3, ISG15</code></pre>
+<hr />
+</div>
+<div id="ml-manual-list" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> Assembling models manually<a href="ml-analysis.html#ml-manual-list" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In some workflows you may wish to run individual model functions in separate
+sessions—or selectively combine only a subset of methods—rather than calling
+<code>run_ml_screening()</code> in one shot. <code>create_tcm_ml_list()</code> assembles any
+collection of <code>tcm_ml</code> objects into a <code>tcm_ml_list</code> that is fully compatible
+with all downstream utilities (<code>plot_ml_roc()</code>, <code>plot_ml_venn()</code>,
+<code>get_ml_consensus()</code>).</p>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="ml-analysis.html#cb221-1" tabindex="-1"></a><span class="do">## prepare the same ml_data for every model</span></span>
+<span id="cb221-2"><a href="ml-analysis.html#cb221-2" tabindex="-1"></a>ml_data <span class="ot">&lt;-</span> <span class="fu">prepare_ml_data</span>(expr_mat, group_vec)</span>
+<span id="cb221-3"><a href="ml-analysis.html#cb221-3" tabindex="-1"></a></span>
+<span id="cb221-4"><a href="ml-analysis.html#cb221-4" tabindex="-1"></a><span class="do">## run whichever models you need</span></span>
+<span id="cb221-5"><a href="ml-analysis.html#cb221-5" tabindex="-1"></a>res_lasso <span class="ot">&lt;-</span> <span class="fu">ml_lasso</span>(ml_data)</span>
+<span id="cb221-6"><a href="ml-analysis.html#cb221-6" tabindex="-1"></a>res_rf <span class="ot">&lt;-</span> <span class="fu">ml_rf</span>(ml_data)</span>
+<span id="cb221-7"><a href="ml-analysis.html#cb221-7" tabindex="-1"></a>res_svm <span class="ot">&lt;-</span> <span class="fu">ml_svm_rfe</span>(ml_data)</span></code></pre></div>
+<p>Pass the individual results as named arguments to <code>create_tcm_ml_list()</code>.
+The names you provide become the method labels used in all downstream plots.
+If you omit names, the function falls back to the <code>$method</code> slot stored inside
+each object.</p>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="ml-analysis.html#cb222-1" tabindex="-1"></a>ml_list_custom <span class="ot">&lt;-</span> <span class="fu">create_tcm_ml_list</span>(</span>
+<span id="cb222-2"><a href="ml-analysis.html#cb222-2" tabindex="-1"></a>  <span class="at">lasso =</span> res_lasso,</span>
+<span id="cb222-3"><a href="ml-analysis.html#cb222-3" tabindex="-1"></a>  <span class="at">rf =</span> res_rf,</span>
+<span id="cb222-4"><a href="ml-analysis.html#cb222-4" tabindex="-1"></a>  <span class="at">svm_rfe =</span> res_svm)</span>
+<span id="cb222-5"><a href="ml-analysis.html#cb222-5" tabindex="-1"></a></span>
+<span id="cb222-6"><a href="ml-analysis.html#cb222-6" tabindex="-1"></a><span class="do">## downstream analyses are identical to run_ml_screening() output </span></span>
+<span id="cb222-7"><a href="ml-analysis.html#cb222-7" tabindex="-1"></a><span class="co"># plot_ml_roc(ml_list_custom)                      </span></span>
+<span id="cb222-8"><a href="ml-analysis.html#cb222-8" tabindex="-1"></a><span class="co"># plot_ml_venn(ml_list_custom)             </span></span>
+<span id="cb222-9"><a href="ml-analysis.html#cb222-9" tabindex="-1"></a><span class="co"># get_ml_consensus(ml_list_custom, min_methods = 2) </span></span></code></pre></div>
+<hr />
+</div>
+<div id="ml-gene-diag" class="section level2 hasAnchor" number="8.7">
+<h2><span class="header-section-number">8.7</span> Single-gene diagnostic analysis<a href="ml-analysis.html#ml-gene-diag" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After identifying consensus genes via <code>get_ml_consensus()</code>, it is natural to
+ask: <em>how well does each gene alone discriminate between the two groups?</em>
+TCMDATA provides three companion functions for this purpose.</p>
+<div id="auc-summary-table" class="section level3 hasAnchor" number="8.7.1">
+<h3><span class="header-section-number">8.7.1</span> AUC summary table<a href="ml-analysis.html#auc-summary-table" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>get_gene_auc()</code> treats each gene’s expression as a univariate predictor and
+returns a tidy table with AUC, 95% DeLong CI, optimal cutoff (Youden’s J),
+sensitivity, specificity and a test against AUC = 0.5.</p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="ml-analysis.html#cb223-1" tabindex="-1"></a>consensus <span class="ot">&lt;-</span> <span class="fu">get_ml_consensus</span>(ml_list, <span class="at">min_methods =</span> <span class="dv">3</span>)</span>
+<span id="cb223-2"><a href="ml-analysis.html#cb223-2" tabindex="-1"></a></span>
+<span id="cb223-3"><a href="ml-analysis.html#cb223-3" tabindex="-1"></a><span class="do">## Use top 4 genes for demonstration</span></span>
+<span id="cb223-4"><a href="ml-analysis.html#cb223-4" tabindex="-1"></a>top4 <span class="ot">&lt;-</span> consensus[<span class="dv">1</span><span class="sc">:</span><span class="fu">min</span>(<span class="dv">4</span>, <span class="fu">length</span>(consensus))]</span>
+<span id="cb223-5"><a href="ml-analysis.html#cb223-5" tabindex="-1"></a>auc_tbl <span class="ot">&lt;-</span> <span class="fu">get_gene_auc</span>(top4, <span class="at">ml_data =</span> ml_data)</span>
+<span id="cb223-6"><a href="ml-analysis.html#cb223-6" tabindex="-1"></a>auc_tbl</span>
+<span id="cb223-7"><a href="ml-analysis.html#cb223-7" tabindex="-1"></a><span class="co">#&gt;    gene    auc  ci_lower  ci_upper direction optimal_cutoff sensitivity</span></span>
+<span id="cb223-8"><a href="ml-analysis.html#cb223-8" tabindex="-1"></a><span class="co">#&gt; 1  ARG1 0.8716 0.8015124 0.9416876         &gt;       7.108032        0.92</span></span>
+<span id="cb223-9"><a href="ml-analysis.html#cb223-9" tabindex="-1"></a><span class="co">#&gt; 2 IL1R2 0.8624 0.7882587 0.9365413         &gt;       9.355911        0.92</span></span>
+<span id="cb223-10"><a href="ml-analysis.html#cb223-10" tabindex="-1"></a><span class="co">#&gt; 3  OLAH 0.8598 0.7831673 0.9364327         &gt;       3.168289        0.80</span></span>
+<span id="cb223-11"><a href="ml-analysis.html#cb223-11" tabindex="-1"></a><span class="co">#&gt; 4 CD177 0.7972 0.7054094 0.8889906         &gt;       6.268600        0.76</span></span>
+<span id="cb223-12"><a href="ml-analysis.html#cb223-12" tabindex="-1"></a><span class="co">#&gt;   specificity youden_J      p_value        p_adj</span></span>
+<span id="cb223-13"><a href="ml-analysis.html#cb223-13" tabindex="-1"></a><span class="co">#&gt; 1        0.72     0.64 2.707715e-25 1.083086e-24</span></span>
+<span id="cb223-14"><a href="ml-analysis.html#cb223-14" tabindex="-1"></a><span class="co">#&gt; 2        0.74     0.66 9.682409e-22 1.936482e-21</span></span>
+<span id="cb223-15"><a href="ml-analysis.html#cb223-15" tabindex="-1"></a><span class="co">#&gt; 3        0.84     0.64 3.504416e-20 4.672555e-20</span></span>
+<span id="cb223-16"><a href="ml-analysis.html#cb223-16" tabindex="-1"></a><span class="co">#&gt; 4        0.78     0.54 2.210174e-10 2.210174e-10</span></span></code></pre></div>
+<p>Both <code>ml_data</code> (from <code>prepare_ml_data()</code>) and raw <code>expr_mat + group</code> are
+accepted. When <code>ml_data</code> is Mode B / C, the <strong>test set</strong> is used
+automatically; for Mode A the training set is used.</p>
+</div>
+<div id="single-gene-roc-curves" class="section level3 hasAnchor" number="8.7.2">
+<h3><span class="header-section-number">8.7.2</span> Single-gene ROC curves<a href="ml-analysis.html#single-gene-roc-curves" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>plot_gene_roc()</code> overlays one ROC curve per gene on a single panel.
+ROC analysis is performed via the <strong>pROC</strong> package
+(<a href="https://cran.r-project.org/web/packages/pROC/index.html">CRAN</a>;
+Robin <em>et al.</em>, BMC Bioinformatics 2011), which provides DeLong confidence
+intervals and optimal-cutoff calculation:</p>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="ml-analysis.html#cb224-1" tabindex="-1"></a><span class="fu">plot_gene_roc</span>(top4, <span class="at">ml_data =</span> ml_data)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-gene-roc-1.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
+<p>Set <code>combine = FALSE</code> to draw each gene’s ROC in its own facet. It is useful when
+curves overlap heavily or you want per-gene CI bands:</p>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="ml-analysis.html#cb225-1" tabindex="-1"></a><span class="fu">plot_gene_roc</span>(top4, <span class="at">ml_data =</span> ml_data, <span class="at">combine =</span> <span class="cn">FALSE</span>, <span class="at">show_ci =</span> <span class="cn">TRUE</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-gene-roc-facet-1.png" alt="" width="90%" style="display: block; margin: auto;" /></p>
+<p>The legend lists genes in descending AUC order, and the full AUC table is
+available via <code>attr(p, "auc_table")</code>.</p>
+</div>
+<div id="two-group-expression-boxplot" class="section level3 hasAnchor" number="8.7.3">
+<h3><span class="header-section-number">8.7.3</span> Two-group expression boxplot<a href="ml-analysis.html#two-group-expression-boxplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><code>plot_gene_boxplot()</code> draws a faceted boxplot with statistical test annotation
+(Wilcoxon rank-sum by default), jittered data points and optional violin
+overlay — publication-ready with zero extra dependencies.</p>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="ml-analysis.html#cb226-1" tabindex="-1"></a><span class="do">## Default: Wilcoxon test, p-value as number</span></span>
+<span id="cb226-2"><a href="ml-analysis.html#cb226-2" tabindex="-1"></a><span class="fu">plot_gene_boxplot</span>(top4, <span class="at">ml_data =</span> ml_data)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-gene-box-1.png" alt="" width="90%" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="ml-analysis.html#cb227-1" tabindex="-1"></a><span class="do">## Stars instead of numeric p, add violin overlay</span></span>
+<span id="cb227-2"><a href="ml-analysis.html#cb227-2" tabindex="-1"></a><span class="fu">plot_gene_boxplot</span>(top4, <span class="at">ml_data =</span> ml_data,</span>
+<span id="cb227-3"><a href="ml-analysis.html#cb227-3" tabindex="-1"></a>                  <span class="at">violin =</span> <span class="cn">TRUE</span>, <span class="at">p_label =</span> <span class="st">&quot;p.signif&quot;</span>)</span></code></pre></div>
+<p><img src="TCMDATA_files/figure-html/ml-gene-box-violin-1.png" alt="" width="90%" style="display: block; margin: auto;" /></p>
+<p>Also works with raw expression matrix:</p>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="ml-analysis.html#cb228-1" tabindex="-1"></a><span class="fu">plot_gene_boxplot</span>(top4, <span class="at">expr_mat =</span> expr_mat, <span class="at">group =</span> group)</span></code></pre></div>
+<p>The underlying test statistics are stored in <code>attr(p, "test_table")</code>.</p>
+<hr />
+</div>
+</div>
+<div id="ml-summary" class="section level2 hasAnchor" number="8.8">
+<h2><span class="header-section-number">8.8</span> Summary<a href="ml-analysis.html#ml-summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The table below summarises the ML methods available in <code>TCMDATA</code> and their key characteristics:</p>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="17%" />
+<col width="34%" />
+<col width="34%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Function</th>
+<th>Selection mechanism</th>
+<th>Key hyperparameters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>LASSO</td>
+<td><code>ml_lasso()</code></td>
+<td><span class="math inline">\(L_1\)</span> penalty drives coefficients to zero</td>
+<td><code>lambda_rule</code>, <code>cv_folds</code></td>
+</tr>
+<tr class="even">
+<td>Elastic Net</td>
+<td><code>ml_enet()</code></td>
+<td><span class="math inline">\(L_1 + L_2\)</span> penalty (configurable <code>alpha</code>)</td>
+<td><code>alpha</code>, <code>lambda_rule</code></td>
+</tr>
+<tr class="odd">
+<td>Ridge</td>
+<td><code>ml_ridge()</code></td>
+<td><span class="math inline">\(L_2\)</span> penalty; requires manual <code>top_n</code> cutoff</td>
+<td><code>top_n</code>, <code>lambda_rule</code></td>
+</tr>
+<tr class="even">
+<td>Random Forest</td>
+<td><code>ml_rf()</code></td>
+<td>Boruta all-relevant selection on Gini importance</td>
+<td><code>n_trees</code>, <code>max_runs</code></td>
+</tr>
+<tr class="odd">
+<td>SVM-RFE</td>
+<td><code>ml_svm_rfe()</code></td>
+<td>Backward elimination by SVM weight <span class="math inline">\(\|w_j\|^2\)</span></td>
+<td><code>kernel</code>, <code>cv_folds</code>, <code>cv_repeats</code></td>
+</tr>
+<tr class="even">
+<td>XGBoost</td>
+<td><code>ml_xgboost()</code></td>
+<td>Gain-based ranking; requires manual <code>top_n</code> cutoff</td>
+<td><code>nrounds</code>, <code>max_depth</code>, <code>eta</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="references-5" class="section level2 hasAnchor" number="8.9">
+<h2><span class="header-section-number">8.9</span> References<a href="ml-analysis.html#references-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Guyon, I., Weston, J., Barnhill, S., &amp; Vapnik, V. (2002). Gene selection for cancer classification using support vector machines. <em>Machine Learning</em>, 46, 389–422.</li>
+<li>Tibshirani, R. (1996). Regression shrinkage and selection via the lasso. <em>Journal of the Royal Statistical Society: Series B</em>, 58(1), 267–288.</li>
+<li>Breiman, L. (2001). Random forests. <em>Machine Learning</em>, 45, 5–32.</li>
+<li>Kursa, M. B., &amp; Rudnicki, W. R. (2010). Feature selection with the Boruta package. <em>Journal of Statistical Software</em>, 36(11), 1–13.</li>
+<li>Chen, T., &amp; Guestrin, C. (2016). XGBoost: A scalable tree boosting system. In <em>Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em> (pp. 785–794).</li>
+</ol>
+<hr />
+</div>
+<div id="ml-session-info" class="section level2 hasAnchor" number="8.10">
+<h2><span class="header-section-number">8.10</span> Session Information<a href="ml-analysis.html#ml-session-info" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="ml-analysis.html#cb229-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb229-2"><a href="ml-analysis.html#cb229-2" tabindex="-1"></a><span class="co">#&gt; R version 4.6.0 (2026-04-24)</span></span>
+<span id="cb229-3"><a href="ml-analysis.html#cb229-3" tabindex="-1"></a><span class="co">#&gt; Platform: x86_64-pc-linux-gnu</span></span>
+<span id="cb229-4"><a href="ml-analysis.html#cb229-4" tabindex="-1"></a><span class="co">#&gt; Running under: Ubuntu 24.04.4 LTS</span></span>
+<span id="cb229-5"><a href="ml-analysis.html#cb229-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb229-6"><a href="ml-analysis.html#cb229-6" tabindex="-1"></a><span class="co">#&gt; Matrix products: default</span></span>
+<span id="cb229-7"><a href="ml-analysis.html#cb229-7" tabindex="-1"></a><span class="co">#&gt; BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
+<span id="cb229-8"><a href="ml-analysis.html#cb229-8" tabindex="-1"></a><span class="co">#&gt; LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.26.so;  LAPACK version 3.12.0</span></span>
+<span id="cb229-9"><a href="ml-analysis.html#cb229-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb229-10"><a href="ml-analysis.html#cb229-10" tabindex="-1"></a><span class="co">#&gt; locale:</span></span>
+<span id="cb229-11"><a href="ml-analysis.html#cb229-11" tabindex="-1"></a><span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
+<span id="cb229-12"><a href="ml-analysis.html#cb229-12" tabindex="-1"></a><span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></span>
+<span id="cb229-13"><a href="ml-analysis.html#cb229-13" tabindex="-1"></a><span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span></span>
+<span id="cb229-14"><a href="ml-analysis.html#cb229-14" tabindex="-1"></a><span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></span>
+<span id="cb229-15"><a href="ml-analysis.html#cb229-15" tabindex="-1"></a><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></span>
+<span id="cb229-16"><a href="ml-analysis.html#cb229-16" tabindex="-1"></a><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></span>
+<span id="cb229-17"><a href="ml-analysis.html#cb229-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb229-18"><a href="ml-analysis.html#cb229-18" tabindex="-1"></a><span class="co">#&gt; time zone: UTC</span></span>
+<span id="cb229-19"><a href="ml-analysis.html#cb229-19" tabindex="-1"></a><span class="co">#&gt; tzcode source: system (glibc)</span></span>
+<span id="cb229-20"><a href="ml-analysis.html#cb229-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb229-21"><a href="ml-analysis.html#cb229-21" tabindex="-1"></a><span class="co">#&gt; attached base packages:</span></span>
+<span id="cb229-22"><a href="ml-analysis.html#cb229-22" tabindex="-1"></a><span class="co">#&gt; [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span></span>
+<span id="cb229-23"><a href="ml-analysis.html#cb229-23" tabindex="-1"></a><span class="co">#&gt; [8] base     </span></span>
+<span id="cb229-24"><a href="ml-analysis.html#cb229-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb229-25"><a href="ml-analysis.html#cb229-25" tabindex="-1"></a><span class="co">#&gt; other attached packages:</span></span>
+<span id="cb229-26"><a href="ml-analysis.html#cb229-26" tabindex="-1"></a><span class="co">#&gt;  [1] caret_7.0-1            lattice_0.22-9         org.Hs.eg.db_3.23.1   </span></span>
+<span id="cb229-27"><a href="ml-analysis.html#cb229-27" tabindex="-1"></a><span class="co">#&gt;  [4] AnnotationDbi_1.74.0   IRanges_2.46.0         S4Vectors_0.50.1      </span></span>
+<span id="cb229-28"><a href="ml-analysis.html#cb229-28" tabindex="-1"></a><span class="co">#&gt;  [7] Biobase_2.72.0         BiocGenerics_0.58.1    generics_0.1.4        </span></span>
+<span id="cb229-29"><a href="ml-analysis.html#cb229-29" tabindex="-1"></a><span class="co">#&gt; [10] clusterProfiler_4.20.0 aplot_0.2.9            ggrepel_0.9.8         </span></span>
+<span id="cb229-30"><a href="ml-analysis.html#cb229-30" tabindex="-1"></a><span class="co">#&gt; [13] ggtangle_0.1.2         igraph_2.3.1           ggplot2_4.0.3         </span></span>
+<span id="cb229-31"><a href="ml-analysis.html#cb229-31" tabindex="-1"></a><span class="co">#&gt; [16] dplyr_1.2.1            ivolcano_0.0.5         enrichplot_1.32.0     </span></span>
+<span id="cb229-32"><a href="ml-analysis.html#cb229-32" tabindex="-1"></a><span class="co">#&gt; [19] TCMDATA_0.1.0         </span></span>
+<span id="cb229-33"><a href="ml-analysis.html#cb229-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb229-34"><a href="ml-analysis.html#cb229-34" tabindex="-1"></a><span class="co">#&gt; loaded via a namespace (and not attached):</span></span>
+<span id="cb229-35"><a href="ml-analysis.html#cb229-35" tabindex="-1"></a><span class="co">#&gt;   [1] splines_4.6.0           ggplotify_0.1.3         tibble_3.3.1           </span></span>
+<span id="cb229-36"><a href="ml-analysis.html#cb229-36" tabindex="-1"></a><span class="co">#&gt;   [4] polyclip_1.10-7         hardhat_1.4.3           enrichit_0.1.4         </span></span>
+<span id="cb229-37"><a href="ml-analysis.html#cb229-37" tabindex="-1"></a><span class="co">#&gt;   [7] pROC_1.19.0.1           rpart_4.1.27            lifecycle_1.0.5        </span></span>
+<span id="cb229-38"><a href="ml-analysis.html#cb229-38" tabindex="-1"></a><span class="co">#&gt;  [10] httr2_1.2.2             doParallel_1.0.17       globals_0.19.1         </span></span>
+<span id="cb229-39"><a href="ml-analysis.html#cb229-39" tabindex="-1"></a><span class="co">#&gt;  [13] processx_3.9.0          MASS_7.3-65             magrittr_2.0.5         </span></span>
+<span id="cb229-40"><a href="ml-analysis.html#cb229-40" tabindex="-1"></a><span class="co">#&gt;  [16] sass_0.4.10             rmarkdown_2.31          jquerylib_0.1.4        </span></span>
+<span id="cb229-41"><a href="ml-analysis.html#cb229-41" tabindex="-1"></a><span class="co">#&gt;  [19] yaml_2.3.12             ggvenn_0.1.19           DBI_1.3.0              </span></span>
+<span id="cb229-42"><a href="ml-analysis.html#cb229-42" tabindex="-1"></a><span class="co">#&gt;  [22] RColorBrewer_1.1-3      lubridate_1.9.5         purrr_1.2.2            </span></span>
+<span id="cb229-43"><a href="ml-analysis.html#cb229-43" tabindex="-1"></a><span class="co">#&gt;  [25] yulab.utils_0.2.4       nnet_7.3-20             tweenr_2.0.3           </span></span>
+<span id="cb229-44"><a href="ml-analysis.html#cb229-44" tabindex="-1"></a><span class="co">#&gt;  [28] rappdirs_0.3.4          ipred_0.9-15            aisdk_1.4.8            </span></span>
+<span id="cb229-45"><a href="ml-analysis.html#cb229-45" tabindex="-1"></a><span class="co">#&gt;  [31] gdtools_0.5.1           circlize_0.4.18         lava_1.9.1             </span></span>
+<span id="cb229-46"><a href="ml-analysis.html#cb229-46" tabindex="-1"></a><span class="co">#&gt;  [34] listenv_0.10.1          tidytree_0.4.7          fru_0.0.7              </span></span>
+<span id="cb229-47"><a href="ml-analysis.html#cb229-47" tabindex="-1"></a><span class="co">#&gt;  [37] parallelly_1.47.0       codetools_0.2-20        DOSE_4.6.0             </span></span>
+<span id="cb229-48"><a href="ml-analysis.html#cb229-48" tabindex="-1"></a><span class="co">#&gt;  [40] ggforce_0.5.0           tidyselect_1.2.1        shape_1.4.6.1          </span></span>
+<span id="cb229-49"><a href="ml-analysis.html#cb229-49" tabindex="-1"></a><span class="co">#&gt;  [43] farver_2.1.2            matrixStats_1.5.0       Seqinfo_1.2.0          </span></span>
+<span id="cb229-50"><a href="ml-analysis.html#cb229-50" tabindex="-1"></a><span class="co">#&gt;  [46] jsonlite_2.0.0          GetoptLong_1.1.1        e1071_1.7-17           </span></span>
+<span id="cb229-51"><a href="ml-analysis.html#cb229-51" tabindex="-1"></a><span class="co">#&gt;  [49] ggridges_0.5.7          ggalluvial_0.12.6       survival_3.8-6         </span></span>
+<span id="cb229-52"><a href="ml-analysis.html#cb229-52" tabindex="-1"></a><span class="co">#&gt;  [52] iterators_1.0.14        systemfonts_1.3.2       foreach_1.5.2          </span></span>
+<span id="cb229-53"><a href="ml-analysis.html#cb229-53" tabindex="-1"></a><span class="co">#&gt;  [55] tools_4.6.0             ggnewscale_0.5.2        treeio_1.36.1          </span></span>
+<span id="cb229-54"><a href="ml-analysis.html#cb229-54" tabindex="-1"></a><span class="co">#&gt;  [58] Rcpp_1.1.1-1.1          glue_1.8.1              prodlim_2026.03.11     </span></span>
+<span id="cb229-55"><a href="ml-analysis.html#cb229-55" tabindex="-1"></a><span class="co">#&gt;  [61] gridExtra_2.3           xfun_0.57               qvalue_2.44.0          </span></span>
+<span id="cb229-56"><a href="ml-analysis.html#cb229-56" tabindex="-1"></a><span class="co">#&gt;  [64] withr_3.0.2             fastmap_1.2.0           callr_3.7.6            </span></span>
+<span id="cb229-57"><a href="ml-analysis.html#cb229-57" tabindex="-1"></a><span class="co">#&gt;  [67] digest_0.6.39           timechange_0.4.0        R6_2.6.1               </span></span>
+<span id="cb229-58"><a href="ml-analysis.html#cb229-58" tabindex="-1"></a><span class="co">#&gt;  [70] gridGraphics_0.5-1      colorspace_2.1-2        GO.db_3.23.1           </span></span>
+<span id="cb229-59"><a href="ml-analysis.html#cb229-59" tabindex="-1"></a><span class="co">#&gt;  [73] RSQLite_3.53.1          tidyr_1.3.2             fontLiberation_0.1.0   </span></span>
+<span id="cb229-60"><a href="ml-analysis.html#cb229-60" tabindex="-1"></a><span class="co">#&gt;  [76] data.table_1.18.4       recipes_1.3.2           class_7.3-23           </span></span>
+<span id="cb229-61"><a href="ml-analysis.html#cb229-61" tabindex="-1"></a><span class="co">#&gt;  [79] httr_1.4.8              htmlwidgets_1.6.4       scatterpie_0.2.6       </span></span>
+<span id="cb229-62"><a href="ml-analysis.html#cb229-62" tabindex="-1"></a><span class="co">#&gt;  [82] ModelMetrics_1.2.2.2    pkgconfig_2.0.3         gtable_0.3.6           </span></span>
+<span id="cb229-63"><a href="ml-analysis.html#cb229-63" tabindex="-1"></a><span class="co">#&gt;  [85] timeDate_4052.112       blob_1.3.0              ComplexHeatmap_2.28.0  </span></span>
+<span id="cb229-64"><a href="ml-analysis.html#cb229-64" tabindex="-1"></a><span class="co">#&gt;  [88] S7_0.2.2                XVector_0.52.0          htmltools_0.5.9        </span></span>
+<span id="cb229-65"><a href="ml-analysis.html#cb229-65" tabindex="-1"></a><span class="co">#&gt;  [91] fontBitstreamVera_0.1.1 bookdown_0.46           clue_0.3-68            </span></span>
+<span id="cb229-66"><a href="ml-analysis.html#cb229-66" tabindex="-1"></a><span class="co">#&gt;  [94] scales_1.4.0            png_0.1-9               gower_1.0.2            </span></span>
+<span id="cb229-67"><a href="ml-analysis.html#cb229-67" tabindex="-1"></a><span class="co">#&gt;  [97] Boruta_10.0.0           ggfun_0.2.0             knitr_1.51             </span></span>
+<span id="cb229-68"><a href="ml-analysis.html#cb229-68" tabindex="-1"></a><span class="co">#&gt; [100] rstudioapi_0.18.0       reshape2_1.4.5          rjson_0.2.23           </span></span>
+<span id="cb229-69"><a href="ml-analysis.html#cb229-69" tabindex="-1"></a><span class="co">#&gt; [103] nlme_3.1-169            proxy_0.4-29            cachem_1.1.0           </span></span>
+<span id="cb229-70"><a href="ml-analysis.html#cb229-70" tabindex="-1"></a><span class="co">#&gt; [106] GlobalOptions_0.1.4     stringr_1.6.0           parallel_4.6.0         </span></span>
+<span id="cb229-71"><a href="ml-analysis.html#cb229-71" tabindex="-1"></a><span class="co">#&gt; [109] pillar_1.11.1           grid_4.6.0              vctrs_0.7.3            </span></span>
+<span id="cb229-72"><a href="ml-analysis.html#cb229-72" tabindex="-1"></a><span class="co">#&gt; [112] randomForest_4.7-1.2    tidydr_0.0.6            cluster_2.1.8.2        </span></span>
+<span id="cb229-73"><a href="ml-analysis.html#cb229-73" tabindex="-1"></a><span class="co">#&gt; [115] evaluate_1.0.5          cli_3.6.6               compiler_4.6.0         </span></span>
+<span id="cb229-74"><a href="ml-analysis.html#cb229-74" tabindex="-1"></a><span class="co">#&gt; [118] rlang_1.2.0             crayon_1.5.3            future.apply_1.20.2    </span></span>
+<span id="cb229-75"><a href="ml-analysis.html#cb229-75" tabindex="-1"></a><span class="co">#&gt; [121] labeling_0.4.3          ps_1.9.3                plyr_1.8.9             </span></span>
+<span id="cb229-76"><a href="ml-analysis.html#cb229-76" tabindex="-1"></a><span class="co">#&gt; [124] fs_2.1.0                ggiraph_0.9.6           stringi_1.8.7          </span></span>
+<span id="cb229-77"><a href="ml-analysis.html#cb229-77" tabindex="-1"></a><span class="co">#&gt; [127] viridisLite_0.4.3       Biostrings_2.80.1       lazyeval_0.2.3         </span></span>
+<span id="cb229-78"><a href="ml-analysis.html#cb229-78" tabindex="-1"></a><span class="co">#&gt; [130] glmnet_5.0              GOSemSim_2.38.0         fontquiver_0.2.1       </span></span>
+<span id="cb229-79"><a href="ml-analysis.html#cb229-79" tabindex="-1"></a><span class="co">#&gt; [133] Matrix_1.7-5            patchwork_1.3.2         bit64_4.8.2            </span></span>
+<span id="cb229-80"><a href="ml-analysis.html#cb229-80" tabindex="-1"></a><span class="co">#&gt; [136] future_1.70.0           KEGGREST_1.52.0         kernlab_0.9-33         </span></span>
+<span id="cb229-81"><a href="ml-analysis.html#cb229-81" tabindex="-1"></a><span class="co">#&gt; [139] memoise_2.0.1           bslib_0.11.0            ggtree_4.2.0           </span></span>
+<span id="cb229-82"><a href="ml-analysis.html#cb229-82" tabindex="-1"></a><span class="co">#&gt; [142] bit_4.6.0               xgboost_3.2.1.1         ape_5.8-1              </span></span>
+<span id="cb229-83"><a href="ml-analysis.html#cb229-83" tabindex="-1"></a><span class="co">#&gt; [145] gson_0.1.0</span></span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ppi-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ai-module.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": true,
+    "facebook": false,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
