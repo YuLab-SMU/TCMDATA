@@ -212,7 +212,7 @@ get_gene_auc <- function(genes,
 #' @param palette Character vector of colours (one per gene), or \code{NULL} for the built-in 12-colour publication palette.
 #' @param show_ci Logical; Whether to add a translucent 95 percent CI band around each curve. Default \code{FALSE}.  Requires \code{pROC::ci.se()}.
 #' @param ncol Integer; number of columns when \code{combine = FALSE}. Default \code{NULL} (auto).
-#' @param label_size Legend text size. Default 9.
+#' @param label_size Legend text size. Default 6.2.
 #'
 #' @return A \code{ggplot} object. \code{attr(, "auc_table")} contains the same data.frame produced by \code{\link{get_gene_auc}}.
 #'
@@ -225,7 +225,8 @@ get_gene_auc <- function(genes,
 #' @export
 #' @importFrom ggplot2 ggplot aes geom_line geom_abline geom_ribbon
 #'   scale_colour_manual labs theme_bw theme element_text element_line
-#'   element_rect facet_wrap
+#'   element_rect facet_wrap coord_equal scale_fill_manual
+#' @importFrom grid unit
 #' @importFrom rlang .data
 plot_gene_roc <- function(genes,
                           ml_data = NULL,
@@ -236,7 +237,7 @@ plot_gene_roc <- function(genes,
                           palette = NULL,
                           show_ci = FALSE,
                           ncol = NULL,
-                          label_size = 9,
+                          label_size = 6.2,
                           p_adjust_method = "BH") {
 
   if (!requireNamespace("pROC", quietly = TRUE))
@@ -302,9 +303,7 @@ plot_gene_roc <- function(genes,
   ## Colour palette ─ 12-colour publication palette
   n <- length(ord)
   if (is.null(palette)) {
-    palette <- c("#e74c3c", "#3498db", "#2ecc71", "#9b59b6",
-                 "#e67e22", "#1abc9c", "#34495e", "#e84393",
-                 "#00b894", "#6c5ce7", "#fdcb6e", "#636e72")
+    palette <- .pal_tcm_methods(n)
     palette <- rep_len(palette, n)
   } else {
     palette <- rep_len(palette, n)
@@ -325,7 +324,7 @@ plot_gene_roc <- function(genes,
       aes(x = .data$fpr, ymin = .data$tpr_lo, ymax = .data$tpr_hi,
           fill = .data$gene),
       alpha = 0.12, colour = NA, inherit.aes = FALSE
-    ) + ggplot2::scale_fill_manual(values = palette, guide = "none")
+    ) + scale_fill_manual(values = palette, guide = "none")
   }
 
   p <- p +
@@ -334,17 +333,15 @@ plot_gene_roc <- function(genes,
     labs(x = "1 \u2212 Specificity", y = "Sensitivity",
          colour = NULL,
          subtitle = "Single-gene diagnostic ROC") +
-    theme_bw(base_size = 12)
+    coord_equal(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
+    .theme_tcm_pub(grid = "both")
 
   if (isTRUE(combine)) {
     p <- p + theme(
-      legend.position = c(0.98, 0.02),
-      legend.justification = c(1, 0),
-      legend.background = element_rect(fill = "white", colour = "grey80",
-                                       linewidth = 0.3),
+      legend.position = "bottom",
+      legend.key.width = unit(9, "mm"),
       legend.text  = element_text(size = label_size),
-      panel.grid.minor = element_line(linewidth = 0.2),
-      plot.subtitle = element_text(size = 10, colour = "grey40")
+      plot.subtitle = element_text(colour = "grey35")
     )
   } else {
     ## Faceted mode: one panel per gene 
@@ -352,11 +349,8 @@ plot_gene_roc <- function(genes,
       facet_wrap(~ gene, ncol = ncol) +
       theme(
         legend.position  = "none",
-        strip.text       = element_text(face = "italic", size = 10),
-        strip.background = ggplot2::element_rect(fill = "grey96",
-                                                 colour = "grey80"),
-        panel.grid.minor = element_line(linewidth = 0.2),
-        plot.subtitle    = element_text(size = 10, colour = "grey40")
+        strip.text       = element_text(face = "italic"),
+        plot.subtitle    = element_text(colour = "grey35")
       )
   }
 
@@ -383,7 +377,7 @@ plot_gene_roc <- function(genes,
 #' @param test_method Statistical test: \code{"wilcox"} (Wilcoxon rank-sum,
 #'   default) or \code{"t.test"}.
 #' @param palette Character(2); fill colours for the two groups.
-#'   Default \code{c("#E74C3C", "#3498DB")} (red / blue).
+#'   Default is a low-saturation red / blue pair.
 #' @param show_points Logical; overlay jittered data points? Default \code{TRUE}.
 #' @param point_alpha Alpha transparency for jittered points. Default 0.35.
 #' @param violin Logical; add a violin layer behind the boxes?
@@ -401,7 +395,7 @@ plot_gene_roc <- function(genes,
 #'   when \code{p_label = "p.adj"}.  When only a single gene is tested,
 #'   \code{p_adj} equals \code{p_value} regardless of method.
 #' @param base_size Base font size for \code{\link[ggplot2]{theme_bw}}.
-#'   Default 12.
+#'   Default 7.
 #'
 #' @return A \code{ggplot} object.
 #'   \code{attr(, "test_table")} contains a \code{data.frame}:
@@ -418,6 +412,7 @@ plot_gene_roc <- function(genes,
 #' @export
 #' @importFrom ggplot2 ggplot aes geom_boxplot geom_jitter geom_violin
 #'   facet_wrap scale_fill_manual labs theme_bw theme element_text annotate
+#'   geom_segment geom_text
 #' @importFrom stats wilcox.test t.test p.adjust
 #' @importFrom rlang .data
 plot_gene_boxplot <- function(genes,
@@ -426,7 +421,7 @@ plot_gene_boxplot <- function(genes,
                               group = NULL,
                               use = c("auto", "train", "test"),
                               test_method = c("wilcox", "t.test"),
-                              palette = c("#E74C3C", "#3498DB"),
+                              palette = .pal_tcm_groups()[1:2],
                               show_points = TRUE,
                               point_alpha = 0.35,
                               violin = FALSE,
@@ -434,7 +429,7 @@ plot_gene_boxplot <- function(genes,
                               scales = "free_y",
                               p_label = c("p.format", "p.signif", "p.adj"),
                               p_adjust_method = "BH",
-                              base_size = 12) {
+                              base_size = 7) {
 
   test_method <- match.arg(test_method)
   p_label <- match.arg(p_label)
@@ -512,17 +507,17 @@ plot_gene_boxplot <- function(genes,
     x = .data$group, y = .data$expression, fill = .data$group))
 
   if (isTRUE(violin)) {
-    p <- p + geom_violin(alpha = 0.15, colour = NA, width = 0.9,
+    p <- p + geom_violin(alpha = 0.12, colour = NA, width = 0.9,
                          show.legend = FALSE)
   }
 
   ## Boxplot
   p <- p + geom_boxplot(width = 0.6, outlier.shape = NA, alpha = 0.85,
-                        colour = "grey30", linewidth = 0.35)
+                        colour = "grey25", linewidth = 0.3)
 
   ## Jittered points
   if (isTRUE(show_points)) {
-    p <- p + geom_jitter(width = 0.15, size = 1.2, alpha = point_alpha,
+    p <- p + geom_jitter(width = 0.15, size = 0.75, alpha = point_alpha,
                          show.legend = FALSE)
   }
 
@@ -540,42 +535,40 @@ plot_gene_boxplot <- function(genes,
 
   p <- p +
     ## horizontal bracket line
-    ggplot2::geom_segment(
+    geom_segment(
       data = bracket_df,
       aes(x = .data$x, xend = .data$xend, y = .data$y, yend = .data$y),
-      inherit.aes = FALSE, colour = "grey30", linewidth = 0.4
+      inherit.aes = FALSE, colour = "grey30", linewidth = 0.3
     ) +
     ## left tick
-    ggplot2::geom_segment(
+    geom_segment(
       data = bracket_df,
       aes(x = .data$x, xend = .data$x,
           y = .data$y, yend = .data$y - (.data$y_lab - .data$y) * 0.3),
-      inherit.aes = FALSE, colour = "grey30", linewidth = 0.4
+      inherit.aes = FALSE, colour = "grey30", linewidth = 0.3
     ) +
     ## right tick
-    ggplot2::geom_segment(
+    geom_segment(
       data = bracket_df,
       aes(x = .data$xend, xend = .data$xend,
           y = .data$y, yend = .data$y - (.data$y_lab - .data$y) * 0.3),
-      inherit.aes = FALSE, colour = "grey30", linewidth = 0.4
+      inherit.aes = FALSE, colour = "grey30", linewidth = 0.3
     ) +
     ## p-value text
-    ggplot2::geom_text(
+    geom_text(
       data = bracket_df,
       aes(x = 1.5, y = .data$y_lab, label = .data$label),
-      inherit.aes = FALSE, size = 3.5, colour = "grey20"
+      inherit.aes = FALSE, size = base_size / 2.8, colour = "grey20"
     )
 
   p <- p +
     facet_wrap(~ gene, scales = scales, ncol = ncol) +
     scale_fill_manual(values = stats::setNames(palette, lvls)) +
     labs(x = NULL, y = "Expression", fill = "Group") +
-    theme_bw(base_size = base_size) +
+    .theme_tcm_pub(base_size = base_size, grid = "y") +
     theme(
-      strip.text       = element_text(face = "italic", size = base_size),
-      strip.background = ggplot2::element_rect(fill = "grey96", colour = "grey80"),
-      legend.position  = "bottom",
-      panel.grid.minor = element_line(linewidth = 0.2)
+      strip.text = element_text(face = "italic"),
+      legend.position = "bottom"
     )
 
   ## Reorder test_table columns

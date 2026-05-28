@@ -8,6 +8,7 @@ ppi_knock(
   g,
   targets,
   n_perm = 100L,
+  metrics = c("ASPL", "AD", "DC", "CC"),
   weight_attr = "score",
   rewire_niter = 10L,
   seed = 42L
@@ -20,6 +21,14 @@ ppi_knock(
 
 \item{n_perm}{Integer. Number of permutation iterations for the null
 distribution.  Default is \code{100}, matching the original paper.}
+
+\item{metrics}{Character vector of whole-network metrics to track. Defaults
+to the original \code{ppi_knock()} metrics \code{"ASPL"}, \code{"AD"},
+\code{"DC"}, and \code{"CC"}. Additional supported exploratory metrics are
+\code{"density"}, \code{"transitivity"}, \code{"diameter"},
+\code{"components"}, and \code{"largest_component_fraction"}. The
+integrated \code{Total_Score} is only computed when all original four
+metrics are present.}
 
 \item{weight_attr}{Character. Edge attribute name for confidence weights.
 Default is \code{"score"}.}

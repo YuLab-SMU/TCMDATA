@@ -12,19 +12,19 @@
 #'   If \code{NULL} (default), all numeric columns except \code{id_col} are
 #'   used.
 #' @param colors Character vector of length 3. Colours mapped to Z-score
-#'   values \code{-2}, \code{0}, and \code{2}. Default is
-#'   \code{c("#2166AC", "white", "#B2182B")}.
+#'   values \code{-2}, \code{0}, and \code{2}. Default is a low-saturation
+#'   blue-white-red palette.
 #' @param cluster_rows Logical. Perform hierarchical clustering on rows?
 #'   Default \code{TRUE}.
 #' @param cluster_cols Logical. Perform hierarchical clustering on columns?
 #'   Default \code{FALSE}.
 #' @param row_fontsize Numeric. Font size for row (gene) names.
-#'   Default \code{12}.
+#'   Default \code{6.5}.
 #' @param row_fontface Character. Font face for row names. One of
 #'   \code{"plain"}, \code{"italic"}, \code{"bold"}, or
 #'   \code{"bold.italic"}. Default \code{"italic"}.
 #' @param col_fontsize Numeric. Font size for column (metric) names.
-#'   Default \code{10}.
+#'   Default \code{6.5}.
 #' @param col_fontface Character. Font face for column names. Default
 #'   \code{"bold"}.
 #' @param col_rotation Numeric. Rotation angle (degrees) for column labels.
@@ -33,9 +33,9 @@
 #' @param show_column_names Logical. Show column names? Default \code{TRUE}.
 #' @param legend_title Character. Title for the colour legend. Default
 #'   \code{"Z-score"}.
-#' @param border_color Character. Cell border colour. Default \code{"white"}.
+#' @param border_color Character. Cell border colour. Default \code{NA}.
 #'   Set to \code{NA} to remove borders.
-#' @param border_width Numeric. Cell border line width. Default \code{1}.
+#' @param border_width Numeric. Cell border line width. Default \code{0.3}.
 #' @param ... Additional arguments passed to
 #'   \code{\link[ComplexHeatmap]{Heatmap}}.
 #'
@@ -55,19 +55,19 @@
 plot_node_heatmap <- function(data,
                               id_col = "name",
                               select_cols = NULL,
-                              colors = c("#2166AC", "white", "#B2182B"),
+                              colors = c("#4E79A7", "white", "#B85C5C"),
                               cluster_rows = TRUE,
                               cluster_cols = FALSE,
-                              row_fontsize = 12,
+                              row_fontsize = 6.5,
                               row_fontface = "italic",
-                              col_fontsize = 10,
+                              col_fontsize = 6.5,
                               col_fontface = "bold",
                               col_rotation = 45,
                               show_row_names = TRUE,
                               show_column_names = TRUE,
                               legend_title = "Z-score",
-                              border_color = "white",
-                              border_width = 1,
+                              border_color = NA,
+                              border_width = 0.3,
                               ...) {
 
   if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
@@ -121,7 +121,12 @@ plot_node_heatmap <- function(data,
     row_names_gp      = gpar(fontsize = row_fontsize, fontface = row_fontface),
     column_names_gp   = gpar(fontsize = col_fontsize, fontface = col_fontface),
     column_names_rot  = col_rotation,
-    row_dend_width    = unit(2, "cm"),
+    row_dend_width    = unit(10, "mm"),
+    column_title_gp   = gpar(fontsize = col_fontsize, fontface = "bold"),
+    heatmap_legend_param = list(
+      title_gp = gpar(fontsize = col_fontsize, fontface = "bold"),
+      labels_gp = gpar(fontsize = col_fontsize)
+    ),
     ...
   )
 

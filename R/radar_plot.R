@@ -94,6 +94,7 @@ get_node_profile <- function(tab,
 #' @param fill_color Polygon fill color. "#A3BEDD", "#A7CBA9", and "#D59390" are recommended.
 #' @param line_color Polygon border color.
 #' @param title Character; plot title. Default is NULL.
+#' @param base_size Numeric. Base font size for the plot. Default \code{7}.
 #'
 #' @return A \code{ggplot} object.
 #'
@@ -106,9 +107,10 @@ get_node_profile <- function(tab,
 radar_plot <- function(profile_df,
                        category_col = "metric",
                        value_col = "value",
-                       fill_color = "#B6B0D4",
-                       line_color = "#6D65A6",
-                       title = NULL) {
+                       fill_color = "#A0CBE8",
+                       line_color = "#4E79A7",
+                       title = NULL,
+                       base_size = 7) {
   data <- profile_df
   angle <- NULL
 
@@ -160,18 +162,18 @@ radar_plot <- function(profile_df,
     geom_polygon(
       data = ring_polygons,
       aes(.data$x, .data$y, group = .data$ring),
-      color = "grey80", fill = NA
+      color = "grey86", fill = NA, linewidth = 0.25
     ) +
     geom_segment(
       data = df_segments,
       aes(x = 0, y = 0, xend = .data$xend, yend = .data$yend),
-      color = "grey85"
+      color = "grey88", linewidth = 0.25
     ) +
     geom_polygon(
       data = df_polygon,
       aes(.data$x, .data$y),
       fill = fill_color, color = line_color,
-      linewidth = 0.8, alpha = 0.7
+      linewidth = 0.45, alpha = 0.55
     ) +
     geom_text(
       data = data,
@@ -180,21 +182,21 @@ radar_plot <- function(profile_df,
         y = cos(.data$angle) * (max_value * 1.25),
         label = !!rlang::sym(category_col)
       ),
-      size = 3
+      size = base_size / 2.8
     ) +
     geom_text(
       data = axis_labels,
       aes(x = .data$x, y = .data$y, label = .data$label),
-      color = "grey40", size = 3, vjust = -0.5
+      color = "grey40", size = base_size / 3.1, vjust = -0.5
     ) +
     coord_equal(clip = "off") +
-    theme_void() +
+    .theme_tcm_void(base_size = base_size) +
     theme(
       plot.margin = margin(10, 30, 10, 10))
 
   if (!is.null(title)){
     p <- p + ggtitle(title) +
-      theme(plot.title = element_text(hjust = 0.5, size = 11, face = "bold"))
+      theme(plot.title = element_text(hjust = 0.5, face = "bold"))
   }
 
   return(p)

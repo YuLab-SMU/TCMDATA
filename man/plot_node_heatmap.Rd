@@ -9,19 +9,19 @@ plot_node_heatmap(
   data,
   id_col = "name",
   select_cols = NULL,
-  colors = c("#2166AC", "white", "#B2182B"),
+  colors = c("#4E79A7", "white", "#B85C5C"),
   cluster_rows = TRUE,
   cluster_cols = FALSE,
-  row_fontsize = 12,
+  row_fontsize = 6.5,
   row_fontface = "italic",
-  col_fontsize = 10,
+  col_fontsize = 6.5,
   col_fontface = "bold",
   col_rotation = 45,
   show_row_names = TRUE,
   show_column_names = TRUE,
   legend_title = "Z-score",
-  border_color = "white",
-  border_width = 1,
+  border_color = NA,
+  border_width = 0.3,
   ...
 )
 
@@ -38,8 +38,8 @@ If \code{NULL} (default), all numeric columns except \code{id_col} are
 used.}
 
 \item{colors}{Character vector of length 3. Colours mapped to Z-score
-values \code{-2}, \code{0}, and \code{2}. Default is
-\code{c("#2166AC", "white", "#B2182B")}.}
+values \code{-2}, \code{0}, and \code{2}. Default is a low-saturation
+blue-white-red palette.}
 
 \item{cluster_rows}{Logical. Perform hierarchical clustering on rows?
 Default \code{TRUE}.}
@@ -48,14 +48,14 @@ Default \code{TRUE}.}
 Default \code{FALSE}.}
 
 \item{row_fontsize}{Numeric. Font size for row (gene) names.
-Default \code{12}.}
+Default \code{6.5}.}
 
 \item{row_fontface}{Character. Font face for row names. One of
 \code{"plain"}, \code{"italic"}, \code{"bold"}, or
 \code{"bold.italic"}. Default \code{"italic"}.}
 
 \item{col_fontsize}{Numeric. Font size for column (metric) names.
-Default \code{10}.}
+Default \code{6.5}.}
 
 \item{col_fontface}{Character. Font face for column names. Default
 \code{"bold"}.}
@@ -70,10 +70,10 @@ Default \code{45}.}
 \item{legend_title}{Character. Title for the colour legend. Default
 \code{"Z-score"}.}
 
-\item{border_color}{Character. Cell border colour. Default \code{"white"}.
+\item{border_color}{Character. Cell border colour. Default \code{NA}.
 Set to \code{NA} to remove borders.}
 
-\item{border_width}{Numeric. Cell border line width. Default \code{1}.}
+\item{border_width}{Numeric. Cell border line width. Default \code{0.3}.}
 
 \item{...}{Additional arguments passed to
 \code{\link[ComplexHeatmap]{Heatmap}}.}

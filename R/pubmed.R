@@ -219,9 +219,9 @@ get_pubmed_data <- function(tcm_name,
 plot.tcm_pubmed <- function(x, 
                             type = c("trend", "journal"), 
                             N = 10,
-                            bar_col = "#3498db",
-                            line_col = "#2c3e50",
-                            point_col = "#e74c3c",
+                            bar_col = "#4E79A7",
+                            line_col = "#2F4858",
+                            point_col = "#B85C5C",
                             ...) {
   
   type <- match.arg(type)
@@ -245,10 +245,11 @@ plot.tcm_pubmed <- function(x,
     }
     
     p_final <- ggplot(plot_data, aes(x = .data$Year, y = .data$Count)) +
-      geom_line(color = line_col, linewidth = 1) +
-      geom_point(color = point_col, size = 2) +
+      geom_line(color = line_col, linewidth = 0.55) +
+      geom_point(color = point_col, size = 1.4) +
       scale_x_continuous(breaks = year_breaks) +
-      theme_minimal()
+      labs(x = NULL, y = "Count") +
+      .theme_tcm_pub(grid = "y")
   }
   
   ## journal plot
@@ -267,8 +268,8 @@ plot.tcm_pubmed <- function(x,
                       aes(x = stats::reorder(.data$Journal, .data$Count), y = .data$Count)) +
       geom_col(fill = bar_col) +
       coord_flip() +
-      theme_minimal() +
-      labs(x = NULL, y = "Count", title = paste("Top", N, "Journals"))
+      labs(x = NULL, y = "Count", title = paste("Top", N, "Journals")) +
+      .theme_tcm_pub(grid = "x")
   }
   return(p_final)
 }

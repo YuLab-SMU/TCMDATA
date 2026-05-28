@@ -8,9 +8,10 @@ radar_plot(
   profile_df,
   category_col = "metric",
   value_col = "value",
-  fill_color = "#B6B0D4",
-  line_color = "#6D65A6",
-  title = NULL
+  fill_color = "#A0CBE8",
+  line_color = "#4E79A7",
+  title = NULL,
+  base_size = 7
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ for metric values (usually scaled to \eqn{[0, 1]}). Defaults to \code{"value"}.}
 \item{line_color}{Polygon border color.}
 
 \item{title}{Character; plot title. Default is NULL.}
+
+\item{base_size}{Numeric. Base font size for the plot. Default \code{7}.}
 }
 \value{
 A \code{ggplot} object.

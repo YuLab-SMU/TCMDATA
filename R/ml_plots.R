@@ -16,6 +16,11 @@ plot_enet_cv <- function(result, ...) {
     stop("result must be a tcm_ml object from ml_enet() / ml_lasso() / ml_ridge()")
   if (!requireNamespace("glmnet", quietly = TRUE))
     stop("Package 'glmnet' is required")
+  old_par <- graphics::par(
+    family = "Arial", cex = 0.75, cex.axis = 0.75,
+    cex.lab = 0.85, lwd = 0.8, bty = "l"
+  )
+  on.exit(graphics::par(old_par), add = TRUE)
   graphics::plot(result$cv_fit, ...)
   invisible(NULL)
 }
@@ -53,10 +58,15 @@ plot_enet_path <- function(result, top_n = 20, xvar = "lambda", ...) {
     fit$beta <- fit$beta[keep, , drop = FALSE]
   }
 
+  old_par <- graphics::par(
+    family = "Arial", cex = 0.75, cex.axis = 0.75,
+    cex.lab = 0.85, lwd = 0.8, bty = "l"
+  )
+  on.exit(graphics::par(old_par), add = TRUE)
   graphics::plot(fit, xvar = xvar, ...)
   if (xvar == "lambda") {
     graphics::abline(v = log(result$lambda_used),
-                     lty = 2, col = "red")
+                     lty = 2, col = "#B85C5C", lwd = 0.8)
   }
   invisible(NULL)
 }
@@ -70,8 +80,8 @@ plot_enet_path <- function(result, top_n = 20, xvar = "lambda", ...) {
 #' @param top_n Number of top features to show. Default 20.
 #' @return A \code{ggplot} object.
 #' @export
-#' @importFrom ggplot2 ggplot aes geom_col coord_flip scale_fill_manual
-#'   labs theme_bw
+#' @importFrom ggplot2 ggplot aes geom_col coord_flip geom_hline
+#'   scale_fill_manual labs theme_bw
 #' @importFrom rlang .data
 plot_enet_coefs <- function(result, top_n = 20) {
   if (!inherits(result, "tcm_ml") || is.null(result$coefficients))
@@ -87,11 +97,13 @@ plot_enet_coefs <- function(result, top_n = 20) {
   p <- ggplot(df, aes(
     x = .data$gene, y = .data$coefficient, fill = .data$sign
   )) +
+    geom_hline(yintercept = 0, linewidth = 0.3, colour = "grey35") +
     geom_col() +
     coord_flip() +
-    scale_fill_manual(values = c(Positive = "#e74c3c", Negative = "#3498db")) +
+    scale_fill_manual(values = .pal_tcm_direction()) +
     labs(x = NULL, y = "Coefficient", fill = "Direction") +
-    theme_bw()
+    .theme_tcm_pub(grid = "x") +
+    theme(legend.position = "top")
   return(p)
 }
 
@@ -131,14 +143,13 @@ plot_rf_boruta <- function(result, top_n = 20) {
   )) +
     geom_col() +
     geom_vline(
-      xintercept = shadow_ref, linetype = "dashed", colour = "grey40"
+      xintercept = shadow_ref, linetype = "dashed",
+      colour = "grey35", linewidth = 0.35
     ) +
-    scale_fill_manual(
-      values = c(Confirmed = "#2ecc71", Tentative = "#f1c40f",
-                 Rejected = "#e74c3c")
-    ) +
+    scale_fill_manual(values = .pal_tcm_decision()) +
     labs(x = "Importance (median)", y = NULL, fill = "Decision") +
-    theme_bw()
+    .theme_tcm_pub(grid = "x") +
+    theme(legend.position = "top")
   return(p)
 }
 
@@ -162,10 +173,10 @@ plot_rf_importance <- function(result, top_n = 20) {
   p <- ggplot(df, aes(
     x = .data$gene, y = .data$MeanDecreaseGini
   )) +
-    geom_col(fill = "steelblue") +
+    geom_col(fill = "#4E79A7") +
     coord_flip() +
     labs(x = NULL, y = "Mean Decrease Gini") +
-    theme_bw()
+    .theme_tcm_pub(grid = "x")
   return(p)
 }
 
@@ -191,13 +202,14 @@ plot_svm_rfe_curve <- function(result) {
   p <- ggplot(df, aes(
     x = .data$Variables, y = .data$.metric
   )) +
-    geom_line(colour = "steelblue") +
-    geom_point(colour = "steelblue") +
+    geom_line(colour = "#4E79A7", linewidth = 0.55) +
+    geom_point(colour = "#4E79A7", size = 1.3) +
     geom_vline(
-      xintercept = best_n, linetype = "dashed", colour = "red"
+      xintercept = best_n, linetype = "dashed",
+      colour = "#B85C5C", linewidth = 0.35
     ) +
     labs(x = "Number of features", y = paste0(metric, " (CV)")) +
-    theme_bw()
+    .theme_tcm_pub(grid = "y")
   return(p)
 }
 
@@ -224,10 +236,10 @@ plot_xgb_importance <- function(result, top_n = 20) {
   p <- ggplot(df, aes(
     x = .data$gene, y = .data$importance
   )) +
-    geom_col(fill = "#e67e22") +
+    geom_col(fill = "#D8A24A") +
     coord_flip() +
     labs(x = NULL, y = "Gain") +
-    theme_bw()
+    .theme_tcm_pub(grid = "x")
   return(p)
 }
 
@@ -246,8 +258,9 @@ plot_xgb_importance <- function(result, top_n = 20) {
 #' @param ml_list A \code{tcm_ml_list} from [run_ml_screening()].
 #' @return A \code{ggplot} object, or \code{NULL} if no data available.
 #' @export
-#' @importFrom ggplot2 ggplot aes geom_line geom_abline scale_colour_manual
+#' @importFrom ggplot2 ggplot aes geom_line geom_abline coord_equal scale_colour_manual
 #'   labs theme_bw theme element_text element_line element_rect
+#' @importFrom grid unit
 #' @importFrom rlang .data
 plot_ml_roc <- function(ml_list) {
   if (!inherits(ml_list, "tcm_ml_list"))
@@ -345,8 +358,7 @@ plot_ml_roc <- function(ml_list) {
 
   ## Colour palette
   n_method <- length(frames)
-  pal <- c("#e74c3c", "#3498db", "#2ecc71", "#9b59b6",
-           "#e67e22", "#1abc9c")[seq_len(n_method)]
+  pal <- .pal_tcm_methods(n_method)
   names(pal) <- unique(roc_df$method)
 
   p <- ggplot(roc_df, aes(
@@ -358,15 +370,12 @@ plot_ml_roc <- function(ml_list) {
     scale_colour_manual(values = pal) +
     labs(x = "1 \u2212 Specificity", y = "Sensitivity",
          colour = NULL, subtitle = subtitle) +
-    theme_bw(base_size = 12) +
+    coord_equal(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
+    .theme_tcm_pub(grid = "both") +
     theme(
-      legend.position = c(0.98, 0.02),
-      legend.justification = c(1, 0),
-      legend.background = element_rect(fill = "white", colour = "grey80",
-                                       linewidth = 0.3),
-      legend.text = element_text(size = 9),
-      panel.grid.minor = element_line(linewidth = 0.2),
-      plot.subtitle = element_text(size = 10, colour = "grey40")
+      legend.position = "bottom",
+      legend.key.width = unit(9, "mm"),
+      plot.subtitle = element_text(colour = "grey35")
     )
 
   return(p)

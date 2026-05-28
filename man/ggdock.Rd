@@ -8,12 +8,12 @@ ggdock(
   dock_data,
   order = NULL,
   type = "dot",
-  point_size = 8,
-  base_size = 12,
+  point_size = 3,
+  base_size = 7,
   angle = 50,
   hjust = 1,
   vjust = 1,
-  palette = "ggthemes::Orange-Blue-White Diverging",
+  palette = NULL,
   label = FALSE,
   label_digits = 2,
   label_size = 3,
@@ -30,15 +30,17 @@ ggdock(
 
 \item{type}{Type of visualization, either \code{"dot"} or \code{"tile"}.}
 
-\item{point_size}{Numeric. Point size used in dot plots. Default is 6.}
+\item{point_size}{Numeric. Point size used in dot plots. Default is 3.}
 
-\item{base_size}{Numeric. Base font size for the theme. Default is 12.}
+\item{base_size}{Numeric. Base font size for the theme. Default is 7.}
 
 \item{angle}{Numeric. Rotation angle for x-axis text labels. Default is 50.}
 
 \item{hjust, vjust}{Numeric. Horizontal and vertical justification for x-axis labels.}
 
-\item{palette}{Character. Name of the continuous color palette to use. Default is \code{"ggthemes::Orange-Blue-White Diverging"}.}
+\item{palette}{Character. Name of the continuous color palette to use via
+\pkg{paletteer}. If \code{NULL}, a built-in low-saturation publication
+palette is used.}
 
 \item{label}{Logical. If \code{TRUE}, print affinity numbers on the plot. Default \code{FALSE}.}
 

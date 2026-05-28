@@ -14,7 +14,7 @@ plot_gene_roc(
   palette = NULL,
   show_ci = FALSE,
   ncol = NULL,
-  label_size = 9,
+  label_size = 6.2,
   p_adjust_method = "BH"
 )
 }
@@ -44,7 +44,7 @@ ignored.}
 
 \item{ncol}{Integer; number of columns when \code{combine = FALSE}. Default \code{NULL} (auto).}
 
-\item{label_size}{Legend text size. Default 9.}
+\item{label_size}{Legend text size. Default 6.2.}
 
 \item{p_adjust_method}{Method for multiple-testing correction passed to
 \code{\link[stats]{p.adjust}}.  Default \code{"BH"} (Benjamini--Hochberg

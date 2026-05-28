@@ -3,11 +3,13 @@
 #' @param dock_data A numeric matrix or data frame.
 #' @param order Reordering method for factor levels (optional).
 #' @param type Type of visualization, either `"dot"` or `"tile"`.
-#' @param point_size Numeric. Point size used in dot plots. Default is 6.
-#' @param base_size Numeric. Base font size for the theme. Default is 12.
+#' @param point_size Numeric. Point size used in dot plots. Default is 3.
+#' @param base_size Numeric. Base font size for the theme. Default is 7.
 #' @param angle Numeric. Rotation angle for x-axis text labels. Default is 50.
 #' @param hjust,vjust Numeric. Horizontal and vertical justification for x-axis labels.
-#' @param palette Character. Name of the continuous color palette to use. Default is `"ggthemes::Orange-Blue-White Diverging"`.
+#' @param palette Character. Name of the continuous color palette to use via
+#'   \pkg{paletteer}. If \code{NULL}, a built-in low-saturation publication
+#'   palette is used.
 #' @param label Logical. If `TRUE`, print affinity numbers on the plot. Default `FALSE`.
 #' @param label_digits Integer. Number of digits to show for the affinity text. Default `2`.
 #' @param label_size Numeric. Text size for affinity labels. Default `3.5`.
@@ -18,7 +20,9 @@
 #'
 #' @return A `ggplot` object.
 #'
-#' @import ggplot2
+#' @importFrom ggplot2 aes coord_fixed element_blank geom_point geom_text
+#' @importFrom ggplot2 geom_tile ggplot labs scale_color_gradient2
+#' @importFrom ggplot2 scale_fill_gradient2 theme
 #' @importFrom tibble rownames_to_column
 #' @importFrom tidyr pivot_longer
 #' @importFrom dplyr mutate all_of
@@ -32,12 +36,12 @@ ggdock <- function(
     dock_data,
     order = NULL,
     type = "dot",
-    point_size = 8,
-    base_size = 12,
+    point_size = 3,
+    base_size = 7,
     angle = 50,
     hjust = 1,
     vjust = 1,
-    palette = "ggthemes::Orange-Blue-White Diverging",
+    palette = NULL,
     label = FALSE,
     label_digits = 2,
     label_size = 3,
@@ -46,7 +50,7 @@ ggdock <- function(
     label_fontface = "plain",
     ...){
 
-  if (!requireNamespace("paletteer", quietly = TRUE)) {
+  if (!is.null(palette) && !requireNamespace("paletteer", quietly = TRUE)) {
     stop("Package 'paletteer' is required for ggdock(). Please install it with: install.packages('paletteer')")
   }
   if (!requireNamespace("forcats", quietly = TRUE)) {
@@ -81,24 +85,48 @@ ggdock <- function(
   if (type == "dot") {
     p <- ggplot(data = df_long, aes(x = .data[["molecule"]], y = .data[["target"]])) +
       geom_point(aes(color = .data[["affinity"]]), size = point_size, ...) +
-      paletteer::scale_color_paletteer_c(palette, name = "affinity") +
-      labs(x = NULL, y = NULL) +
-      theme_minimal(base_size = base_size) +
+      labs(x = NULL, y = NULL, color = "Binding affinity\n(kcal/mol)") +
+      .theme_tcm_pub(base_size = base_size, grid = "both") +
       theme(
         axis.text.x = element_text(angle = angle, hjust = hjust, vjust = vjust),
-        panel.grid.minor = element_blank()
+        axis.line = element_blank(),
+        axis.ticks = element_blank()
+      ) +
+      coord_fixed()
+    if (is.null(palette)) {
+      p <- p + scale_color_gradient2(
+        low = "#4E79A7", mid = "white", high = "#B85C5C",
+        midpoint = stats::median(df_long$affinity, na.rm = TRUE),
+        name = "Binding affinity\n(kcal/mol)"
       )
+    } else {
+      p <- p + paletteer::scale_color_paletteer_c(
+        palette, name = "Binding affinity\n(kcal/mol)"
+      )
+    }
   }
   else {
     p <- ggplot(data = df_long, aes(x = .data[["molecule"]], y = .data[["target"]], fill = .data[["affinity"]])) +
       geom_tile(...) +
-      paletteer::scale_fill_paletteer_c(palette, name = "affinity") +
-      labs(x = NULL, y = NULL) +
-      theme_minimal(base_size = base_size) +
+      labs(x = NULL, y = NULL, fill = "Binding affinity\n(kcal/mol)") +
+      .theme_tcm_pub(base_size = base_size, grid = "none") +
       theme(
         axis.text.x = element_text(angle = angle, hjust = hjust, vjust = vjust),
-        panel.grid.minor = element_blank()
+        axis.line = element_blank(),
+        axis.ticks = element_blank()
+      ) +
+      coord_fixed()
+    if (is.null(palette)) {
+      p <- p + scale_fill_gradient2(
+        low = "#4E79A7", mid = "white", high = "#B85C5C",
+        midpoint = stats::median(df_long$affinity, na.rm = TRUE),
+        name = "Binding affinity\n(kcal/mol)"
       )
+    } else {
+      p <- p + paletteer::scale_fill_paletteer_c(
+        palette, name = "Binding affinity\n(kcal/mol)"
+      )
+    }
   }
 
   if (isTRUE(label)) {

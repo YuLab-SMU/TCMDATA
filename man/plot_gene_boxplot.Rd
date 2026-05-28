@@ -11,7 +11,7 @@ plot_gene_boxplot(
   group = NULL,
   use = c("auto", "train", "test"),
   test_method = c("wilcox", "t.test"),
-  palette = c("#E74C3C", "#3498DB"),
+  palette = .pal_tcm_groups()[1:2],
   show_points = TRUE,
   point_alpha = 0.35,
   violin = FALSE,
@@ -19,7 +19,7 @@ plot_gene_boxplot(
   scales = "free_y",
   p_label = c("p.format", "p.signif", "p.adj"),
   p_adjust_method = "BH",
-  base_size = 12
+  base_size = 7
 )
 }
 \arguments{
@@ -44,7 +44,7 @@ ignored.}
 default) or \code{"t.test"}.}
 
 \item{palette}{Character(2); fill colours for the two groups.
-Default \code{c("#E74C3C", "#3498DB")} (red / blue).}
+Default is a low-saturation red / blue pair.}
 
 \item{show_points}{Logical; overlay jittered data points? Default \code{TRUE}.}
 
@@ -70,7 +70,7 @@ when \code{p_label = "p.adj"}.  When only a single gene is tested,
 \code{p_adj} equals \code{p_value} regardless of method.}
 
 \item{base_size}{Base font size for \code{\link[ggplot2]{theme_bw}}.
-Default 12.}
+Default 7.}
 }
 \value{
 A \code{ggplot} object.

@@ -8,9 +8,9 @@
   x,
   type = c("trend", "journal"),
   N = 10,
-  bar_col = "#3498db",
-  line_col = "#2c3e50",
-  point_col = "#e74c3c",
+  bar_col = "#4E79A7",
+  line_col = "#2F4858",
+  point_col = "#B85C5C",
   ...
 )
 }
