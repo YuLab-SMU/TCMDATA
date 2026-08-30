@@ -33,7 +33,7 @@ For details, please visit the [full documentation](https://hinna0818.github.io/T
 | Module | Description | Key Functions |
 |--------|-------------|---------------|
 | **Data Retrieval** | Bidirectional query of herbs, compounds, and validated targets | `search_herb()`, `search_target()` |
-| **Disease Targets** | DisGeNET-based disease–gene queries and GEO dataset discovery | `search_disease()`, `search_gene_disease()`, `search_geo_datasets()` |
+| **Disease Targets** | Open Targets disease–target queries and GEO dataset discovery | `query_disease_targets()`, `search_disease_efo()`, `search_geo_datasets()` |
 | **Molecule Detection** | PubChem-based CID resolution, property annotation, similarity search | `resolve_cid()`, `getprops()`, `compound_similarity()` |
 | **Network Construction** | Build herb–compound–target networks with topological metrics | `prepare_herb_graph()` |
 | **Enrichment Analysis** | Herb-based over-representation analysis; GO/KEGG compatible | `herb_enricher()` |

@@ -6,83 +6,9 @@ In network pharmacology analysis, disease target retrieval and differential gene
 
 ## Programmatic disease target retrieval with TCMDATA {#disease-target-tcmdata}
 
-Before manually browsing individual databases, it is worth noting that `TCMDATA` provides convenient functions for **programmatic** disease–gene association retrieval. Currently, two complementary routes are supported:
-
-1. `search_disease()` and `search_gene_disease()` retrieve disease-gene associations from the [DisGeNET](https://www.disgenet.org/) dataset bundled in the [`DOSE`](https://bioconductor.org/packages/DOSE/) Bioconductor package.
-2. `search_disease_efo()`, `get_disease_targets()`, and `query_disease_targets()` retrieve scored disease-target associations from the [Open Targets Platform](https://platform.opentargets.org/) GraphQL API.
-
-The DOSE/DisGeNET route is useful for fast local lookup, while Open Targets is preferred when target-level association scores are needed for target weighting or PPI-based prioritization.
+Before manually browsing individual databases, it is worth noting that `TCMDATA` provides convenient functions for **programmatic** disease–target association retrieval from the [Open Targets Platform](https://platform.opentargets.org/) GraphQL API. `search_disease_efo()` identifies matching disease ontology entries, `get_disease_targets()` retrieves scored targets for a selected EFO/MONDO/Orphanet ID, and `query_disease_targets()` combines these steps in a single call.
 
 For the DN case study used in this book, `TCMDATA` also includes `dn_otp_tbl`, a built-in Open Targets-derived table that retains the target-level `score` column, in addition to the legacy symbol vector `dn_otp`.
-
-### `search_disease()`: disease → genes
-
-`search_disease()` accepts a disease name (fuzzy matching supported) or a UMLS CUI identifier, and returns all associated genes with their Entrez IDs and gene symbols:
-
-```{r search-disease-demo, eval=FALSE, collapse=FALSE}
-library(TCMDATA)
-
-## search by disease name
-dn_targets <- search_disease("diabetic nephropathy")
-head(dn_targets)
-```
-
-```
-  disease_id   gene_id         disease_name     symbol
-1   C0011881        10 Diabetic Nephropathy       NAT2
-2   C0011881      1000 Diabetic Nephropathy       CDH2
-3   C0011881 100033819 Diabetic Nephropathy     MIR675
-4   C0011881 100048912 Diabetic Nephropathy CDKN2B-AS1
-5   C0011881 100124700 Diabetic Nephropathy     HOTAIR
-6   C0011881 100125288 Diabetic Nephropathy      ZGLP1
-```
-
-You can also query by **UMLS CUI** for precise matching, or search multiple diseases at once:
-
-```{r search-disease-cui, eval=FALSE, collapse=FALSE}
-## exact match by CUI
-sepsis <- search_disease("C0243026")
-
-## multiple diseases
-multi <- search_disease(c("sepsis", "asthma"))
-```
-
-### `search_gene_disease()`: gene → diseases
-
-The reverse lookup function `search_gene_disease()` finds all diseases associated with a given gene, which is useful for validating whether hub genes from network analysis have known disease relevance:
-
-```{r search-gene-disease-demo, eval=FALSE, collapse=FALSE}
-## which diseases are associated with TNF?
-tnf_diseases <- search_gene_disease("TNF")
-cat("TNF is associated with", length(unique(tnf_diseases$disease_name)), "diseases\n")
-head(tnf_diseases[, c("disease_name", "gene_id", "symbol")])
-```
-
-```
-TNF is associated with 2724 diseases
-                        disease_name gene_id symbol
-1 (non-specific) purulent meningitis    7124    TNF
-2                     AA amyloidosis    7124    TNF
-3                  Abdominal Abscess    7124    TNF
-4                     Abdominal Pain    7124    TNF
-5                  Abdominal symptom    7124    TNF
-6    ABLEPHARON-MACROSTOMIA SYNDROME    7124    TNF
-```
-
-```{r search-gene-multi, eval=FALSE, collapse=FALSE}
-## query multiple genes
-hub_diseases <- search_gene_disease(c("IL6", "TNF", "PPARG"))
-## top diseases shared by all three genes
-shared <- Reduce(intersect, split(hub_diseases$disease_name, hub_diseases$symbol))
-cat("Diseases shared by IL6, TNF, PPARG:", length(shared), "\n")
-head(shared)
-```
-
-```
-Diseases shared by IL6, TNF, PPARG: 516
-[1] "Abnormal behavior"    "Acanthosis Nigricans" "Acne"
-[4] "Acne Vulgaris"        "Acute Chest Syndrome" "Acute colitis"
-```
 
 ### Open Targets API: disease → scored targets
 
@@ -261,7 +187,6 @@ Further details about the CTD data retrieval and interpretation can be found in 
 
 In addition to the databases detailed above, several other resources are frequently used in network pharmacology to ensure comprehensive target collection:
 
-*   **[DisGeNET](https://www.disgenet.org/)**: One of the largest publicly available collections of genes and variants associated with human diseases. It integrates data from expert-curated repositories, GWAS catalogues, animal models, and text-mining of the scientific literature.
 *   **[OMIM](https://www.omim.org/)** (Online Mendelian Inheritance in Man): A comprehensive, authoritative compendium of human genes and genetic phenotypes. It is highly reliable for identifying genes with strong, well-documented genetic links to specific diseases.
 *   **[TTD](http://db.idrblab.net/ttd/)** (Therapeutic Target Database): Focuses on known and explored therapeutic protein and nucleic acid targets, providing detailed information about the targeted diseases, pathway information, and corresponding drugs.
 *   **[DrugBank](https://go.drugbank.com/)**: While primarily a drug database, it provides extensive information on drug targets, making it useful for finding targets of existing drugs used to treat the disease of interest.

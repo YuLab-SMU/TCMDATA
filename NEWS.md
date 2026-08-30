@@ -1,6 +1,15 @@
 # TCMDATA 1.0.0
 *Released: 2026-07-11*
 
+## Disease-target data access
+
+- Disease-target queries used by the AI module now retrieve associations from
+  the Open Targets Platform.
+- `search_disease()` and `search_gene_disease()` remain as compatibility
+  interfaces but report that DisGeNET-derived data are unavailable because of
+  licensing and copyright restrictions.
+- The optional DOSE dependency has been removed.
+
 ## Statistical robustness and ML validation
 
 - `ppi_knock()` and `ppi_knock_impact()` now default to 1,000 permutations,

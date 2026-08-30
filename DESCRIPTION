@@ -73,8 +73,7 @@ Suggests:
     ggvenn,
     ggthemes,
     AnnotationDbi,
-    org.Hs.eg.db,
-    DOSE
+    org.Hs.eg.db
 Remotes:
     YuLab-SMU/aplotExtra,
     YuLab-SMU/aisdk,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/disease_targets.R
 \name{search_gene_disease}
 \alias{search_gene_disease}
-\title{Search gene-associated diseases (gene -> diseases)}
+\title{DisGeNET gene-to-disease lookup (unavailable)}
 \usage{
 search_gene_disease(gene, readable = TRUE)
 }
@@ -13,17 +13,15 @@ Supports a vector for multiple genes.}
 \item{readable}{Logical. Attach gene symbol column (default TRUE).}
 }
 \value{
-A \code{data.frame} with columns \code{disease_id}, \code{disease_name},
-\code{gene_id}, and optionally \code{symbol}. Returns NULL if no match.
+This function always raises an error explaining that the data are
+unavailable.
 }
 \description{
-Reverse lookup: given gene symbols or Entrez IDs, find associated diseases
-from DisGeNET (via DOSE).
+This compatibility interface is retained for existing scripts, but its
+underlying DisGeNET-derived data are no longer available because of
+licensing and copyright restrictions. There is currently no reverse
+gene-to-disease replacement in TCMDATA.
 }
-\examples{
-\dontrun{
-  search_gene_disease("TNF")
-  search_gene_disease(c("IL6", "TNF", "PPARG"))
-  search_gene_disease("7124")
-}
+\seealso{
+\code{\link{query_disease_targets}}
 }

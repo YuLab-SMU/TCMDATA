@@ -24,3 +24,14 @@ test_that("search_target handles non-existent genes", {
    
    expect_warning(search_target("NonExistentGeneXYZ"), "doesn't/don't exist")
 })
+
+test_that("legacy DisGeNET interfaces report that the data are unavailable", {
+  expect_error(
+    search_disease("sepsis"),
+    "commercial resource.*licensing and copyright restrictions"
+  )
+  expect_error(
+    search_gene_disease("IL6"),
+    "commercial resource.*licensing and copyright restrictions"
+  )
+})

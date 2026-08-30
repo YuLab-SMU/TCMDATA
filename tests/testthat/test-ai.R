@@ -1053,6 +1053,7 @@ test_that("create_tcm_tools exposes expanded tool modules", {
   tool_names <- vapply(tools, function(tool) tool$name, character(1))
 
   expect_true(all(c(
+    "search_disease_targets",
     "run_go_enrichment",
     "run_kegg_enrichment",
     "get_ppi_network",
@@ -1062,16 +1063,53 @@ test_that("create_tcm_tools exposes expanded tool modules", {
     "resolve_compound_cid",
     "plot_enrichment_result"
   ) %in% tool_names))
+  expect_false("search_gene_diseases" %in% tool_names)
 })
 
 test_that("route_tcm_task recognizes new module categories", {
   pubmed_route <- route_tcm_task("Retrieve PubMed evidence for ginseng and diabetes")
   compound_route <- route_tcm_task("Resolve the PubChem CID for aspirin")
   visualization_route <- route_tcm_task("Plot a heatmap of stored metrics")
+  disease_route <- route_tcm_task("Retrieve sepsis-associated targets from Open Targets")
 
   expect_equal(pubmed_route$task_type, "pubmed")
   expect_equal(compound_route$task_type, "compound")
   expect_equal(visualization_route$task_type, "visualization")
+  expect_equal(disease_route$task_type, "disease_lookup")
+  expect_equal(disease_route$source_hint, "api")
+  expect_true("search_disease_targets" %in% disease_route$tools)
+  expect_false("search_gene_diseases" %in% disease_route$tools)
+})
+
+test_that("disease-target AI tool uses Open Targets wrapper", {
+  skip_if_not_installed("aisdk")
+
+  clear_tcm_artifacts()
+  on.exit(clear_tcm_artifacts(), add = TRUE)
+
+  local_mocked_bindings(
+    query_disease_targets = function(disease_name, size, score_threshold) {
+      data.frame(
+        ensembl_id = "ENSG00000136244",
+        gene_symbol = "IL6",
+        gene_name = "interleukin 6",
+        biotype = "protein_coding",
+        score = 0.82,
+        stringsAsFactors = FALSE
+      )
+    },
+    .package = "TCMDATA"
+  )
+
+  result <- tool_query_disease_targets()$run(list(
+    disease = "sepsis",
+    size = 25,
+    score_threshold = 0.2
+  ))
+
+  expect_true(isTRUE(result$ok))
+  expect_match(result$summary, "Open Targets")
+  expect_true(artifact_exists(result$artifact_id))
 })
 
 test_that("get_ppi_network tool uses the local get_ppi wrapper", {

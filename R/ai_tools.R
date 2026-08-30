@@ -29,8 +29,7 @@ create_tcm_tools <- function(task_type = NULL, tool_names = NULL) {
     # --- Search Tools ---
     tool_search_herb(),
     tool_search_target(),
-    tool_search_disease(),
-    tool_search_gene_disease(),
+    tool_query_disease_targets(),
 
     # --- Intersection Tool ---
     tool_compute_target_intersection(),
@@ -97,7 +96,6 @@ create_tcm_tools <- function(task_type = NULL, tool_names = NULL) {
       ),
       disease_lookup = c(
         "search_disease_targets",
-        "search_gene_diseases",
         "search_geo_datasets",
         "compute_target_intersection",
         "run_go_enrichment",
@@ -599,42 +597,68 @@ tool_search_target <- function() {
   )
 }
 
-#' Tool: Search disease targets (disease -> genes)
+#' Tool: Search disease targets through Open Targets Platform
 #' @keywords internal
 #' @noRd
-tool_search_disease <- function() {
+tool_query_disease_targets <- function() {
   aisdk::tool(
     name = "search_disease_targets",
     description = paste(
-      "Search for genes associated with a disease using DisGeNET data.",
-      "Accepts disease names (e.g. 'sepsis', 'diabetes') or UMLS CUI IDs (e.g. 'C0243026').",
-      "Returns disease_id, disease_name, gene_id, and gene symbol.",
-      "Data source: DisGeNET via DOSE package (30170 diseases, 21671 genes)."
+      "Search for targets associated with one or more diseases.",
+      "Disease names are matched to ontology entries before target retrieval.",
+      "Returns Ensembl IDs, gene symbols, names, biotypes, and association scores.",
+      "Data source: Open Targets Platform GraphQL API."
     ),
     parameters = aisdk::z_object(
       disease = aisdk::z_array(
         items = aisdk::z_string(),
-        description = "Disease name(s) or UMLS CUI ID(s)"
+        description = "Disease name(s), for example sepsis or diabetes"
+      ),
+      size = aisdk::z_number(
+        description = "Maximum number of targets returned per disease"
+      ),
+      score_threshold = aisdk::z_number(
+        description = "Minimum Open Targets association score between 0 and 1"
       )
     ),
-    execute = function(disease) {
+    execute = function(disease, size = 200, score_threshold = 0) {
       tryCatch({
-        disease <- .clean_character_vector(disease)
-        result <- search_disease(disease = disease, readable = TRUE)
-        if (is.null(result) || nrow(result) == 0) {
-          return(list(ok = FALSE, error = paste("No disease found for:", paste(disease, collapse = ", "))))
+        disease <- unique(.clean_character_vector(disease))
+        results <- lapply(disease, function(query) {
+          value <- query_disease_targets(
+            disease_name = query,
+            size = as.integer(size),
+            score_threshold = score_threshold
+          )
+          if (is.null(value) || nrow(value) == 0) return(NULL)
+          value$query_disease <- query
+          value
+        })
+        results <- Filter(Negate(is.null), results)
+
+        if (length(results) == 0) {
+          return(list(
+            ok = FALSE,
+            error = paste("No disease targets found for:", paste(disease, collapse = ", "))
+          ))
         }
+        result <- do.call(rbind, results)
+        result <- result[, c("query_disease", setdiff(names(result), "query_disease")), drop = FALSE]
+        rownames(result) <- NULL
 
         .save_tool_artifact(
           object = result,
           artifact_type = "search_result",
-          function_name = "search_disease",
-          params = list(disease = disease),
+          function_name = "query_disease_targets",
+          params = list(
+            disease = disease,
+            size = as.integer(size),
+            score_threshold = score_threshold
+          ),
           summary = sprintf(
-            "Found %d gene(s) for %d disease(s): %s.",
-            length(unique(result$gene_id)),
-            length(unique(result$disease_id)),
-            paste(unique(result$disease_name), collapse = ", ")
+            "Found %d target(s) for %d disease query or queries using Open Targets Platform.",
+            length(unique(result$gene_symbol)),
+            length(unique(result$query_disease))
           ),
           next_actions = list(
             list(tool = "run_go_enrichment",
@@ -642,58 +666,7 @@ tool_search_disease <- function() {
             list(tool = "run_kegg_enrichment",
                  reason = "Identify disease-related KEGG pathways"),
             list(tool = "get_ppi_network",
-                 reason = "Build PPI network for disease gene interaction analysis"),
-            list(tool = "search_gene_disease",
-                 reason = "Reverse lookup to find additional disease associations")
-          )
-        )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
-  )
-}
-
-#' Tool: Search gene-associated diseases (gene -> diseases)
-#' @keywords internal
-#' @noRd
-tool_search_gene_disease <- function() {
-  aisdk::tool(
-    name = "search_gene_diseases",
-    description = paste(
-      "Reverse lookup: find diseases associated with given genes.",
-      "Accepts gene symbols (e.g. 'TNF', 'IL6') or Entrez IDs.",
-      "Returns disease_id, disease_name, gene_id, and gene symbol.",
-      "Data source: DisGeNET via DOSE package."
-    ),
-    parameters = aisdk::z_object(
-      gene = aisdk::z_array(
-        items = aisdk::z_string(),
-        description = "Gene symbol(s) or Entrez ID(s)"
-      )
-    ),
-    execute = function(gene) {
-      tryCatch({
-        gene <- .clean_character_vector(gene)
-        result <- search_gene_disease(gene = gene, readable = TRUE)
-        if (is.null(result) || nrow(result) == 0) {
-          return(list(ok = FALSE, error = paste("No diseases found for:", paste(gene, collapse = ", "))))
-        }
-
-        .save_tool_artifact(
-          object = result,
-          artifact_type = "search_result",
-          function_name = "search_gene_disease",
-          params = list(gene = gene),
-          summary = sprintf(
-            "Found %d disease(s) for %d gene(s): %s.",
-            length(unique(result$disease_id)),
-            length(unique(result$gene_id)),
-            paste(unique(result$symbol[!is.na(result$symbol)]), collapse = ", ")
-          ),
-          next_actions = c(
-            "search_disease_targets", "run_go_enrichment",
-            "get_ppi_network"
+                 reason = "Build PPI network for disease target interaction analysis")
           )
         )
       }, error = function(e) {

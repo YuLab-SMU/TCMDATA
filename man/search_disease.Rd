@@ -2,7 +2,7 @@
 % Please edit documentation in R/disease_targets.R
 \name{search_disease}
 \alias{search_disease}
-\title{Search disease targets (disease -> genes)}
+\title{DisGeNET disease-to-gene lookup (unavailable)}
 \usage{
 search_disease(disease, readable = TRUE)
 }
@@ -13,17 +13,15 @@ search_disease(disease, readable = TRUE)
 \item{readable}{Logical. Convert Entrez IDs to gene symbols (default TRUE).}
 }
 \value{
-A \code{data.frame} with columns \code{disease_id}, \code{disease_name},
-\code{gene_id}, and optionally \code{symbol}. Returns NULL if no match.
+This function always raises an error explaining that the data are
+unavailable.
 }
 \description{
-Query DisGeNET (via DOSE) to find genes associated with a disease.
-Supports UMLS CUI IDs, exact name match, or fuzzy name search.
+This compatibility interface is retained for existing scripts, but its
+underlying DisGeNET-derived data are no longer available because of
+licensing and copyright restrictions. Use \code{query_disease_targets()}
+for disease-associated targets from the Open Targets Platform.
 }
-\examples{
-\dontrun{
-  search_disease("sepsis")
-  search_disease(c("sepsis", "asthma"))
-  search_disease("C0243026")
-}
+\seealso{
+\code{\link{query_disease_targets}}
 }

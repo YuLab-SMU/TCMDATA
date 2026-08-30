@@ -135,21 +135,21 @@ route_tcm_task <- function(task, use_llm = FALSE, model = NULL) {
     ),
     disease_lookup = list(
       patterns = c(
-        "disease", "disea", "disgenet", "gene.*disease",
-        "disease.*gene", "disease.*target", "target.*disease",
+        "disease", "disea", "open targets", "disease.*gene",
+        "disease.*target", "target.*disease",
         "\\bsepsis\\b", "\\bdiabetes\\b", "\\basthma\\b", "\\bcancer\\b",
         "\\btumor\\b", "\\btumour\\b",
-        "umls", "cui", "\\bC\\d{7}\\b",
+        "efo", "mondo", "orphanet",
         "\u75be\u75c5", "\u75c5\u75c7", "\u7cd6\u5c3f\u75c5",
         "\u764c", "\u80bf\u7624", "\u51a0\u5fc3\u75c5",
         "\u809d\u708e", "\u54ee\u5598"
       ),
       tools = c(
-        "search_disease_targets", "search_gene_diseases",
+        "search_disease_targets",
         "run_go_enrichment", "run_kegg_enrichment",
         "get_ppi_network", "interpret_artifact"
       ),
-      source_hint = "local"
+      source_hint = "api"
     ),
     # visualization and interpretation checked LAST
     geo_search = list(
@@ -252,7 +252,7 @@ route_tcm_task <- function(task, use_llm = FALSE, model = NULL) {
     "<task_types>",
     "herb_lookup     - herb, molecule, or target lookup from the local database",
     "target_lookup   - target- or gene-centric search",
-    "disease_lookup  - disease-gene association queries using DisGeNET",
+    "disease_lookup  - disease-target association queries using Open Targets Platform",
     "enrichment      - GO, KEGG, or herb functional enrichment analysis",
     "ppi_analysis    - PPI retrieval, topology metrics, hub gene ranking, or MCODE clustering",
     "ml_screening    - machine learning feature selection or consensus biomarkers",
@@ -265,7 +265,7 @@ route_tcm_task <- function(task, use_llm = FALSE, model = NULL) {
     "",
     "<source_hints>",
     "local    - data available in the local database or package",
-    "api      - requires an external API call (STRING, PubMed, PubChem)",
+    "api      - requires an external API call (Open Targets, STRING, PubMed, PubChem)",
     "artifact - operates on previously stored analysis artifacts",
     "</source_hints>"
   )
@@ -382,4 +382,3 @@ resolve_artifact_references <- function(task) {
     artifact_ids = unique(artifact_ids)
   )
 }
-
