@@ -187,6 +187,18 @@ create_tcm_tools <- function(task_type = NULL, tool_names = NULL) {
 
 #' @keywords internal
 #' @noRd
+.safe_tool_execute <- function(fun) {
+  force(fun)
+  function(...) {
+    tryCatch(
+      fun(...),
+      error = function(e) list(ok = FALSE, error = conditionMessage(e))
+    )
+  }
+}
+
+#' @keywords internal
+#' @noRd
 .clean_character_vector <- function(x) {
   x <- as.character(x)
   x <- trimws(x)
@@ -522,8 +534,7 @@ tool_search_herb <- function() {
         description = "Herb name type"
       )
     ),
-    execute = function(herb, type) {
-      tryCatch({
+    execute = .safe_tool_execute(function(herb, type) {
         herb <- .clean_character_vector(herb)
         result <- search_herb(herb = herb, type = type)
 
@@ -546,10 +557,8 @@ tool_search_herb <- function() {
                  reason = "Visualize herb-compound-target relationships")
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -569,8 +578,7 @@ tool_search_target <- function() {
         description = "Vector of target gene symbols"
       )
     ),
-    execute = function(target) {
-      tryCatch({
+    execute = .safe_tool_execute(function(target) {
         target <- .clean_character_vector(target)
         result <- search_target(gene_list = target)
 
@@ -590,10 +598,8 @@ tool_search_target <- function() {
             "get_ppi_network"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -621,8 +627,7 @@ tool_query_disease_targets <- function() {
         description = "Minimum Open Targets association score between 0 and 1"
       )
     ),
-    execute = function(disease, size = 200, score_threshold = 0) {
-      tryCatch({
+    execute = .safe_tool_execute(function(disease, size = 200, score_threshold = 0) {
         disease <- unique(.clean_character_vector(disease))
         results <- lapply(disease, function(query) {
           value <- query_disease_targets(
@@ -669,10 +674,8 @@ tool_query_disease_targets <- function() {
                  reason = "Build PPI network for disease target interaction analysis")
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -698,8 +701,7 @@ tool_compute_target_intersection <- function() {
         description = "Names for each gene set (e.g. 'Herb Targets', 'Disease Targets')"
       )
     ),
-    execute = function(gene_lists, set_names = NULL) {
-      tryCatch({
+    execute = .safe_tool_execute(function(gene_lists, set_names = NULL) {
         gene_lists <- lapply(gene_lists, .clean_character_vector)
         if (length(gene_lists) < 2 || length(gene_lists) > 4) {
           return(list(ok = FALSE, error = "Provide 2-4 gene lists."))
@@ -749,10 +751,8 @@ tool_compute_target_intersection <- function() {
                  reason = "Generate biological interpretation of the intersection")
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -782,11 +782,10 @@ tool_run_herb_enrichment <- function() {
         description = "Q-value cutoff"
       )
     ),
-    execute = function(genes,
+    execute = .safe_tool_execute(function(genes,
                        type = "Herb_pinyin_name",
                        pvalueCutoff = 0.05,
                        qvalueCutoff = 0.2) {
-      tryCatch({
         genes <- unique(.clean_character_vector(genes))
         result <- herb_enricher(
           genes = genes,
@@ -818,10 +817,8 @@ tool_run_herb_enrichment <- function() {
                  reason = "Build PPI network for the input genes")
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -860,14 +857,13 @@ tool_run_go_enrichment <- function() {
         description = "Q-value cutoff"
       )
     ),
-    execute = function(genes,
+    execute = .safe_tool_execute(function(genes,
                        orgdb_package = "org.Hs.eg.db",
                        key_type = "SYMBOL",
                        ont = "BP",
                        readable = TRUE,
                        pvalueCutoff = 0.05,
                        qvalueCutoff = 0.2) {
-      tryCatch({
         .require_namespace_for_tool("clusterProfiler", "run_go_enrichment")
         orgdb <- .load_orgdb_object(orgdb_package)
         genes <- unique(.clean_character_vector(genes))
@@ -906,10 +902,8 @@ tool_run_go_enrichment <- function() {
                  reason = "AI interpretation of enriched GO terms and biological processes")
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -948,14 +942,13 @@ tool_run_kegg_enrichment <- function() {
         description = "Q-value cutoff"
       )
     ),
-    execute = function(genes,
+    execute = .safe_tool_execute(function(genes,
                        organism = "hsa",
                        key_type = "kegg",
                        readable = TRUE,
                        orgdb_package = "",
                        pvalueCutoff = 0.05,
                        qvalueCutoff = 0.2) {
-      tryCatch({
         .require_namespace_for_tool("clusterProfiler", "run_kegg_enrichment")
         genes <- unique(.clean_character_vector(genes))
 
@@ -1006,10 +999,8 @@ tool_run_kegg_enrichment <- function() {
                  reason = "AI interpretation of enriched KEGG pathways")
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1032,8 +1023,7 @@ tool_get_ppi_network <- function() {
         description = "NCBI taxonomy ID, for example 9606 for human"
       )
     ),
-    execute = function(genes, tax_id = 9606L) {
-      tryCatch({
+    execute = .safe_tool_execute(function(genes, tax_id = 9606L) {
         genes <- unique(.clean_character_vector(genes))
         result <- get_ppi(genes, taxID = as.integer(tax_id))
         result <- .standardize_ppi_graph(result)
@@ -1057,10 +1047,8 @@ tool_get_ppi_network <- function() {
                  reason = "Extract a subnetwork for focused analysis")
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1085,8 +1073,7 @@ tool_subset_ppi_network <- function() {
         description = "Optional number of top-degree nodes to keep; pass 0 to keep all nodes"
       )
     ),
-    execute = function(artifact_id, score_cutoff = 0.7, n = 0L) {
-      tryCatch({
+    execute = .safe_tool_execute(function(artifact_id, score_cutoff = 0.7, n = 0L) {
         ppi_obj <- load_tcm_artifact(artifact_id)
         if (!inherits(ppi_obj, "igraph")) {
           stop("Artifact is not an igraph object.", call. = FALSE)
@@ -1120,10 +1107,8 @@ tool_subset_ppi_network <- function() {
             "plot_ppi_result"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1142,8 +1127,7 @@ tool_compute_ppi_metrics <- function() {
         description = "Artifact ID of a PPI graph"
       )
     ),
-    execute = function(artifact_id) {
-      tryCatch({
+    execute = .safe_tool_execute(function(artifact_id) {
         ppi_graph <- load_tcm_artifact(artifact_id)
         if (!inherits(ppi_graph, "igraph")) {
           stop("Artifact is not an igraph object.", call. = FALSE)
@@ -1166,10 +1150,8 @@ tool_compute_ppi_metrics <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1188,8 +1170,7 @@ tool_rank_ppi_nodes <- function() {
         description = "Artifact ID of a scored PPI graph"
       )
     ),
-    execute = function(artifact_id) {
-      tryCatch({
+    execute = .safe_tool_execute(function(artifact_id) {
         ppi_graph <- load_tcm_artifact(artifact_id)
         if (!inherits(ppi_graph, "igraph")) {
           stop("Artifact is not an igraph object.", call. = FALSE)
@@ -1214,10 +1195,8 @@ tool_rank_ppi_nodes <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1236,8 +1215,7 @@ tool_run_mcode_clustering <- function() {
         description = "Artifact ID of a PPI graph"
       )
     ),
-    execute = function(artifact_id) {
-      tryCatch({
+    execute = .safe_tool_execute(function(artifact_id) {
         ppi_graph <- load_tcm_artifact(artifact_id)
         if (!inherits(ppi_graph, "igraph")) {
           stop("Artifact is not an igraph object.", call. = FALSE)
@@ -1256,10 +1234,8 @@ tool_run_mcode_clustering <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1310,7 +1286,7 @@ tool_prepare_ml_dataset <- function() {
         description = "Random seed"
       )
     ),
-    execute = function(expr_matrix,
+    execute = .safe_tool_execute(function(expr_matrix,
                        gene_names,
                        sample_names = character(0),
                        group,
@@ -1319,7 +1295,6 @@ tool_prepare_ml_dataset <- function() {
                        split = FALSE,
                        train_ratio = 0.7,
                        seed = 2025L) {
-      tryCatch({
         expr_mat <- .build_expression_matrix(expr_matrix, gene_names, sample_names)
         genes_arg <- .empty_string_to_null(genes)
         positive_class_arg <- .empty_string_to_null(positive_class)
@@ -1353,10 +1328,8 @@ tool_prepare_ml_dataset <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1394,14 +1367,13 @@ tool_run_ml_screening <- function() {
         description = "Optional top-n feature cap for methods that support it; pass 0 to keep defaults"
       )
     ),
-    execute = function(artifact_id,
+    execute = .safe_tool_execute(function(artifact_id,
                        methods = character(0),
                        seed = 2025L,
                        cv_folds = 5L,
                        cv_repeats = 5L,
                        alpha = 0.5,
                        top_n = 0L) {
-      tryCatch({
         ml_data <- load_tcm_artifact(artifact_id)
         if (!inherits(ml_data, "tcm_ml_data")) {
           stop("Artifact is not a tcm_ml_data object.", call. = FALSE)
@@ -1452,10 +1424,8 @@ tool_run_ml_screening <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1477,8 +1447,7 @@ tool_get_ml_consensus <- function() {
         description = "Minimum number of methods that must agree on a gene"
       )
     ),
-    execute = function(artifact_id, min_methods = 2L) {
-      tryCatch({
+    execute = .safe_tool_execute(function(artifact_id, min_methods = 2L) {
         ml_list <- load_tcm_artifact(artifact_id)
         if (!inherits(ml_list, "tcm_ml_list")) {
           stop("Artifact is not a tcm_ml_list object.", call. = FALSE)
@@ -1509,10 +1478,8 @@ tool_get_ml_consensus <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1546,13 +1513,12 @@ tool_get_pubmed_evidence <- function() {
         description = "Maximum number of records to retrieve"
       )
     ),
-    execute = function(tcm_name,
+    execute = .safe_tool_execute(function(tcm_name,
                        disease_name,
                        start_year = 0L,
                        end_year = 0L,
                        email,
                        retmax = 100L) {
-      tryCatch({
         year_range <- NULL
         if (start_year > 0 && end_year > 0) {
           year_range <- c(as.integer(start_year), as.integer(end_year))
@@ -1591,10 +1557,8 @@ tool_get_pubmed_evidence <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1616,8 +1580,7 @@ tool_extract_pubmed_table <- function() {
         description = "Number of rows to return; pass 0 to return all rows"
       )
     ),
-    execute = function(artifact_id, n = 20L) {
-      tryCatch({
+    execute = .safe_tool_execute(function(artifact_id, n = 20L) {
         pubmed_obj <- load_tcm_artifact(artifact_id)
         if (!inherits(pubmed_obj, "tcm_pubmed")) {
           stop("Artifact is not a tcm_pubmed object.", call. = FALSE)
@@ -1636,10 +1599,8 @@ tool_extract_pubmed_table <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1676,9 +1637,8 @@ tool_search_geo_datasets <- function() {
         description = "Maximum number of datasets to return; default 20"
       )
     ),
-    execute = function(disease, organism = "Homo sapiens", dataset_type = "",
+    execute = .safe_tool_execute(function(disease, organism = "Homo sapiens", dataset_type = "",
                        email, max_results = 20L) {
-      tryCatch({
         dt <- if (nzchar(dataset_type)) dataset_type else NULL
 
         result <- search_geo_datasets(
@@ -1726,10 +1686,8 @@ tool_search_geo_datasets <- function() {
                  reason = "Summarize the GEO search results for the user")
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1753,8 +1711,7 @@ tool_resolve_compound_cid <- function() {
         description = "Identifier type"
       )
     ),
-    execute = function(compounds, from = "name") {
-      tryCatch({
+    execute = .safe_tool_execute(function(compounds, from = "name") {
         compounds <- .clean_character_vector(compounds)
         cids <- resolve_cid(compounds, from = from)
         result <- data.frame(
@@ -1778,10 +1735,8 @@ tool_resolve_compound_cid <- function() {
             "run_compound_similarity"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1808,8 +1763,7 @@ tool_get_compound_properties <- function() {
         description = "Vector of PubChem property names; pass an empty array to use the package defaults"
       )
     ),
-    execute = function(artifact_id = "", cids = character(0), properties = character(0)) {
-      tryCatch({
+    execute = .safe_tool_execute(function(artifact_id = "", cids = character(0), properties = character(0)) {
         cid_values <- unique(c(.clean_character_vector(cids), .extract_cids_from_artifact(artifact_id)))
         if (length(cid_values) == 0) {
           stop("No PubChem CIDs were provided.", call. = FALSE)
@@ -1839,10 +1793,8 @@ tool_get_compound_properties <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1874,12 +1826,11 @@ tool_run_compound_similarity <- function() {
         description = "Whether to compute local Tanimoto scores with rcdk"
       )
     ),
-    execute = function(query,
+    execute = .safe_tool_execute(function(query,
                        from = "name",
                        threshold = 90L,
                        topn = 10L,
                        compute_score = TRUE) {
-      tryCatch({
         result <- compound_similarity(
           query = query,
           from = from,
@@ -1905,10 +1856,8 @@ tool_run_compound_similarity <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -1937,11 +1886,10 @@ tool_plot_enrichment_result <- function() {
         description = "Optional plot title; pass an empty string for no title"
       )
     ),
-    execute = function(artifact_id,
+    execute = .safe_tool_execute(function(artifact_id,
                        plot_type = "lollipop",
                        top_n = 10L,
                        plot_title = "") {
-      tryCatch({
         enrich_obj <- load_tcm_artifact(artifact_id)
         if (!inherits(enrich_obj, "enrichResult")) {
           stop("Artifact is not an enrichResult object.", call. = FALSE)
@@ -1977,10 +1925,8 @@ tool_plot_enrichment_result <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2013,12 +1959,11 @@ tool_plot_ppi_result <- function() {
         description = "Optional plot title; pass an empty string for the default"
       )
     ),
-    execute = function(artifact_id,
+    execute = .safe_tool_execute(function(artifact_id,
                        plot_type = "heatmap",
                        node_name = "",
                        select_metrics = character(0),
                        plot_title = "") {
-      tryCatch({
         source_obj <- load_tcm_artifact(artifact_id)
         rank_df <- .as_rank_table(source_obj)
         metrics_arg <- .empty_string_to_null(select_metrics)
@@ -2067,10 +2012,8 @@ tool_plot_ppi_result <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2097,10 +2040,9 @@ tool_plot_ml_result <- function() {
         description = "Optional custom set names for the Venn plot; pass an empty array to infer names automatically"
       )
     ),
-    execute = function(artifact_id,
+    execute = .safe_tool_execute(function(artifact_id,
                        plot_type = "roc",
                        set_names = character(0)) {
-      tryCatch({
         ml_obj <- load_tcm_artifact(artifact_id)
         if (!inherits(ml_obj, "tcm_ml_list")) {
           stop("Artifact is not a tcm_ml_list object.", call. = FALSE)
@@ -2133,10 +2075,8 @@ tool_plot_ml_result <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2162,10 +2102,9 @@ tool_plot_pubmed_result <- function() {
         description = "Number of journals to show for the journal plot"
       )
     ),
-    execute = function(artifact_id,
+    execute = .safe_tool_execute(function(artifact_id,
                        plot_type = "trend",
                        top_n = 10L) {
-      tryCatch({
         pubmed_obj <- load_tcm_artifact(artifact_id)
         if (!inherits(pubmed_obj, "tcm_pubmed")) {
           stop("Artifact is not a tcm_pubmed object.", call. = FALSE)
@@ -2186,10 +2125,8 @@ tool_plot_pubmed_result <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2212,8 +2149,7 @@ tool_plot_herb_sankey <- function() {
         description = "Axis order for the Sankey diagram; pass an empty array to use herb-molecule-target"
       )
     ),
-    execute = function(artifact_id, axis_order = character(0)) {
-      tryCatch({
+    execute = .safe_tool_execute(function(artifact_id, axis_order = character(0)) {
         search_df <- load_tcm_artifact(artifact_id)
         if (!is.data.frame(search_df)) {
           stop("Artifact is not a data.frame.", call. = FALSE)
@@ -2241,10 +2177,8 @@ tool_plot_herb_sankey <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2274,11 +2208,10 @@ tool_plot_docking_heatmap <- function() {
         description = "Whether to display numeric affinity labels"
       )
     ),
-    execute = function(artifact_id,
+    execute = .safe_tool_execute(function(artifact_id,
                        plot_type = "dot",
                        order = "none",
                        label = FALSE) {
-      tryCatch({
         docking_obj <- .coerce_docking_matrix(load_tcm_artifact(artifact_id))
         plot_obj <- ggdock(
           dock_data = docking_obj,
@@ -2302,10 +2235,8 @@ tool_plot_docking_heatmap <- function() {
             "interpret_artifact"
           )
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2321,18 +2252,15 @@ tool_list_artifacts <- function() {
         description = "Unused placeholder; pass an empty string"
       )
     ),
-    execute = function(dummy = "") {
-      tryCatch({
+    execute = .safe_tool_execute(function(dummy = "") {
         df <- list_tcm_artifacts()
         list(
           ok = TRUE,
           summary = sprintf("%d artifact(s) currently stored.", nrow(df)),
           artifacts = df
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2348,18 +2276,15 @@ tool_load_artifact_summary <- function() {
         description = "Artifact ID to summarize"
       )
     ),
-    execute = function(artifact_id) {
-      tryCatch({
+    execute = .safe_tool_execute(function(artifact_id) {
         summary_text <- summarize_tcm_artifact(artifact_id)
         list(
           ok = TRUE,
           artifact_id = artifact_id,
           summary = summary_text
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2382,8 +2307,7 @@ tool_interpret_artifact <- function() {
         description = "Output language"
       )
     ),
-    execute = function(artifact_id, language = "en") {
-      tryCatch({
+    execute = .safe_tool_execute(function(artifact_id, language = "en") {
         obj <- load_tcm_artifact(artifact_id)
 
         result <- if (inherits(obj, "enrichResult")) {
@@ -2415,10 +2339,8 @@ tool_interpret_artifact <- function() {
           artifact_id = artifact_id,
           interpretation = interpretation
         )
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2442,8 +2364,7 @@ tool_read_variable <- function() {
         description = "The variable name to read from the R environment"
       )
     ),
-    execute = function(name) {
-      tryCatch({
+    execute = .safe_tool_execute(function(name) {
         name <- trimws(as.character(name))
         if (!nzchar(name)) {
           return(list(ok = FALSE, error = "Variable name cannot be empty."))
@@ -2470,10 +2391,8 @@ tool_read_variable <- function() {
 
         summary_text <- aisdk::get_r_context(name, envir = envir)
         list(ok = TRUE, variable = name, summary = summary_text)
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2500,8 +2419,7 @@ tool_eval_r_code <- function() {
         description = "R code to evaluate (single string, can contain newlines)"
       )
     ),
-    execute = function(code) {
-      tryCatch({
+    execute = .safe_tool_execute(function(code) {
         code <- as.character(code)
         if (!nzchar(trimws(code))) {
           return(list(ok = FALSE, error = "Code cannot be empty."))
@@ -2522,10 +2440,8 @@ tool_eval_r_code <- function() {
           return(list(ok = FALSE, error = output))
         }
         list(ok = TRUE, output = output)
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }
 
@@ -2556,8 +2472,7 @@ tool_generate_verification_urls <- function() {
         description = "Disease name for context (optional, can be empty string)"
       )
     ),
-    execute = function(herbs = character(0), targets = character(0), disease = "") {
-      tryCatch({
+    execute = .safe_tool_execute(function(herbs = character(0), targets = character(0), disease = "") {
         herbs <- .clean_character_vector(herbs)
         targets <- .clean_character_vector(targets)
         disease <- as.character(disease)
@@ -2614,9 +2529,7 @@ tool_generate_verification_urls <- function() {
         )
 
         result
-      }, error = function(e) {
-        list(ok = FALSE, error = conditionMessage(e))
-      })
-    }
+      }
+    )
   )
 }

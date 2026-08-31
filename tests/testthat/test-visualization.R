@@ -65,6 +65,7 @@ test_that("ggdock works with basic input", {
   # Test that function runs without error
   expect_silent(p <- ggdock(mock_docking))
   expect_s3_class(p, "ggplot")
+  expect_silent(ggplot2::ggplot_build(ggdock(mock_docking, order = "median")))
 })
 
 test_that("TCM_sankey works with basic input", {

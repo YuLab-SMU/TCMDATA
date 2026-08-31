@@ -53,16 +53,16 @@ tcm_sankey <- function(
   herb_y_high <- mol_y_high <- target_y_high <- 1
 
   ## prepare input data
-  dfForLodes <- data %>%
-    count(.data$herb, .data$molecule, .data$target, name = "Freq") %>%
-    group_by(.data$molecule) %>%
-    mutate(MolTotal = sum(.data$Freq)) %>%
-    ungroup() %>%
-    arrange(dplyr::desc(.data$MolTotal)) %>%
+  dfForLodes <- data |>
+    count(.data$herb, .data$molecule, .data$target, name = "Freq") |>
+    group_by(.data$molecule) |>
+    mutate(MolTotal = sum(.data$Freq)) |>
+    ungroup() |>
+    arrange(dplyr::desc(.data$MolTotal)) |>
     select(!dplyr::all_of("MolTotal"))
 
   ## convert data type
-  sankeyData <- ggalluvial::to_lodes_form(dfForLodes, key = "axis", axes = axis_order) %>%
+  sankeyData <- ggalluvial::to_lodes_form(dfForLodes, key = "axis", axes = axis_order) |>
     mutate(y_pos = dplyr::case_when(
       .data$axis == "herb" ~ herb_y_high,
       .data$axis == "molecule" ~ mol_y_high,
@@ -80,14 +80,14 @@ tcm_sankey <- function(
   spacer_colors <- stats::setNames(rep("transparent", length(spacer_strata)), spacer_strata)
   nodeColors <- c(herb_colors, mol_colors, target_cols, spacer_colors)
 
-  sankeyData <- sankeyData %>%
-    dplyr::mutate(axis = factor(.data$axis, levels = axis_order)) %>%
-    dplyr::mutate(node_color = nodeColors[as.character(.data$stratum)]) %>%
-    dplyr::group_by(.data$alluvium) %>%
+  sankeyData <- sankeyData |>
+    dplyr::mutate(axis = factor(.data$axis, levels = axis_order)) |>
+    dplyr::mutate(node_color = nodeColors[as.character(.data$stratum)]) |>
+    dplyr::group_by(.data$alluvium) |>
     dplyr::mutate(
       to_node_name = dplyr::lead(as.character(.data$stratum), order_by = .data$axis),
-      to_node_name = ifelse(is.na(.data$to_node_name), as.character(.data$stratum), .data$to_node_name)) %>%
-    ungroup() %>%
+      to_node_name = ifelse(is.na(.data$to_node_name), as.character(.data$stratum), .data$to_node_name)) |>
+    ungroup() |>
     mutate(flow_color = nodeColors[.data$to_node_name])
 
   ## plot sankey
@@ -139,7 +139,5 @@ TCM_sankey <- function(...) {
   warning("TCM_sankey is deprecated. Please use tcm_sankey instead.")
   tcm_sankey(...)
 }
-
-
 
 

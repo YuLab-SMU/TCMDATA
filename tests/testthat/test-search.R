@@ -19,6 +19,15 @@ test_that("search_herb handles non-existent herbs", {
   expect_warning(search_herb("NonExistentHerbXYZZ", "Herb_en_name"), "doesn't/don't exist")
 })
 
+test_that("search_herb uses the same result schema for each name type", {
+  data <- get("tcm_data", envir = asNamespace("TCMDATA"))
+  for (type in c("Herb_cn_name", "Herb_pinyin_name", "Herb_en_name")) {
+    herb <- data[[type]][which(!is.na(data[[type]]))[1L]]
+    result <- search_herb(herb, type)
+    expect_named(result, c("herb", "molecule", "target"))
+  }
+})
+
 test_that("search_target handles non-existent genes", {
    skip_if_not(exists("tcm_data", where = asNamespace("TCMDATA")) || exists("tcm_data"))
    

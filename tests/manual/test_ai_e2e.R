@@ -1,5 +1,5 @@
 # End-to-end test: tcm_config -> tcm_setup -> tcm_interpret -> draft
-# Run from project root: source("tests/test_ai_e2e.R")
+# Run from project root: source("tests/manual/test_ai_e2e.R")
 
 devtools::load_all()
 

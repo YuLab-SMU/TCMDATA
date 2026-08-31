@@ -45,10 +45,10 @@ prepare_herb_graph <- function(
     stop("Input data frame must contain columns: ", paste(required_cols, collapse = ", "))
   }
 
-  df <- df %>% utils::head(n)
+  df <- df |> utils::head(n)
 
-  edges1 <- df %>% select(from = all_of(herb_col), to = all_of(molecule_col))
-  edges2 <- df %>% select(from = all_of(molecule_col), to = all_of(target_col))
+  edges1 <- df |> select(from = all_of(herb_col), to = all_of(molecule_col))
+  edges2 <- df |> select(from = all_of(molecule_col), to = all_of(target_col))
   edges <- bind_rows(edges1, edges2)
 
   g <- igraph::graph_from_data_frame(edges, directed = TRUE)

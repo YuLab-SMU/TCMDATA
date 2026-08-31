@@ -14,7 +14,6 @@
 #' @importFrom dplyr filter
 #' @importFrom dplyr select
 #' @importFrom dplyr distinct
-#' @importFrom dplyr %>%
 #' @importFrom tidyr drop_na
 #' @importFrom rlang .data
 #' @examples
@@ -32,62 +31,27 @@
 #'
 #' @export
 #' 
-search_herb <- function(herb, type){
-  # Validate the 'type' parameter
+search_herb <- function(herb, type) {
   type <- match.arg(type, c("Herb_cn_name", "Herb_pinyin_name", "Herb_en_name"))
-  
-  # Check existence of herbs based on the specified type
-  if (type == "Herb_cn_name"){
-    if (all(herb %in% unique(tcm_data$Herb_cn_name)) == FALSE){
-      herb_not_exist <- setdiff(herb, unique(tcm_data$Herb_cn_name))
-      warning(paste0(paste(herb_not_exist, collapse=", "), " doesn't/don't exist in our dataset."))
-      herb <- herb[-match(herb_not_exist, herb)]
-    }
-    
-    result <- tcm_data %>%
-      dplyr::filter(.data$Herb_cn_name %in% herb) %>%
-      dplyr::select(c("Herb_pinyin_name", "molecule", "target")) %>%
-      dplyr::distinct(.keep_all = TRUE) %>%
-      tidyr::drop_na()
-    colnames(result) <- c("herb", "molecule", "target")
-    rownames(result) <- NULL
-    return(result)
-  }
-  
-  if (type == "Herb_pinyin_name"){
-    if (all(herb %in% unique(tcm_data$Herb_pinyin_name)) == FALSE){
-      herb_not_exist <- setdiff(herb, unique(tcm_data$Herb_pinyin_name))
-      warning(paste0(paste(herb_not_exist, collapse=", "), " doesn't/don't exist in our dataset."))
-      herb <- herb[-match(herb_not_exist, herb)]
-    }
-    
-    result <- tcm_data %>%
-      dplyr::filter(.data$Herb_pinyin_name %in% herb) %>%
-      dplyr::select(c("Herb_pinyin_name", "molecule", "target")) %>%
-      dplyr::distinct(.keep_all = TRUE) %>%
-      tidyr::drop_na()
-    colnames(result) <- c("herb", "molecule", "target")
-    rownames(result) <- NULL
-    return(result)
-  }
-  
-  #if (type == "Herb_en_name"){
-  if (all(herb %in% unique(tcm_data$Herb_en_name)) == FALSE){
-    herb_not_exist <- setdiff(herb, unique(tcm_data$Herb_en_name))
-    warning(paste0(paste(herb_not_exist, collapse=", "), " doesn't/don't exist in our dataset."))
-    herb <- herb[-match(herb_not_exist, herb)]
-  }
-    
-  result <- tcm_data %>%
-    dplyr::filter(.data$Herb_en_name %in% herb) %>%
-    dplyr::select("Herb_pinyin_name", "molecule", "target") %>%
-    dplyr::distinct(.keep_all = TRUE) %>%
-    tidyr::drop_na()
-  colnames(result) <- c("herb", "molecule", "target")
-  rownames(result) <- NULL
 
-  return(result)
-  #}
+  available <- unique(tcm_data[[type]])
+  herb_not_exist <- setdiff(herb, available)
+  if (length(herb_not_exist) > 0L) {
+    warning(paste0(
+      paste(herb_not_exist, collapse = ", "),
+      " doesn't/don't exist in our dataset."
+    ))
+  }
+  herb <- intersect(herb, available)
+
+  result <- tcm_data |>
+    dplyr::filter(.data[[type]] %in% herb) |>
+    dplyr::select("Herb_pinyin_name", "molecule", "target") |>
+    dplyr::distinct(.keep_all = TRUE) |>
+    tidyr::drop_na()
+  names(result) <- c("herb", "molecule", "target")
+  rownames(result) <- NULL
+  result
 }
 
 
@@ -120,10 +84,10 @@ search_target <- function(gene_list){
   }
   
   # Retrieve relevant data
-  herbs_data <- tcm_data %>%
-    dplyr::filter(.data$target %in% gene_list) %>%
-    dplyr::select(c("Herb_pinyin_name", "molecule", "target")) %>%
-    dplyr::distinct(.keep_all = TRUE) %>%
+  herbs_data <- tcm_data |>
+    dplyr::filter(.data$target %in% gene_list) |>
+    dplyr::select(c("Herb_pinyin_name", "molecule", "target")) |>
+    dplyr::distinct(.keep_all = TRUE) |>
     tidyr::drop_na()
   
   colnames(herbs_data) <- c("herb", "molecule", "target")

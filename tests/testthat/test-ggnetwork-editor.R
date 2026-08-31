@@ -54,6 +54,7 @@ test_that("saved visNetwork positions become a reusable layout", {
 })
 
 test_that("layout editor widget is draggable and uses short layout aliases", {
+  skip_if_not_installed("visNetwork")
   graph <- igraph::make_ring(5)
   graph <- igraph::set_vertex_attr(graph, "name", value = LETTERS[1:5])
   graph <- igraph::set_edge_attr(
@@ -76,6 +77,7 @@ test_that("layout editor widget is draggable and uses short layout aliases", {
 })
 
 test_that("layout editor starts tripartite data in concentric rings", {
+  skip_if_not_installed("visNetwork")
   data <- data.frame(
     herb = c("H1", "H1", "H2", "H2"),
     molecule = c("C1", "C2", "C1", "C3"),
@@ -109,6 +111,8 @@ test_that("layout editor starts tripartite data in concentric rings", {
 })
 
 test_that("layout editor validates inputs before launching the gadget", {
+  skip_if_not_installed("shiny")
+  skip_if_not_installed("visNetwork")
   expect_error(edit_ggnetwork_layout(data.frame()), "igraph object")
   expect_error(
     edit_ggnetwork_layout(igraph::make_ring(3), layout = NA_character_),

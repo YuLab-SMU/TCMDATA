@@ -30,8 +30,8 @@ getGores <- function(x,
   if (length(miss) > 0) stop("Missing required columns: ", paste(miss, collapse = ", "))
 
   # select necessary columns
-  df <- df %>%
-    tidyr::drop_na(dplyr::all_of(c("ID", "ONTOLOGY", "BgRatio", "p.adjust", "geneID"))) %>%
+  df <- df |>
+    tidyr::drop_na(dplyr::all_of(c("ID", "ONTOLOGY", "BgRatio", "p.adjust", "geneID"))) |>
     dplyr::mutate(
       termnumber = as.integer(sub("/.*", "", .data$BgRatio)),
       totalnumber = as.integer(sub(".*/", "", .data$BgRatio)),
@@ -40,31 +40,31 @@ getGores <- function(x,
       rich_factor = .data$RichFactor)
 
   # combine with up-down genes information
-  long_df <- df %>%
-    dplyr::select(dplyr::all_of(c("goterm", "category", "totalnumber", "termnumber", "p.adjust", "rich_factor", "geneID"))) %>%
-    tidyr::separate_rows("geneID", sep = "/") %>%
+  long_df <- df |>
+    dplyr::select(dplyr::all_of(c("goterm", "category", "totalnumber", "termnumber", "p.adjust", "rich_factor", "geneID"))) |>
+    tidyr::separate_rows("geneID", sep = "/") |>
     dplyr::mutate(
       is_up = if (is.null(up_genes)) 0L else as.integer(.data$geneID %in% up_genes),
       is_down = if (is.null(down_genes)) 0L else as.integer(.data$geneID %in% down_genes))
 
-  input_full <- long_df %>%
+  input_full <- long_df |>
     dplyr::group_by(.data$goterm, .data$category, .data$totalnumber,
-                    .data$termnumber, .data$p.adjust, .data$rich_factor) %>%
+                    .data$termnumber, .data$p.adjust, .data$rich_factor) |>
     dplyr::summarise(
       up_regulated = sum(.data$is_up, na.rm = TRUE),
       down_regulated = sum(.data$is_down, na.rm = TRUE),
-      .groups = "drop") %>%
+      .groups = "drop") |>
     dplyr::arrange(.data$category, .data$p.adjust)
 
   # extract the top n
-  input_top <- input_full %>%
-    dplyr::group_by(.data$category) %>%
-    dplyr::arrange(.data$p.adjust, .by_group = TRUE) %>%
-    dplyr::slice_head(n = top) %>%
+  input_top <- input_full |>
+    dplyr::group_by(.data$category) |>
+    dplyr::arrange(.data$p.adjust, .by_group = TRUE) |>
+    dplyr::slice_head(n = top) |>
     dplyr::ungroup()
 
   # add additional columns
-  res <- input_top %>%
+  res <- input_top |>
     dplyr::mutate(ID = .data$goterm,
                   up_counts = .data$up_regulated,
                   down_counts = .data$down_regulated,
@@ -73,8 +73,8 @@ getGores <- function(x,
                   gene_num.max = log10(.data$totalnumber),
                   BgRatio1 = .data$termnumber,
                   BgRatio2 = .data$totalnumber,
-                  RichFactor = .data$rich_factor) %>%
-    dplyr::arrange(.data$category, desc(.data$RichFactor)) %>%
+                  RichFactor = .data$rich_factor) |>
+    dplyr::arrange(.data$category, desc(.data$RichFactor)) |>
     as.data.frame()
 
   res$ID <- factor(res$ID, levels = res$ID)
@@ -244,7 +244,7 @@ gocircle_plot <- function(
   )
 
   ## fourth round
-  plot_data <- x1 %>% dplyr::select(dplyr::all_of(c("ID", "gene_num.min", "gene_num.max", "RichFactor")))
+  plot_data <- x1 |> dplyr::select(dplyr::all_of(c("ID", "gene_num.min", "gene_num.max", "RichFactor")))
   plot_data$RichFactor <- pmin(plot_data$RichFactor, 1.0)
   circlize::circos.genomicTrack(
     plot_data, ylim = c(0, 1.0), track.height = 0.25, bg.col = bg.col, bg.border = NA,

@@ -328,8 +328,8 @@ compound_similarity <- function(query,
     message("Computing Tanimoto scores locally (via rcdk)...")
     tryCatch({
       res_df <- add_simscore(res_df)
-      res_df <- res_df %>%
-        dplyr::arrange(dplyr::desc(.data$score)) %>%
+      res_df <- res_df |>
+        dplyr::arrange(dplyr::desc(.data$score)) |>
         dplyr::filter(!is.na(.data$score))
     }, error = function(e) {
       warning("Similarity scoring failed (likely Java/rcdk issue). Returning unsorted results.")
@@ -338,7 +338,7 @@ compound_similarity <- function(query,
     message("Skipping local score computation.")
   }
 
-  res_df <- res_df %>% dplyr::slice_head(n = topn)
+  res_df <- res_df |> dplyr::slice_head(n = topn)
 
   return(res_df)
 }

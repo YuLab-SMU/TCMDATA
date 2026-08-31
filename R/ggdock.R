@@ -31,7 +31,6 @@
 #' @importFrom dplyr mutate all_of
 #' @importFrom stats median
 #' @importFrom rlang .data
-#' @importFrom magrittr %>%
 #'
 #' @export
 
@@ -59,17 +58,13 @@ ggdock <- function(
   if (!is.null(palette) && !requireNamespace("paletteer", quietly = TRUE)) {
     stop("Package 'paletteer' is required for ggdock(). Please install it with: install.packages('paletteer')")
   }
-  if (!requireNamespace("forcats", quietly = TRUE)) {
-    stop("Package 'forcats' is required for ggdock(). Please install it with: install.packages('forcats')")
-  }
-
   type <- match.arg(type, c("dot", "tile"))
 
   if (is.matrix(dock_data)) dock_data <- as.data.frame(dock_data)
 
   ## convert data structure
-  df_long <- dock_data %>%
-    tibble::rownames_to_column("target") %>%
+  df_long <- dock_data |>
+    tibble::rownames_to_column("target") |>
     tidyr::pivot_longer(
       cols = !dplyr::all_of("target"),
       names_to = "molecule",
@@ -79,12 +74,15 @@ ggdock <- function(
   order_fun <- get_order(order)
 
   if (!is.null(order_fun)) {
+    descending_order <- function(x) -order_fun(x)
     df_long <- df_long |>
       dplyr::mutate(
-        target   = forcats::fct_reorder(.data$target,   .data$affinity,
-                                        .fun = order_fun, .desc = TRUE),
-        molecule = forcats::fct_reorder(.data$molecule, .data$affinity,
-                                        .fun = order_fun, .desc = TRUE)
+        target = stats::reorder(
+          .data$target, .data$affinity, FUN = descending_order
+        ),
+        molecule = stats::reorder(
+          .data$molecule, .data$affinity, FUN = descending_order
+        )
       )
   }
 
@@ -168,11 +166,9 @@ ggdock <- function(
 get_order <- function(order) {
   if (is.null(order) || identical(order, "none")) return(NULL)
   if (is.function(order)) return(order)
-  if (is.character(order)) {
-    m <- c("median" = stats::median, "mean" = base::mean,
-           "max" = base::max, "min" = base::min)
-    if (order %in% names(m)) return(m[[order]])
-    stop("`order` only supports: NULL/'none'/'median'/'mean'/'max'/'min' or function.")
+  supported <- c("median", "mean", "max", "min")
+  if (is.character(order) && length(order) == 1L && order %in% supported) {
+    return(match.fun(order))
   }
-  stop("`order` should be NULL/'none'/character/functions.")
+  stop("`order` only supports NULL, 'none', 'median', 'mean', 'max', 'min', or a function.")
 }

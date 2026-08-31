@@ -31,21 +31,17 @@ Imports:
     grDevices,
     igraph,
     jsonlite,
-    magrittr,
     methods,
     purrr,
     rlang,
     scales,
-    shiny,
     stats,
     tibble,
     tidyr,
     utils,
-    visNetwork,
     yulab.utils
 Suggests:
     aplotExtra,
-    forcats,
     Matrix,
     paletteer,
     RColorBrewer,
@@ -73,7 +69,9 @@ Suggests:
     ggvenn,
     ggthemes,
     AnnotationDbi,
-    org.Hs.eg.db
+    org.Hs.eg.db,
+    shiny,
+    visNetwork
 Remotes:
     YuLab-SMU/aplotExtra,
     YuLab-SMU/aisdk,

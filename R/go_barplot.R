@@ -24,7 +24,7 @@
 #' @import ggplot2
 #' @import enrichplot
 #' @importFrom graphics barplot
-#' @importFrom dplyr group_by slice_max ungroup mutate arrange desc %>%
+#' @importFrom dplyr group_by slice_max ungroup mutate arrange desc
 #' @importFrom rlang .data
 #'
 #' @export
@@ -93,8 +93,8 @@ go_barplot <- function(enrich_obj,
   xcol <- x
 
   # Reorder
-  df <- df %>%
-    mutate(ONTOLOGY = factor(.data$ONTOLOGY, levels = c("BP", "CC", "MF"))) %>%
+  df <- df |>
+    mutate(ONTOLOGY = factor(.data$ONTOLOGY, levels = c("BP", "CC", "MF"))) |>
     arrange(.data$ONTOLOGY, desc(.data[[xcol]]))
 
   desired_order <- df$Description

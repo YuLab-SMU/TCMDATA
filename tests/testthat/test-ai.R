@@ -1177,3 +1177,9 @@ test_that("plot_ml_result tool supports upset plots", {
   expect_equal(result$artifact_type, "plot")
   expect_true(artifact_exists(result$artifact_id))
 })
+test_that("safe tool execution preserves results and converts errors", {
+  expect_identical(.safe_tool_execute(function(x) x + 1)(1), 2)
+  result <- .safe_tool_execute(function() stop("boom"))()
+  expect_false(result$ok)
+  expect_match(result$error, "boom")
+})

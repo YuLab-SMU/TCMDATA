@@ -661,8 +661,6 @@ ggppi_network <- function(graph,
 #' ggtcm_network(hct, layout = coordinates, label_top = Inf)
 #' }
 #'
-#' @importFrom shiny actionButton checkboxInput column dialogViewer fluidPage fluidRow h4 helpText observeEvent renderText runGadget stopApp textOutput
-#' @importFrom visNetwork renderVisNetwork toVisNetworkData visEdges visFit visGetPositions visIgraphLayout visInteraction visNetwork visNetworkOutput visNetworkProxy visNodes visOptions visPhysics visUpdateNodes
 #' @export
 edit_ggnetwork_layout <- function(graph,
                                   layout = "fr",
@@ -672,6 +670,14 @@ edit_ggnetwork_layout <- function(graph,
                                   height = 750,
                                   viewer = NULL,
                                   ...) {
+  for (package_name in c("shiny", "visNetwork")) {
+    if (!requireNamespace(package_name, quietly = TRUE)) {
+      stop(
+        sprintf("Package '%s' is required for edit_ggnetwork_layout().", package_name),
+        call. = FALSE
+      )
+    }
+  }
   if (is.data.frame(graph)) {
     if (!all(c("herb", "molecule", "target") %in% names(graph))) {
       stop(
@@ -722,87 +728,87 @@ edit_ggnetwork_layout <- function(graph,
   )
   initial_positions <- widget$x$nodes[, c("id", "x", "y"), drop = FALSE]
 
-  ui <- fluidPage(
-    fluidRow(
-      column(
+  ui <- shiny::fluidPage(
+    shiny::fluidRow(
+      shiny::column(
         width = 9,
-        visNetworkOutput("tcm_network_editor", height = "680px")
+        visNetwork::visNetworkOutput("tcm_network_editor", height = "680px")
       ),
-      column(
+      shiny::column(
         width = 3,
-        h4("Network layout editor"),
-        helpText(
+        shiny::h4("Network layout editor"),
+        shiny::helpText(
           "Drag nodes to arrange the network. Zoom and pan are enabled. ",
           "Save layout returns the coordinates to R."
         ),
-        checkboxInput(
+        shiny::checkboxInput(
           "tcm_layout_physics",
           "Enable physics",
           value = physics
         ),
-        actionButton("tcm_layout_fit", "Fit to window"),
-        actionButton("tcm_layout_reset", "Reset layout"),
-        actionButton("tcm_layout_save", "Save layout"),
-        actionButton("cancel", "Cancel"),
-        textOutput("tcm_layout_status")
+        shiny::actionButton("tcm_layout_fit", "Fit to window"),
+        shiny::actionButton("tcm_layout_reset", "Reset layout"),
+        shiny::actionButton("tcm_layout_save", "Save layout"),
+        shiny::actionButton("cancel", "Cancel"),
+        shiny::textOutput("tcm_layout_status")
       )
     )
   )
 
   server <- function(input, output, session) {
-    output$tcm_network_editor <- renderVisNetwork(widget)
-    output$tcm_layout_status <- renderText(
+    output$tcm_network_editor <- visNetwork::renderVisNetwork(widget)
+    output$tcm_layout_status <- shiny::renderText(
       "The saved layout can be passed to ggppi_network() or ggtcm_network()."
     )
 
-    observeEvent(input$tcm_layout_physics, {
-      visPhysics(
-        visNetworkProxy("tcm_network_editor", session = session),
+    shiny::observeEvent(input$tcm_layout_physics, {
+      visNetwork::visPhysics(
+        visNetwork::visNetworkProxy("tcm_network_editor", session = session),
         enabled = isTRUE(input$tcm_layout_physics)
       )
     }, ignoreInit = TRUE)
 
-    observeEvent(input$tcm_layout_fit, {
-      visFit(visNetworkProxy("tcm_network_editor", session = session))
+    shiny::observeEvent(input$tcm_layout_fit, {
+      visNetwork::visFit(visNetwork::visNetworkProxy("tcm_network_editor", session = session))
     })
 
-    observeEvent(input$tcm_layout_reset, {
-      proxy <- visNetworkProxy("tcm_network_editor", session = session)
-      visPhysics(proxy, enabled = FALSE)
-      visUpdateNodes(proxy, initial_positions)
-      visFit(proxy)
+    shiny::observeEvent(input$tcm_layout_reset, {
+      proxy <- visNetwork::visNetworkProxy("tcm_network_editor", session = session)
+      visNetwork::visPhysics(proxy, enabled = FALSE)
+      visNetwork::visUpdateNodes(proxy, initial_positions)
+      visNetwork::visFit(proxy)
     })
 
-    observeEvent(input$tcm_layout_save, {
-      visGetPositions(
-        visNetworkProxy("tcm_network_editor", session = session),
+    shiny::observeEvent(input$tcm_layout_save, {
+      visNetwork::visGetPositions(
+        visNetwork::visNetworkProxy("tcm_network_editor", session = session),
         input = "tcm_saved_positions"
       )
     })
 
-    observeEvent(input$tcm_saved_positions, {
+    shiny::observeEvent(input$tcm_saved_positions, {
       coordinates <- .ggnetwork_positions_to_layout(
         input$tcm_saved_positions,
         vertex_names = vertex_names
       )
       attr(coordinates, "layout_type") <- layout
-      stopApp(coordinates)
+      shiny::stopApp(coordinates)
     }, ignoreInit = TRUE)
 
-    observeEvent(input$cancel, {
-      stopApp(NULL)
+    shiny::observeEvent(input$cancel, {
+      shiny::stopApp(NULL)
     })
   }
 
   if (is.null(viewer)) {
-    viewer <- dialogViewer(
+    viewer <- shiny::dialogViewer(
       "TCMDATA network layout editor",
       width = as.integer(width),
       height = as.integer(height)
     )
   }
 
-  runGadget(
+  shiny::runGadget(
     ui,
     server,
     viewer = viewer,
@@ -815,7 +821,7 @@ edit_ggnetwork_layout <- function(graph,
                                      physics,
                                      seed,
                                      ...) {
-  network_data <- toVisNetworkData(graph)
+  network_data <- visNetwork::toVisNetworkData(graph)
   is_concentric <- identical(layout, "concentric")
   if (is_concentric) {
     if (!"type" %in% vertex_attr_names(graph)) {
@@ -877,7 +883,7 @@ edit_ggnetwork_layout <- function(graph,
     }
   }
 
-  widget <- visNetwork(
+  widget <- visNetwork::visNetwork(
     network_data$nodes,
     network_data$edges,
     width = "100%",
@@ -885,7 +891,7 @@ edit_ggnetwork_layout <- function(graph,
     background = "#FFFFFF"
   )
   if (!is_concentric) {
-    widget <- visIgraphLayout(
+    widget <- visNetwork::visIgraphLayout(
       widget,
       layout = .ggnetwork_vis_layout_name(layout),
       physics = physics,
@@ -894,7 +900,7 @@ edit_ggnetwork_layout <- function(graph,
       ...
     )
   }
-  widget <- visNodes(
+  widget <- visNetwork::visNodes(
     widget,
     color = list(
       background = "#E95C3A",
@@ -904,12 +910,12 @@ edit_ggnetwork_layout <- function(graph,
     borderWidth = 1.5,
     font = list(color = "#272727", face = "Arial", size = 14)
   )
-  widget <- visEdges(
+  widget <- visNetwork::visEdges(
     widget,
     color = list(color = "#B8B8B8", opacity = 0.55),
     smooth = FALSE
   )
-  widget <- visInteraction(
+  widget <- visNetwork::visInteraction(
     widget,
     dragNodes = TRUE,
     dragView = TRUE,
@@ -918,12 +924,12 @@ edit_ggnetwork_layout <- function(graph,
     navigationButtons = TRUE,
     zoomView = TRUE
   )
-  widget <- visOptions(
+  widget <- visNetwork::visOptions(
     widget,
     highlightNearest = list(enabled = TRUE, degree = 1, hover = TRUE),
     nodesIdSelection = TRUE
   )
-  visPhysics(widget, enabled = physics, stabilization = FALSE)
+  visNetwork::visPhysics(widget, enabled = physics, stabilization = FALSE)
 }
 
 .ggnetwork_vis_layout_name <- function(layout) {

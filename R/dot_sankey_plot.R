@@ -72,9 +72,9 @@ insert_spacer_nodes <- function(dat) {
   new_lvl <- list()
 
   for (ax in unique(d$axis)) {
-    old <- d %>%
-      dplyr::filter(.data$axis == ax) %>%
-      dplyr::pull(.data$stratum) %>%
+    old <- d |>
+      dplyr::filter(.data$axis == ax) |>
+      dplyr::pull(.data$stratum) |>
       unique()
 
     nm   <- paste0("spacer_", ax, "_", seq_along(old)[-length(old)])
@@ -82,8 +82,8 @@ insert_spacer_nodes <- function(dat) {
     ord[2 * (seq_along(old) - 1) + 1] <- old
     if (length(nm)) ord[2 * seq_along(nm)] <- nm
 
-    ref_y <- d %>%
-      dplyr::filter(.data$axis == ax) %>%
+    ref_y <- d |>
+      dplyr::filter(.data$axis == ax) |>
       dplyr::pull(.data$y_pos)
 
     ref_y <- ref_y[1]
@@ -213,15 +213,15 @@ ggdot_sankey <- function(
   ## 1. get enrichment result
   et <- getenrichres(enrich_obj, n = n, ...)
 
-  dfForLodes <- et %>%
-    tidyr::separate_rows("id", convert = TRUE, sep = "/") %>%
-    dplyr::count(Gene = .data$id , Pathway = .data$desc, order = .data$count, name = "Freq") %>%
+  dfForLodes <- et |>
+    tidyr::separate_rows("id", convert = TRUE, sep = "/") |>
+    dplyr::count(Gene = .data$id , Pathway = .data$desc, order = .data$count, name = "Freq") |>
     dplyr::arrange(dplyr::desc(.data$order))
 
   ## 2. prepare sankey data
   sankeyData <- ggalluvial::to_lodes_form(dfForLodes,
                                           key = "axis",
-                                          axes = axis_order) %>%
+                                          axes = axis_order) |>
     dplyr::mutate(y_pos = dplyr::case_when(
       .data$axis == "Gene" ~ id_y_pos,
       .data$axis == "Pathway" ~ desc_y_pos),
@@ -237,9 +237,9 @@ ggdot_sankey <- function(
   spacer_colors <- stats::setNames(rep("transparent", length(spacer_strata)), spacer_strata)
   nodeColors <- c(gene_colors, pathway_colors,spacer_colors)
 
-  sankeyData <- sankeyData %>%
-    mutate(axis = factor(.data$axis, levels = axis_order)) %>%
-    mutate(node_color = nodeColors[as.character(.data$stratum)]) %>%   # 节点色
+  sankeyData <- sankeyData |>
+    mutate(axis = factor(.data$axis, levels = axis_order)) |>
+    mutate(node_color = nodeColors[as.character(.data$stratum)]) |>   # 节点色
     mutate(flow_color = .data$node_color)
 
   ## 4. sankey plot
@@ -282,17 +282,17 @@ ggdot_sankey <- function(
   # extract plot data
   sankeyPlotData <- ggplot2::ggplot_build(sankeyPlot)
 
-  leftNodes <- sankeyPlotData$data[[1]] %>%
-    dplyr::filter(.data$x == min(.data$x)) %>%
+  leftNodes <- sankeyPlotData$data[[1]] |>
+    dplyr::filter(.data$x == min(.data$x)) |>
     dplyr::mutate(node_name = as.character(.data$stratum),
            node_ymin = .data$ymin,
            node_ymax = .data$ymax,
-           node_center_y = (.data$ymin + .data$ymax) / 2) %>%
-    dplyr::filter(!grepl("spacer_", .data$node_name)) %>%
+           node_center_y = (.data$ymin + .data$ymax) / 2) |>
+    dplyr::filter(!grepl("spacer_", .data$node_name)) |>
     dplyr::select(.data$node_name, .data$node_center_y, .data$ymin, .data$ymax)
 
-  dotData <- et %>%
-    distinct(.data$desc, .keep_all = TRUE) %>%
+  dotData <- et |>
+    distinct(.data$desc, .keep_all = TRUE) |>
     left_join(leftNodes, by = c("desc" = "node_name"))
 
   dotPlot <- ggplot(

@@ -1,34 +1,3 @@
-#' Normalize a numeric vector to the range \eqn{[0, 1]}.
-#'
-#' A simple and robust 0–1 scaler. Handles NA, Inf, or constant values by
-#' returning 0.5 for those entries.
-#'
-#' @param x Numeric vector.
-#' @param na_rm Logical; whether to ignore non-finite values when computing
-#'   the range. Defaults to \code{TRUE}.
-#'
-#' @return Numeric vector which has been scaled.
-#'
-#' @keywords internal
-norm01 <- function(x, na_rm = TRUE) {
-  x <- as.numeric(x)
-  if (na_rm) {
-    finite_idx <- is.finite(x)
-    if (!any(finite_idx)) return(rep(0.5, length(x)))
-    rng <- range(x[finite_idx], na.rm = TRUE)
-  } else {
-    rng <- range(x, na.rm = TRUE)
-  }
-  if (diff(rng) == 0) {
-    return(rep(0.5, length(x)))
-  } else {
-    out <- (x - rng[1]) / diff(rng)
-    out[!is.finite(out)] <- 0.5
-    return(out)
-  }
-}
-
-
 #' Extract normalized centrality profile for a node
 #'
 #' This function extracts selected metrics for a given node and normalizes
@@ -129,7 +98,7 @@ radar_plot <- function(profile_df,
   n <- nrow(data)
   angles <- (0:(n - 1)) / n * 2 * pi
 
-  data <- data %>%
+  data <- data |>
     dplyr::mutate(
       angle = angles,
       x = sin(angle) * !!rlang::sym(value_col),
@@ -148,10 +117,10 @@ radar_plot <- function(profile_df,
       y = c(y, y[1]),
       r = r
     )
-  }) %>%
+  }) |>
     dplyr::bind_rows(.id = "ring")
 
-  df_segments <- data %>%
+  df_segments <- data |>
     dplyr::mutate(
       xend = sin(angle) * max_value,
       yend = cos(angle) * max_value)
