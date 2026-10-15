@@ -558,7 +558,8 @@ plot_list(p_fr, p_kk, p_nicely, p_star, ncol = 2, labels = c("A", "B", "C", "D")
 
 6. Xi Y, et al. Exploration of the Specific Pathology of HXMM Tablet Against Retinal Injury Based on Drug Attack Model to Network Robustness. *Frontiers in Pharmacology* (2022), 13, 826535. doi: [10.3389/fphar.2022.826535](https://doi.org/10.3389/fphar.2022.826535).
 
-7. Yu G. ggtangle: Draw Network and Phylogenetic Tree Using Grammar of Graphics. R package. doi: [10.32614/CRAN.package.ggtangle](https://doi.org/10.32614/CRAN.package.ggtangle).
+7. Yu G. ggtangle: Draw Network with Data. R package version 0.1.4 (2026). doi: [10.32614/CRAN.package.ggtangle](https://doi.org/10.32614/CRAN.package.ggtangle).
+
 ---
 
 ## Session information

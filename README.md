@@ -2,17 +2,17 @@
 
 <img src="man/figures/logo.png" height="200" align="right" />
 
-[![R-CMD-check](https://img.shields.io/badge/R--CMD--check-passing-brightgreen?logo=r)](https://github.com/Hinna0818/TCMDATA)
-[![bookdown](https://github.com/Hinna0818/TCMDATA/actions/workflows/bookdown.yaml/badge.svg)](https://github.com/Hinna0818/TCMDATA/actions/workflows/bookdown.yaml)
+[![R-CMD-check](https://img.shields.io/badge/R--CMD--check-passing-brightgreen?logo=r)](https://github.com/YuLab-SMU/TCMDATA)
+[![bookdown](https://github.com/YuLab-SMU/TCMDATA/actions/workflows/bookdown.yaml/badge.svg)](https://github.com/YuLab-SMU/TCMDATA/actions/workflows/bookdown.yaml)
 [![R version](https://img.shields.io/badge/R%20≥-4.1.0-276DC3?logo=r)](https://cran.r-project.org/)
-[![Platform](https://img.shields.io/badge/Platform-Linux%20|%20macOS%20|%20Windows-informational)](https://github.com/Hinna0818/TCMDATA)
-[![Documentation](https://img.shields.io/badge/docs-bookdown-orange?logo=bookstack)](https://hinna0818.github.io/TCMDATA/)
+[![Platform](https://img.shields.io/badge/Platform-Linux%20|%20macOS%20|%20Windows-informational)](https://github.com/YuLab-SMU/TCMDATA)
+[![Documentation](https://img.shields.io/badge/docs-bookdown-orange?logo=bookstack)](https://yulab-smu.top/TCMDATA/)
 
 - **TCMDATA** is a comprehensive R toolkit for **Traditional Chinese Medicine (TCM) network pharmacology** research.
 - It provides an end-to-end computational workflow—from herb–compound–target data retrieval and pharmacological network construction, through enrichment analysis and PPI mining, to machine-learning-based biomarker screening and AI-powered result interpretation.
 - Publication-ready visualizations including Sankey diagrams, docking heatmaps, lollipop plots, and more.
 
-For details, please visit the [full documentation](https://hinna0818.github.io/TCMDATA/).
+For details, please visit the [full documentation](https://yulab-smu.top/TCMDATA/).
 
 ---
 
@@ -47,9 +47,9 @@ For details, please visit the [full documentation](https://hinna0818.github.io/T
 ## Installation
 
 ```r
-# install.packages("devtools")
+# install.packages("remotes")
 options(timeout = 600)
-devtools::install_github("Hinna0818/TCMDATA")
+remotes::install_github("YuLab-SMU/TCMDATA")
 ```
 
 ## Quick Start
@@ -80,7 +80,7 @@ remotes::install_github("YuLab-SMU/aisdk.providers")
 tcm_setup(
   provider = "openai",
   api_key  = "sk-xxxx",
-  model    = "gpt-5.6-sol",
+  model    = "gpt-6.1-sol",
   save     = TRUE
 )
 
@@ -111,12 +111,23 @@ The agent supports 11 task types including herb/disease/target lookup, enrichmen
 
 ## Documentation
 
-Complete tutorials with worked examples can be found [here](<https://hinna0818.github.io/TCMDATA/>).
+Complete tutorials with worked examples can be found [here](<https://yulab-smu.top/TCMDATA/>).
 
 ## Citation
 
 If you use TCMDATA in your research, please cite:
 
-```
-DOI pending
+```bibtex
+@article{he2026tcmdata,
+  title   = {TCMDATA: An integrated R package for target-oriented network pharmacology analysis and AI-assisted interpretation in traditional Chinese medicine},
+  author  = {He, Nan and Xu, Shuangbin and Mo, Ke and Xia, Yonghe and Wang, Rui and Tao, Shaoguo and Wang, Qianwen and Mo, Jianwen and Pang, Bin and Qiu, Yiyan and Song, Qiong and Yu, Guangchuang},
+  journal = {Current Molecular Pharmacology},
+  volume  = {19},
+  number  = {1},
+  pages   = {372--388},
+  year    = {2026},
+  issn    = {1874-4672},
+  doi     = {10.1016/j.cmp.2026.09.003},
+  url     = {https://doi.org/10.1016/j.cmp.2026.09.003}
+}
 ```

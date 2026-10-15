@@ -26,9 +26,9 @@ knitr::include_graphics("images/workflow.png")
 Install the development version from GitHub:
 
 ```r
-# install.packages("devtools")
+# install.packages("remotes")
 options(timeout = 600)
-devtools::install_github("YuLab-SMU/TCMDATA")
+remotes::install_github("YuLab-SMU/TCMDATA")
 ```
 
 ```{r setup, include=FALSE}
@@ -40,4 +40,23 @@ knitr::opts_chunk$set(
   collapse  = TRUE,
   comment   = "#>"
 )
+```
+
+## Citation {-}
+
+If you use TCMDATA in your research, please cite:
+
+```bibtex
+@article{he2026tcmdata,
+  title   = {TCMDATA: An integrated R package for target-oriented network pharmacology analysis and AI-assisted interpretation in traditional Chinese medicine},
+  author  = {He, Nan and Xu, Shuangbin and Mo, Ke and Xia, Yonghe and Wang, Rui and Tao, Shaoguo and Wang, Qianwen and Mo, Jianwen and Pang, Bin and Qiu, Yiyan and Song, Qiong and Yu, Guangchuang},
+  journal = {Current Molecular Pharmacology},
+  volume  = {19},
+  number  = {1},
+  pages   = {372--388},
+  year    = {2026},
+  issn    = {1874-4672},
+  doi     = {10.1016/j.cmp.2026.09.003},
+  url     = {https://doi.org/10.1016/j.cmp.2026.09.003}
+}
 ```
